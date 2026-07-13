@@ -1,0 +1,7 @@
+[22-Oct-2025 04:15:52 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/index.php on line 17
+[22-Oct-2025 04:15:52 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/index.php on line 22
+[22-Oct-2025 04:15:52 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/index.php on line 27
+[22-Oct-2025 04:19:55 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/edit-hero.php on line 14
+[22-Oct-2025 04:19:55 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/edit-hero.php on line 22
+[22-Oct-2025 04:22:16 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/edit-hero.php on line 14
+[22-Oct-2025 04:22:16 America/Boise] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home2/dmxewbmy/public_html/website_58827336/community/admin/gala/edit-hero.php on line 22

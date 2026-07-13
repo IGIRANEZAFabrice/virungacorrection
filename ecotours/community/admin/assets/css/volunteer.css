@@ -1,0 +1,421 @@
+/* Volunteer Page Specific Styles */
+
+/* Page Header Enhancements */
+.volunteer-page .page-header {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-sage) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.volunteer-page .page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Card Enhancements */
+.volunteer-page .card {
+    transition: all 0.3s ease;
+    border: 1px solid var(--neutral-beige);
+}
+
+.volunteer-page .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(42, 72, 88, 0.15);
+}
+
+.volunteer-page .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, var(--neutral-cream) 100%);
+    border-bottom: 2px solid var(--neutral-beige);
+}
+
+.volunteer-page .card-header h2 {
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.volunteer-page .card-header h2 i {
+    color: var(--accent-terracotta);
+    margin-right: 0.75rem;
+    font-size: 1.1em;
+}
+
+/* Form Styling */
+.volunteer-page .form-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+.volunteer-page .form-group {
+    position: relative;
+}
+
+.volunteer-page .form-group label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.95rem;
+}
+
+.volunteer-page .form-group input,
+.volunteer-page .form-group textarea,
+.volunteer-page .form-group select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--neutral-beige);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    font-family: inherit;
+}
+
+.volunteer-page .form-group input:focus,
+.volunteer-page .form-group textarea:focus,
+.volunteer-page .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(42, 72, 88, 0.1);
+    background-color: var(--neutral-light);
+}
+
+.volunteer-page .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+/* Button Styling */
+.volunteer-page .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 44px;
+    white-space: nowrap;
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+}
+
+.volunteer-page .btn:hover {
+    background-color: var(--accent-sage);
+    border-color: var(--accent-sage);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(42, 72, 88, 0.3);
+}
+
+.volunteer-page .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(42, 72, 88, 0.2);
+}
+
+.volunteer-page .btn-primary {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.volunteer-page .btn-primary:hover {
+    background-color: var(--accent-sage);
+    border-color: var(--accent-sage);
+}
+
+.volunteer-page .btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+}
+
+.volunteer-page .btn-danger {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.volunteer-page .btn-danger:hover {
+    background-color: var(--error-color);
+    color: white;
+    border-color: var(--error-color);
+}
+
+/* Table Styling */
+.volunteer-page .table-responsive {
+    overflow-x: auto;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--neutral-beige);
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.volunteer-page .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 0;
+}
+
+.volunteer-page .table thead {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-sage) 100%);
+}
+
+.volunteer-page .table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: white;
+    border-bottom: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.volunteer-page .table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--neutral-beige);
+    vertical-align: middle;
+    color: var(--text-dark);
+}
+
+.volunteer-page .table tbody tr:hover {
+    background-color: rgba(42, 72, 88, 0.02);
+}
+
+.volunteer-page .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Icon Styling in Table */
+.volunteer-page .table td:nth-child(2) {
+    font-size: 1.2rem;
+    text-align: center;
+    width: 60px;
+}
+
+/* Alert Styling */
+.volunteer-page .alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.volunteer-page .alert-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+    border-left-color: var(--success-color);
+}
+
+.volunteer-page .alert-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-left-color: var(--error-color);
+}
+
+.volunteer-page .alert i {
+    font-size: 1.1rem;
+}
+
+/* Section Spacing */
+.volunteer-page .card + .card {
+    margin-top: 2rem;
+}
+
+/* Form Grid Layouts */
+.volunteer-page .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.volunteer-page .form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Special styling for card creation form */
+.volunteer-page .card-creation-form {
+    background: linear-gradient(135deg, var(--neutral-light) 0%, var(--neutral-cream) 100%);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-md);
+    border: 2px dashed var(--neutral-beige);
+    margin-bottom: 1.5rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .volunteer-page .form-grid-2,
+    .volunteer-page .form-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .volunteer-page .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .volunteer-page .table th,
+    .volunteer-page .table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .volunteer-page .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .volunteer-page .btn-small {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .volunteer-page .card-body {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .volunteer-page .table th,
+    .volunteer-page .table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    .volunteer-page .form-group input,
+    .volunteer-page .form-group textarea {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .volunteer-page .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Loading States */
+.volunteer-page .form-grid.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.volunteer-page .btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.volunteer-page .btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Enhanced Focus States */
+.volunteer-page .form-group input:focus,
+.volunteer-page .form-group textarea:focus {
+    transform: translateY(-1px);
+}
+
+/* Tooltip Styling */
+.volunteer-page .tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.volunteer-page .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--primary-green);
+    color: white;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+}
+
+.volunteer-page .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Success/Error States for Forms */
+.volunteer-page .form-group.success input,
+.volunteer-page .form-group.success textarea {
+    border-color: var(--success-color);
+    background-color: rgba(76, 175, 80, 0.05);
+}
+
+.volunteer-page .form-group.error input,
+.volunteer-page .form-group.error textarea {
+    border-color: var(--error-color);
+    background-color: rgba(244, 67, 54, 0.05);
+}
+
+/* Empty State Styling */
+.volunteer-page .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-medium);
+}
+
+.volunteer-page .empty-state i {
+    font-size: 3rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.volunteer-page .empty-state h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.volunteer-page .empty-state p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

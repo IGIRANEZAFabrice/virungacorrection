@@ -1,0 +1,334 @@
+/* Layout Fixes for Admin Pages */
+
+/* Fix for content appearing behind navbar/sidebar */
+.admin-container {
+    margin-left: 280px;
+    min-height: 100vh;
+    background-color: var(--neutral-light);
+    position: relative;
+    z-index: 1;
+}
+
+.admin-main {
+    padding: 2rem;
+    margin-top: 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Ensure topbar doesn't overlap content */
+.top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-left: 280px;
+    background-color: white;
+    border-bottom: 1px solid var(--neutral-beige);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Header Improvements */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-sage) 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-header h1 i {
+    font-size: 1.8rem;
+    opacity: 0.9;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Card Improvements */
+.card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--neutral-beige);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--neutral-beige);
+}
+
+.card-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-header h2 i {
+    color: var(--primary-green);
+    font-size: 1.2rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Form Improvements */
+.form-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--neutral-beige);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(42, 72, 88, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+/* Button Improvements */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 44px;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-sage);
+    border-color: var(--accent-sage);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+}
+
+.btn-danger {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.btn-danger:hover {
+    background-color: var(--error-color);
+    color: white;
+    border-color: var(--error-color);
+}
+
+/* Table Improvements */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--neutral-beige);
+    margin-top: 1.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--neutral-beige);
+    font-size: 0.9rem;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--neutral-light);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(42, 72, 88, 0.02);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Alert Improvements */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+    border-left-color: var(--success-color);
+}
+
+.alert-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-left-color: var(--error-color);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        margin-left: 0;
+    }
+    
+    .top-bar {
+        margin-left: 0;
+    }
+    
+    .admin-main {
+        padding: 1rem;
+    }
+    
+    .page-header {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .card-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .form-grid {
+        gap: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-small {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header h1 {
+        font-size: 1.3rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .card-header h2 {
+        font-size: 1.1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,681 @@
+/* Volunteer Admin Page Specific Styles */
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+.admin-container {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+.admin-main {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 1.5rem;
+}
+
+/* Page Header Enhancements */
+.volunteer-admin .page-header {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-sage) 100%);
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(42, 72, 88, 0.3);
+}
+
+.volunteer-admin .page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.volunteer-admin .page-header h1,
+.volunteer-admin .page-header p {
+    position: relative;
+    z-index: 2;
+}
+
+/* Card Enhancements */
+.volunteer-admin .card {
+    transition: all 0.3s ease;
+    border: 1px solid var(--neutral-beige);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.volunteer-admin .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(42, 72, 88, 0.15);
+}
+
+.volunteer-admin .card-header {
+    background: linear-gradient(135deg, var(--neutral-light) 0%, var(--neutral-cream) 100%);
+    border-bottom: 2px solid var(--neutral-beige);
+    padding: 1.5rem;
+    position: relative;
+}
+
+.volunteer-admin .card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-terracotta) 100%);
+}
+
+.volunteer-admin .card-header h2 {
+    color: var(--primary-green);
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.volunteer-admin .card-header h2 i {
+    color: var(--accent-terracotta);
+    font-size: 1.1em;
+}
+
+.volunteer-admin .card-body {
+    padding: 2rem;
+}
+
+/* Form Styling */
+.volunteer-admin .form-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+.volunteer-admin .form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.volunteer-admin .form-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.volunteer-admin .form-group {
+    position: relative;
+}
+
+.volunteer-admin .form-group label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.95rem;
+}
+
+.volunteer-admin .form-group input,
+.volunteer-admin .form-group textarea,
+.volunteer-admin .form-group select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--neutral-beige);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    font-family: inherit;
+}
+
+.volunteer-admin .form-group input:focus,
+.volunteer-admin .form-group textarea:focus,
+.volunteer-admin .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(42, 72, 88, 0.1);
+    background-color: var(--neutral-light);
+    transform: translateY(-1px);
+}
+
+.volunteer-admin .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+.volunteer-admin .form-group input::placeholder,
+.volunteer-admin .form-group textarea::placeholder {
+    color: var(--text-medium);
+    opacity: 0.7;
+}
+
+/* Button Styling */
+.volunteer-admin .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 44px;
+    white-space: nowrap;
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    position: relative;
+    overflow: hidden;
+}
+
+.volunteer-admin .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.volunteer-admin .btn:hover::before {
+    left: 100%;
+}
+
+.volunteer-admin .btn:hover {
+    background-color: var(--accent-sage);
+    border-color: var(--accent-sage);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(42, 72, 88, 0.3);
+    color: white;
+}
+
+.volunteer-admin .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(42, 72, 88, 0.2);
+}
+
+.volunteer-admin .btn-primary {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.volunteer-admin .btn-primary:hover {
+    background-color: var(--accent-sage);
+    border-color: var(--accent-sage);
+}
+
+.volunteer-admin .btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+}
+
+.volunteer-admin .btn-danger {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.volunteer-admin .btn-danger:hover {
+    background-color: var(--error-color);
+    color: white;
+    border-color: var(--error-color);
+}
+
+/* Special styling for card creation form */
+.volunteer-admin .card-creation-form {
+    background: linear-gradient(135deg, var(--neutral-light) 0%, var(--neutral-cream) 100%);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-md);
+    border: 2px dashed var(--neutral-beige);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.volunteer-admin .card-creation-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-terracotta) 100%);
+}
+
+/* Table Styling */
+.volunteer-admin .table-responsive {
+    overflow-x: auto;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--neutral-beige);
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.volunteer-admin .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 0;
+    min-width: 600px;
+}
+
+.volunteer-admin .table thead {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-sage) 100%);
+}
+
+.volunteer-admin .table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: white;
+    border-bottom: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.volunteer-admin .table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--neutral-beige);
+    vertical-align: middle;
+    color: var(--text-dark);
+}
+
+.volunteer-admin .table tbody tr:hover {
+    background-color: rgba(42, 72, 88, 0.02);
+}
+
+.volunteer-admin .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Icon Styling in Table */
+.volunteer-admin .table td:nth-child(2) {
+    font-size: 1.2rem;
+    text-align: center;
+    width: 60px;
+}
+
+/* Alert Styling */
+.volunteer-admin .alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.volunteer-admin .alert-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+    border-left-color: var(--success-color);
+}
+
+.volunteer-admin .alert-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border-left-color: var(--error-color);
+}
+
+.volunteer-admin .alert i {
+    font-size: 1.1rem;
+}
+
+/* Section Spacing */
+.volunteer-admin .card + .card {
+    margin-top: 2rem;
+}
+
+/* Loading States */
+.volunteer-admin .form-grid.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.volunteer-admin .btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.volunteer-admin .btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Success/Error States for Forms */
+.volunteer-admin .form-group.success input,
+.volunteer-admin .form-group.success textarea {
+    border-color: var(--success-color);
+    background-color: rgba(76, 175, 80, 0.05);
+}
+
+.volunteer-admin .form-group.error input,
+.volunteer-admin .form-group.error textarea {
+    border-color: var(--error-color);
+    background-color: rgba(244, 67, 54, 0.05);
+}
+
+/* Empty State Styling */
+.volunteer-admin .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-medium);
+}
+
+.volunteer-admin .empty-state i {
+    font-size: 3rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.volunteer-admin .empty-state h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.volunteer-admin .empty-state p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        margin-left: 0;
+    }
+
+    .admin-main {
+        padding: 1rem;
+    }
+
+    .volunteer-admin .form-grid-2,
+    .volunteer-admin .form-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .volunteer-admin .card-body {
+        padding: 1.5rem;
+    }
+
+    .volunteer-admin .card-header {
+        padding: 1.2rem;
+    }
+
+    .volunteer-admin .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    .volunteer-admin .table th,
+    .volunteer-admin .table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .volunteer-admin .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .volunteer-admin .btn-small {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .volunteer-admin .card-creation-form {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-main {
+        padding: 0.8rem;
+    }
+
+    .volunteer-admin .card-header {
+        padding: 1rem;
+    }
+
+    .volunteer-admin .card-header h2 {
+        font-size: 1.3rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .volunteer-admin .card-body {
+        padding: 1.2rem;
+    }
+
+    .volunteer-admin .table th,
+    .volunteer-admin .table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    .volunteer-admin .form-group input,
+    .volunteer-admin .form-group textarea {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .volunteer-admin .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .volunteer-admin .btn-small {
+        width: auto;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .volunteer-admin .card-creation-form {
+        padding: 1rem;
+    }
+
+    .volunteer-admin .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .volunteer-admin .empty-state i {
+        font-size: 2.5rem;
+    }
+
+    .volunteer-admin .empty-state h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Enhanced Focus States */
+.volunteer-admin .form-group input:focus,
+.volunteer-admin .form-group textarea:focus {
+    transform: translateY(-1px);
+}
+
+/* Tooltip Styling */
+.volunteer-admin .tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.volunteer-admin .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--primary-green);
+    color: white;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+}
+
+.volunteer-admin .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Form Actions */
+.volunteer-admin .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.volunteer-admin .form-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+@media (max-width: 480px) {
+    .volunteer-admin .form-actions {
+        flex-direction: column;
+    }
+
+    .volunteer-admin .form-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Card Hover Effects */
+.volunteer-admin .card {
+    position: relative;
+    overflow: hidden;
+}
+
+.volunteer-admin .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(42, 72, 88, 0.05), transparent);
+    transition: left 0.8s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.volunteer-admin .card:hover::before {
+    left: 100%;
+}
+
+/* Table Action Buttons */
+.volunteer-admin .table .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.volunteer-admin .table .btn:last-child {
+    margin-right: 0;
+}
+
+/* Form Validation Styling */
+.volunteer-admin .form-group.has-error input,
+.volunteer-admin .form-group.has-error textarea {
+    border-color: var(--error-color);
+    background-color: rgba(244, 67, 54, 0.05);
+}
+
+.volunteer-admin .form-group.has-success input,
+.volunteer-admin .form-group.has-success textarea {
+    border-color: var(--success-color);
+    background-color: rgba(76, 175, 80, 0.05);
+}
+
+.volunteer-admin .form-error {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.volunteer-admin .form-help {
+    color: var(--text-medium);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Accessibility Improvements */
+.volunteer-admin .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Print Styles */
+@media print {
+    .volunteer-admin .btn,
+    .volunteer-admin .alert {
+        background: white !important;
+        color: black !important;
+        border: 1px solid black !important;
+    }
+
+    .volunteer-admin .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid black;
+    }
+
+    .volunteer-admin .page-header::before,
+    .volunteer-admin .card::before {
+        display: none;
+    }
+}
