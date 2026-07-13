@@ -23,6 +23,3 @@ TestResults.xml
 
 *.md
 test.html
-**/vendor/
-**.mp4
-**/phpmailer/
