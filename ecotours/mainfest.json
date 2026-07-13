@@ -1,0 +1,16 @@
+{
+  "name": "Virunga Ecotours",
+  "short_name": "Virunga",
+  "description": "Authentic Rwandan hospitality at the foot of the Virunga Volcanoes.",
+  "start_url": "/indes.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#c8711a",
+  "icons": [
+    {
+      "src": "/images/logos/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

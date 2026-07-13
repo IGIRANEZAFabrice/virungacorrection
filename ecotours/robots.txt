@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /community/admin/
+Disallow: /config/
+Disallow: /handlers/
+
+Sitemap: https://virungaecotours.com/sitemap.xml
