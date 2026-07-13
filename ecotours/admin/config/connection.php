@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $db_host = 'localhost';
-$db_user = 'root';
-$db_pass = '';
-$db_name = 'ecotours';
+$db_user = 'u703364579_eco';
+$db_pass = 'Fab@11823';
+$db_name = 'u703364579_eco';
 
 
 // Create connection

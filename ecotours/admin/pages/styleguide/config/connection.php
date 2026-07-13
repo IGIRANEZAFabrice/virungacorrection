@@ -3,9 +3,9 @@
 ob_start();
 
 $host = 'localhost';
-$dbname = 'dmxewbmy_ecodatabaseb';
-$username = 'dmxewbmy_homestay';
-$password = 'Igiraneza@11823';
+$dbname = 'u703364579_eco';
+$username = 'u703364579_eco';
+$password = 'Fab@11823';
 
 
 try {

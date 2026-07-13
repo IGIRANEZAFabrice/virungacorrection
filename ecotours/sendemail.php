@@ -72,10 +72,10 @@ ob_start();
 
 try {
     // Database configuration - Using same pattern as admin/config/connection.php
-   $db_host = 'localhost';
-    $db_user = 'u703364579_ecotours';
-    $db_pass = 'Igiraneza@118';
-    $db_name = 'u703364579_ecotours';
+    $db_host = 'localhost';
+    $db_user = 'u703364579_eco';
+    $db_pass = 'Fab@11823';
+    $db_name = 'u703364579_eco';
 
     // Email configuration
     $email_config = [

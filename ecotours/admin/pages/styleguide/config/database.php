@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', 'localhost');
-define('DB_USER', 'dmxewbmy_homestay');
-define('DB_PASS', 'Igiraneza@11823');
-define('DB_NAME', 'dmxewbmy_ecodatabaseb');
+define('DB_USER', 'u703364579_eco');
+define('DB_PASS', 'Fab@11823');
+define('DB_NAME', 'u703364579_eco');
 
 function getDBConnection() {
     try {

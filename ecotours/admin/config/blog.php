@@ -1,9 +1,9 @@
 <?php
 // Database credentials
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'ecotours');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'u703364579_eco');
+define('DB_USER', 'u703364579_eco');
+define('DB_PASS', 'Fab@11823');
 
 // PDO options for better security and performance
 $options = [

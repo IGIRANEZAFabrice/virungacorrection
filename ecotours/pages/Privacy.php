@@ -16,9 +16,9 @@
     <?php
 // Database connection for privacy policy
 $servername = "localhost";
-$username = "dmxewbmy_homestay";
-$password = "Igiraneza@11823";
-$dbname = "dmxewbmy_ecodatabase";
+$username = "u703364579_eco";
+$password = "Fab@11823";
+$dbname = "u703364579_eco";
 
 try {
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
