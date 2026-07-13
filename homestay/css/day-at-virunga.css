@@ -1,0 +1,422 @@
+/* --- A Day at Virunga Homestay Section Styles (Immersive Slide Design) --- */
+/* Based on test.html design */
+
+:root {
+  --day-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --day-bg: #0a0a0a;
+  --day-font-display: "Cormorant Garamond", serif;
+  --day-font-body: "DM Sans", sans-serif;
+}
+
+.day-section {
+  position: relative;
+  height: 700vh; /* 7 slides, 100vh each */
+  width: 100%;
+  background: var(--day-bg);
+  font-family: var(--day-font-body);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.day-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ── BRAND (Inside Section) ── */
+.day-section .day-brand {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  z-index: 100;
+  font-family: var(--day-font-display);
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+/* ── PROGRESS DOTS ── */
+.day-section .day-progress {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.day-section .day-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.day-section .day-dot.active {
+  background: #fff;
+  height: 22px;
+  border-radius: 3px;
+}
+.day-section .day-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* ── COUNTER ── */
+.day-section .day-counter {
+  position: absolute;
+  bottom: 78px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  font-family: var(--day-font-display);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  pointer-events: none;
+}
+.day-section .day-counter strong {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* ── BOTTOM BAR ── */
+.day-section .day-bottom-bar {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.day-section .day-skip-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--day-font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 0;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.day-section .day-skip-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.day-section .day-skip-btn svg {
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── SLIDES ── */
+.day-section .day-slides {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.day-section .day-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.day-section .day-slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.day-section .day-slide.active .day-bg-layer {
+  animation: dayBgZoom 14s ease forwards;
+}
+
+/* ── BACKGROUND ── */
+.day-section .day-slide.active .day-bg-layer {
+  animation: none !important;
+}
+
+.day-section .day-bg-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none !important;
+  background-size: cover;
+  background-position: center 30%; /* Adjust position to show more of the top/middle */
+  background-repeat: no-repeat;
+  background-color: #000;
+}
+
+/* Gradient overlay - Cinematic mask for readability */
+.day-section .day-bg-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Mask that fades from solid dark at bottom-left to transparent at top-right */
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.7) 35%,
+    rgba(0, 0, 0, 0.25) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 1;
+}
+
+/* Grain - removed for maximum clarity */
+.day-section .day-bg-layer::after {
+  display: none;
+}
+
+@keyframes dayBgZoom {
+  from { transform: none; }
+  to { transform: none; }
+}
+
+/* Scene background fallbacks (optional) */
+.day-section .s0 .day-bg-layer { background-color: #0e1a30; }
+.day-section .s1 .day-bg-layer { background-color: #1e1008; }
+.day-section .s2 .day-bg-layer { background-color: #081a10; }
+.day-section .s3 .day-bg-layer { background-color: #160e1e; }
+.day-section .s4 .day-bg-layer { background-color: #1e0e06; }
+.day-section .s5 .day-bg-layer { background-color: #060810; }
+
+.day-section .atmo {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── CONTENT ── */
+/* Extra shadow specifically for the text area to ensure readability on any image */
+.day-section .day-content {
+  position: relative;
+  z-index: 10;
+  padding: 120px 8% 110px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 100vh;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+}
+
+.day-section .day-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--day-ease), transform 0.7s var(--day-ease);
+  transition-delay: 0.08s;
+}
+.day-section .day-slide.active .day-eyebrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+.day-section .day-eyebrow-line {
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+.day-section .day-eyebrow-text {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+
+.day-section .day-headline {
+  font-family: var(--day-font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s var(--day-ease), transform 0.9s var(--day-ease);
+  transition-delay: 0.2s;
+  /* Stronger presence for the title */
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+}
+.day-section .day-slide.active .day-headline {
+  opacity: 1;
+  transform: translateY(0);
+}
+.day-section .day-headline em {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.day-section .day-body-text {
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.9;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s var(--day-ease), transform 0.8s var(--day-ease);
+  transition-delay: 0.34s;
+}
+.day-section .day-slide.active .day-body-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── CURTAIN ── */
+.day-section .day-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 150;
+  background: #04060a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.day-section .day-curtain.flash {
+  opacity: 1;
+}
+
+/* ── ENDING ── */
+.day-section .day-ending {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #080a0e;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+.day-section .day-ending.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.day-section .end-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  margin-bottom: 28px;
+}
+.day-section .end-quote {
+  font-family: var(--day-font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.45;
+  max-width: 580px;
+  margin-bottom: 18px;
+}
+.day-section .end-attr {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  margin-bottom: 52px;
+}
+.day-section .end-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.day-section .end-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--day-font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 13px 30px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+.day-section .end-btn:hover {
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+.day-section .end-btn.primary {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.day-section .end-btn.primary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .day-section .day-content {
+    padding: 80px 6% 130px;
+  }
+  .day-section .day-brand {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-section .day-eyebrow,
+  .day-section .day-headline,
+  .day-section .day-body-text {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .day-section .day-slide.active .day-bg-layer {
+    animation: none;
+  }
+}
