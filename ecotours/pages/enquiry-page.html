@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Make an Enquiry | Travel Experts</title>
+    <link
+      rel="shortcut icon"
+      href="../images/logos/icon.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="../css/earthy-theme.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <script src="../js/header.js"></script>
+    <style>
+      :root {
+        --primary: #2a4858;
+        --secondary: #8b7355;
+        --accent: #2a4858ac;
+        --light: #f5f5f5;
+        --dark: #3a3026;
+        --success: #28a745;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: var(--dark);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      .active::after {
+        width: 100% !important;
+      }
+
+      .breadcrumbs {
+        background-color: var(--light);
+        padding: 10px 0;
+        border-bottom: 1px solid #e9e9e9;
+      }
+
+      .breadcrumbs-list {
+        display: flex;
+        list-style: none;
+      }
+
+      .breadcrumbs-list li {
+        display: flex;
+        align-items: center;
+      }
+
+      .breadcrumbs-list li:not(:last-child)::after {
+        content: "/";
+        margin: 0 10px;
+        color: #ccc;
+      }
+
+      .breadcrumbs-list a {
+        text-decoration: none;
+        color: var(--dark);
+        transition: var(--transition);
+      }
+
+      .breadcrumbs-list a:hover {
+        color: var(--primary);
+      }
+
+      .main-content {
+        padding: 40px 0;
+      }
+
+      .page-title {
+        color: var(--primary);
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        border-bottom: 3px solid var(--accent);
+        display: inline-block;
+        padding-bottom: 10px;
+      }
+
+      .intro-text {
+        margin-bottom: 30px;
+        line-height: 1.8;
+      }
+
+      .enquiry-link {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .enquiry-link:hover {
+        color: var(--primary);
+        text-decoration: underline;
+      }
+
+      .contact {
+        margin-bottom: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: var(--shadow);
+      }
+
+      .form-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+
+      .form-section {
+        margin-bottom: 30px;
+      }
+
+      .form-title {
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 1.5rem;
+      }
+
+      .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+      }
+
+      .form-group {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0 15px;
+        margin-bottom: 20px;
+      }
+
+      @media (min-width: 768px) {
+        .form-group.col-md-6 {
+          flex: 0 0 50%;
+          max-width: 50%;
+        }
+
+        .form-group.col-md-4 {
+          flex: 0 0 33.333333%;
+          max-width: 33.333333%;
+        }
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .required::after {
+        content: "*";
+        color: var(--secondary);
+        margin-left: 4px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: var(--transition);
+      }
+
+      .form-control:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(20, 61, 129, 0.2);
+      }
+
+      select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+        padding-right: 40px;
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .checkbox-input {
+        margin-right: 10px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .btn {
+        display: inline-block;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        color: white;
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        color: white;
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .form-actions .btn {
+        margin-left: 15px;
+      }
+
+      .video-call-option {
+        display: flex;
+        align-items: center;
+        background-color: rgba(20, 61, 129, 0.05);
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border-left: 3px solid var(--primary);
+      }
+
+      .video-call-icon {
+        background-color: var(--primary);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      /* Animations */
+      .fade-in {
+        animation: fadeIn 0.8s ease-in;
+      }
+
+      .slide-in-right {
+        animation: slideInRight 0.5s ease-out;
+      }
+
+      .slide-in-left {
+        animation: slideInLeft 0.5s ease-out;
+      }
+
+      .slide-in-bottom {
+        animation: slideInBottom 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInBottom {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .nav-links {
+          position: fixed;
+          top: 70px;
+          left: -100%;
+          width: 80%;
+          height: calc(100vh - 70px);
+          background-color: white;
+          flex-direction: column;
+          padding: 20px;
+          transition: var(--transition);
+          box-shadow: var(--shadow);
+          z-index: 1000;
+        }
+
+        .nav-links.show {
+          left: 0;
+        }
+
+        .nav-links li {
+          margin: 15px 0;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .footer-container {
+          flex-direction: column;
+        }
+
+        .footer-section {
+          width: 100%;
+          padding-right: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-actions {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .form-actions .btn {
+          margin: 10px 0;
+          width: 100%;
+        }
+      }
+
+      /* Error styles */
+      .error {
+        border-color: #dc3545;
+      }
+
+      .error-message {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+
+      /* Success message */
+      .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="trustpilot">
+        <a href="no.html" rel="noopener noreferrer">info@virungaecotours.com</a>
+      </div>
+      <div class="top-nav">
+        <a href="./blog.html">Blog</a>
+        <a href="./faq-page.html">Faqs</a>
+        <a href="./contactus.html">Contact us</a>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <img src="../images/logos/logo.png" alt="Virunga Ecotours Logo" />
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="contact-info">
+        <div class="nav-phone-number">
+          <a href="tel:0784513435" rel="noopener noreferrer">+250 784 513 435</a
+          ><br /><span>WE ARE OPEN TODAY 9:00AM - 6:00PM</span>
+        </div>
+        <div class="closed">OR</div>
+        <a href="./enquiry-page.html" target="_blank" rel="noopener noreferrer"
+          ><button class="quote-btn">REQUEST A QUOTE</button></a
+        >
+      </div>
+    </div>
+
+    <!-- Mobile Side Buttons -->
+    <div class="mobile-side-buttons">
+      <div class="mobile-side-btn">
+        <a href="https://wa.me/250784513435" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>Whatsapp</span>
+        </a>
+      </div>
+      <div class="mobile-side-btn">
+        <a href="tel:+250784513435">
+          <i class="fas fa-phone"></i>
+          <span>Calls</span>
+        </a>
+      </div>
+      <div class="mobile-side-btn">
+        <a href="mailto:info@virungaecotours.com">
+          <i class="fas fa-envelope"></i>
+          <span>Mail</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="main-nav">
+      <div class="nav-item">
+        <span>Rwanda</span> <i class="fas fa-chevron-down"></i>
+        <div class="dropdown">
+          <div class="dropdown-container">
+            <div class="destination-group">
+              <a href="./build.html">Build your trip in Rwanda</a>
+              <a href="./itenary.html">Day Tours in Rwanda</a>
+              <a href="./itenary.html">Multi-day Tours in Rwanda</a>
+              <a href="./itenary.html">Travel by style in Rwanda</a>
+              <a href="">Our Rwanda Destinations</a>
+              <a href="">Rwanda Travel guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <span>Uganda</span> <i class="fas fa-chevron-down"></i>
+        <div class="dropdown">
+          <div class="dropdown-container">
+            <div class="destination-group">
+              <a href="no.html">Build your trip in Uganda</a>
+              <a href="no.html">Day Tours in Uganda</a>
+              <a href="no.html">Multi-day Tours in Uganda</a>
+              <a href="no.html">Travel by style in Uganda</a>
+              <a href="no.html">Our Uganda Destinations</a>
+              <a href="no.html">Uganda Travel guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <span>DRCongo</span> <i class="fas fa-chevron-down"></i>
+        <div class="dropdown">
+          <div class="dropdown-container">
+            <div class="destination-group">
+              <a href="no.html">Build your trip in DRCongo</a>
+              <a href="no.html">Day Tours in DRCongo</a>
+              <a href="no.html">Multi-day Tours in DRCongo</a>
+              <a href="no.html">Travel by style in DRCongo</a>
+              <a href="no.html">Our DRCongo Destinations</a>
+              <a href="no.html">DRCongo Travel guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <span><a href="./solotravel.html">Solo Travel</a></span>
+      </div>
+
+      <div class="nav-item about-nav">
+        <span>About Us</span> <i class="fas fa-chevron-down"></i>
+        <div class="dropdown about-dropdown">
+          <div class="dropdown-container about-container">
+            <div class="about-section">
+              <div class="about-links">
+                <h2>ABOUT US</h2>
+                <ul>
+                  <li>
+                    <a href="./about.html">About Virunga ecotours</a>
+                  </li>
+                  <li>
+                    <a href="./about.html">Why virunga ecotours?</a>
+                  </li>
+                  <li><a href="./faq-page.html">FAQs</a></li>
+                </ul>
+              </div>
+              <div class="featured-section">
+                <h2>FEATURED</h2>
+                <div class="featured-grid">
+                  <div class="featured-item">
+                    <div class="featured-image">
+                      <img src="./about.html" alt="Why Virunga Ecotours" />
+                    </div>
+                    <h3>Why virunga ecotours?</h3>
+                    <p>Discover why we are experts in Virunga massif.</p>
+                  </div>
+
+                  <div class="featured-item">
+                    <div class="featured-image">
+                      <img src="./about.html" alt="About Us" />
+                    </div>
+                    <h3>About Virunga ecotours</h3>
+                    <p>
+                      Learn about our story, mission, and commitment Virunga
+                      massif tourism.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span><a href="./community.html">Community </a></span>
+      </div>
+
+      <div class="search-btn">
+        <a href="./community.html" target="_blank" rel="noopener noreferrer"
+          ><i class="fas fa-heart"></i> Donate
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav">
+      <div class="mobile-nav-header">
+        <div class="mobile-close"><i class="fa-solid fa-xmark"></i></div>
+      </div>
+      <div class="mobile-nav-content">
+        <!-- Top Nav Links -->
+        <div class="mobile-top-links">
+          <a href="./blog.html">Blog</a>
+          <a href="./faq-page.html">Faqs</a>
+          <a href="./enquiry-page.html">Brochures</a>
+          <a href="./contactus.html">Contact us</a>
+        </div>
+
+        <!-- Main Nav Items -->
+        <div class="mobile-main-links">
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span>Rwanda</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="mobile-dropdown">
+              <div class="mobile-links-list">
+                <ul>
+                  <li>
+                    <a href="./build.html">Build your trip in Rwanda</a>
+                  </li>
+                  <li>
+                    <a href="./itenary.html">Day Tours in Rwanda</a>
+                  </li>
+                  <li>
+                    <a href="./itenary.html">Multi-day Tours in Rwanda</a>
+                  </li>
+                  <li>
+                    <a href="./itenary.html">Travel by style in Rwanda</a>
+                  </li>
+                  <li><a href="">Our Rwanda Destinations</a></li>
+                  <li><a href="">Rwanda Travel guide</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span>Uganda</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="mobile-dropdown">
+              <div class="mobile-links-list">
+                <ul>
+                  <li><a href="no.html">Build your trip in Uganda</a></li>
+                  <li><a href="no.html">Day Tours in Uganda</a></li>
+                  <li><a href="no.html">Multi-day Tours in Uganda</a></li>
+                  <li><a href="no.html">Travel by style in Uganda</a></li>
+                  <li><a href="no.html">Our Uganda Destinations</a></li>
+                  <li><a href="no.html">Uganda Travel guide</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span>DRCongo</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="mobile-dropdown">
+              <div class="mobile-links-list">
+                <ul>
+                  <li><a href="no.html">Build your trip in DRCongo</a></li>
+                  <li><a href="no.html">Day Tours in Congo</a></li>
+                  <li><a href="no.html">Multi-day Tours in DRCongo</a></li>
+                  <li><a href="no.html">Travel by style in DRCongo</a></li>
+                  <li><a href="no.html">Our DRCongo Destinations</a></li>
+                  <li><a href="no.html">DRCongo Travel guide</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span><a href="./solotravel.html">Solo Travel</a></span>
+            </div>
+          </div>
+
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span>About us</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="mobile-dropdown">
+              <div class="mobile-links-list">
+                <ul>
+                  <li>
+                    <a href="./about.html">About Virunga ecotours</a>
+                  </li>
+                  <li>
+                    <a href="./about.html">Why virunga ecotours?</a>
+                  </li>
+                  <li><a href="./about.html">Useful information</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-nav-item">
+            <div class="mobile-nav-title">
+              <span><a href="./solotravel.html">Solo Travel</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay"></div>
+
+    <!-- Side Buttons -->
+    <div class="side-buttons">
+      <div class="side-btn">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Whatsapp</span>
+      </div>
+      <div class="side-btn">
+        <i class="fas fa-phone"></i>
+        <span>Calls</span>
+      </div>
+      <div class="side-btn">
+        <i class="fas fa-envelope"></i>
+        <span>Mail</span>
+      </div>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div class="container">
+        <ul class="breadcrumbs-list">
+          <li><a href="../index.html">Home</a></li>
+          <li>Make an Enquiry</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <h1 class="page-title fade-in">Make an Enquiry</h1>
+
+        <div class="intro-text slide-in-left">
+          <p>
+            If you have a query you would like one of our expert holiday
+            consultants to take a look at, please fill in the form below and
+            they will be happy to assist.
+          </p>
+          <p>
+            Whether you are after cultural group tours, private itineraries,
+            rail journeys, cruise voyages, family adventures, short breaks or
+            relaxing getaways, they can help you arrange your perfect holiday.
+          </p>
+          <p>
+            If you wish for us to fully tailor your holiday, please fill in the
+            <a href="#" class="enquiry-link">tailor-made enquiry form</a>.
+          </p>
+        </div>
+
+        <div class="contact slide-in-right">
+          <p>
+            In the event that the form below does not load correctly, you can
+            also contact our sales team directly by emailing
+            <a href="mailto:virungaecotours@gmail.com" class="enquiry-link"
+              >virungaecotours@gmail.com</a
+            >
+            or calling us on
+            <a href="tel:+250789375245" class="enquiry-link">+250 784 513 435</a
+            >.
+          </p>
+        </div>
+
+        <!-- Success Message (Initially Hidden) -->
+        <div class="success-message" id="successMessage">
+          <i class="fas fa-check-circle"></i> Thank you for your enquiry. One of
+          our travel specialists will be in touch with you shortly.
+        </div>
+
+        <!-- Enquiry Form -->
+        <form id="enquiryForm" class="form-container slide-in-bottom">
+          <!-- Personal Details Section -->
+          <div class="form-section">
+            <h2 class="form-title">Your Details</h2>
+            <p>The asterisk marks a mandatory field</p>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="title" class="form-label required">Title</label>
+                <select id="title" name="title" class="form-control" required>
+                  <option value="" selected disabled>Please select</option>
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Dr">Dr</option>
+                  <option value="Prof">Prof</option>
+                </select>
+                <div class="error-message" id="titleError"></div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="Names" class="form-label required"
+                  >Names</label
+                >
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  class="form-control"
+                  required
+                />
+                <div class="error-message" id="firstNameError"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="email" class="form-label required">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  required
+                />
+                <div class="error-message" id="emailError"></div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="telephone" class="form-label required"
+                  >Telephone</label
+                >
+                <input
+                  type="tel"
+                  id="telephone"
+                  name="telephone"
+                  class="form-control"
+                  required
+                />
+                <div class="error-message" id="telephoneError"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              
+            </div>
+          </div>
+
+          <!-- Enquiry Details Section -->
+          <div class="form-section">
+            <h2 class="form-title">Your Enquiry</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                
+                <label for="destination" class="form-label required"
+                  >Where do you want to go?</label
+                >
+                <select
+                  id="destination"
+                  name="destination"
+                  class="form-control"
+                  required
+                >
+                  <option value="" selected disabled>Please select</option>
+                  <option value="Rwanda">Rwanda</option>
+                  <option value="Uganda">Uganda</option>
+                  <option value="DR congo">
+                    DR congo
+                  </option>
+                
+                </select>
+                
+                <div class="error-message" id="destinationError"></div>
+                
+              </div>
+              
+            </div>
+
+           
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="groupSize" class="form-label required"
+                  >How many are there in your group?</label
+                >
+                <select
+                  id="groupSize"
+                  name="groupSize"
+                  class="form-control"
+                  required
+                >
+                  <option value="" selected disabled>Please select</option>
+                  <option value="1">Just me</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10+">10+</option>
+                </select>
+                <div class="error-message" id="groupSizeError"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="message" class="form-label">Your message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  class="form-control"
+                  rows="5"
+                  placeholder="Please tell us about your travel requirements, including any special interests or requirements"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="video-call-option">
+              <div class="video-call-icon">
+                <i class="fas fa-video"></i>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <input
+                    type="checkbox"
+                    id="videoCall"
+                    name="videoCall"
+                    class="checkbox-input"
+                  />
+                  <label for="videoCall"
+                    >Arrange a video call appointment. Discuss your travel
+                    requirements with a Travel Specialist over a video call at a
+                    time which suits you.</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hearAbout" class="form-label"
+                  >How did you hear about Virunga Ecotours?</label
+                >
+                <select id="hearAbout" name="hearAbout" class="form-control">
+                  <option value="" selected disabled>Please select</option>
+                  <option value="Search Engine">Search Engine</option>
+                  <option value="Social Media">Social Media</option>
+                  <option value="Recommendation">Recommendation</option>
+                  <option value="Advertisement">Advertisement</option>
+                  <option value="Travel Magazine">Travel Magazine</option>
+                  <option value="Travel Show">Travel Show</option>
+                  <option value="Previous Customer">Previous Customer</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+           
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-secondary">Reset</button>
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span class="spinner" id="submitSpinner"></span>
+                Submit Enquiry
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Top Footer Section -->
+        <div class="footer-top">
+          <div class="footer-column company-info">
+            <h3>MORE FROM Virunga Ecotours</h3>
+            <ul class="footer-links">
+              <li><a href="#" class="footer-link">Destinations</a></li>
+              <li><a href="#" class="footer-link">FAQs</a></li>
+              <li><a href="#" class="footer-link">Contact us</a></li>
+              <li>
+                <a href="#" class="footer-link"
+                  >The Virunga Ecotours differences</a
+                >
+              </li>
+              <li><a href="#" class="footer-link">About us</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column social-connect">
+            <h3>FOLLOW US</h3>
+            <div class="social-icons">
+              <a href="#" class="social-icon" aria-label="LinkedIn"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-icon" aria-label="YouTube"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a href="#" class="social-icon" aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-icon" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+            </div>
+
+            <div class="travel-associations">
+              <img
+                src="../images/paterners/5826ffd90d544fbc8a11b429ef2fb87b.png"
+                alt="ABTA"
+                class="association-logo"
+              />
+              <img
+                src="../images/paterners/FoT Master_RGB.png"
+                alt="AITO"
+                class="association-logo"
+              />
+              <img
+                src="../images/paterners/HERITΛGE-LOGO_400x94_WEB-SITE-transparent.png"
+                alt="IATA"
+                class="association-logo"
+              />
+              <img
+                src="../images/paterners/Mellon_Foundation_logo_2022.svg.png"
+                alt="Travel Aware"
+                class="association-logo"
+              />
+              <img
+                src="../images/paterners/Water-bottles.jpg"
+                alt="Travel Aware"
+                class="association-logo"
+              />
+              <img
+                src="../images/paterners/WEB-LOGO-01.png"
+                alt="Travel Aware"
+                class="association-logo"
+              />
+            </div>
+          </div>
+
+          <div class="footer-column newsletter">
+            <h3>SIGN UP TO OUR NEWSLETTER</h3>
+            <p>
+              You'll be the first to hear about the latest travel news,
+              destination insights and special offers.
+            </p>
+            <form class="newsletter-form">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+              />
+              <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom Footer Section -->
+        <div class="footer-bottom">
+          <div class="copyright">
+            <p>&copy; 1996-2025 Copyright Virunga Ecotours</p>
+          </div>
+          <div class="legal-links">
+            <a href="#" class="legal-link">Booking Conditions</a>
+            <a href="#" class="legal-link">Data Protection Privacy Notice</a>
+            <a href="#" class="legal-link">Website Terms of Use</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Toggle mobile menu
+      document
+        .getElementById("mobileMenuBtn")
+        .addEventListener("click", function () {
+          document.getElementById("navLinks").classList.toggle("show");
+        });
+
+      // Form validation
+      document
+        .getElementById("enquiryForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          let isValid = true;
+
+          // Reset error messages
+          const errorElements = document.querySelectorAll(".error-message");
+          errorElements.forEach((element) => {
+            element.textContent = "";
+          });
+
+          // Reset form fields highlighting
+          const formFields = document.querySelectorAll(".form-control");
+          formFields.forEach((field) => {
+            field.classList.remove("error");
+          });
+
+          // Validate required fields
+          const requiredFields = [
+            {
+              id: "title",
+              error: "titleError",
+              message: "Please select your title.",
+            },
+            {
+              id: "firstName",
+              error: "firstNameError",
+              message: "Please enter your first name.",
+            },
+            {
+              id: "surname",
+              error: "surnameError",
+              message: "Please enter your surname.",
+            },
+            {
+              id: "email",
+              error: "emailError",
+              message: "Please enter a valid email address.",
+            },
+            {
+              id: "telephone",
+              error: "telephoneError",
+              message: "Please enter your telephone number.",
+            },
+            {
+              id: "destination",
+              error: "destinationError",
+              message: "Please select your destination.",
+            },
+            {
+              id: "month",
+              error: "monthError",
+              message: "Please select your preferred month.",
+            },
+            {
+              id: "year",
+              error: "yearError",
+              message: "Please select your preferred year.",
+            },
+            {
+              id: "groupSize",
+              error: "groupSizeError",
+              message: "Please select your group size.",
+            },
+          ];
+
+          requiredFields.forEach((field) => {
+            const input = document.getElementById(field.id);
+            if (!input.value.trim()) {
+              document.getElementById(field.error).textContent = field.message;
+              input.classList.add("error");
+              isValid = false;
+            }
+          });
+
+          // Email validation
+          const email = document.getElementById("email");
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (email.value.trim() && !emailPattern.test(email.value.trim())) {
+            document.getElementById("emailError").textContent =
+              "Please enter a valid email address.";
+            email.classList.add("error");
+            isValid = false;
+          }
+
+          // If valid, submit the form
+          if (isValid) {
+            // Show loading spinner
+            document.getElementById("submitSpinner").style.display =
+              "inline-block";
+            document.getElementById("submitBtn").disabled = true;
+
+            // Simulate form submission
+            setTimeout(() => {
+              // Hide form and show success message
+              document.getElementById("enquiryForm").style.display = "none";
+              document.getElementById("successMessage").style.display = "block";
+
+              // Scroll to success message
+              document
+                .getElementById("successMessage")
+                .scrollIntoView({ behavior: "smooth" });
+            }, 1500);
+          }
+        });
+
+      // Animated elements on scroll
+      document.addEventListener("DOMContentLoaded", function () {
+        const elements = document.querySelectorAll(
+          ".fade-in, .slide-in-left, .slide-in-right, .slide-in-bottom"
+        );
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateX(0) translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        elements.forEach((element) => {
+          // Set initial styles
+          element.style.opacity = "0";
+          if (element.classList.contains("slide-in-left")) {
+            element.style.transform = "translateX(-50px)";
+          } else if (element.classList.contains("slide-in-right")) {
+            element.style.transform = "translateX(50px)";
+          } else if (element.classList.contains("slide-in-bottom")) {
+            element.style.transform = "translateY(50px)";
+          }
+
+          element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+          observer.observe(element);
+        });
+      });
+    </script>
+  </body>
+</html>
