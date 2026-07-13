@@ -1,0 +1,517 @@
+
+/* Container */
+.container {
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 70vh;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero-section img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-content {
+    
+    color: white;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent-terracotta);
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+}
+
+.hero-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+    color: white;
+}
+
+/* Section Styling */
+.about-section {
+    padding: 2.5rem 0;
+    position: relative;
+}
+
+.about-section:nth-child(even) {
+    background: var(--neutral-light);
+}
+
+.about-section:nth-child(odd) {
+    background: white;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-brown);
+    margin-bottom: 1.2rem;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.about-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-light);
+}
+
+.about-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.about-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* CTA Buttons */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--primary-brown);
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+    border: 1px solid transparent;
+}
+
+.cta-button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+    color: white;
+}
+
+.cta-button:nth-child(2) {
+    background: transparent;
+    color: var(--primary-brown);
+    border-color: var(--primary-brown);
+}
+
+.cta-button:nth-child(2):hover {
+    background: var(--primary-brown);
+    color: white;
+}
+
+/* Programs Section */
+.programs-section {
+    padding: 2.5rem 0;
+    background: var(--neutral-light);
+    position: relative;
+}
+
+.programs-intro {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Dynamic Content Sections */
+.dynamic-content-card {
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+    background: white;
+}
+
+.dynamic-content-card:nth-child(even) {
+    background: var(--neutral-light);
+}
+
+.dynamic-image {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    padding: 0 1.5rem;
+}
+
+.dynamic-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.dynamic-text {
+    padding: 0 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.dynamic-text h3 {
+    font-size: 1.4rem;
+    color: var(--primary-brown);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.dynamic-text p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.dynamic-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Bottom CTA Section */
+.bottom-cta-section {
+    background: var(--primary-brown);
+    color: white;
+    padding: 2.5rem 0;
+    position: relative;
+}
+
+.bottom-cta-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.bottom-cta-content h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+    min-width: 250px;
+}
+
+.bottom-cta-buttons {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.bottom-cta-buttons .cta-button {
+    background: white;
+    color: var(--primary-brown);
+    border: 1px solid white;
+}
+
+.bottom-cta-buttons .cta-button:hover {
+    background: transparent;
+    color: white;
+    border-color: white;
+}
+
+.bottom-cta-buttons .cta-button:nth-child(2) {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.bottom-cta-buttons .cta-button:nth-child(2):hover {
+    background: white;
+    color: var(--primary-brown);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero-section {
+        height: 45vh;
+        min-height: 300px;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-cta {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .about-section {
+        padding: 2rem 0;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-text {
+        padding: 1.2rem;
+    }
+
+    .about-text p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .programs-section {
+        padding: 2rem 0;
+    }
+
+    .programs-intro {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .dynamic-content-card {
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 0;
+    }
+
+    .dynamic-text {
+        padding: 0 1rem;
+    }
+
+    .dynamic-text h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .dynamic-text p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+    }
+
+    .cta-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .bottom-cta-section {
+        padding: 2rem 0;
+    }
+
+    .bottom-cta-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .bottom-cta-content h2 {
+        font-size: 1.2rem;
+        min-width: auto;
+    }
+
+    .bottom-cta-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .bottom-cta-buttons .cta-button {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.8rem;
+    }
+
+    .hero-section {
+        height: 40vh;
+        min-height: 280px;
+    }
+
+    .hero-content {
+        padding: 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.6rem;
+        line-height: 1.3;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .hero-cta {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .about-section {
+        padding: 1.5rem 0;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .about-text {
+        padding: 1rem;
+    }
+
+    .about-text p {
+        font-size: 0.85rem;
+    }
+
+    .programs-section {
+        padding: 1.5rem 0;
+    }
+
+    .programs-intro {
+        font-size: 0.75rem;
+        padding: 0 0.5rem;
+    }
+
+    .dynamic-content-card {
+        margin-bottom: 1.2rem;
+        padding: 1.2rem 0;
+    }
+
+    .dynamic-text {
+        padding: 0 0.8rem;
+    }
+
+    .dynamic-text h3 {
+        font-size: 1rem;
+    }
+
+    .dynamic-text p {
+        font-size: 0.75rem;
+        text-align: left;
+    }
+
+    .cta-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .bottom-cta-section {
+        padding: 1.5rem 0;
+    }
+
+    .bottom-cta-content h2 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    .bottom-cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .bottom-cta-buttons .cta-button {
+        width: 100%;
+        margin-bottom: 0.4rem;
+    }
+}
+
+/* Accessibility and Performance */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .hero-section,
+    .bottom-cta-section {
+        background: white !important;
+        color: black !important;
+    }
+
+    .cta-button {
+        border: 1px solid black !important;
+        color: black !important;
+        background: white !important;
+    }
+}
