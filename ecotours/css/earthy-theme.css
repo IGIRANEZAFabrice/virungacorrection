@@ -1,0 +1,107 @@
+:root {
+  --forest: #1b3a2b;
+  --forest-deep: #122a1f;
+  --gold: #c9a24b;
+  --cream: #f6f2e9;
+  --charcoal: #1f2620;
+  --sage: #6e8270;
+
+  --primary-green: var(--forest);
+  --primary-brown: var(--gold);
+
+  --accent-sage: var(--sage);
+  --accent-terracotta: var(--gold);
+  --accent-light-brown: #b9aa87;
+
+  --neutral-cream: var(--cream);
+  --neutral-beige: rgba(201, 162, 75, 0.22);
+  --neutral-light: #fbf8f2;
+  --neutral-dark: var(--charcoal);
+
+  --text-dark: var(--charcoal);
+  --text-medium: var(--sage);
+  --text-light: #ffffff;
+
+  /* Additional variables for consistency */
+  --success-color: #4a8f6b;
+  --warning-color: #c99b2d;
+  --error-color: #c85a4a;
+  --info-color: #4f86b8;
+
+  /* Spacing variables */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 24px;
+  --border-radius-round: 50%;
+
+  /* Box shadows */
+  --shadow-sm: 0 2px 4px rgba(18, 42, 31, 0.08);
+  --shadow-md: 0 4px 8px rgba(18, 42, 31, 0.1);
+  --shadow-lg: 0 8px 16px rgba(18, 42, 31, 0.12);
+  --shadow-xl: 0 12px 24px rgba(18, 42, 31, 0.14);
+}
+
+html {
+  scroll-behavior: smooth;
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--neutral-light);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--forest);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+@font-face {
+  font-family: "comm";
+  src: url(./fonts/Commissioner-VariableFont_wght.ttf) format("truetype");
+}
+
+/* @font-face {
+  font-family: "Vacat";
+  src: url(./fonts/Vacation.otf) format("OpenType");
+  line-height: 1.6;
+} */
+@font-face {
+  font-family: "Vacat";
+  src: url(./fonts/CaviarDreams_Bold.ttf) format("truetype");
+  line-height: 1.6;
+}
+h1,h2,h3,h4,h5,h6 { 
+  font-family: 'comm', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global styles */
+* {
+  font-family: 'vacat', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  text-decoration: none;
+}
+
+body {
+  background-color: var(--neutral-light);
+  user-select: none;
+}
+

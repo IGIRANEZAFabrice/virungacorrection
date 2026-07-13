@@ -1,0 +1,224 @@
+/* Congo Nile Trail Page Styles */
+
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+/* Hero */
+.cnt-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+    url("../images/kivu.jpeg") center/cover no-repeat;
+  color: var(--text-light);
+  padding: calc(var(--spacing-xl) + 1rem) 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.cnt-hero .hero-content {
+  text-align: center;
+}
+.cnt-hero h1 {
+  font-size: clamp(2rem, 2.6vw + 1.2rem, 3.2rem);
+  line-height: 1.15;
+  margin-bottom: var(--spacing-sm);
+}
+.cnt-hero .tagline {
+  opacity: 0.95;
+  font-size: clamp(1rem, 1vw + 0.8rem, 1.2rem);
+}
+
+/* Overview */
+.overview {
+  background: #fff;
+  padding: var(--spacing-xl) 0;
+}
+.section-head h2 {
+  color: var(--primary-green);
+  margin-bottom: var(--spacing-md);
+}
+.section-head p {
+  color: var(--text-medium);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+/* Why */
+.why {
+  background: var(--neutral-light);
+  padding: var(--spacing-xl) 0;
+}
+.why h2 {
+  color: var(--primary-green);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+.why-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.why-card .icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: var(--neutral-light);
+  color: var(--primary-green);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+.why-card h3 {
+  color: var(--accent-terracotta);
+  margin-bottom: var(--spacing-xs);
+}
+.why-card p {
+  color: var(--text-medium);
+}
+
+/* Organized */
+.organized {
+  background: #fff;
+  padding: var(--spacing-xl) 0;
+}
+.organized h2 {
+  color: var(--primary-green);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+.org-item {
+  background: var(--neutral-light);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+  box-shadow: var(--shadow-sm);
+}
+.org-item i {
+  color: var(--accent-sage);
+  font-size: 1.4rem;
+}
+.org-item span {
+  color: var(--text-medium);
+}
+
+/* Lake */
+.lake {
+  background: #fff;
+  padding: var(--spacing-xl) 0;
+}
+
+/* Essentials */
+.essentials {
+  background: var(--neutral-light);
+  padding: var(--spacing-xl) 0;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xl);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--text-medium);
+}
+.list li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: var(--spacing-xs);
+}
+.list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-sage);
+}
+.subtle {
+  margin-top: var(--spacing-md);
+  color: var(--text-dark);
+}
+.subdued {
+  opacity: 0.85;
+}
+
+/* CTA */
+.cta-section {
+  background: var(--neutral-beige);
+  padding: var(--spacing-xl) 0;
+}
+.cta-box {
+  background: #fff;
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+.cta-box h2 {
+  color: var(--primary-brown);
+  margin-bottom: var(--spacing-md);
+}
+.cta-box p {
+  color: var(--text-medium);
+  margin-bottom: var(--spacing-lg);
+}
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.25rem;
+  background: var(--primary-green);
+  color: #fff;
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.button:hover {
+  background: var(--accent-sage);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .org-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .cnt-hero {
+    height: 100vh;
+    padding: var(--spacing-lg) 0;
+  }
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+  .org-grid {
+    grid-template-columns: 1fr;
+  }
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}

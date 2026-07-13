@@ -1,0 +1,271 @@
+/* Trek page styles - builds on earthy-theme.css */
+
+/* Base */
+body.trek-page {
+  color: var(--text-dark);
+  font-size: 14px; /* small, as requested */
+  line-height: 1.7;
+  background: var(--neutral-light);
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.container.narrow {
+  max-width: 900px;
+}
+
+/* Hero */
+.trek-hero {
+  background: url(../images/trek.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+  text-align: center;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.trek-hero h1 {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  color: #ffffff;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.5rem;
+}
+
+.trek-hero .subtitle {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+/* Sections */
+.content-section {
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  background: var(--neutral-light);
+}
+
+.content-section.alt {
+  background: var(--neutral-cream);
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.2px;
+}
+
+.lead p + p { margin-top: 0.75rem; }
+.cta-note, .compare-note { color: var(--text-medium); margin-top: 0.75rem; font-size: 0.95rem; }
+
+/* Lists */
+.icon-list, .check-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.icon-list li, .check-list li {
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.icon-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  color: var(--accent-terracotta);
+}
+
+.check-list li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  color: var(--primary-green);
+}
+
+/* Compare Grid */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.compare-card {
+  background: #fff;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+}
+
+.compare-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.compare-card ul {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.compare-card.hiking { border-top: 3px solid var(--info-color); }
+.compare-card.trekking { border-top: 3px solid var(--warning-color); }
+
+/* CTA */
+.content-section.cta {
+  background: linear-gradient(135deg, rgba(1,105,5,0.08), rgba(176,78,18,0.08));
+}
+
+.cta-box {
+  background: #fff;
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.cta-box h2 {
+  font-size: 1.3rem;
+  color: var(--primary-green);
+  margin-bottom: 0.5rem;
+}
+
+.cta-box p {
+  color: var(--text-medium);
+  margin-bottom: 1rem;
+}
+
+.button {
+  display: inline-block;
+  background: var(--primary-green);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: var(--border-radius-sm);
+  transition: all .2s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.button:hover { background: var(--accent-sage); color: #fff; transform: translateY(-1px); }
+
+/* Utilities */
+.content-section .container > ul { margin-top: 0.25rem; }
+
+/* Tours Section */
+.tours-section .tours-subtitle {
+  color: var(--text-medium);
+  margin-bottom: var(--spacing-md);
+}
+
+.tours-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-md);
+}
+
+.tour-card {
+  background: #fff;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.tour-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.tour-image {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--neutral-beige);
+}
+
+.tour-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tour-badge {
+  position: absolute;
+  left: var(--spacing-sm);
+  top: var(--spacing-sm);
+  background: rgba(1,105,5,0.92);
+  color: #fff;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tour-content {
+  padding: var(--spacing-md);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tour-title {
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.tour-desc {
+  color: var(--text-medium);
+}
+
+.tour-btn {
+  justify-self: start;
+  display: inline-block;
+  background: var(--primary-brown);
+  color: #fff;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.tour-btn:hover {
+  background: var(--accent-terracotta);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container { max-width: 94%; }
+  .tours-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 540px) {
+  body.trek-page { font-size: 13.5px; }
+  .cta-box h2 { font-size: 1.15rem; }
+  .tours-grid { grid-template-columns: 1fr; }
+}
+

@@ -1,0 +1,529 @@
+.museums-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), 
+                url('../images/museum/hero.jpg') center/cover;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+.museums-hero h1{
+   color: aliceblue;
+}
+.museums-hero p{
+   color: aliceblue;
+}
+
+.intro-section {
+    padding: 5rem 0;
+}
+
+.intro-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-content h2 {
+    font-size: 2.5rem;
+    color: var(--primary-brown);
+    margin-bottom: 2rem;
+}
+
+.intro-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+}
+
+.why-museums-section {
+    padding: 5rem 0;
+    background: var(--white);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.benefit-card {
+    background: var(--neutral-cream);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-icon {
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--accent-terracotta) 100%);
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+}
+
+.museums-by-region {
+    padding: 5rem 0;
+    background: var(--neutral-light);
+}
+
+.region-section {
+    margin-bottom: 4rem;
+}
+
+.region-title {
+    font-size: 2rem;
+    color: var(--primary-brown);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.region-title::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background: var(--accent-terracotta);
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.museums-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.museum-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.museum-card:hover {
+    transform: translateY(-8px);
+}
+
+.museum-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.museum-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.museum-card:hover .museum-image img {
+    transform: scale(1.05);
+}
+
+.museum-content {
+    padding: 2rem;
+}
+
+.museum-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+    margin-bottom: 0.5rem;
+}
+
+.museum-location {
+    color: var(--accent-terracotta);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.museum-description {
+    color: var(--text-medium);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.visit-info {
+    background: var(--neutral-cream);
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-medium);
+}
+
+.value-section {
+    padding: 5rem 0;
+    background: transparent;
+    color: white;
+    text-align: center;
+}
+
+.value-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.value-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.value-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+}
+
+.planning-section {
+    padding: 5rem 0;
+    background: var(--white);
+}
+
+.planning-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.planning-card {
+    background: var(--neutral-light);
+    padding: 2rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-terracotta);
+}
+
+.planning-card h4 {
+    color: var(--primary-brown);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.museum-tours-section {
+    padding: 5rem 0;
+    background: var(--neutral-light);
+}
+
+.tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.tour-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tour-card:hover {
+    transform: translateY(-8px);
+}
+
+.tour-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.tour-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tour-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent-terracotta);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.tour-content {
+    padding: 2rem;
+}
+
+.tour-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+    margin-bottom: 1rem;
+}
+
+.tour-description {
+    color: var(--text-medium);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.tour-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-brown);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.tour-btn:hover {
+    background: var(--accent-terracotta);
+    color: white;
+}
+
+.no-tours-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .museums-hero {
+        height: 50vh;
+    }
+    
+    .intro-content h2 {
+        font-size: 2rem;
+    }
+    
+    .museums-grid,
+    .tours-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+/* General styles from about.css */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  color: var(--primary-green);
+}
+
+p {
+  line-height: 1.7;
+  color: var(--text-medium);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--accent-terracotta);
+  color: var(--text-light);
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+  background-color: var(--primary-brown);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px; /* Adjusted margin for consistency */
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px; /* Adjusted margin for consistency */
+  position: relative;
+  display: inline-block;
+}
+
+.section-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--accent-terracotta);
+}
+
+/* CTA styles from about.css */
+.cta {
+  padding: 100px 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-content.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.social-links {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  color: var(--text-dark);
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background-color: var(--accent-terracotta);
+  color: white;
+  transform: translateY(-5px);
+}
+
+/* Responsive Styles from about.css */
+@media screen and (max-width: 992px) {
+  .container {
+    padding: 0 15px; /* Adjust container padding for smaller screens */
+  }
+
+  .section-header {
+    margin-bottom: 40px; /* Adjust margin for smaller screens */
+  }
+
+  .section-header h2 {
+    font-size: 2rem; /* Adjust font size for smaller screens */
+  }
+
+  .cta h2 {
+    font-size: 2.3rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section-header h2 {
+    font-size: 1.8rem; /* Further adjust font size for smaller screens */
+  }
+
+  .cta h2 {
+    font-size: 2rem;
+  }
+
+  .cta p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .social-links {
+    margin-top: 30px;
+    gap: 15px;
+  }
+
+  .social-links a {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 0 10px; /* Further adjust container padding */
+  }
+
+  .section-header {
+    margin-bottom: 30px;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta h2 {
+    font-size: 1.8rem;
+  }
+
+  .cta p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .social-links {
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .social-links a {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}

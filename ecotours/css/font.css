@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Oranienbaum";
+  src: url(./fonts/Commissioner-VariableFont_wght.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Vacation";
+  src: url(./fonts/Vacation.otf) format("OpenType");
+  line-height: 1.2;
+  text-rendering: optimizeLegibility;
+}
+
+p{
+  font-family: 'Vacation', sans-serif;
+}
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Oranienbaum', sans-serif;
+      }
+
+      body {
+        
+        line-height: 1.6;
+        overflow-x: hidden;
+        font-family: 'Oranienbaum', sans-serif;
+      }

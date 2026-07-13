@@ -1,0 +1,494 @@
+.section-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+  }
+
+  .content-box {
+    width: 50%;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+  }
+
+  #philosophy .content-box {
+    background-color: rgba(255, 89, 123, 0.9);
+    margin-left: auto;
+    color: var(--text-light);
+  }
+
+  #started .content-box {
+    background-color: rgba(69, 175, 175, 0.9);
+    color: var(--text-light);
+  }
+
+  #what-we-do .content-box {
+    background-color: rgba(170, 35, 150, 0.9);
+    margin-left: auto;
+    color: var(--text-light);
+  }
+
+  #who-we-are .content-box {
+    background-color: rgba(255, 186, 8, 0.9);
+    color: var(--text-dark);
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-green);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .btn:hover {
+    background-color: var(--accent-sage);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .menu {
+      display: none;
+    }
+
+    .mobile-menu-btn {
+      display: block;
+      background: none;
+      border: none;
+      color: var(--text-light);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .content-box {
+      width: 90%;
+      padding: 2rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .content-box {
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* Sticky scroll effect */
+  .sticky-section {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sticky-bg {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .sticky-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .scroll-content {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+  }
+
+  .sticky-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 5em 0;
+  }
+
+  .sticky-section {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    padding: 0; /* Remove padding */
+    overflow: visible; /* Changed from hidden */
+    margin: 0; /* Remove margin */
+  }
+
+  /* Left image sections */
+  .sticky-section.left {
+    flex-direction: row;
+  }
+
+  /* Right image sections */
+  .sticky-section.right {
+    flex-direction: row-reverse;
+  }
+
+  .sticky-image {
+    position: sticky;
+    top: 0;
+    width: 50%;
+    height: 100vh;
+    overflow: hidden; /* Add this to contain the parallax effect */
+    transform-style: preserve-3d; /* Add depth to the parallax */
+    perspective: 1000px; /* Add perspective for 3D effect */
+  }
+
+  .sticky-image img {
+    width: 100%;
+    height: 120%; /* Increase height to allow for parallax movement */
+    object-fit: cover;
+    transform: translateY(0); /* Initial position */
+    transition: transform 0.1s ease-out; /* Smooth movement */
+    will-change: transform; /* Optimize performance */
+  }
+
+  .sticky-image:hover img {
+    filter: none;
+  }
+
+  .scroll-content {
+    width: 50%;
+    padding: 0; /* Remove padding */
+    display: flex;
+    align-items: center;
+    opacity: 1; /* Ensure content is visible */
+  }
+
+  .content-wrapper {
+    max-width: 100%; /* Full width */
+    margin: 0; /* Remove margin */
+    padding: 3rem;
+    background: var(--neutral-light);
+    border-radius: 0; /* Remove border radius */
+    box-shadow: none; /* Remove shadow */
+    border: none; /* Remove border */
+    position: relative;
+    overflow: visible; /* Changed from hidden */
+    opacity: 1; /* Ensure content is visible */
+    transform: none; /* Remove initial transform */
+    height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .content-wrapper::before {
+    display: none; /* Remove top gradient line */
+  }
+
+  /* Left section specific styles */
+  .sticky-section.left .content-wrapper {
+    background: linear-gradient(135deg, var(--neutral-light) 0%, var(--neutral-cream) 100%);
+    margin: 0; /* Remove margin */
+    opacity: 1; /* Start visible */
+    transform: none; /* Remove initial transform */
+  }
+
+  /* Right section specific styles */
+  .sticky-section.right .content-wrapper {
+    background: linear-gradient(135deg, var(--neutral-cream) 0%, var(--neutral-light) 100%);
+    margin: 0; /* Remove margin */
+    opacity: 1; /* Start visible */
+    transform: none; /* Remove initial transform */
+  }
+
+  /* Animation classes */
+  .sticky-section.in-view .content-wrapper {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* Content styling */
+  .content-wrapper h2 {
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .content-wrapper h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--accent-terracotta);
+  }
+
+  .content-wrapper p {
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .content-wrapper .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--primary-green);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .content-wrapper .btn:hover {
+    background: transparent;
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+    transform: translateY(-3px);
+  }
+
+  /* Additional hover effects */
+  .content-wrapper:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .sticky-section {
+      flex-direction: column !important;
+      padding: 0;
+    }
+
+    .sticky-image,
+    .scroll-content {
+      width: 100%;
+    }
+
+    .sticky-image {
+      height: 50vh;
+    }
+
+    .content-wrapper {
+      margin: 0 !important;
+      padding: 2rem;
+      height: auto;
+    }
+
+    .content-wrapper h2 {
+      font-size: 2rem;
+    }
+  }
+
+  /* Enhanced Responsive Design */
+  @media (max-width: 1200px) {
+    .content-wrapper {
+      padding: 2rem;
+    }
+
+    .content-wrapper h2 {
+      font-size: 2rem;
+    }
+
+    .content-wrapper p {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .sticky-container {
+      padding: 2em 0;
+    }
+
+    .sticky-section {
+      flex-direction: column !important;
+      min-height: auto;
+      height: auto;
+    }
+
+    .sticky-image {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+    }
+
+    .scroll-content {
+      width: 100%;
+    }
+
+    .content-wrapper {
+      height: auto;
+      min-height: 60vh;
+      padding: 3rem 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sticky-image {
+      height: 50vh;
+    }
+
+    .content-wrapper {
+      padding: 2rem 1.5rem;
+      min-height: 50vh;
+    }
+
+    .content-wrapper h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .content-wrapper p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .content-wrapper .btn {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .sticky-image {
+      height: 40vh;
+    }
+
+    .content-wrapper {
+      padding: 1.5rem 1rem;
+    }
+
+    .content-wrapper h2 {
+      font-size: 1.5rem;
+    }
+
+    .content-wrapper p {
+      font-size: 0.9rem;
+    }
+
+    .content-wrapper .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  /* Portrait phones */
+  @media (max-width: 380px) {
+    .sticky-image {
+      height: 35vh;
+    }
+
+    .content-wrapper {
+      padding: 1.25rem 1rem;
+    }
+
+    .content-wrapper h2 {
+      font-size: 1.3rem;
+    }
+
+    .content-wrapper p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+  }
+
+  /* Landscape orientation */
+  @media (max-height: 600px) and (orientation: landscape) {
+    .sticky-section {
+      flex-direction: row !important;
+    }
+
+    .sticky-image {
+      width: 50%;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .scroll-content {
+      width: 50%;
+    }
+
+    .content-wrapper {
+      min-height: 100vh;
+      padding: 2rem;
+    }
+  }
+
+  /* High-resolution screens */
+  @media screen and (min-width: 1400px) {
+    .content-wrapper {
+      padding: 4rem;
+    }
+
+    .content-wrapper h2 {
+      font-size: 3rem;
+    }
+
+    .content-wrapper p {
+      font-size: 1.2rem;
+    }
+  }
+
+  /* Fix for devices with notches */
+  @supports (padding: max(0px)) {
+    .content-wrapper {
+      padding-left: max(2rem, env(safe-area-inset-left));
+      padding-right: max(2rem, env(safe-area-inset-right));
+    }
+  }
+
+  /* Fix for older browsers */
+  @supports not (aspect-ratio: 1) {
+    .sticky-image {
+      height: 100vh;
+    }
+  }

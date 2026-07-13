@@ -1,0 +1,373 @@
+/* Exhibition & Conferences Page Styles */
+/* Relies on earthy-theme.css and header.css already included on the page */
+
+.ex-hero {
+  background: url("../images/event.jpg") center/cover no-repeat, linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35));
+  background-blend-mode: overlay;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 4rem 0;
+}
+
+.ex-hero .container {
+  max-width: 900px;
+}
+
+.ex-hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.ex-hero p {
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+.section {
+  padding: 3.5rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: var(--primary-brown);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, var(--primary-green), var(--accent-sage));
+  left: 0;
+  bottom: -8px;
+  border-radius: 2px;
+}
+
+.lead {
+  color: var(--text-medium);
+  line-height: 1.8;
+}
+
+/* Section Eyebrow/Badge */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .35rem .6rem;
+  border-radius: 999px;
+  color: var(--primary-green);
+  background: rgba(48, 143, 88, .1);
+  border: 1px solid rgba(48, 143, 88, .2);
+}
+
+/* Two-column intro */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.intro-card {
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 16px;
+  box-shadow: var(--shadow-light);
+  padding: 1.25rem 1.25rem;
+}
+
+.intro-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.intro-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .5rem 0;
+  color: var(--text-dark);
+}
+
+.intro-list i { color: var(--primary-green); margin-top: .2rem; }
+
+/* Icon cards grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.icon-card, .domain-card {
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 16px;
+  box-shadow: var(--shadow-light);
+  padding: 1.25rem 1.25rem;
+}
+
+/* Sample Exhibitions Cards */
+.exhibitions-section .cards-grid { align-items: stretch; }
+
+.exhibit-card {
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 16px;
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+
+.exhibit-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.exhibit-image { position: relative; }
+.exhibit-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.badge.sample {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: linear-gradient(135deg, var(--primary-brown), var(--accent-terracotta));
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  letter-spacing: .3px;
+}
+
+.card-body { padding: 1rem 1rem 1.05rem 1rem; }
+.card-body h3 { margin: 0 0 .35rem 0; font-size: 1.05rem; color: var(--primary-brown); }
+.card-body p { margin: 0 0 .6rem 0; }
+
+.exhibit-meta {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  color: var(--text-medium);
+  font-size: .9rem;
+}
+.exhibit-meta i { color: var(--primary-green); }
+
+.icon-card .icon, .domain-card .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(48, 143, 88, .08);
+  color: var(--primary-green);
+  margin-bottom: .6rem;
+}
+
+.icon-card h3, .domain-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary-brown);
+  margin: .25rem 0 .4rem 0;
+}
+
+.muted {
+  color: var(--text-medium);
+}
+
+/* Domain card meta */
+.domain-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .35rem;
+  font-size: .92rem;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: .5rem;
+}
+
+.meta-label { color: var(--text-medium); }
+.meta-value { color: var(--text-dark); }
+
+/* Pull-quote band */
+.pull-quote {
+  background: linear-gradient(135deg, var(--primary-brown), var(--accent-terracotta));
+  color: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-light);
+}
+
+.pull-quote p { font-size: 1.15rem; margin: 0; }
+.pull-quote em { font-style: normal; font-weight: 600; }
+
+ 
+/* Check-style bullet list */
+.ex-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.ex-list li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin: 0.4rem 0;
+  color: var(--text-dark);
+}
+
+.ex-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+/* Table styling */
+.ex-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ex-table th {
+  background: linear-gradient(135deg, var(--primary-green), var(--accent-sage));
+  color: #fff;
+  text-align: left;
+  padding: 0.9rem;
+}
+
+.ex-table td {
+  padding: 0.85rem;
+  border-top: 1px solid var(--neutral-beige);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 540px) {
+  .ex-hero h1 { font-size: 1.6rem; }
+  .ex-hero p { font-size: 0.95rem; }
+  .container { padding: 0 1rem; }
+  .intro-grid { grid-template-columns: 1fr; }
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--neutral-light), #fff);
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--neutral-beige);
+}
+
+.cta-content {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-content h2 {
+  color: var(--primary-brown);
+  font-size: 1.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.cta-content p {
+  color: var(--text-medium);
+  margin: 0 auto 1.25rem auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  color: var(--primary-brown);
+  border: 1px solid var(--neutral-beige);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform .1s ease, box-shadow .2s ease;
+  box-shadow: var(--shadow-light);
+}
+
+.cta-btn.primary {
+  background: linear-gradient(135deg, var(--primary-green), var(--accent-sage));
+  color: #fff;
+  border: none;
+}
+
+.cta-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+/* Upcoming Highlight Banner */
+.upcoming-banner {
+  background: linear-gradient(135deg, rgba(48,143,88,.08), rgba(162, 120, 78, .08));
+  border-top: 1px solid var(--neutral-beige);
+  border-bottom: 1px solid var(--neutral-beige);
+  padding: 1.25rem 0;
+}
+
+.upcoming-wrap {
+  display: grid;
+  grid-template-columns: 1.3fr .7fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.upcoming-media { display: grid; gap: .6rem; }
+.upcoming-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--neutral-beige);
+}
+
+.upcoming-title { margin: .35rem 0 .35rem 0; color: var(--primary-brown); }
+.upcoming-meta { display: grid; gap: .35rem; color: var(--text-medium); }
+.upcoming-meta .meta-row i { color: var(--primary-green); margin-right: .4rem; }
+
+/* Type Badges (Conference/Exhibition/Event) */
+.type-badges { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .35rem; }
+.type-badge { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 600; padding: .28rem .55rem; border-radius: 999px; border: 1px solid var(--neutral-beige); background: #fff; color: var(--primary-brown); }
+.type-badge i { color: inherit; }
+.type-badge.conference { background: rgba(48,143,88,.1); color: var(--primary-green); border-color: rgba(48,143,88,.2); }
+.type-badge.exhibition { background: rgba(162,120,78,.1); color: var(--primary-brown); border-color: rgba(162,120,78,.25); }
+.type-badge.event { background: rgba(39,79,145,.1); color: #274f91; border-color: rgba(39,79,145,.25); }
+
+@media (max-width: 720px) {
+  .upcoming-wrap { grid-template-columns: 1fr; }
+}
+

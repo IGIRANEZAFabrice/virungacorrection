@@ -1,0 +1,640 @@
+
+body {
+  background-color: var(--light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.breadcrumbs {
+  background-color: var(--lightt);
+  padding: 10px 0;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.breadcrumbs-list {
+  display: flex;
+  list-style: none;
+}
+
+.breadcrumbs-list li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs-list li:not(:last-child)::after {
+  content: "/";
+  margin: 0 10px;
+  color: #000;
+}
+
+.breadcrumbs-list a {
+  text-decoration: none;
+  color: var(--dark);
+  transition: 3s;
+}
+
+.breadcrumbs-list a:hover {
+  color: var(--primary);
+}
+
+.hero {
+  height: 80vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/hero/cover6.JPG");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  animation: zoom 10s infinite alternate ease-in-out;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.3)
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-title {
+  color: white;
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in;
+}
+
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  animation: fadeIn 1.5s ease-in;
+}
+
+.cta-btn {
+  padding: 15px 30px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-weight: 600;
+  animation: fadeIn 2s ease-in;
+}
+
+.cta-btn:hover {
+  background-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.intro {
+  padding: 80px 0;
+  text-align: center;
+  background-color: white;
+}
+
+.intro-text {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+}
+
+.divider {
+  width: 80px;
+  height: 3px;
+  background-color: var(--primary);
+  margin: 30px auto;
+}
+
+.featured-article {
+  padding: 0;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.featured-bg {
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/hero/group-tours.jpg");
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.featured-article:hover .featured-bg {
+  transform: scale(1.05);
+}
+
+.featured-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 80px 40px 40px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  color: white;
+}
+
+.featured-tag {
+  background-color: var(--primary);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  display: inline-block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.featured-title {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.featured-desc {
+  max-width: 600px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.blog-section {
+  padding: 80px 0;
+  background-color: var(--light);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 3px;
+  background-color: var(--primary-brown);
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  background-color: transparent;
+  border: 1px solid var(--primary-brown);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background-color: var(--primary-brown);
+  color: white;
+}
+
+/* .blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+} */
+
+/* .blog-card {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.5s ease-in;
+} */
+
+/* About Description Section */
+.about-description {
+  background-color: var(--neutral-light);
+  padding: 50px 30px;
+  text-align: center;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.about-description p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #444;
+  font-weight: 600;
+  max-width: 900px;
+  margin: 0 auto;
+  letter-spacing: 0.2px;
+}
+
+.about-description p strong {
+  color: var(--accent-terracotta);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .about-description {
+    padding: 35px 20px;
+    margin-bottom: 30px;
+  }
+
+  .about-description p {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-description {
+    padding: 25px 15px;
+  }
+
+  .about-description p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
+
+/* .blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+} */
+
+.blog-img {
+  height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+/* .blog-card:hover .blog-img {
+  transform: scale(1.05);
+} */
+
+.blog-content {
+  padding: 25px;
+}
+
+.blog-tag {
+  display: inline-block;
+  background-color: rgba(138, 109, 75, 0.1);
+  color: var(--primary-brown);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.blog-title {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+}
+
+.blog-excerpt {
+  margin-bottom: 20px;
+  color: #666;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.read-more {
+  display: inline-block;
+  color: var(--primary-brown);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.3s ease;
+}
+
+.read-more::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-brown);
+  transition: width 0.3s ease;
+}
+
+.read-more:hover {
+  color: var(--accent);
+}
+
+.read-more:hover::after {
+  width: 100%;
+}
+
+.load-more-container {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.load-more-button {
+  padding: 12px 30px;
+  background-color: var(--primary-green, #2a4858);
+  color: var(--text-light, #f6f4f0);
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.load-more-button:hover:not(:disabled) {
+  background-color: var(--accent-sage, #a68c69);
+}
+
+.load-more-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .featured-content {
+    padding: 60px 30px 30px;
+  }
+
+  .featured-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .toggle-btn {
+    display: block;
+  }
+
+  .hero {
+    height: 70vh;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .blog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    height: 60vh;
+  }
+
+  .featured-article {
+    height: 300px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+}
+
+/* Add these styles to your existing blog.css file */
+
+.blog-section .section-title {
+  text-align: center;
+  margin-bottom: 40px;
+  /* Add other title styles */
+}
+
+.filter-buttons {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.filter-btn {
+  /* Style your filter buttons */
+  margin: 0 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  border: 1px solid var(--neutral-beige, #d8c3a5);
+  background-color: transparent;
+  color: var(--text-dark, #3a3026);
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background-color: var(--primary-green, #2a4858);
+  color: var(--text-light, #f6f4f0);
+  border-color: var(--primary-green, #2a4858);
+}
+
+.blog-display {
+  padding: 20px;
+  width: 100%;
+  display: flex; /* Or adjust as needed */
+  gap: 20px;     /* Or adjust as needed */
+  justify-content: center; /* Center the grid if it doesn't fill width */
+}
+
+.blog-grid {
+  display: grid; /* Changed to grid for better responsiveness */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 100%; /* Ensure grid takes available space */
+  max-width: 1200px; /* Optional: Set a max-width for the grid */
+  margin: 0 auto; /* Center the grid */
+}
+
+.blog-item {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid var(--neutral-beige, #d8c3a5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex; /* Use flexbox for vertical layout */
+  flex-direction: column; /* Stack image and content vertically */
+}
+
+.blog-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.blog-item-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.blog-item-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allow content to grow and push button down */
+}
+
+.blog-item-category {
+  display: inline-block;
+  background-color: var(--accent-sage, #a68c69);
+  color: var(--text-light, #f6f4f0);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  align-self: flex-start; /* Align category tag to the start */
+}
+
+.blog-item-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.4em;
+  color: var(--text-dark, #3a3026);
+  line-height: 1.3;
+}
+
+.blog-item-description {
+    text-align: justify;
+  font-size: 0.95em;
+  color: var(--text-medium, #5d4e41);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  flex-grow: 1; /* Allow description to take available space */
+}
+
+.blog-item-meta {
+  font-size: 0.85em;
+  color: #777;
+  margin-bottom: 15px;
+  margin-top: auto; /* Push meta info towards the button */
+}
+
+.blog-item-button {
+  display: inline-block;
+  background-color: var(--primary-green, #2a4858);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  margin-top: 10px; /* Add some space above the button */
+  align-self: flex-start; /* Align button to the start */
+}
+
+.blog-item-button:hover {
+  background-color: var(--accent-sage, #a68c69); /* Example hover effect */
+}
+
+.no-posts {
+  grid-column: 1 / -1; /* Make it span all columns if using grid */
+  text-align: center;
+  color: var(--text-medium, #5d4e41);
+  padding: 40px 0;
+}
+
+/* Ensure blog items hidden by filter are properly hidden */
+.blog-item[style*="display: none"] {
+    display: none !important;
+}

@@ -1,0 +1,152 @@
+/* Beekeeping Page Styles */
+/* Relies on earthy-theme.css already included on the page */
+
+.bk-hero {
+  background: url("../images/bee.jpg") center/cover no-repeat;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 4rem 0;
+}
+
+.bk-hero .container {
+  max-width: 900px;
+}
+
+.bk-hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.bk-hero p {
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+.section {
+  padding: 3.5rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: var(--primary-brown);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-terracotta),
+    var(--primary-brown)
+  );
+  left: 0;
+  bottom: -8px;
+  border-radius: 2px;
+}
+
+.lead {
+  color: var(--text-medium);
+  line-height: 1.8;
+}
+
+.bk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.bk-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.bk-card {
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 16px;
+  box-shadow: var(--shadow-light);
+  padding: 1.25rem 1.25rem;
+}
+
+.bk-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary-brown);
+  margin-bottom: 0.5rem;
+}
+
+.bk-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.bk-list li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin: 0.4rem 0;
+  color: var(--text-dark);
+}
+
+.bk-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+.bk-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--neutral-beige);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bk-table th {
+  background: linear-gradient(135deg, var(--primary-green), var(--accent-sage));
+  color: #fff;
+  text-align: left;
+  padding: 0.9rem;
+}
+
+.bk-table td {
+  padding: 0.85rem;
+  border-top: 1px solid var(--neutral-beige);
+  font-size: 0.95rem;
+}
+
+.kids-tours-section {
+  padding: 3.5rem 0;
+  background: var(--neutral-light);
+}
+
+@media (max-width: 540px) {
+  .bk-hero h1 {
+    font-size: 1.6rem;
+  }
+  .bk-hero p {
+    font-size: 0.95rem;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+}

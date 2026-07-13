@@ -1,0 +1,264 @@
+/* Budget Tours CSS - Professional Responsive Design */
+
+/* Import Earthy Theme Colors */
+@import url("./earthy-theme.css");
+
+/* Reset and Base Styles */
+.budget-container *,
+.hero-section * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.budget-container,
+.hero-section {
+  line-height: 1.7;
+  color: var(--text-dark);
+  background-color: var(--neutral-light);
+  font-size: 16px;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(../images/hero/budget.jpeg); /* Assuming 3 is a good budget-style hero */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--white);
+  padding: 2rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #ffffff;
+}
+
+/* Container */
+.budget-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Section Styles */
+.section-title {
+  font-size: 1.8rem;
+  color: var(--primary-green);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.intro-section {
+  background: var(--neutral-cream);
+  padding: 2rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 3rem;
+}
+
+/* Tour Cards */
+.budget-tours {
+  margin-bottom: 4rem;
+}
+
+.tours-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tour-card {
+  background: var(--white);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 1px solid var(--neutral-beige);
+  display: flex;
+  flex-direction: column;
+}
+
+.tour-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tour-card-image {
+  position: relative;
+  height: 200px;
+  border-radius: 0;
+}
+
+.tour-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tour-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--primary-green);
+  color: #ffffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.tour-offer {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--accent-terracotta);
+  color: #ffffff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.tour-card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.tour-card-content h3 {
+  color: var(--primary-brown);
+  margin-bottom: 0.5rem;
+}
+
+.read-more-btn {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--primary-brown);
+  color: #ffffff;
+  text-align: center;
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.hidden-card {
+  display: none;
+}
+
+.view-more-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.view-more-btn {
+  padding: 0.8rem 2.5rem;
+  background: var(--primary-green);
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.view-more-btn:hover {
+  background: var(--accent-sage);
+  transform: translateY(-2px);
+}
+
+.read-more-btn:hover {
+  background: var(--accent-terracotta);
+}
+
+/* Value Proposition */
+.value-proposition {
+  padding: 2rem;
+  background: var(--neutral-light);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 3rem;
+}
+
+.feature-list {
+  list-style: none;
+}
+
+.feature-list li {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(
+    135deg,
+    var(--primary-brown),
+    var(--accent-light-brown)
+  );
+  color: #ffffff;
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+}
+
+.cta-section h3,
+.cta-section p {
+  color: #ffffff;
+}
+
+.section-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 1.5rem 0;
+}

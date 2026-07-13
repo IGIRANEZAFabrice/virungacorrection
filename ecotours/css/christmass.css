@@ -1,0 +1,173 @@
+/* Christmas Volunteering Page Styles - uses variables from earthy-theme.css */
+
+/* Layout helpers */
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+/* Hero */
+.christmas-hero {
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('../images/christmas.jpg') center/cover no-repeat;
+  color: var(--text-light);
+  padding: calc(var(--spacing-xl) + 1rem) 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.christmas-hero .hero-inner {
+  text-align: center;
+}
+.christmas-hero h1 {
+  font-size: clamp(1.8rem, 2.4vw + 1.2rem, 3rem);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-sm);
+}
+.christmas-hero .subtitle {
+  font-size: clamp(1rem, 1vw + 0.8rem, 1.25rem);
+  opacity: 0.95;
+}
+
+/* Intro */
+.intro-section {
+  background: var(--neutral-light);
+  color: var(--text-medium);
+  padding: var(--spacing-xl) 0;
+}
+.intro-section p + p {
+  margin-top: var(--spacing-md);
+}
+
+/* Activities */
+.activities-section {
+  background: #fff;
+  padding: var(--spacing-xl) 0;
+}
+.activities-section h2 {
+  color: var(--primary-green);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+.activity-card {
+  background: var(--neutral-light);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.activity-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.activity-card .icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--primary-green);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.3rem;
+}
+.activity-card h3 {
+  color: var(--accent-terracotta);
+  margin-bottom: var(--spacing-sm);
+}
+.activity-card .what {
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+}
+.activity-card .why {
+  color: var(--accent-sage);
+  font-weight: 600;
+}
+
+/* CTA */
+.cta-section {
+  background: var(--neutral-beige);
+  padding: var(--spacing-xl) 0;
+}
+.cta-box {
+  background: #fff;
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+.cta-box h2 {
+  color: var(--primary-brown);
+  margin-bottom: var(--spacing-md);
+}
+.cta-box p {
+  color: var(--text-medium);
+  margin-bottom: var(--spacing-lg);
+}
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.25rem;
+  background: var(--primary-green);
+  color: #fff;
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.button:hover {
+  background: var(--accent-sage);
+  transform: translateY(-2px);
+}
+
+/* Participation */
+.participation-section { background: #fff; padding: var(--spacing-xl) 0; }
+.participation-section h2 { color: var(--primary-green); text-align: center; margin-bottom: var(--spacing-lg); }
+.participation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); }
+.participation-card { background: var(--neutral-light); border: 1px solid rgba(0,0,0,0.06); border-radius: var(--border-radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-sm); }
+.participation-card h3 { color: var(--accent-terracotta); margin-bottom: var(--spacing-sm); }
+.participation-card p { color: var(--text-medium); }
+
+/* Full content from christmass.txt */
+.full-content {
+  background: #fff;
+  padding: var(--spacing-xl) 0;
+}
+.content-box {
+  background: var(--neutral-light);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+}
+.text-content {
+  color: var(--text-dark);
+  line-height: 1.75;
+  font-size: 1.05rem;
+  word-wrap: break-word;
+}
+.text-content br {
+  line-height: 1.1;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .activities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+  .christmas-hero {
+    padding: var(--spacing-lg) 0;
+    height: 100vh;
+  }
+  .participation-grid { grid-template-columns: 1fr; }
+}

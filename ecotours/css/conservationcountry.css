@@ -1,0 +1,276 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--neutral-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Section */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("../images/15.jpg");
+  color: var(--text-light);
+}
+
+.hero-content {
+  padding: 40px;
+  max-width: 700px;
+}
+
+h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  position: relative;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 4px;
+  background-color: var(--accent-terracotta);
+  margin-top: 20px;
+}
+
+/* Mission Section */
+.mission {
+  padding: 80px 0;
+  background-color: var(--neutral-cream);
+}
+
+.mission-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.mission-text {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mission-list {
+  list-style-position: inside;
+  margin: 20px 0;
+}
+
+.mission-list li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+/* Locations Section */
+.locations {
+  padding: 80px 0;
+}
+
+.locations-heading {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.locations-heading h2 {
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 15px;
+}
+
+.locations-heading h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background-color: var(--accent-terracotta);
+  margin: 15px auto 0;
+}
+
+.location-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.location-card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.card-content {
+  padding: 25px;
+}
+
+.card-content h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: var(--primary-green);
+  position: relative;
+}
+
+.card-content h3::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-light-brown);
+  margin-top: 10px;
+}
+
+.card-content p {
+  margin-bottom: 20px;
+  color: var(--text-medium);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: var(--primary-green);
+  color: var(--text-light);
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--accent-sage);
+}
+
+/* Gorilla Info Section */
+.gorilla-info {
+  padding: 80px 0;
+  background-color: var(--neutral-cream);
+  position: relative;
+}
+
+.gorilla-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.gorilla-text {
+  max-width: 800px;
+}
+
+.gorilla-image {
+  position: relative;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.info-btn {
+  margin-top: 20px;
+  background-color: var(--accent-terracotta);
+}
+
+.info-btn:hover {
+  background-color: var(--primary-brown);
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-green);
+  color: var(--text-light);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero {
+    height: 70vh;
+  }
+
+  .hero-content {
+    padding: 30px;
+  }
+
+  .mission,
+  .locations,
+  .gorilla-info {
+    padding: 60px 0;
+  }
+
+  .locations-heading h2 {
+    font-size: 2rem;
+  }
+
+  .gorilla-image {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content {
+    padding: 20px;
+  }
+
+  .location-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .mission,
+  .locations,
+  .gorilla-info {
+    padding: 40px 0;
+  }
+}
