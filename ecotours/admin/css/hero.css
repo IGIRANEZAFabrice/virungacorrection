@@ -1,0 +1,57 @@
+.message-receiver {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInSlideDown 0.4s ease-out forwards;
+  max-width: 400px;
+}
+
+.message-receiver.success {
+  background-color: rgba(76, 175, 80, 0.9);
+  color: white;
+}
+
+.message-receiver.error {
+  background-color: rgba(244, 67, 54, 0.9);
+  color: white;
+}
+
+.message-receiver i {
+  font-size: 1.2rem;
+}
+
+.message-receiver .progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  transform-origin: left;
+  animation: progressBar 5s linear forwards;
+}
+
+@keyframes fadeInSlideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressBar {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}

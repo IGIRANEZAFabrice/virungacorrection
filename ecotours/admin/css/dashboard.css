@@ -1,0 +1,307 @@
+/* Stats Cards */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  transition: transform var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(74, 103, 65, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.stat-icon i {
+  font-size: 1.5rem;
+  color: var(--primary-green);
+}
+
+.stat-info h3 {
+  font-size: 0.9rem;
+  color: var(--text-medium);
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.stat-change {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.stat-change.positive {
+  color: var(--success);
+}
+
+.stat-change.negative {
+  color: var(--danger);
+}
+
+.stat-change i {
+  margin-right: 0.25rem;
+}
+
+.stat-icon.bookings { background-color: rgba(42, 72, 88, 0.1); }
+.stat-icon.contacts { background-color: rgba(150, 114, 89, 0.1); }
+.stat-icon.custom { background-color: rgba(139, 115, 85, 0.1); }
+.stat-icon.blogs { background-color: rgba(76, 175, 80, 0.1); }
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-medium);
+  margin-top: 0.25rem;
+}
+
+/* Charts Row */
+.charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container canvas {
+  flex-grow: 1;
+  max-height: 300px;
+}
+
+.chart-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legend-item {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-item .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Recent Activity Section */
+.recent-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Quick Stats */
+.quick-stats {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+}
+
+.status-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.status-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-value {
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: var(--neutral-light);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  border-radius: 10px;
+}
+
+@media (max-width: 1024px) {
+  .charts-row, .recent-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Recent Bookings Table */
+.recent-bookings {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-header h3 {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+
+.view-all {
+  color: var(--primary-green);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+.view-all:hover {
+  color: var(--accent-terracotta);
+  text-decoration: underline;
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.data-table th {
+  font-weight: 600;
+  background-color: var(--neutral-light);
+  color: var(--text-medium);
+  font-size: 0.9rem;
+}
+
+.data-table tr {
+  border-bottom: 1px solid var(--neutral-beige);
+  transition: background-color var(--transition-speed) ease;
+}
+
+.data-table tr:hover {
+  background-color: var(--neutral-light);
+}
+
+.data-table tr:last-child {
+  border-bottom: none;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status.confirmed, .status.active {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success);
+}
+
+.status.pending {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: var(--warning);
+}
+
+.status.cancelled, .status.inactive {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger);
+}
+
+.status.sold-out {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: var(--info);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-speed) ease;
+}
+
+.edit-btn {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success);
+}
+
+.delete-btn {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger);
+}
+
+.edit-btn:hover {
+  background-color: var(--success);
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: var(--danger);
+  color: white;
+}
