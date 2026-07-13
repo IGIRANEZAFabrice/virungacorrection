@@ -1,25 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-  /* Scroll reveal logic for Safety page */
-  const reveals = document.querySelectorAll('.safety-page .reveal');
+function initSafety() {
+  const page = document.querySelector('.safety-page');
+  if (!page) return;
+
+  const reveals = page.querySelectorAll('.reveal');
   
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
+  // Only apply scroll reveal if IntersectionObserver is supported
+  if ('IntersectionObserver' in window) {
+    // Add js-active to trigger the hidden styles in CSS
+    page.classList.add('js-active');
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { 
+      threshold: 0.1, 
+      rootMargin: '0px 0px -40px 0px' 
     });
-  }, { 
-    threshold: 0.1, 
-    rootMargin: '0px 0px -40px 0px' 
-  });
 
-  reveals.forEach(el => io.observe(el));
-
-  /* Ensure the header knows we are on a dark page if needed */
-  const mainNav = document.getElementById('mainNav');
-  if (mainNav) {
-    // Standard header logic might already handle this, 
-    // but we can add specific behavior if needed.
+    reveals.forEach(el => io.observe(el));
   }
-});
+}
+
+// Run immediately if DOM is already parsed, otherwise wait for DOMContentLoaded
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSafety);
+} else {
+  initSafety();
+}

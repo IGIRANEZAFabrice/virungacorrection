@@ -573,13 +573,20 @@
 }
 
 /* ── REVEAL ANIMATION ── */
+/* By default, elements are visible (fallback for no-JS or script load failure) */
 .safety-page .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* If JavaScript runs successfully, it adds 'js-active' to apply scroll reveal */
+.safety-page.js-active .reveal {
   opacity: 0;
   transform: translateY(32px);
   transition: opacity 0.85s ease, transform 0.85s ease;
 }
 
-.safety-page .reveal.visible {
+.safety-page.js-active .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
