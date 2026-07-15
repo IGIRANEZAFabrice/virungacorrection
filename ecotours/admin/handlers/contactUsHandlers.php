@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -144,6 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
     
     try {
+        // Validate reCAPTCHA first
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        if (empty($recaptchaResponse) || !verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+            throw new Exception("Please complete the reCAPTCHA verification");
+        }
         // Validate required fields
         $requiredFields = ['firstName', 'lastName', 'email', 'subject', 'message'];
         foreach ($requiredFields as $field) {

@@ -23,6 +23,7 @@ require_once './itenaryopenhandler.php';
     <title><?php echo htmlspecialchars($tour['country'] . '  || ' . $tour['title']); ?></title>
     <link rel="stylesheet" href="../css/open.css" />
     <script src="../js/header.js" defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Structured Data for Tour -->
     <script type="application/ld+json">
@@ -257,6 +258,7 @@ require_once './itenaryopenhandler.php';
                 switch($_GET['error']) {
                   case 'missing_fields': echo 'Please fill all required fields'; break;
                   case 'invalid_email': echo 'Please enter a valid email address'; break;
+                  case 'recaptcha_failed': echo 'Please complete the reCAPTCHA verification'; break;
                   case 'database': echo 'Booking failed. Please try again later'; break;
                   default: echo 'An error occurred';
                 }
@@ -325,6 +327,9 @@ require_once './itenaryopenhandler.php';
             </div>
 
             <input type="hidden" name="tour_id" value="<?php echo $tour_id; ?>">
+            <div class="form-group" style="margin-bottom: 20px;">
+              <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
+            </div>
             <button type="submit" class="submit-btn">Book Now</button>
           </form>
 

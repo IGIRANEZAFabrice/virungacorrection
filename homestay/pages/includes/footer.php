@@ -160,7 +160,7 @@
           <h3 class="footer__col-title">Explore</h3>
           <ul class="footer__links">
             <li><a href="<?php echo $baseLink('home'); ?>">Home</a></li>
-            <li><a href="<?php echo $baseLink('about'); ?>">Our Story</a></li>
+            <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
             <li><a href="<?php echo $baseLink('rooms'); ?>">Our Stays</a></li>
             <li><a href="<?php echo $baseLink('shop'); ?>">Shop</a></li>
             <li><a href="<?php echo $baseLink('cars'); ?>">Car Rent</a></li>

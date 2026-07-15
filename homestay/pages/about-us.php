@@ -3,7 +3,7 @@
   $pageDescription = 'Discover the story behind Virunga Homestay. Learn about our philosophy of making every guest feel at home in the heart of Rwanda.';
   $pageKeywords = 'about Virunga Homestay, Rwanda homestay story, hospitality philosophy, Amara Nkosi';
   $pageCss = ['page-hero.css','about.css'];
-  $pageHeroKey = 'about';
+  $pageHeroKey = 'about-us';
   $pageScripts = ['about.js'];
   include 'includes/header.php';
 ?>

@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../../config/recaptcha.php';
 $pageTitle = 'Virunga Homestay - Contact Us';
 $pageCss = ['page-hero.css','contact.css'];
 $pageHeroKey = 'contact';
 $pageScripts = ['contact.js'];
 include 'includes/header.php';
 ?>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <?php include 'page-hero.php'; ?>
 
 <section class="contact-section">
@@ -114,7 +116,7 @@ include 'includes/header.php';
               </div>
 
               <div class="form-minimal-group" style="border:none; margin-bottom: 24px;">
-                <div class="g-recaptcha" data-sitekey="6LcJCDotAAAAAPwVRmfKOpAf_NhK2QSJhUEiO-Cv"></div>
+                <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
               </div>
 
               <div class="form-minimal-actions">

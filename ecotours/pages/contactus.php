@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/recaptcha.php';
 session_start();
 ?>
 
@@ -31,6 +32,7 @@ session_start();
     <link rel="stylesheet" href="../css/earthy-theme.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/contact.css?v=<?php echo time(); ?>">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
     <!-- Header -->
@@ -132,7 +134,10 @@ session_start();
                         <label for="message">Your Message</label>
                         <textarea class="form-control-content" id="message" name="message" rows="5" required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn-content" id="submitBtn" disabled="disabled">
+                    <div class="form-group-content" style="margin-bottom: 20px;">
+                        <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
+                    </div>
+                    <button type="submit" class="submit-btn-content" id="submitBtn">
                         <span id="submitText">Send Message</span>
                         <span id="submitSpinner" style="display:none;">
                             <i class="fas fa-spinner fa-spin"></i> Sending...

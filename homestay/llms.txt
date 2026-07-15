@@ -17,7 +17,7 @@
 - Description: Landing page showcasing the homestay's hero, featured rooms, community activities, testimonials, and a booking call to action. Highlights the location near Volcanoes National Park and Gorilla trekking routes.
 
 ### About
-- URL: https://virungahomestay.com/about
+- URL: https://virungahomestay.com/about-us
 - Description: The story of Virunga Homestay — the family behind it, the mission of authentic community-based tourism, and the values that shape every guest's stay.
 
 ### Rooms

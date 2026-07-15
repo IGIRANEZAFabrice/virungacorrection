@@ -145,7 +145,7 @@
             </a>
           </div>
         </li>
-        <li><a href="<?php echo $baseLink('about'); ?>">Story</a></li>
+        <li><a href="<?php echo $baseLink('about-us'); ?>">Story</a></li>
         <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
         <li class="cta-link"><a href="<?php echo $baseLink('contact'); ?>">Book Stay</a></li>
       </ul>
@@ -165,7 +165,7 @@
       <ul>
         <li><a href="<?php echo $baseLink('homestays'); ?>">Home</a></li>
         <li><a href="<?php echo $baseLink('impact'); ?>">Impact</a></li>
-        <li><a href="<?php echo $baseLink('about'); ?>">Story</a></li>
+        <li><a href="<?php echo $baseLink('about-us'); ?>">Story</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>
         <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
 

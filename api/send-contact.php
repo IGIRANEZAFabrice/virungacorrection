@@ -1,5 +1,5 @@
-
-&lt;?php
+<?php
+require_once __DIR__ . '/../config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 // Path to PHPMailer
 $phpmailerPath = __DIR__ . '/../ecotours/PHPMailer/src/';
-if (file_exists($phpmailerPath . 'Exception.php') &amp;&amp; file_exists($phpmailerPath . 'PHPMailer.php') &amp;&amp; file_exists($phpmailerPath . 'SMTP.php')) {
+if (file_exists($phpmailerPath . 'Exception.php') && file_exists($phpmailerPath . 'PHPMailer.php') && file_exists($phpmailerPath . 'SMTP.php')) {
     require_once $phpmailerPath . 'Exception.php';
     require_once $phpmailerPath . 'PHPMailer.php';
     require_once $phpmailerPath . 'SMTP.php';
@@ -16,39 +16,20 @@ if (file_exists($phpmailerPath . 'Exception.php') &amp;&amp; file_exists($phpmai
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'Invalid request method']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
     exit;
 }
 
 // Validate reCAPTCHA
-$recaptchaSecret = '6LcJCDotAAAAAOnWISjoFTd_zJv6xdTgjA5Yq9YZ';
 $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
 if (empty($recaptchaResponse)) {
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'Please complete the reCAPTCHA']);
+    echo json_encode(['status' => 'error', 'message' => 'Please complete the reCAPTCHA']);
     exit;
 }
 
-$verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-$verifyData = [
-    'secret' =&gt; $recaptchaSecret,
-    'response' =&gt; $recaptchaResponse,
-    'remoteip' =&gt; $_SERVER['REMOTE_ADDR'] ?? ''
-];
-
-$options = [
-    'http' =&gt; [
-        'header' =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
-        'method' =&gt; 'POST',
-        'content' =&gt; http_build_query($verifyData)
-    ]
-];
-$context = stream_context_create($options);
-$verifyResult = file_get_contents($verifyUrl, false, $context);
-$verifyJson = json_decode($verifyResult);
-
-if (!$verifyJson || !$verifyJson-&gt;success) {
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'reCAPTCHA verification failed']);
+if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+    echo json_encode(['status' => 'error', 'message' => 'reCAPTCHA verification failed']);
     exit;
 }
 

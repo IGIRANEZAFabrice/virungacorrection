@@ -7,7 +7,7 @@ $pageHeroConfig = [
     'bg' => './img/hero/1.jpg',
     'crumb' => 'Contact Us'
   ],
-  'about' => [
+  'about-us' => [
     'tag' => 'Our Story',
     'title' => 'Discover <em>Virunga Homestay</em>',
     'bg' => './img/hero/2.jpg',

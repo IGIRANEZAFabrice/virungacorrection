@@ -26,7 +26,7 @@ $link = function (string $target = '') use ($basePath): string {
 // List of public site pages mapped to their view files
 $pages = [
     'home'    => __DIR__ . '/pages/home.php',
-    'about'   => __DIR__ . '/pages/about.php',
+    'about-us'   => __DIR__ . '/pages/about-us.php',
     'rooms'   => __DIR__ . '/pages/rooms.php',
     'houserules' => __DIR__ . '/pages/houserules.php',
     'shop'    => __DIR__ . '/pages/shop.php',

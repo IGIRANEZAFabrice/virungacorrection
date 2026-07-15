@@ -1,5 +1,6 @@
 
-&lt;?php
+<?php
+require_once __DIR__ . '/../../config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -63,39 +64,39 @@ function logCommunityEmailMessage($message) {
 
 function sendCommunityNotificationEmail($recipientEmail, $subject, $bodyHtml) {
     $email_config = [
-        'smtp_host' =&gt; 'smtp.gmail.com',
-        'smtp_port' =&gt; 587,
-        'smtp_username' =&gt; 'virungahomestay@gmail.com',
-        'smtp_password' =&gt; 'mvkumfdesmiedtnl',
-        'from_email' =&gt; 'virungahomestay@gmail.com',
-        'from_name' =&gt; 'Virunga Ecotours System',
+        'smtp_host' => 'smtp.gmail.com',
+        'smtp_port' => 587,
+        'smtp_username' => 'virungahomestay@gmail.com',
+        'smtp_password' => 'mvkumfdesmiedtnl',
+        'from_email' => 'virungahomestay@gmail.com',
+        'from_name' => 'Virunga Ecotours System',
     ];
 
     try {
         ensurePHPMailerLoaded();
 
         $mail = new PHPMailer(true);
-        $mail-&gt;isSMTP();
-        $mail-&gt;Host = $email_config['smtp_host'];
-        $mail-&gt;SMTPAuth = true;
-        $mail-&gt;Username = $email_config['smtp_username'];
-        $mail-&gt;Password = $email_config['smtp_password'];
-        $mail-&gt;SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail-&gt;Port = $email_config['smtp_port'];
+        $mail->isSMTP();
+        $mail->Host = $email_config['smtp_host'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $email_config['smtp_username'];
+        $mail->Password = $email_config['smtp_password'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = $email_config['smtp_port'];
 
-        $mail-&gt;setFrom($email_config['from_email'], $email_config['from_name']);
-        $mail-&gt;addReplyTo($email_config['from_email'], $email_config['from_name']);
-        $mail-&gt;addAddress($recipientEmail);
+        $mail->setFrom($email_config['from_email'], $email_config['from_name']);
+        $mail->addReplyTo($email_config['from_email'], $email_config['from_name']);
+        $mail->addAddress($recipientEmail);
 
-        $mail-&gt;isHTML(true);
-        $mail-&gt;Subject = $subject;
-        $mail-&gt;Body = $bodyHtml;
-        $mail-&gt;AltBody = strip_tags($bodyHtml);
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $bodyHtml;
+        $mail->AltBody = strip_tags($bodyHtml);
 
-        $mail-&gt;send();
+        $mail->send();
         return true;
     } catch (\Throwable $e) {
-        logCommunityEmailMessage('Email send failed to ' . $recipientEmail . ': ' . $e-&gt;getMessage());
+        logCommunityEmailMessage('Email send failed to ' . $recipientEmail . ': ' . $e->getMessage());
         return false;
     }
 }
@@ -106,31 +107,12 @@ $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate reCAPTCHA first
-    $recaptchaSecret = '6LcJCDotAAAAAOnWISjoFTd_zJv6xdTgjA5Yq9YZ';
     $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
     
     if (empty($recaptchaResponse)) {
         $error_message = 'Please complete the reCAPTCHA.';
     } else {
-        $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-        $verifyData = [
-            'secret' =&gt; $recaptchaSecret,
-            'response' =&gt; $recaptchaResponse,
-            'remoteip' =&gt; $_SERVER['REMOTE_ADDR'] ?? ''
-        ];
-        
-        $options = [
-            'http' =&gt; [
-                'header' =&gt; "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' =&gt; 'POST',
-                'content' =&gt; http_build_query($verifyData)
-            ]
-        ];
-        $context = stream_context_create($options);
-        $verifyResult = file_get_contents($verifyUrl, false, $context);
-        $verifyJson = json_decode($verifyResult);
-        
-        if (!$verifyJson || !$verifyJson-&gt;success) {
+        if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
             $error_message = 'reCAPTCHA verification failed. Please try again.';
         } else {
             // Sanitize and validate input
@@ -165,15 +147,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $recipients = ['virungahomestay@gmail.com', 'info@virungaecotours.com'];
 
                     $emailBody = '
-                        &lt;h2 style="color:#2a4858;"&gt;New Community Contact Message&lt;/h2&gt;
-                        &lt;p&gt;
-                            User &lt;strong&gt;' . htmlspecialchars($name) . '&lt;/strong&gt;
-                            (email: &lt;strong&gt;' . htmlspecialchars($email) . '&lt;/strong&gt;)
-                            contacted you on the community saying:&lt;br/&gt;
-                            "&lt;em&gt;' . nl2br(htmlspecialchars($message)) . '&lt;/em&gt;"
-                        &lt;/p&gt;
-                        &lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; ' . htmlspecialchars($subject) . '&lt;/p&gt;
-                        &lt;p&gt;&lt;strong&gt;Program interest:&lt;/strong&gt; ' . htmlspecialchars($program_interest) . '&lt;/p&gt;
+                        <h2 style="color:#2a4858;">New Community Contact Message</h2>
+                        <p>
+                            User <strong>' . htmlspecialchars($name) . '</strong>
+                            (email: <strong>' . htmlspecialchars($email) . '</strong>)
+                            contacted you on the community saying:<br/>
+                            "<em>' . nl2br(htmlspecialchars($message)) . '</em>"
+                        </p>
+                        <p><strong>Subject:</strong> ' . htmlspecialchars($subject) . '</p>
+                        <p><strong>Program interest:</strong> ' . htmlspecialchars($program_interest) . '</p>
                     ';
 
                     $subjectEmail = 'New Community Contact - ' . htmlspecialchars($name);
@@ -198,34 +180,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get action parameter for pre-filling form
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-?&gt;
+?>
 
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;Contact Us - Virunga Ecotours Community&lt;/title&gt;
-    &lt;meta name="description" content="Get in touch with Virunga Ecotours Community Programs. Contact us for volunteering opportunities, partnerships, donations, or general inquiries."&gt;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Virunga Ecotours Community</title>
+    <meta name="description" content="Get in touch with Virunga Ecotours Community Programs. Contact us for volunteering opportunities, partnerships, donations, or general inquiries.">
     
-    &lt;!-- CSS Files --&gt;
-    &lt;link rel="stylesheet" href="../css/earthy-theme.css"&gt;
-    &lt;link rel="stylesheet" href="assets/css/community.css"&gt;
-    &lt;link rel="stylesheet" href="assets/css/contact.css"&gt;
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/earthy-theme.css">
+    <link rel="stylesheet" href="assets/css/community.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
     
-    &lt;!-- FontAwesome --&gt;
-    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    &lt;!-- Google Fonts --&gt;
-    &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"&gt;
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    &lt;!-- Favicon --&gt;
-    &lt;link rel="icon" type="image/x-icon" href="assets/images/logos/logo.jpg"&gt;
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/logos/logo.jpg">
     
-    &lt;!-- Google reCAPTCHA --&gt;
-    &lt;script src="https://www.google.com/recaptcha/api.js" async defer&gt;&lt;/script&gt;
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    &lt;style&gt;
+    <style>
         /* Contact Information Container */
         .contact-contact-info-container {
             display: flex;
@@ -255,7 +237,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
             font-weight: 600;
         }
 
-        .contact-contact-info &gt; p {
+        .contact-contact-info > p {
             color: var(--text-medium);
             margin-bottom: 2rem;
             line-height: 1.6;
@@ -406,269 +388,270 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
             height: auto;
             object-fit: contain;
         }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;!-- Include Header --&gt;
-    &lt;?php include 'includes/header.php'; ?&gt;
+    </style>
+</head>
+<body>
+    <!-- Include Header -->
+    <?php include 'includes/header.php'; ?>
 
-    &lt;!-- Page Header --&gt;
-    &lt;section class="page-header"&gt;
-        &lt;div class="page-header-background"&gt;
-            &lt;img src="../images/stories/vol.JPG" alt="Contact Virunga Ecotours Community" loading="lazy"&gt;
-            &lt;div class="page-header-overlay"&gt;&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="container"&gt;
-            &lt;div class="page-header-content"&gt;
-                &lt;nav class="breadcrumb"&gt;
-                    &lt;a href="index.php"&gt;Community&lt;/a&gt;
-                    &lt;span class="separator"&gt;&lt;i class="fas fa-chevron-right"&gt;&lt;/i&gt;&lt;/span&gt;
-                    &lt;span class="current"&gt;Contact Us&lt;/span&gt;
-                &lt;/nav&gt;
-                &lt;h1&gt;Get In Touch&lt;/h1&gt;
-                &lt;p&gt;Ready to make a difference? Contact us to learn about volunteering opportunities, partnerships, or how you can support our community programs.&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/section&gt;
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-background">
+            <img src="../images/stories/vol.JPG" alt="Contact Virunga Ecotours Community" loading="lazy">
+            <div class="page-header-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="page-header-content">
+                <nav class="breadcrumb">
+                    <a href="index.php">Community</a>
+                    <span class="separator"><i class="fas fa-chevron-right"></i></span>
+                    <span class="current">Contact Us</span>
+                </nav>
+                <h1>Get In Touch</h1>
+                <p>Ready to make a difference? Contact us to learn about volunteering opportunities, partnerships, or how you can support our community programs.</p>
+            </div>
+        </div>
+    </section>
 
-    &lt;!-- Contact Section --&gt;
-    &lt;section class="contact-section"&gt;
-        &lt;div class="container"&gt;
-            &lt;div class="contact-grid"&gt;
-                &lt;!-- Contact Form --&gt;
-                &lt;div class="contact-form-container"&gt;
-                    &lt;div class="form-header"&gt;
-                        &lt;h2&gt;Send Us a Message&lt;/h2&gt;
-                        &lt;p&gt;We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.&lt;/p&gt;
-                    &lt;/div&gt;
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <div class="form-header">
+                        <h2>Send Us a Message</h2>
+                        <p>We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
+                    </div>
 
-                    &lt;?php if ($message_sent): ?&gt;
-                        &lt;div class="success-message"&gt;
-                            &lt;i class="fas fa-check-circle"&gt;&lt;/i&gt;
-                            &lt;h3&gt;Thank You!&lt;/h3&gt;
-                            &lt;p&gt;Your message has been sent successfully. We'll get back to you within 24 hours.&lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;?php else: ?&gt;
-                        &lt;?php if ($error_message): ?&gt;
-                            &lt;div class="error-message"&gt;
-                                &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt;
-                                &lt;p&gt;&lt;?php echo htmlspecialchars($error_message); ?&gt;&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;?php endif; ?&gt;
+                    <?php if ($message_sent): ?>
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Thank You!</h3>
+                            <p>Your message has been sent successfully. We'll get back to you within 24 hours.</p>
+                        </div>
+                    <?php else: ?>
+                        <?php if ($error_message): ?>
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p><?php echo htmlspecialchars($error_message); ?></p>
+                            </div>
+                        <?php endif; ?>
 
-                        &lt;form method="POST" class="contact-form" id="contactForm"&gt;
-                            &lt;div class="form-row"&gt;
-                                &lt;div class="form-group"&gt;
-                                    &lt;label for="name"&gt;Full Name *&lt;/label&gt;
-                                    &lt;input type="text" id="name" name="name" required&gt;
-                                &lt;/div&gt;
-                                &lt;div class="form-group"&gt;
-                                    &lt;label for="email"&gt;Email Address *&lt;/label&gt;
-                                    &lt;input type="email" id="email" name="email" required&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
+                        <form method="POST" class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Full Name *</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
 
-                            &lt;div class="form-row"&gt;
-                                &lt;div class="form-group"&gt;
-                                    &lt;label for="phone"&gt;Phone Number&lt;/label&gt;
-                                    &lt;input type="tel" id="phone" name="phone"&gt;
-                                &lt;/div&gt;
-                                &lt;div class="form-group"&gt;
-                                    &lt;label for="country"&gt;Country&lt;/label&gt;
-                                    &lt;select id="country" name="country"&gt;
-                                        &lt;option value=""&gt;Select Country&lt;/option&gt;
-                                        &lt;option value="rwanda"&gt;Rwanda&lt;/option&gt;
-                                        &lt;option value="uganda"&gt;Uganda&lt;/option&gt;
-                                        &lt;option value="congo"&gt;DRC Congo&lt;/option&gt;
-                                        &lt;option value="other"&gt;Other&lt;/option&gt;
-                                    &lt;/select&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select id="country" name="country">
+                                        <option value="">Select Country</option>
+                                        <option value="rwanda">Rwanda</option>
+                                        <option value="uganda">Uganda</option>
+                                        <option value="congo">DRC Congo</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                            &lt;div class="form-group"&gt;
-                                &lt;label for="subject"&gt;Subject&lt;/label&gt;
-                                &lt;input type="text" id="subject" name="subject" 
-                                       value="&lt;?php 
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" 
+                                       value="<?php 
                                        if ($action === 'volunteer') echo 'Volunteering Opportunity';
                                        elseif ($action === 'partner') echo 'Partnership Inquiry';
                                        elseif ($action === 'donate') echo 'Donation Inquiry';
-                                       ?&gt;"&gt;
-                            &lt;/div&gt;
+                                       ?>">
+                            </div>
 
-                            &lt;div class="form-group"&gt;
-                                &lt;label for="program_interest"&gt;Program of Interest&lt;/label&gt;
-                                &lt;select id="program_interest" name="program_interest"&gt;
-                                    &lt;option value=""&gt;Select a program (optional)&lt;/option&gt;
-                                    &lt;option value="education"&gt;Education Programs&lt;/option&gt;
-                                    &lt;option value="health"&gt;Health Programs&lt;/option&gt;
-                                    &lt;option value="conservation"&gt;Conservation Programs&lt;/option&gt;
-                                    &lt;option value="economic"&gt;Economic Development&lt;/option&gt;
-                                    &lt;option value="women"&gt;Women's Empowerment&lt;/option&gt;
-                                    &lt;option value="infrastructure"&gt;Infrastructure Development&lt;/option&gt;
-                                    &lt;option value="general"&gt;General Inquiry&lt;/option&gt;
-                                &lt;/select&gt;
-                            &lt;/div&gt;
+                            <div class="form-group">
+                                <label for="program_interest">Program of Interest</label>
+                                <select id="program_interest" name="program_interest">
+                                    <option value="">Select a program (optional)</option>
+                                    <option value="education">Education Programs</option>
+                                    <option value="health">Health Programs</option>
+                                    <option value="conservation">Conservation Programs</option>
+                                    <option value="economic">Economic Development</option>
+                                    <option value="women">Women's Empowerment</option>
+                                    <option value="infrastructure">Infrastructure Development</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
 
-                            &lt;div class="form-group"&gt;
-                                &lt;label for="message"&gt;Message *&lt;/label&gt;
-                                &lt;textarea id="message" name="message" rows="6" required 
-                                          placeholder="Tell us about your interest in our community programs..."&gt;&lt;/textarea&gt;
-                            &lt;/div&gt;
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" required 
+                                          placeholder="Tell us about your interest in our community programs..."></textarea>
+                            </div>
 
-                            &lt;div class="form-group checkbox-group"&gt;
-                                &lt;label class="checkbox-label"&gt;
-                                    &lt;input type="checkbox" name="volunteer_interest" value="1" 
-                                           &lt;?php echo $action === 'volunteer' ? 'checked' : ''; ?&gt;&gt;
-                                    &lt;span class="checkmark"&gt;&lt;/span&gt;
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="volunteer_interest" value="1" 
+                                           <?php echo $action === 'volunteer' ? 'checked' : ''; ?>>
+                                    <span class="checkmark"></span>
                                     I'm interested in volunteering opportunities
-                                &lt;/label&gt;
-                                &lt;label class="checkbox-label"&gt;
-                                    &lt;input type="checkbox" name="donation_interest" value="1"
-                                           &lt;?php echo $action === 'donate' ? 'checked' : ''; ?&gt;&gt;
-                                    &lt;span class="checkmark"&gt;&lt;/span&gt;
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="donation_interest" value="1"
+                                           <?php echo $action === 'donate' ? 'checked' : ''; ?>>
+                                    <span class="checkmark"></span>
                                     I'm interested in supporting through donations
-                                &lt;/label&gt;
-                            &lt;/div&gt;
+                                </label>
+                            </div>
                             
-                            &lt;div class="form-group"&gt;
-                                &lt;div class="g-recaptcha" data-sitekey="6LcJCDotAAAAAPwVRmfKOpAf_NhK2QSJhUEiO-Cv"&gt;&lt;/div&gt;
-                            &lt;/div&gt;
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
+                            </div>
 
-                            &lt;button type="submit" class="btn btn-primary submit-btn"&gt;
-                                &lt;i class="fas fa-paper-plane"&gt;&lt;/i&gt;
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane"></i>
                                 Send Message
-                            &lt;/button&gt;
-                        &lt;/form&gt;
-                    &lt;?php endif; ?&gt;
-                &lt;/div&gt;
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
 
-                &lt;!-- Contact Information --&gt;
-                &lt;div class="contact-contact-info-container"&gt;
-                    &lt;div class="contact-contact-info"&gt;
-                        &lt;h3&gt;Contact Information&lt;/h3&gt;
-                        &lt;p&gt;Get in touch with our community programs team through any of the following channels:&lt;/p&gt;
+                <!-- Contact Information -->
+                <div class="contact-contact-info-container">
+                    <div class="contact-contact-info">
+                        <h3>Contact Information</h3>
+                        <p>Get in touch with our community programs team through any of the following channels:</p>
 
-                        &lt;div class="contact-contact-item"&gt;
-                            &lt;div class="contact-contact-icon"&gt;
-                                &lt;i class="fas fa-envelope"&gt;&lt;/i&gt;
-                            &lt;/div&gt;
-                            &lt;div class="contact-contact-details"&gt;
-                                &lt;h4&gt;Email&lt;/h4&gt;
-                                &lt;p&gt;&lt;a href="mailto:community@virungaecotours.com"&gt;virungacommunityprograms@gmail.com&lt;/a&gt;&lt;/p&gt;
-                                &lt;p&gt;&lt;a href="mailto:info@virungaecotours.com"&gt;info@virungaecotours.com&lt;/a&gt;&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
+                        <div class="contact-contact-item">
+                            <div class="contact-contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-contact-details">
+                                <h4>Email</h4>
+                                <p><a href="mailto:community@virungaecotours.com">virungacommunityprograms@gmail.com</a></p>
+                                <p><a href="mailto:info@virungaecotours.com">info@virungaecotours.com</a></p>
+                            </div>
+                        </div>
 
-                        &lt;div class="contact-contact-item"&gt;
-                            &lt;div class="contact-contact-icon"&gt;
-                                &lt;i class="fas fa-phone"&gt;&lt;/i&gt;
-                            &lt;/div&gt;
-                            &lt;div class="contact-contact-details"&gt;
-                                &lt;h4&gt;Phone&lt;/h4&gt;
-                                &lt;p&gt;&lt;a href="tel:+250784513435"&gt;+(250) 784 513 435&lt;/a&gt;&lt;/p&gt;
-                                &lt;p&gt;Office Hours: 9:00 AM - 6:00 PM (EAT)&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
+                        <div class="contact-contact-item">
+                            <div class="contact-contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-contact-details">
+                                <h4>Phone</h4>
+                                <p><a href="tel:+250784513435">+(250) 784 513 435</a></p>
+                                <p>Office Hours: 9:00 AM - 6:00 PM (EAT)</p>
+                            </div>
+                        </div>
 
-                        &lt;div class="contact-contact-item"&gt;
-                            &lt;div class="contact-contact-icon"&gt;
-                                &lt;i class="fas fa-map-marker-alt"&gt;&lt;/i&gt;
-                            &lt;/div&gt;
-                            &lt;div class="contact-contact-details"&gt;
-                                &lt;h4&gt;Office Location&lt;/h4&gt;
-                                &lt;p&gt;Kigali, Rwanda&lt;br&gt;
-                                Virunga Massif Region&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
+                        <div class="contact-contact-item">
+                            <div class="contact-contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-contact-details">
+                                <h4>Office Location</h4>
+                                <p>Kigali, Rwanda<br>
+                                Virunga Massif Region</p>
+                            </div>
+                        </div>
 
-                        &lt;div class="contact-contact-item"&gt;
-                            &lt;div class="contact-contact-icon"&gt;
-                                &lt;i class="fab fa-whatsapp"&gt;&lt;/i&gt;
-                            &lt;/div&gt;
-                            &lt;div class="contact-contact-details"&gt;
-                                &lt;h4&gt;WhatsApp&lt;/h4&gt;
-                                &lt;p&gt;&lt;a href="https://wa.me/250784513435" target="_blank"&gt;+(250) 784 513 435&lt;/a&gt;&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
+                        <div class="contact-contact-item">
+                            <div class="contact-contact-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="contact-contact-details">
+                                <h4>WhatsApp</h4>
+                                <p><a href="https://wa.me/250784513435" target="_blank">+(250) 784 513 435</a></p>
+                            </div>
+                        </div>
+                    </div>
 
-                    &lt;!-- Social Media --&gt;
-                    &lt;div class="contact-social-media"&gt;
-                        &lt;h4&gt;Follow Our Work&lt;/h4&gt;
-                        &lt;div class="contact-social-links"&gt;
-                            &lt;a href="https://www.facebook.com/VirungaPrograms" target="_blank" rel="noopener" class="contact-social-link facebook"&gt;
-                                &lt;i class="fab fa-facebook-f"&gt;&lt;/i&gt;
-                                &lt;span&gt;Facebook&lt;/span&gt;
-                            &lt;/a&gt;
-                            &lt;a href="https://www.instagram.com/virunga_ecotours" target="_blank" rel="noopener" class="contact-social-link instagram"&gt;
-                                &lt;i class="fab fa-instagram"&gt;&lt;/i&gt;
-                                &lt;span&gt;Instagram&lt;/span&gt;
-                            &lt;/a&gt;
-                            &lt;a href="https://www.linkedin.com/in/virunga-ecotours-863a221b1" target="_blank" rel="noopener" class="contact-social-link linkedin"&gt;
-                                &lt;i class="fab fa-linkedin-in"&gt;&lt;/i&gt;
-                                &lt;span&gt;LinkedIn&lt;/span&gt;
-                            &lt;/a&gt;
-                            &lt;a href="https://www.youtube.com/@virungaecotours8285" target="_blank" rel="noopener" class="contact-social-link youtube"&gt;
-                                &lt;i class="fab fa-youtube"&gt;&lt;/i&gt;
-                                &lt;span&gt;YouTube&lt;/span&gt;
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
+                    <!-- Social Media -->
+                    <div class="contact-social-media">
+                        <h4>Follow Our Work</h4>
+                        <div class="contact-social-links">
+                            <a href="https://www.facebook.com/VirungaPrograms" target="_blank" rel="noopener" class="contact-social-link facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.instagram.com/virunga_ecotours" target="_blank" rel="noopener" class="contact-social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/virunga-ecotours-863a221b1" target="_blank" rel="noopener" class="contact-social-link linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://www.youtube.com/@virungaecotours8285" target="_blank" rel="noopener" class="contact-social-link youtube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
 
-                    &lt;!-- Quick Actions --&gt;
-                    &lt;div class="quick-actions"&gt;
-                        &lt;h4&gt;Quick Actions&lt;/h4&gt;
-                        &lt;div class="action-buttons"&gt;
-                            &lt;a href="programs.php" class="contact-action-btn"&gt;
-                                &lt;i class="fas fa-eye"&gt;&lt;/i&gt;
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h4>Quick Actions</h4>
+                        <div class="action-buttons">
+                            <a href="programs.php" class="contact-action-btn">
+                                <i class="fas fa-eye"></i>
                                 View Programs
-                            &lt;/a&gt;
-                            &lt;a href="about.php" class="contact-action-btn"&gt;
-                                &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt;
+                            </a>
+                            <a href="about.php" class="contact-action-btn">
+                                <i class="fas fa-info-circle"></i>
                                 Learn About Us
-                            &lt;/a&gt;
-                            &lt;a href="../pages/gallery.php" class="contact-action-btn"&gt;
-                                &lt;i class="fas fa-images"&gt;&lt;/i&gt;
+                            </a>
+                            <a href="../pages/gallery.php" class="contact-action-btn">
+                                <i class="fas fa-images"></i>
                                 Photo Gallery
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/section&gt;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    &lt;!-- Map Section --&gt;
-    &lt;section class="map-section"&gt;
-        &lt;div class="container"&gt;
-            &lt;div class="section-header"&gt;
-                &lt;h2&gt;Our Operating Region&lt;/h2&gt;
-                &lt;p&gt;We operate across the Virunga Massif region, spanning Rwanda, DRC Congo, and Uganda.&lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div class="map-container"&gt;
-                &lt;div class="map-placeholder"&gt;
-                    &lt;img src="assets/images/Virunga-Conservation-Area.png" alt="Virunga Region Map" loading="lazy" class="map-image"&gt;
-                    &lt;div class="map-overlay"&gt;
-                        &lt;div class="map-info"&gt;
-                            &lt;h3&gt;Virunga Massif Region&lt;/h3&gt;
-                            &lt;p&gt;Our community programs operate across this biodiverse region, home to mountain gorillas and vibrant local communities.&lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/section&gt;
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Operating Region</h2>
+                <p>We operate across the Virunga Massif region, spanning Rwanda, DRC Congo, and Uganda.</p>
+            </div>
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <img src="assets/images/Virunga-Conservation-Area.png" alt="Virunga Region Map" loading="lazy" class="map-image">
+                    <div class="map-overlay">
+                        <div class="map-info">
+                            <h3>Virunga Massif Region</h3>
+                            <p>Our community programs operate across this biodiverse region, home to mountain gorillas and vibrant local communities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    &lt;!-- Include Footer --&gt;
-    &lt;?php include 'includes/footer.php'; ?&gt;
+    <!-- Include Footer -->
+    <?php include 'includes/footer.php'; ?>
 
-    &lt;!-- JavaScript Files --&gt;
-    &lt;script src="assets/js/community.js"&gt;&lt;/script&gt;
-    &lt;script src="assets/js/contact.js"&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+    <!-- JavaScript Files -->
+    <script src="assets/js/community.js"></script>
+    <script src="assets/js/contact.js"></script>
+</body>
+</html>
 
-&lt;?php
+<?php
 // Close database connection
 mysqli_close($conn);
-?&gt;
+?>
+

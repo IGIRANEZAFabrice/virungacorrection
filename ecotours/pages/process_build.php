@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -103,6 +104,13 @@ function sendBuildNotificationEmail($recipientEmail, $subject, $bodyHtml) {
 
 // Check if form was submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate reCAPTCHA first
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+    if (empty($recaptchaResponse) || !verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+        header('Location: build.php?error=recaptcha_failed');
+        exit;
+    }
+
     // Validate and sanitize input
     $names = isset($_POST['names']) ? $conn->real_escape_string(trim($_POST['names'])) : '';
     $email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) : '';

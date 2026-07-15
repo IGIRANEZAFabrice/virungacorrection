@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . '/../../../config/recaptcha.php';
 $formSource = isset($title) ? htmlspecialchars($title) : (isset($blog['title']) ? htmlspecialchars($blog['title']) : 'General Experience');
 ?>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <div class="booking-form-wrap" style="background:#fff; padding:24px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.06); margin-top:30px; margin-bottom:30px;">
     <h3 style="margin-top:0; font-family:var(--font-display); font-size:1.6rem; margin-bottom:6px;">Book This Experience</h3>
     <p style="color:var(--color-text-on-light-2); font-size:14.5px; margin-top:0; margin-bottom:16px;">Fill out the form below or contact us on WhatsApp to lock in your reservation.</p>
@@ -26,6 +28,10 @@ $formSource = isset($title) ? htmlspecialchars($title) : (isset($blog['title']) 
         <div style="margin-bottom:20px;">
             <label style="display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:4px; color:var(--color-primary-dark)">Dates / Message</label>
             <textarea name="message" rows="3" required style="width:100%; padding:10px 12px; border:1px solid #d4cdc5; border-radius:8px; font-family:inherit; background:#faf9f7; resize:vertical;"></textarea>
+        </div>
+        
+        <div style="margin-bottom:20px;">
+            <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
         </div>
         
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">

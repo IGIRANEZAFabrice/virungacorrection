@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/recaptcha.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -767,6 +768,7 @@ html {
 
     </style>
     <script src="../js/header.js" defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Custom</title>
   </head>
   <body>
@@ -824,6 +826,32 @@ html {
             tourism.</p>
 
         <form method="POST" action="process_build.php">
+          <?php if (isset($_GET['success']) && $_GET['success'] === 'true'): ?>
+            <div style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px; text-align: center; font-weight: 500;">
+                Your custom trip plan has been submitted successfully! We will contact you shortly.
+            </div>
+          <?php elseif (isset($_GET['error'])): ?>
+            <div style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px; text-align: center; font-weight: 500;">
+                <?php
+                    switch ($_GET['error']) {
+                        case 'recaptcha_failed':
+                            echo 'Please complete the reCAPTCHA verification.';
+                            break;
+                        case 'missing_fields':
+                            echo 'Please fill in all required fields.';
+                            break;
+                        case 'invalid_email':
+                            echo 'Please enter a valid email address.';
+                            break;
+                        case 'database_error':
+                            echo 'An error occurred. Please try again later.';
+                            break;
+                        default:
+                            echo 'An unexpected error occurred. Please try again.';
+                    }
+                ?>
+            </div>
+          <?php endif; ?>
           <!-- About you section -->
           <div class="form-section">
             <h2>About you</h2>
@@ -954,6 +982,10 @@ html {
                   data*</label
                 >
               </div>
+            </div>
+
+            <div class="form-group-content" style="margin-bottom: 20px; display: flex; justify-content: center;">
+              <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
             </div>
 
             <div class="submit-section">

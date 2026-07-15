@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -174,6 +175,13 @@ function sendBookingNotificationEmail($recipientEmail, $subject, $bodyHtml) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate reCAPTCHA first
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+    if (empty($recaptchaResponse) || !verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+        header("Location: itenaryopen.php?id=" . urlencode((string)($_POST['tour_id'] ?? '')) . "&error=recaptcha_failed");
+        exit;
+    }
+
     // Get form data
     $full_name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/recaptcha.php';
 $pageTitle = 'Contact Us — Virunga Collective';
 $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hours.';
 ?>
@@ -803,7 +804,7 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
             </div>
 
             <div class="form-minimal-group" style="border:none; margin-bottom: 24px;">
-              <div class="g-recaptcha" data-sitekey="6LcJCDotAAAAAPwVRmfKOpAf_NhK2QSJhUEiO-Cv"></div>
+              <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>"></div>
             </div>
 
             <div class="form-minimal-actions">
