@@ -25,5 +25,10 @@ TestResults.xml
 test.html
 
 # Database Configuration Files
-ecotours/admin/config/*
-homestay/config/*
+ecotours/admin/config/blog.php
+ecotours/admin/config/connection.php
+ecotours/admin/config/database.php
+ecotours/admin/config/db_connect.php
+ecotours/admin/pages/styleguide/config/connection.php
+ecotours/admin/pages/styleguide/config/database.php
+homestay/config/db.php
