@@ -137,7 +137,7 @@ if ($partners_result && mysqli_num_rows($partners_result) > 0) {
                 </div>
                 <div class="stat-card scroll-animate">
                     <i class="fas fa-users stat-icon"></i>
-                    <div class="stat-number"><?php echo number_format((int)($stats['total_beneficiaries'] ?? 0)); ?></div>
+                    <div class="stat-number">221</div>
                     <div class="stat-label">Lives Impacted</div>
                 </div>
                 <div class="stat-card scroll-animate">
@@ -147,7 +147,9 @@ if ($partners_result && mysqli_num_rows($partners_result) > 0) {
                 </div>
                 <div class="stat-card scroll-animate">
                     <i class="fas fa-calendar-alt stat-icon"></i>
-                    <div class="stat-number">3</div>
+                    <div class="stat-number"><?php
+echo date("Y") - 2017;
+?></div>
                     <div class="stat-label">Years of Impact</div>
                 </div>
             </div>
