@@ -52,8 +52,8 @@ function verify_recaptcha($token, $remoteIp = null) {
 
 // Load SMTP credentials from .env
 if (!defined('SMTP_EMAIL') || !defined('SMTP_PASS')) {
-    $smtp_email = 'fabrdaa@gmail.com';
-    $smtp_pass = 'mofrqznkhkthzfog';
+    $smtp_email = '';
+    $smtp_pass = '';
     
     $envPath = __DIR__ . '/../.env';
     if (file_exists($envPath)) {
