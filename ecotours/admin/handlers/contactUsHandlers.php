@@ -105,9 +105,9 @@ function sendContactNotificationEmail($recipientEmail, $subject, $bodyHtml) {
     $email_config = [
         'smtp_host' => 'smtp.gmail.com',
         'smtp_port' => 587,
-        'smtp_username' => 'virungahomestay@gmail.com',
-        'smtp_password' => 'mvkumfdesmiedtnl',
-        'from_email' => 'virungahomestay@gmail.com',
+        'smtp_username' => SMTP_EMAIL,
+        'smtp_password' => SMTP_PASS,
+        'from_email' => SMTP_EMAIL,
         'from_name' => 'Virunga Ecotours System',
     ];
 

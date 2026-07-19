@@ -44,108 +44,109 @@ $message = trim($_POST['message'] ?? '');
 
 // Validate
 if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'Please fill in all required fields']);
+    echo json_encode(['status' => 'error', 'message' => 'Please fill in all required fields']);
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'Please enter a valid email address']);
+    echo json_encode(['status' => 'error', 'message' => 'Please enter a valid email address']);
     exit;
 }
 
 try {
     $mail = new PHPMailer(true);
-    $mail-&gt;isSMTP();
-    $mail-&gt;Host = 'smtp.gmail.com';
-    $mail-&gt;SMTPAuth = true;
-    $mail-&gt;Username = 'fabrdaa@gmail.com';
-    $mail-&gt;Password = 'mofrqznkhkthzfog';
-    $mail-&gt;SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail-&gt;Port = 465;
-    $mail-&gt;SMTPOptions = [
-        'ssl' =&gt; [
-            'verify_peer' =&gt; false,
-            'verify_peer_name' =&gt; false,
-            'allow_self_signed' =&gt; true
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = SMTP_EMAIL;
+    $mail->Password = SMTP_PASS;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = 465;
+    $mail->SMTPOptions = [
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
         ]
     ];
 
     // Send to admin
-    $mail-&gt;setFrom('fabrdaa@gmail.com', 'Virunga Collective Website');
-    $mail-&gt;addAddress('hello@virungacollective.com');
-    $mail-&gt;addAddress('virungahomestay@gmail.com');
-    $mail-&gt;addReplyTo($email, $name);
-    $mail-&gt;isHTML(true);
-    $mail-&gt;Subject = "New Contact Form: " . $subject;
+    $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Website');
+    $mail->addAddress('hello@virungacollective.com');
+    $mail->addAddress('virungahomestay@gmail.com');
+    $mail->addReplyTo($email, $name);
+    $mail->isHTML(true);
+    $mail->Subject = "New Contact Form: " . $subject;
 
-    $mail-&gt;Body = "
-        &lt;div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'&gt;
-            &lt;div style='background: #1b3a2b; padding: 25px 30px;'&gt;
-                &lt;h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'&gt;New Message Received&lt;/h2&gt;
-            &lt;/div&gt;
-            &lt;div style='padding: 40px 30px; background: white;'&gt;
-                &lt;p style='color: #1f2620; font-size: 16px; margin-bottom: 24px;'&gt;
+    $mail->Body = "
+        <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'>
+            <div style='background: #1b3a2b; padding: 25px 30px;'>
+                <h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'>New Message Received</h2>
+            </div>
+            <div style='padding: 40px 30px; background: white;'>
+                <p style='color: #1f2620; font-size: 16px; margin-bottom: 24px;'>
                     You have received a new message from the Virunga Collective contact form.
-                &lt;/p&gt;
-                &lt;table style='width: 100%; border-collapse: collapse; margin-bottom: 24px;'&gt;
-                    &lt;tr&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270; width: 120px;'&gt;Name:&lt;/td&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620; font-weight: bold;'&gt;" . htmlspecialchars($name) . "&lt;/td&gt;&lt;/tr&gt;
-                    &lt;tr&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'&gt;Email:&lt;/td&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'&gt;&lt;a href='mailto:" . htmlspecialchars($email) . "' style='color: #c9a24b; text-decoration: none;'&gt;" . htmlspecialchars($email) . "&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
-                    " . (!empty($phone) ? "&lt;tr&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'&gt;Phone:&lt;/td&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'&gt;" . htmlspecialchars($phone) . "&lt;/td&gt;&lt;/tr&gt;" : "") . "
-                    &lt;tr&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'&gt;Subject:&lt;/td&gt;&lt;td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'&gt;" . htmlspecialchars($subject) . "&lt;/td&gt;&lt;/tr&gt;
-                &lt;/table&gt;
-                &lt;div style='padding: 20px; background: #f6f2e9;'&gt;
-                    &lt;strong style='display: block; margin-bottom: 12px; color: #1b3a2b;'&gt;Message:&lt;/strong&gt;
-                    &lt;p style='color: #1f2620; margin: 0; line-height: 1.6;'&gt;" . nl2br(htmlspecialchars($message)) . "&lt;/p&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'&gt;
-                &amp;copy; 2026 Virunga Collective. All rights reserved.
-            &lt;/div&gt;
-        &lt;/div&gt;
+                </p>
+                <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px;'>
+                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270; width: 120px;'>Name:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620; font-weight: bold;'>" . htmlspecialchars($name) . "</td></tr>
+                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Email:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'><a href='mailto:" . htmlspecialchars($email) . "' style='color: #c9a24b; text-decoration: none;'>" . htmlspecialchars($email) . "</a></td></tr>
+                    " . (!empty($phone) ? "<tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Phone:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($phone) . "</td></tr>" : "") . "
+                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Subject:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($subject) . "</td></tr>
+                </table>
+                <div style='padding: 20px; background: #f6f2e9;'>
+                    <strong style='display: block; margin-bottom: 12px; color: #1b3a2b;'>Message:</strong>
+                    <p style='color: #1f2620; margin: 0; line-height: 1.6;'>" . nl2br(htmlspecialchars($message)) . "</p>
+                </div>
+            </div>
+            <div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
+                &copy; 2026 Virunga Collective. All rights reserved.
+            </div>
+        </div>
     ";
-    $mail-&gt;AltBody = "New Message Received\n\nName: $name\nEmail: $email" . (!empty($phone) ? "\nPhone: $phone" : "") . "\nSubject: $subject\n\nMessage:\n$message";
+    $mail->AltBody = "New Message Received\n\nName: $name\nEmail: $email" . (!empty($phone) ? "\nPhone: $phone" : "") . "\nSubject: $subject\n\nMessage:\n$message";
 
-    $mail-&gt;send();
+    $mail->send();
 
     // Send confirmation to user
-    $mail-&gt;clearAddresses();
-    $mail-&gt;clearReplyTos();
-    $mail-&gt;addAddress($email, $name);
-    $mail-&gt;setFrom('fabrdaa@gmail.com', 'Virunga Collective');
-    $mail-&gt;Subject = "Thank you for contacting Virunga Collective";
+    $mail->clearAddresses();
+    $mail->clearReplyTos();
+    $mail->addAddress($email, $name);
+    $mail->setFrom(SMTP_EMAIL, 'Virunga Collective');
+    $mail->Subject = "Thank you for contacting Virunga Collective";
 
-    $mail-&gt;Body = "
-        &lt;div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'&gt;
-            &lt;div style='background: #1b3a2b; padding: 25px 30px;'&gt;
-                &lt;h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'&gt;Thank you, " . htmlspecialchars($name) . "!&lt;/h2&gt;
-            &lt;/div&gt;
-            &lt;div style='padding: 40px 30px; background: white;'&gt;
-                &lt;p style='color: #1f2620; font-size: 16px; line-height: 1.8;'&gt;
+    $mail->Body = "
+        <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'>
+            <div style='background: #1b3a2b; padding: 25px 30px;'>
+                <h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'>Thank you, " . htmlspecialchars($name) . "!</h2>
+            </div>
+            <div style='padding: 40px 30px; background: white;'>
+                <p style='color: #1f2620; font-size: 16px; line-height: 1.8;'>
                     We have received your message and will get back to you within 24 hours.
-                &lt;/p&gt;
-                &lt;div style='padding: 20px; background: #f6f2e9; border-left: 4px solid #c9a24b; margin: 24px 0;'&gt;
-                    &lt;p style='margin: 0; color: #1f2620; font-style: italic;'&gt;
+                </p>
+                <div style='padding: 20px; background: #f6f2e9; border-left: 4px solid #c9a24b; margin: 24px 0;'>
+                    <p style='margin: 0; color: #1f2620; font-style: italic;'>
                         \"Your journey to the heart of Rwanda is important to us.\"
-                    &lt;/p&gt;
-                &lt;/div&gt;
-                &lt;p style='color: #1f2620; font-size: 16px; line-height: 1.8;'&gt;
+                    </p>
+                </div>
+                <p style='color: #1f2620; font-size: 16px; line-height: 1.8;'>
                     In the meantime, feel free to explore our website or contact us via phone at +250 784 513 435.
-                &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'&gt;
+                </p>
+            </div>
+            <div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
                 Virunga Collective | Musanze, Rwanda
-            &lt;/div&gt;
-        &lt;/div&gt;
+            </div>
+        </div>
     ";
-    $mail-&gt;AltBody = "Thank you, $name!\n\nWe have received your message and will get back to you within 24 hours.\n\nBest regards,\nThe Virunga Collective Team";
+    $mail->AltBody = "Thank you, $name!\n\nWe have received your message and will get back to you within 24 hours.\n\nBest regards,\nThe Virunga Collective Team";
 
-    $mail-&gt;send();
+    $mail->send();
 
-    echo json_encode(['status' =&gt; 'success']);
+    echo json_encode(['status' => 'success']);
 
 } catch (Exception $e) {
     $errorLog = __DIR__ . '/contact-error.log';
-    $logMessage = "[" . date('Y-m-d H:i:s') . "] PHPMailer Error: " . $e-&gt;getMessage() . "\n";
+    $logMessage = "[" . date('Y-m-d H:i:s') . "] PHPMailer Error: " . $e->getMessage() . "\n";
     file_put_contents($errorLog, $logMessage, FILE_APPEND);
-    echo json_encode(['status' =&gt; 'error', 'message' =&gt; 'An error occurred while sending your message. Please try again later.']);
+    echo json_encode(['status' => 'error', 'message' => 'An error occurred while sending your message. Please try again later.']);
 }
+

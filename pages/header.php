@@ -188,6 +188,121 @@
       display: inline-flex;
     }
   }
+
+  /* Language Selector styling */
+  .lang-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--cream);
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+    font-weight: 500;
+    opacity: 0.88;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 4px;
+    transition: opacity 0.2s, color 0.2s;
+    outline: none;
+  }
+  .lang-btn:hover {
+    opacity: 1;
+    color: var(--gold);
+  }
+  .lang-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 12px;
+    background: var(--forest-deep);
+    border: 1px solid rgba(201, 162, 75, 0.3);
+    border-radius: 8px;
+    list-style: none;
+    padding: 8px 0;
+    min-width: 140px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 10010;
+  }
+  .lang-menu.open {
+    display: block;
+    animation: langFadeInDown 0.2s ease;
+  }
+  .lang-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-menu li a:hover {
+    background: rgba(201, 162, 75, 0.15);
+    color: var(--gold-light);
+  }
+  .flag-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  
+  @keyframes langFadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Hide Google Translate Bar & Popups */
+  .goog-te-banner-frame, 
+  .goog-te-banner-frame.skiptranslate,
+  .goog-te-balloon-frame,
+  .goog-te-menu-value,
+  #google_translate_element {
+    display: none !important;
+  }
+  body {
+    top: 0px !important;
+  }
+  font {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Responsive styling for Mobile Nav */
+  @media (max-width: 767px) {
+    .lang-dropdown {
+      margin-top: 10px;
+      width: 100%;
+    }
+    .lang-btn {
+      width: 100%;
+      justify-content: space-between;
+      padding: 8px 0;
+    }
+    .lang-menu {
+      position: static;
+      box-shadow: none;
+      border: none;
+      background: rgba(255,255,255,0.03);
+      margin-top: 6px;
+      width: 100%;
+      display: none;
+    }
+    .lang-menu.open {
+      display: block;
+    }
+  }
 </style>
 
 <header id="siteHeader">
@@ -214,6 +329,16 @@
       <li><a href="<?php echo htmlspecialchars($baseLink('membership')); ?>">Membership</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('about-us')); ?>">Story</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('contact-us')); ?>">Enquire</a></li>
+      <li class="lang-dropdown">
+        <button class="lang-btn" id="langBtn" aria-label="Select Language">
+          <span class="flag-icon" id="currentFlag">🇬🇧</span> <span class="lang-text" id="currentLangText">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+        </button>
+        <ul class="lang-menu" id="langMenu">
+          <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
+          <li><a href="#" onclick="changeLanguage('fr'); return false;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
+          <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+        </ul>
+      </li>
     </ul>
     <button
       class="nav-close"
@@ -264,3 +389,81 @@
     });
   }
 </script>
+
+<!-- Google Translate Widget Container (Hidden) -->
+<div id="google_translate_element" style="display:none;"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,fr,nl',
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+
+  function changeLanguage(langCode) {
+    if (langCode === 'en') {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname;
+    } else {
+      document.cookie = "googtrans=/en/" + langCode + "; path=/;";
+      document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=." + window.location.hostname;
+    }
+    window.location.reload();
+  }
+
+  // Manage UI state and auto-detection
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentFlag = document.getElementById("currentFlag");
+    const currentLangText = document.getElementById("currentLangText");
+    const langBtn = document.getElementById("langBtn");
+    const langMenu = document.getElementById("langMenu");
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const transCookie = getCookie('googtrans');
+    let currentLang = 'en';
+    if (transCookie) {
+      const parts = transCookie.split('/');
+      currentLang = parts[parts.length - 1] || 'en';
+    } else {
+      // Auto-detect browser/system language on first visit
+      const userLang = (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
+      if (['fr', 'nl'].includes(userLang)) {
+        changeLanguage(userLang);
+        return;
+      }
+    }
+
+    // Update Flag & Label
+    if (currentLang === 'fr') {
+      if (currentFlag) currentFlag.innerText = '🇫🇷';
+      if (currentLangText) currentLangText.innerText = 'FR';
+    } else if (currentLang === 'nl') {
+      if (currentFlag) currentFlag.innerText = '🇳🇱';
+      if (currentLangText) currentLangText.innerText = 'NL';
+    } else {
+      if (currentFlag) currentFlag.innerText = '🇬🇧';
+      if (currentLangText) currentLangText.innerText = 'EN';
+    }
+
+    // Toggle Dropdown menu
+    if (langBtn && langMenu) {
+      langBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        langMenu.classList.toggle("open");
+      });
+
+      document.addEventListener("click", () => {
+        langMenu.classList.remove("open");
+      });
+    }
+  });
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

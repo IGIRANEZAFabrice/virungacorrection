@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/recaptcha.php';
 /**
  * Automated Email Summary System
  * Sends daily summaries of new submissions from database tables
@@ -81,9 +82,9 @@ try {
     $email_config = [
         'smtp_host' => 'smtp.gmail.com',
         'smtp_port' => 587,
-        'smtp_username' => 'fabrdaa@gmail.com',
-        'smtp_password' => 'mofrqznkhkthzfog', 
-        'from_email' => 'fabrdaa@gmail.com',
+        'smtp_username' => SMTP_EMAIL,
+        'smtp_password' => SMTP_PASS, 
+        'from_email' => SMTP_EMAIL,
         'from_name' => 'Virunga Ecotours System',
         'to_email' => 'virungahomestay@gmail.com',
         'subject' => 'Daily Summary Report - ' . date('Y-m-d H:i:s')

@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'fabrdaa@gmail.com';
-        $mail->Password = 'mofrqznkhkthzfog';
+        $mail->Username = SMTP_EMAIL;
+        $mail->Password = SMTP_PASS;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         );
 
         // --- 1. SEND NOTIFICATION TO ADMIN ---
-        $mail->setFrom('fabrdaa@gmail.com', BUSINESS_NAME . ' Website');
+        $mail->setFrom(SMTP_EMAIL, BUSINESS_NAME . ' Website');
         $mail->addAddress(ADMIN_EMAIL); 
         $mail->addReplyTo($email, $name);
 
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->clearAddresses();
         $mail->clearReplyTos();
         $mail->addAddress($email, $name);
-        $mail->setFrom('fabrdaa@gmail.com', BUSINESS_NAME);
+        $mail->setFrom(SMTP_EMAIL, BUSINESS_NAME);
         
         $mail->Subject = "We've received your inquiry - " . BUSINESS_NAME;
         

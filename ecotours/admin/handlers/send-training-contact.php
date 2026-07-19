@@ -1,4 +1,6 @@
 <?php
+$rootDir = dirname(__DIR__, 2);
+require_once $rootDir . '/config/recaptcha.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -6,8 +8,6 @@ use PHPMailer\PHPMailer\Exception;
 header('Content-Type: application/json');
 
 // Load PHPMailer
-$rootDir = dirname(__DIR__, 2);
-
 if (file_exists($rootDir . '/vendor/autoload.php')) {
     require_once $rootDir . '/vendor/autoload.php';
 }
@@ -88,9 +88,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $email_config = [
     'smtp_host'     => 'smtp.gmail.com',
     'smtp_port'     => 587,
-    'smtp_username' => 'virungahomestay@gmail.com',
-    'smtp_password' => 'mvkumfdesmiedtnl',
-    'from_email'    => 'virungahomestay@gmail.com',
+    'smtp_username' => SMTP_EMAIL,
+    'smtp_password' => SMTP_PASS,
+    'from_email'    => SMTP_EMAIL,
     'from_name'     => 'Virunga Ecotours Training',
 ];
 

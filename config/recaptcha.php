@@ -49,3 +49,38 @@ function verify_recaptcha($token, $remoteIp = null) {
     $verifyJson = json_decode($verifyResult);
     return !empty($verifyJson) && !empty($verifyJson->success);
 }
+
+// Load SMTP credentials from .env
+if (!defined('SMTP_EMAIL') || !defined('SMTP_PASS')) {
+    $smtp_email = 'fabrdaa@gmail.com';
+    $smtp_pass = 'mofrqznkhkthzfog';
+    
+    $envPath = __DIR__ . '/../.env';
+    if (file_exists($envPath)) {
+        $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
+            if (strpos($line, '=') !== false) {
+                list($key, $value) = explode('=', $line, 2);
+                $key = trim($key);
+                $value = trim($value);
+                $value = trim($value, '"\'');
+                if ($key === 'smtp_email') {
+                    $smtp_email = $value;
+                } elseif ($key === 'smtp_pass') {
+                    $smtp_pass = $value;
+                }
+            }
+        }
+    }
+    
+    if (!defined('SMTP_EMAIL')) {
+        define('SMTP_EMAIL', $smtp_email);
+    }
+    if (!defined('SMTP_PASS')) {
+        define('SMTP_PASS', $smtp_pass);
+    }
+}
+
