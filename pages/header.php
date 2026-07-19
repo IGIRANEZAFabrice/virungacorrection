@@ -329,9 +329,9 @@
       <li><a href="<?php echo htmlspecialchars($baseLink('membership')); ?>">Membership</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('about-us')); ?>">Story</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('contact-us')); ?>">Enquire</a></li>
-      <li class="lang-dropdown">
+      <li class="lang-dropdown notranslate" translate="no">
         <button class="lang-btn" id="langBtn" aria-label="Select Language">
-          <span class="flag-icon" id="currentFlag">🇬🇧</span> <span class="lang-text" id="currentLangText">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+          <span class="flag-icon" id="currentFlag">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
         </button>
         <ul class="lang-menu" id="langMenu">
           <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
@@ -414,10 +414,36 @@
     window.location.reload();
   }
 
+  // Hide Google Translate toolbar and reset layout shift
+  const hideGoogleTranslateBar = () => {
+    const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe.goog-te-banner-frame") || document.getElementById(":span.global");
+    if (banner) {
+      banner.style.display = "none";
+      banner.style.visibility = "hidden";
+    }
+    document.body.style.top = "0px";
+    document.body.style.position = "static";
+    document.documentElement.style.paddingTop = "0px";
+    
+    // Also remove the native Google Translate iframe wrapper class if present
+    const skipClasses = document.getElementsByClassName("skiptranslate");
+    for (let i = 0; i < skipClasses.length; i++) {
+      if (skipClasses[i].tagName === 'IFRAME') {
+        skipClasses[i].style.display = "none";
+        skipClasses[i].style.visibility = "hidden";
+      }
+    }
+  };
+
+  window.addEventListener("load", () => {
+    hideGoogleTranslateBar();
+    // Run periodically to prevent late loads from shifting the page
+    setInterval(hideGoogleTranslateBar, 150);
+  });
+
   // Manage UI state and auto-detection
   document.addEventListener("DOMContentLoaded", () => {
     const currentFlag = document.getElementById("currentFlag");
-    const currentLangText = document.getElementById("currentLangText");
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
 
@@ -441,16 +467,13 @@
       }
     }
 
-    // Update Flag & Label
+    // Update Flag
     if (currentLang === 'fr') {
       if (currentFlag) currentFlag.innerText = '🇫🇷';
-      if (currentLangText) currentLangText.innerText = 'FR';
     } else if (currentLang === 'nl') {
       if (currentFlag) currentFlag.innerText = '🇳🇱';
-      if (currentLangText) currentLangText.innerText = 'NL';
     } else {
       if (currentFlag) currentFlag.innerText = '🇬🇧';
-      if (currentLangText) currentLangText.innerText = 'EN';
     }
 
     // Toggle Dropdown menu

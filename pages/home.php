@@ -1858,7 +1858,7 @@
           </ul>
         </div>
         <div class="partners-image reveal-right" style="--reveal-delay: 0.2s">
-          <img src="<?php echo htmlspecialchars($baseLink('img/training.jpeg')); ?>" alt="Virunga Academy professional local guides in training">
+          <img src="<?php echo htmlspecialchars($baseLink('img/training.png')); ?>" alt="Virunga Academy professional local guides in training">
         </div>
       </div>
     </section>
