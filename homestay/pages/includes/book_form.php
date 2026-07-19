@@ -48,6 +48,18 @@ $formSource = isset($title) ? htmlspecialchars($title) : (isset($blog['title']) 
 function submitBooking(e) {
     e.preventDefault();
     const form = e.target;
+    
+    // Check if reCAPTCHA is completed
+    const recaptchaResponse = form.querySelector('[name="g-recaptcha-response"]');
+    if (recaptchaResponse && !recaptchaResponse.value) {
+        const res = form.querySelector('#bookResult');
+        if (res) {
+            res.innerHTML = "Please complete the reCAPTCHA verification.";
+            res.style.color = "var(--color-error, #f43f5e)";
+        }
+        return;
+    }
+
     const res = form.querySelector('#bookResult');
     const submitBtn = form.querySelector('button[type="submit"]');
     res.innerHTML = "Sending inquiry...";

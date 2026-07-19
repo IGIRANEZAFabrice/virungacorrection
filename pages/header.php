@@ -211,6 +211,7 @@
       <li><a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">Journeys</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Stays</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>">Community Impact</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('membership')); ?>">Membership</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('about-us')); ?>">Story</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('contact-us')); ?>">Enquire</a></li>
     </ul>

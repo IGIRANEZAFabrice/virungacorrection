@@ -113,6 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       if (!validate()) return;
 
+      const recaptchaResponse = form.querySelector('[name="g-recaptcha-response"]');
+      if (recaptchaResponse && !recaptchaResponse.value) {
+          alert("Please complete the reCAPTCHA verification.");
+          return;
+      }
+
       // Select button by either class used in the project
       const btn = form.querySelector(".btn-submit") || form.querySelector(".btn-journey");
       if (btn instanceof HTMLButtonElement) {

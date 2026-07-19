@@ -2162,5 +2162,143 @@
       ]
     }
     </script>
+    <style>
+      .member-popup {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 340px;
+        background: rgba(13, 31, 22, 0.96);
+        border: 1px solid rgba(201, 162, 75, 0.4);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        color: #f6f2e9;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+        transform: translateX(120%);
+        opacity: 0;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        font-family: "Jost", sans-serif;
+      }
+      .member-popup.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      .member-popup__close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: rgba(246, 242, 233, 0.6);
+        font-size: 1.5rem;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.2s ease;
+      }
+      .member-popup__close:hover {
+        color: #c9a24b;
+      }
+      .member-popup__badge {
+        display: inline-block;
+        background: rgba(201, 162, 75, 0.15);
+        border: 1px solid #c9a24b;
+        color: #e4c97a;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 3px 10px;
+        border-radius: 50px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+      .member-popup h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.45rem;
+        color: #c9a24b;
+        margin-bottom: 8px;
+        font-weight: 500;
+        line-height: 1.25;
+      }
+      .member-popup__text {
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: rgba(246, 242, 233, 0.85);
+        margin-bottom: 18px;
+      }
+      .member-popup__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #c9a24b;
+        color: #0d1f16;
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 6px;
+        transition: all 0.25s ease;
+        border: 1px solid #c9a24b;
+      }
+      .member-popup__btn:hover {
+        background: transparent;
+        color: #c9a24b;
+        transform: translateY(-2px);
+      }
+    </style>
+
+    <!-- Membership Advert Popup -->
+    <div id="membershipPopup" class="member-popup">
+      <button id="closeMemberPopup" class="member-popup__close" aria-label="Close Ad">&times;</button>
+      <div class="member-popup__content">
+        <div class="member-popup__badge">MEMBER CLUB</div>
+        <h3>Virunga Collective Membership</h3>
+        <p class="member-popup__text">Travel. Belong. Make an Impact. You can become a member! Click to learn how.</p>
+        <a href="<?php echo htmlspecialchars($baseLink('membership')); ?>" class="member-popup__btn">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const popup = document.getElementById("membershipPopup");
+      const closeBtn = document.getElementById("closeMemberPopup");
+      const ecosystemSection = document.getElementById("ecosystem");
+      
+      let hasTriggered = false;
+      let autoCloseTimeout;
+
+      if (popup && closeBtn && ecosystemSection) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasTriggered) {
+              hasTriggered = true;
+              
+              // Slide in the popup after a brief delay
+              setTimeout(() => {
+                popup.classList.add("show");
+                
+                // Auto close in 30 seconds
+                autoCloseTimeout = setTimeout(() => {
+                  popup.classList.remove("show");
+                }, 30000);
+              }, 800);
+              
+              // Once triggered, stop observing
+              observer.unobserve(ecosystemSection);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        observer.observe(ecosystemSection);
+
+        // Close on button click
+        closeBtn.addEventListener("click", () => {
+          clearTimeout(autoCloseTimeout);
+          popup.classList.remove("show");
+        });
+      }
+    });
+    </script>
   </body>
 </html>

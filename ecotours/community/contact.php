@@ -438,7 +438,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
                             </div>
                         <?php endif; ?>
 
-                        <form method="POST" class="contact-form" id="contactForm">
+                        <form method="POST" class="contact-form" id="contactForm" onsubmit="const r = this.querySelector('[name=\'g-recaptcha-response\']'); if(r &amp;&amp; !r.value){ alert('Please complete the reCAPTCHA verification.'); return false; }">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="name">Full Name *</label>

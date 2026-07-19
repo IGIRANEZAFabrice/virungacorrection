@@ -36,12 +36,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Form Submission (for demo purposes)
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-    this.reset();
-});
+// Form Submission Validation
+const contactFormContent = document.getElementById('contactForm-content');
+if (contactFormContent) {
+    contactFormContent.addEventListener('submit', function(e) {
+        const recaptchaResponse = this.querySelector('[name="g-recaptcha-response"]');
+        if (recaptchaResponse && !recaptchaResponse.value) {
+            e.preventDefault();
+            alert("Please complete the reCAPTCHA verification.");
+        }
+    });
+}
 
 // Scroll Animation
 function checkVisibility() {

@@ -825,7 +825,7 @@ html {
             The focus is on sustainable travel and conservation, with an emphasis on both education and responsible 
             tourism.</p>
 
-        <form method="POST" action="process_build.php">
+        <form method="POST" action="process_build.php" id="buildForm">
           <?php if (isset($_GET['success']) && $_GET['success'] === 'true'): ?>
             <div style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px; text-align: center; font-weight: 500;">
                 Your custom trip plan has been submitted successfully! We will contact you shortly.
@@ -1009,6 +1009,20 @@ html {
       </div>
     </div>
     
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById('buildForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const r = this.querySelector('[name="g-recaptcha-response"]');
+          if (r && !r.value) {
+            e.preventDefault();
+            alert("Please complete the reCAPTCHA verification.");
+          }
+        });
+      }
+    });
+    </script>
    <?php include 'includes/footer.php'; ?>
   </body>
 </html>

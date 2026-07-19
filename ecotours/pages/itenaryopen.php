@@ -451,6 +451,20 @@ require_once './itenaryopenhandler.php';
         <?php endif; ?>
       </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById('contactForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const r = this.querySelector('[name="g-recaptcha-response"]');
+          if (r && !r.value) {
+            e.preventDefault();
+            alert("Please complete the reCAPTCHA verification.");
+          }
+        });
+      }
+    });
+    </script>
     <?php include('./includes/footer.php'); ?>
   </body>
   <script src="js/new.js" defer></script>

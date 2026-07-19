@@ -1014,6 +1014,12 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
           e.preventDefault();
           if (!validate()) return;
 
+          const recaptchaResponse = form.querySelector('[name="g-recaptcha-response"]');
+          if (recaptchaResponse && !recaptchaResponse.value) {
+              alert("Please complete the reCAPTCHA verification.");
+              return;
+          }
+
           const btn = form.querySelector(".btn-journey");
           if (btn instanceof HTMLButtonElement) {
             btn.classList.add("btn-loading");

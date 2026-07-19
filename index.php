@@ -42,6 +42,7 @@ $pages = [
     'rules' => ['file' => __DIR__ . '/homestay/pages/houserules.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'impact' => ['file' => __DIR__ . '/homestay/pages/impact.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'safety' => ['file' => __DIR__ . '/homestay/pages/safety.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
+    'membership' => ['file' => __DIR__ . '/pages/membership.php', 'cwd' => null, 'assetBase' => $link('')],
     'ecotours/community' => ['file' => __DIR__ . '/ecotours/community/index.php', 'cwd' => __DIR__ . '/ecotours/community', 'assetBase' => $link('ecotours/community/')],
     'experiences' => ['file' => __DIR__ . '/ecotours/index.php', 'cwd' => __DIR__ . '/ecotours', 'assetBase' => $link('ecotours/')],
     'journeys' => ['file' => __DIR__ . '/ecotours/index.php', 'cwd' => __DIR__ . '/ecotours', 'assetBase' => $link('ecotours/')],
