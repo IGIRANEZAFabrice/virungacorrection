@@ -212,7 +212,7 @@ include 'includes/header.php';
       </div>
       <div class="cta-strip-actions reveal reveal-delay-2">
         <a href="<?php echo $baseLink('rooms'); ?>" class="btn-primary-sm">View Rooms &#8594;</a>
-        <a href="<?php echo $baseLink('about'); ?>" class="btn-ghost-sm">Our Story</a>
+        <a href="<?php echo $baseLink('about-us'); ?>" class="btn-ghost-sm">Our Story</a>
       </div>
     </div>
 <?php include 'includes/footer.php'; ?>

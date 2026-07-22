@@ -1040,7 +1040,7 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
           <li><a href="<?php echo $baseLink('homestays'); ?>">Stays</a></li>
           <li><a href="<?php echo $baseLink('experiences'); ?>">Journeys</a></li>
           <li><a href="<?php echo $baseLink('ecotours/community'); ?>">Community</a></li>
-          <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
+          <li><a href="<?php echo $baseLink('about'); ?>">Our Story</a></li>
         </ul>
       </div>
       <div class="footer-bottom">

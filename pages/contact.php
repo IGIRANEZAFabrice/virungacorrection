@@ -907,7 +907,7 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
     </div>
     <div class="cta-strip-actions reveal reveal-delay-2">
       <a href="<?php echo $baseLink('homestays'); ?>" class="btn-primary-sm">View Rooms <i class="fas fa-arrow-right"></i></a>
-      <a href="<?php echo $baseLink('about-us'); ?>" class="btn-ghost-sm">Our Story</a>
+      <a href="<?php echo $baseLink('about'); ?>" class="btn-ghost-sm">Our Story</a>
     </div>
   </div>
 

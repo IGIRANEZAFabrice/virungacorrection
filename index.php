@@ -23,7 +23,7 @@ $pages = [
     'home' => ['file' => __DIR__ . '/pages/home.php', 'cwd' => null, 'assetBase' => $link('')],
     'homestays' => ['file' => __DIR__ . '/homestay/pages/home.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'stays' => ['file' => __DIR__ . '/homestay/pages/home.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
-    'about-us' => ['file' => __DIR__ . '/pages/about.php', 'cwd' => null, 'assetBase' => $link('')],
+    'about-us' => ['file' => __DIR__ . '/homestay/pages/about-us.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'about' => ['file' => __DIR__ . '/pages/about.php', 'cwd' => null, 'assetBase' => $link('')],
     'rooms' => ['file' => __DIR__ . '/homestay/pages/rooms.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'houserules' => ['file' => __DIR__ . '/homestay/pages/houserules.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
