@@ -244,6 +244,29 @@ require_once './itenaryopenhandler.php';
       </section>
     <?php endif; ?>
 
+    <!-- Membership Advertisement Banner -->
+    <section class="membership-ad-section" style="background: linear-gradient(135deg, #122a1f 0%, #1b3a2b 100%); color: #f6f2e9; padding: 44px 32px; border-radius: 16px; margin: 40px auto; max-width: 1100px; box-shadow: 0 12px 35px rgba(0,0,0,0.18); position: relative; overflow: hidden;">
+      <div style="position: absolute; right: -40px; bottom: -40px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(201, 162, 75, 0.18) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none;"></div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; position: relative; z-index: 2;">
+        <div style="flex: 1 1 500px;">
+          <div style="display: inline-block; background: rgba(201, 162, 75, 0.18); border: 1px solid rgba(201, 162, 75, 0.4); color: #c9a24b; padding: 4px 14px; border-radius: 50px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 12px;">
+            <i class="fas fa-crown" style="margin-right: 6px;"></i> Exclusive Virunga Membership
+          </div>
+          <h3 style="font-family: var(--font-display), 'Cormorant Garamond', serif; font-size: 2rem; color: #f6f2e9; margin-bottom: 10px; line-height: 1.25;">
+            Unlock VIP Travel Perks & Community Conservation Benefits
+          </h3>
+          <p style="color: rgba(246, 242, 233, 0.88); font-size: 1.02rem; margin-bottom: 0; line-height: 1.6;">
+            Join the <strong>Virunga Collective Membership</strong> for up to 15% off boutique homestays, complimentary gorilla trek concierge service, priority booking, and direct community conservation support.
+          </p>
+        </div>
+        <div style="flex-shrink: 0;">
+          <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('membership')) : '../../pages/membership.php'; ?>" style="display: inline-flex; align-items: center; gap: 10px; background: #c9a24b; color: #122a1f; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(201, 162, 75, 0.3);">
+            Explore Membership Tiers <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section class="contact-section">
       <div class="contact-decoration"></div>
 

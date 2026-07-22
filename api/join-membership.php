@@ -27,12 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
 if (empty($recaptchaResponse)) {
-    echo json_encode(['status' => 'error', 'message' => 'Please complete the reCAPTCHA']);
+    echo json_encode(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification']);
     exit;
 }
 
 if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
-    echo json_encode(['status' => 'error', 'message' => 'reCAPTCHA verification failed']);
+    echo json_encode(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
     exit;
 }
 
@@ -42,59 +42,132 @@ $lastName = trim($_POST['lastName'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
 $interest = trim($_POST['interest'] ?? 'Explorer');
+$country = trim($_POST['country'] ?? '');
 
 if (empty($firstName) || empty($lastName) || empty($email)) {
-    echo json_encode(['status' => 'error', 'message' => 'First name, last name, and email are required']);
+    echo json_encode(['status' => 'error', 'message' => 'First name, last name, and email are required.']);
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid email address']);
+    echo json_encode(['status' => 'error', 'message' => 'Please enter a valid email address.']);
     exit;
 }
 
-// Optionally send email notification if PHPMailer is loaded
+$mailSent = false;
+$mailError = '';
+
 if ($mailLoaded) {
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
-        
-        // SMTP configurations (usually loaded from environmental configs, fallback to default SMTP)
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'virungacommunityprograms@gmail.com'; // Admin receiving address
-        $mail->Password   = 'your-app-password'; // Placeholder or env password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        
-        // Settings
-        $mail->setFrom('virungacommunityprograms@gmail.com', 'Virunga Collective Membership');
-        $mail->addAddress('virungacommunityprograms@gmail.com'); // Receive signup notice
+        $mail->Username   = SMTP_EMAIL;
+        $mail->Password   = SMTP_PASS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+
+        // Send to admin
+        $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Membership');
+        $mail->addAddress(SMTP_EMAIL);
+        $mail->addAddress('hello@virungacollective.com');
+        $mail->addAddress('virungahomestay@gmail.com');
+        $mail->addAddress('info@virungaecotours.com');
         $mail->addReplyTo($email, "$firstName $lastName");
-        
+
         $mail->isHTML(true);
-        $mail->Subject = "New Virunga Collective Membership Application";
-        $mail->Body    = "
-            <h2>New Membership Application Details</h2>
-            <p><strong>First Name:</strong> $firstName</p>
-            <p><strong>Last Name:</strong> $lastName</p>
-            <p><strong>Email:</strong> $email</p>
-            <p><strong>Phone:</strong> $phone</p>
-            <p><strong>Preferred Level:</strong> $interest</p>
-            <p><strong>Date:</strong> " . date('Y-m-d H:i:s') . "</p>
-        ";
+        $mail->Subject = "New Membership Application: $firstName $lastName ($interest)";
         
-        // In virtual simulation, we don't block success if actual SMTP details are unconfigured
-        // $mail->send();
+        $mail->Body = "
+            <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee; border-radius: 8px; overflow: hidden;'>
+                <div style='background: #1b3a2b; padding: 25px 30px; text-align: center;'>
+                    <h2 style='color: #c9a24b; margin: 0; font-family: \"Cormorant Garamond\", serif; font-size: 24px;'>New Membership Application</h2>
+                    <p style='color: #f6f2e9; margin: 5px 0 0; font-size: 14px;'>Virunga Collective Ecosystem</p>
+                </div>
+                <div style='padding: 30px; background: #ffffff;'>
+                    <p style='color: #1f2620; font-size: 15px; margin-bottom: 20px;'>
+                        A new membership registration has been submitted on the website.
+                    </p>
+                    <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;'>
+                        <tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; width: 140px; font-weight: bold;'>Applicant Name:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1f2620; font-weight: bold;'>" . htmlspecialchars("$firstName $lastName") . "</td></tr>
+                        <tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; font-weight: bold;'>Email Address:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1f2620;'><a href='mailto:" . htmlspecialchars($email) . "' style='color: #c9a24b; text-decoration: none;'>" . htmlspecialchars($email) . "</a></td></tr>
+                        " . (!empty($phone) ? "<tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; font-weight: bold;'>Phone:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($phone) . "</td></tr>" : "") . "
+                        " . (!empty($country) ? "<tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; font-weight: bold;'>Country:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($country) . "</td></tr>" : "") . "
+                        <tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; font-weight: bold;'>Membership Tier:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1b3a2b; font-weight: bold; font-size: 16px;'>" . htmlspecialchars($interest) . "</td></tr>
+                        <tr><td style='padding: 10px; border-bottom: 1px solid #eee; color: #6e8270; font-weight: bold;'>Submitted Date:</td><td style='padding: 10px; border-bottom: 1px solid #eee; color: #1f2620;'>" . date('Y-m-d H:i:s') . "</td></tr>
+                    </table>
+                </div>
+                <div style='background: #1b3a2b; padding: 15px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
+                    &copy; " . date('Y') . " Virunga Collective. All rights reserved.
+                </div>
+            </div>
+        ";
+
+        $mail->AltBody = "New Membership Application\n\nName: $firstName $lastName\nEmail: $email\nPhone: $phone\nCountry: $country\nTier: $interest\nDate: " . date('Y-m-d H:i:s');
+
+        $mail->send();
+        $mailSent = true;
+
+        // Send confirmation email to user
+        try {
+            $userMail = new PHPMailer(true);
+            $userMail->isSMTP();
+            $userMail->Host       = 'smtp.gmail.com';
+            $userMail->SMTPAuth   = true;
+            $userMail->Username   = SMTP_EMAIL;
+            $userMail->Password   = SMTP_PASS;
+            $userMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $userMail->Port       = 465;
+            $userMail->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ];
+
+            $userMail->setFrom(SMTP_EMAIL, 'Virunga Collective');
+            $userMail->addAddress($email, "$firstName $lastName");
+            $userMail->isHTML(true);
+            $userMail->Subject = "Welcome to Virunga Collective Membership Application";
+            $userMail->Body = "
+                <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee; border-radius: 8px; overflow: hidden;'>
+                    <div style='background: #1b3a2b; padding: 30px; text-align: center;'>
+                        <h1 style='color: #c9a24b; margin: 0; font-family: \"Cormorant Garamond\", serif;'>Welcome to the Collective</h1>
+                    </div>
+                    <div style='padding: 30px; background: #ffffff; color: #1f2620; line-height: 1.6;'>
+                        <p>Dear " . htmlspecialchars($firstName) . ",</p>
+                        <p>Thank you for applying for the <strong>" . htmlspecialchars($interest) . "</strong> tier of the Virunga Collective Membership.</p>
+                        <p>Our team is reviewing your application and will contact you shortly with your exclusive member portal access details, benefits overview, and welcome pack.</p>
+                        <br/>
+                        <p>Warm regards,<br/><strong>The Virunga Collective Team</strong></p>
+                    </div>
+                    <div style='background: #1b3a2b; padding: 15px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
+                        &copy; " . date('Y') . " Virunga Collective. All rights reserved.
+                    </div>
+                </div>
+            ";
+            $userMail->send();
+        } catch (Exception $ex) {
+            // User auto-reply error can be silently ignored
+        }
+
     } catch (Exception $e) {
-        // Log error internally but proceed with success response for simulated experience
+        $mailError = $e->getMessage();
     }
 }
 
-// Return success JSON
 echo json_encode([
     'status' => 'success',
-    'message' => 'Membership registered successfully',
+    'message' => 'Thank you! Your membership application has been submitted successfully.',
     'firstName' => $firstName,
     'lastName' => $lastName,
     'interest' => $interest
