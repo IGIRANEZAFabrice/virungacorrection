@@ -1031,6 +1031,7 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
           const name = (formData.get('fname') || '') + ' ' + (formData.get('lname') || '');
           formData.set('name', name.trim());
           formData.set('source', 'Contact Form: ' + (formData.get('subject') || 'General'));
+          formData.set('user_lang', (document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en');
 
           const apiPath = '<?php echo $baseLink('api/send-contact.php'); ?>';
 

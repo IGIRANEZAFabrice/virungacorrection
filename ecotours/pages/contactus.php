@@ -107,7 +107,8 @@ session_start();
                 </div>
                 <!-- <div id="formResponse" class="alert" style="display:none;">
                 </div> -->
-                <form id="contactForm-content" method="POST" action="../admin/handlers/contactUsHandlers.php">
+                <form id="contactForm-content" method="POST" action="../admin/handlers/contactUsHandlers.php" onsubmit="var l=(document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en'; this.querySelector('[name=user_lang]').value=l;">
+                    <input type="hidden" name="user_lang" value="en">
                     <div class="form-row-content">
                         <div class="form-group-content">
                             <label for="firstName">First Name</label>

@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = (formData.get('fname') || '') + ' ' + (formData.get('lname') || '');
       formData.set('name', name.trim());
       formData.set('source', 'Contact Form: ' + (formData.get('subject') || 'General'));
+      formData.set('user_lang', (document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en');
 
       // Use root-relative path for API
       const apiPath = './api/send_mail.php';

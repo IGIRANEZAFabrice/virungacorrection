@@ -76,11 +76,14 @@ require_once './itenaryopenhandler.php';
       <h2 class="info-title">Did you know we can tailor any tour?</h2>
       <p class="info-subtitle">We are happy to plan your tailor-made holiday</p>
 
-      <div class="specialist-container">
+      <div class="specialist-container" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 15px;">
         <div class="phone-number">
           <i class="fas fa-phone phone-icon"></i>
           <span>+250 784 513 435</span>
         </div>
+        <button id="downloadPdfBtn" class="download-pdf-btn" onclick="generateItineraryPdf();">
+          <i class="fas fa-file-pdf"></i> Download Itinerary PDF
+        </button>
       </div>
     </section>
 
@@ -294,7 +297,8 @@ require_once './itenaryopenhandler.php';
               Booking successful! We'll contact you shortly || <a href="../pages/payments.php">Payment methods</a>
             </div>
           <?php endif; ?>
-          <form method="POST" action="./itenaryopenhandler.php" id="contactForm">
+          <form method="POST" action="./itenaryopenhandler.php" id="contactForm" onsubmit="var l=(document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en'; this.querySelector('[name=user_lang]').value=l;">
+            <input type="hidden" name="user_lang" value="en">
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Full Name</label>
@@ -597,11 +601,120 @@ require_once './itenaryopenhandler.php';
       box-shadow: 0 4px 15px rgba(201, 162, 75, 0.3);
       width: 100%;
     }
-    .recaptcha-modal-btn:hover {
-      background: #e4c97a;
+    .download-pdf-btn {
+      background: linear-gradient(135deg, #c9a24b 0%, #a37f30 100%);
+      color: #1b3a2b;
+      border: none;
+      padding: 12px 26px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(201, 162, 75, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: inherit;
+    }
+    .download-pdf-btn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(201, 162, 75, 0.5);
+      background: linear-gradient(135deg, #d8b056 0%, #b89139 100%);
     }
     </style>
+
+    <!-- html2pdf Library for Multilingual PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+    function generateItineraryPdf() {
+      const btn = document.getElementById("downloadPdfBtn");
+      const originalBtnHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+      }
+
+      // 1. Temporarily expand all itinerary days so every day is visible in the PDF
+      const dayContents = document.querySelectorAll('.itinerary-day .day-content');
+      const activeStates = [];
+      dayContents.forEach((c, idx) => {
+        activeStates[idx] = c.classList.contains('active');
+        c.classList.add('active');
+        c.style.display = 'block';
+      });
+
+      // 2. Clone and build printable container
+      const element = document.createElement('div');
+      element.className = 'pdf-export-container';
+      element.style.padding = '25px';
+      element.style.background = '#ffffff';
+      element.style.color = '#1f2620';
+      element.style.fontFamily = 'Georgia, serif';
+
+      // Branding Header
+      const headerHtml = `
+        <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #c9a24b; margin-bottom: 25px;">
+          <h1 style="color: #1b3a2b; margin: 0; font-size: 26px; font-family: 'Cormorant Garamond', serif;">VIRUNGA ECOTOURS</h1>
+          <p style="color: #6e8270; margin: 5px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;">Regenerative Safaris & Community Journeys in Rwanda</p>
+          <p style="color: #a37f30; margin: 4px 0 0; font-size: 12px;">Website: www.virungacollective.com | WhatsApp: +250 784 513 435</p>
+        </div>
+      `;
+
+      const title = document.querySelector('.hero-title')?.outerHTML || '';
+      const tourInfo = document.querySelector('.second-section')?.innerHTML || '';
+      const daysSection = document.querySelector('.itinerary-days')?.innerHTML || '';
+      const pricingSection = document.querySelector('.pricing-section')?.innerHTML || '';
+
+      element.innerHTML = headerHtml + title + tourInfo + '<h2 style="color:#1b3a2b; margin-top:30px; border-bottom:1px solid #ddd; padding-bottom:8px;">Detailed Day-by-Day Itinerary</h2>' + daysSection + (pricingSection ? '<h2 style="color:#1b3a2b; margin-top:30px; border-bottom:1px solid #ddd; padding-bottom:8px;">Rates & Pricing</h2>' + pricingSection : '');
+
+      // Fix image paths for PDF rendering
+      element.querySelectorAll('img').forEach(img => {
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        img.style.borderRadius = '8px';
+      });
+
+      // 3. Set html2pdf options
+      const opt = {
+        margin:       [0.4, 0.4, 0.5, 0.4],
+        filename:     'Virunga_Itinerary_' + (document.title.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // 4. Generate PDF
+      html2pdf().set(opt).from(element).save().then(() => {
+        // Restore day states
+        dayContents.forEach((c, idx) => {
+          if (!activeStates[idx]) {
+            c.classList.remove('active');
+            c.style.display = '';
+          }
+        });
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalBtnHtml;
+        }
+      }).catch((err) => {
+        console.error(err);
+        dayContents.forEach((c, idx) => {
+          if (!activeStates[idx]) {
+            c.classList.remove('active');
+            c.style.display = '';
+          }
+        });
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalBtnHtml;
+        }
+      });
+    }
+    </script>
     <?php include('./includes/footer.php'); ?>
   </body>
   <script src="js/new.js" defer></script>

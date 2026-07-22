@@ -116,48 +116,12 @@ if ($mailLoaded) {
         $mail->send();
         $mailSent = true;
 
-        // Send confirmation email to user
-        try {
-            $userMail = new PHPMailer(true);
-            $userMail->isSMTP();
-            $userMail->Host       = 'smtp.gmail.com';
-            $userMail->SMTPAuth   = true;
-            $userMail->Username   = SMTP_EMAIL;
-            $userMail->Password   = SMTP_PASS;
-            $userMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            $userMail->Port       = 465;
-            $userMail->SMTPOptions = [
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                ]
-            ];
-
-            $userMail->setFrom(SMTP_EMAIL, 'Virunga Collective');
-            $userMail->addAddress($email, "$firstName $lastName");
-            $userMail->isHTML(true);
-            $userMail->Subject = "Welcome to Virunga Collective Membership Application";
-            $userMail->Body = "
-                <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee; border-radius: 8px; overflow: hidden;'>
-                    <div style='background: #1b3a2b; padding: 30px; text-align: center;'>
-                        <h1 style='color: #c9a24b; margin: 0; font-family: \"Cormorant Garamond\", serif;'>Welcome to the Collective</h1>
-                    </div>
-                    <div style='padding: 30px; background: #ffffff; color: #1f2620; line-height: 1.6;'>
-                        <p>Dear " . htmlspecialchars($firstName) . ",</p>
-                        <p>Thank you for applying for the <strong>" . htmlspecialchars($interest) . "</strong> tier of the Virunga Collective Membership.</p>
-                        <p>Our team is reviewing your application and will contact you shortly with your exclusive member portal access details, benefits overview, and welcome pack.</p>
-                        <br/>
-                        <p>Warm regards,<br/><strong>The Virunga Collective Team</strong></p>
-                    </div>
-                    <div style='background: #1b3a2b; padding: 15px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
-                        &copy; " . date('Y') . " Virunga Collective. All rights reserved.
-                    </div>
-                </div>
-            ";
-            $userMail->send();
-        } catch (Exception $ex) {
-            // User auto-reply error can be silently ignored
+        // Send multilingual confirmation email to applicant
+        if (file_exists(__DIR__ . '/../config/localization.php')) {
+            require_once __DIR__ . '/../config/localization.php';
+            $userLang = $_POST['user_lang'] ?? null;
+            $details = "<strong>Applicant Name:</strong> " . htmlspecialchars("$firstName $lastName") . "<br><strong>Tier Requested:</strong> " . htmlspecialchars($interest);
+            send_multilingual_confirmation_email($email, "$firstName $lastName", "Membership Application - $interest", $details, $userLang);
         }
 
     } catch (Exception $e) {

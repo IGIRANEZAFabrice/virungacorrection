@@ -181,6 +181,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logBuildEmailMessage('Some notification emails failed: ' . implode(', ', $failedRecipients));
         }
 
+        // Send multilingual confirmation email to traveler
+        if (file_exists(__DIR__ . '/../../config/localization.php')) {
+            require_once __DIR__ . '/../../config/localization.php';
+            $userLang = $_POST['user_lang'] ?? null;
+            $details = "<strong>Travel Date:</strong> " . htmlspecialchars($travel_date) . "<br><strong>Trip Duration:</strong> " . htmlspecialchars($trip_days) . " days<br><strong>Group Size:</strong> " . htmlspecialchars($group_size);
+            send_multilingual_confirmation_email($email, $names, "Trip Customization Request", $details, $userLang);
+        }
+
         header('Location: build.php?success=true');
     } else {
         header('Location: build.php?error=database_error');

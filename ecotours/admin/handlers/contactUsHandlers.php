@@ -210,11 +210,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logContactEmailMessage('Some notification emails failed: ' . implode(', ', $failedRecipients));
         }
 
-        // Send confirmation email to the customer
-        $customerBody = buildContactCustomerEmail($fullName, $subject);
-        $customerSubject = 'We received your message - Virunga Ecotours';
-        if (!sendContactNotificationEmail($email, $customerSubject, $customerBody)) {
-            logContactEmailMessage('Customer contact confirmation failed for ' . $email);
+        // Send multilingual confirmation email to the customer
+        if (file_exists(__DIR__ . '/../../../config/localization.php')) {
+            require_once __DIR__ . '/../../../config/localization.php';
+            $userLang = $_POST['user_lang'] ?? null;
+            $details = "<strong>Subject:</strong> " . htmlspecialchars($subject) . "<br><strong>Message:</strong> " . htmlspecialchars($message);
+            send_multilingual_confirmation_email($email, $fullName, $subject, $details, $userLang);
+        } else {
+            $customerBody = buildContactCustomerEmail($fullName, $subject);
+            $customerSubject = 'We received your message - Virunga Ecotours';
+            if (!sendContactNotificationEmail($email, $customerSubject, $customerBody)) {
+                logContactEmailMessage('Customer contact confirmation failed for ' . $email);
+            }
         }
 
         // Store success message in session

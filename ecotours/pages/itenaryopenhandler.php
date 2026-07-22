@@ -268,6 +268,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             logBookingEmailMessage('Some notification emails failed: ' . implode(', ', $failedRecipients));
         }
 
+        // Send multilingual confirmation email to guest
+        if (file_exists(__DIR__ . '/../../config/localization.php')) {
+            require_once __DIR__ . '/../../config/localization.php';
+            $userLang = $_POST['user_lang'] ?? null;
+            $details = "<strong>Tour Title:</strong> " . htmlspecialchars($titleForEmail) . "<br><strong>Travel Date:</strong> " . htmlspecialchars((string)$travel_date) . "<br><strong>Guests:</strong> " . htmlspecialchars((string)$guest_count);
+            send_multilingual_confirmation_email($email, $full_name, "Booking Confirmation - " . $titleForEmail, $details, $userLang);
+        }
+
         // 3) Send confirmation email to the customer.
         $readableDate = $travel_date;
         if (!empty($travel_date)) {

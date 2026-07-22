@@ -1,40 +1,46 @@
+<?php
+  require_once __DIR__ . '/../config/localization.php';
+  $loc = get_localization_data();
+?>
 <!doctype html>
-<html lang="en">
+<html lang="<?php echo htmlspecialchars($loc['code']); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Primary Meta Tags -->
-    <title>Virunga Collective — Boutique Stays, Journeys & Community in Rwanda</title>
-    <meta
-      name="description"
-      content="Discover Virunga Collective: a regenerative travel ecosystem uniting Virunga Ecotours, Virunga Homestay, and Virunga Community Impact. Boutique stays, curated gorilla trekking journeys, and authentic community experiences near Volcanoes National Park in Rwanda, Uganda, and DR Congo."
-    />
-    <meta name="keywords" content="Rwanda gorilla trekking, Volcanoes National Park, Musanze accommodation, Rwanda tours, Uganda tours, Congo tours, East Africa travel, luxury Rwanda safari, boutique lodge Rwanda, Virunga homestay, Virunga ecotours, community tourism Rwanda, regenerative travel Virunga">
+    <!-- Primary Meta Tags (Localized & Custom per Language) -->
+    <title><?php echo htmlspecialchars($loc['seo_title']); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>" />
+    <meta name="keywords" content="<?php echo htmlspecialchars($loc['seo_keywords']); ?>">
     <meta name="author" content="Virunga Collective">
     <meta name="robots" content="index, follow">
+
+    <!-- Language-Specific Currency & Travel Context Metadata -->
+    <meta name="currency" content="<?php echo htmlspecialchars($loc['currency_code']); ?>">
+    <meta name="travel-info" content="<?php echo htmlspecialchars($loc['travel_info']); ?>">
+    <meta name="cultural-notes" content="<?php echo htmlspecialchars($loc['cultural_notes']); ?>">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://virungacollective.com/">
-    <meta property="og:title" content="Virunga Collective — Boutique Stays, Journeys & Community in Rwanda">
-    <meta property="og:description" content="A regenerative travel ecosystem uniting Virunga Ecotours, Virunga Homestay, and Virunga Community Impact. Boutique stays, curated gorilla trekking, and authentic community experiences.">
+    <meta property="og:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
     <meta property="og:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Virunga Collective">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="<?php echo htmlspecialchars($loc['code']); ?>">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://virungacollective.com/">
-    <meta name="twitter:title" content="Virunga Collective — Boutique Stays, Journeys & Community">
-    <meta name="twitter:description" content="Boutique stays, curated gorilla trekking, and community impact experiences in the Virunga region of Rwanda.">
+    <meta name="twitter:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
+    <meta name="twitter:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
     <meta name="twitter:site" content="@virungacollective">
     <meta name="twitter:creator" content="@virungacollective">
     
-    <!-- Canonical & Language Alternates -->
+    <!-- Canonical & 27-Language Hreflang Alternates -->
     <link rel="canonical" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="x-default" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="en" href="https://virungacollective.com/" />
@@ -43,9 +49,28 @@
     <link rel="alternate" hreflang="es" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="it" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="nl" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="pt" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="zh" href="https://virungacollective.com/" />
     <link rel="alternate" hreflang="ja" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="pt" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="sv" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="no" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="da" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ar" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ko" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="hi" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ru" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="pl" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="tr" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="he" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="cs" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="fi" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ro" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="id" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ms" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="sw" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="th" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="vi" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="uk" href="https://virungacollective.com/" />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">

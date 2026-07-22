@@ -1089,6 +1089,7 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
           if (btnText) btnText.innerText = "Processing...";
 
           const formData = new FormData(form);
+          formData.set('user_lang', (document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en');
 
           fetch("<?php echo $baseLink('api/join-membership.php'); ?>", {
             method: "POST",

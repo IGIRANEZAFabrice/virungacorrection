@@ -825,7 +825,8 @@ html {
             The focus is on sustainable travel and conservation, with an emphasis on both education and responsible 
             tourism.</p>
 
-        <form method="POST" action="process_build.php" id="buildForm">
+        <form method="POST" action="process_build.php" id="buildForm" onsubmit="var l=(document.cookie.match(/googtrans=\/en\/([a-z\-]{2,5})/) || [])[1] || 'en'; this.querySelector('[name=user_lang]').value=l;">
+          <input type="hidden" name="user_lang" value="en">
           <?php if (isset($_GET['success']) && $_GET['success'] === 'true'): ?>
             <div style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px; text-align: center; font-weight: 500;">
                 Your custom trip plan has been submitted successfully! We will contact you shortly.

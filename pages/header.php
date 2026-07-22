@@ -354,16 +354,34 @@
         <button class="lang-btn" id="langBtn" aria-label="Select Language">
           <span class="flag-icon" id="currentFlag">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
         </button>
-        <ul class="lang-menu" id="langMenu">
+        <ul class="lang-menu" id="langMenu" style="max-height: 320px; overflow-y: auto;">
           <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
           <li><a href="#" onclick="changeLanguage('fr'); return false;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
-          <li><a href="#" onclick="changeLanguage('de'); return false;"><span class="flag-icon">🇩🇪</span> Deutsch (DE)</a></li>
           <li><a href="#" onclick="changeLanguage('es'); return false;"><span class="flag-icon">🇪🇸</span> Español (ES)</a></li>
-          <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italiano (IT)</a></li>
-          <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+          <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
           <li><a href="#" onclick="changeLanguage('zh-CN'); return false;"><span class="flag-icon">🇨🇳</span> 中文 (ZH)</a></li>
           <li><a href="#" onclick="changeLanguage('ja'); return false;"><span class="flag-icon">🇯🇵</span> 日本語 (JA)</a></li>
-          <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
+          <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italian (IT)</a></li>
+          <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+          <li><a href="#" onclick="changeLanguage('sv'); return false;"><span class="flag-icon">🇸🇪</span> Svenska (SV)</a></li>
+          <li><a href="#" onclick="changeLanguage('no'); return false;"><span class="flag-icon">🇳🇴</span> Norsk (NO)</a></li>
+          <li><a href="#" onclick="changeLanguage('da'); return false;"><span class="flag-icon">🇩🇰</span> Dansk (DA)</a></li>
+          <li><a href="#" onclick="changeLanguage('ar'); return false;"><span class="flag-icon">🇸🇦</span> العربية (AR)</a></li>
+          <li><a href="#" onclick="changeLanguage('ko'); return false;"><span class="flag-icon">🇰🇷</span> 한국어 (KO)</a></li>
+          <li><a href="#" onclick="changeLanguage('hi'); return false;"><span class="flag-icon">🇮🇳</span> हिन्दी (HI)</a></li>
+          <li><a href="#" onclick="changeLanguage('ru'); return false;"><span class="flag-icon">🇷🇺</span> Русский (RU)</a></li>
+          <li><a href="#" onclick="changeLanguage('pl'); return false;"><span class="flag-icon">🇵🇱</span> Polski (PL)</a></li>
+          <li><a href="#" onclick="changeLanguage('tr'); return false;"><span class="flag-icon">🇹🇷</span> Türkçe (TR)</a></li>
+          <li><a href="#" onclick="changeLanguage('iw'); return false;"><span class="flag-icon">🇮🇱</span> עברית (HE)</a></li>
+          <li><a href="#" onclick="changeLanguage('cs'); return false;"><span class="flag-icon">🇨🇿</span> Čeština (CS)</a></li>
+          <li><a href="#" onclick="changeLanguage('fi'); return false;"><span class="flag-icon">🇫🇮</span> Suomi (FI)</a></li>
+          <li><a href="#" onclick="changeLanguage('ro'); return false;"><span class="flag-icon">🇷🇴</span> Română (RO)</a></li>
+          <li><a href="#" onclick="changeLanguage('id'); return false;"><span class="flag-icon">🇮🇩</span> Bahasa Indonesia (ID)</a></li>
+          <li><a href="#" onclick="changeLanguage('ms'); return false;"><span class="flag-icon">🇲🇾</span> Bahasa Melayu (MS)</a></li>
+          <li><a href="#" onclick="changeLanguage('sw'); return false;"><span class="flag-icon">🇰🇪</span> Kiswahili (SW)</a></li>
+          <li><a href="#" onclick="changeLanguage('th'); return false;"><span class="flag-icon">🇹🇭</span> ไทย (TH)</a></li>
+          <li><a href="#" onclick="changeLanguage('vi'); return false;"><span class="flag-icon">🇻🇳</span> Tiếng Việt (VI)</a></li>
+          <li><a href="#" onclick="changeLanguage('uk'); return false;"><span class="flag-icon">🇺🇦</span> Українська (UK)</a></li>
         </ul>
       </li>
     </ul>
@@ -503,10 +521,14 @@
         sessionStorage.setItem('lang_auto_attempted', '1');
         const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
         const langMap = {
-          'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
-          'ja': 'ja', 'pt': 'pt'
+          'fr': 'fr', 'es': 'es', 'pt': 'pt', 'it': 'it', 'nl': 'nl',
+          'sv': 'sv', 'no': 'no', 'da': 'da', 'ar': 'ar', 'ko': 'ko',
+          'hi': 'hi', 'ru': 'ru', 'pl': 'pl', 'tr': 'tr', 'he': 'iw',
+          'iw': 'iw', 'cs': 'cs', 'fi': 'fi', 'ro': 'ro', 'id': 'id',
+          'ms': 'ms', 'sw': 'sw', 'th': 'th', 'vi': 'vi', 'uk': 'uk',
+          'ja': 'ja', 'de': 'de'
         };
-        let detected = rawLang.startsWith('zh') ? 'zh-CN' : langMap[rawLang.substring(0, 2)];
+        let detected = rawLang.startsWith('zh') ? 'zh-CN' : (rawLang.startsWith('ko') ? 'ko' : langMap[rawLang.substring(0, 2)]);
         if (detected && detected !== 'en') {
           changeLanguage(detected);
           return;
@@ -515,8 +537,11 @@
     }
 
     const flagMap = {
-      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
-      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹'
+      'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
+      'ja': '🇯🇵', 'it': '🇮🇹', 'nl': '🇳🇱', 'sv': '🇸🇪', 'no': '🇳🇴', 'da': '🇩🇰',
+      'ar': '🇸🇦', 'ko': '🇰🇷', 'hi': '🇮🇳', 'ru': '🇷🇺', 'pl': '🇵🇱', 'tr': '🇹🇷',
+      'iw': '🇮🇱', 'he': '🇮🇱', 'cs': '🇨🇿', 'fi': '🇫🇮', 'ro': '🇷🇴', 'id': '🇮🇩',
+      'ms': '🇲🇾', 'sw': '🇰🇪', 'th': '🇹🇭', 'vi': '🇻🇳', 'uk': '🇺🇦', 'de': '🇩🇪'
     };
 
     const currentFlag = document.getElementById("currentFlag");
@@ -537,6 +562,75 @@
         langMenu.classList.remove("open");
       });
     }
+
+    // Register Service Worker for PWA & Fast Caching
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
   });
 </script>
+
+<!-- Floating WhatsApp Concierge Button -->
+<a href="https://wa.me/250784513435?text=Hello%20Virunga%20Collective,%20I%20would%20like%20to%20enquire%20about%20a%20stay%20or%20guided%20journey." target="_blank" rel="noopener noreferrer" class="whatsapp-float-btn" title="Chat with Virunga Concierge on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-tooltip">Direct WhatsApp Concierge</span>
+</a>
+
+<style>
+.whatsapp-float-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.85rem;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  z-index: 99990;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  text-decoration: none;
+}
+.whatsapp-float-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+  color: #ffffff;
+}
+.whatsapp-float-btn .wa-tooltip {
+  position: absolute;
+  right: 70px;
+  background: #122a1f;
+  color: #f6f2e9;
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(10px);
+  border: 1px solid rgba(201, 162, 75, 0.3);
+  font-family: sans-serif;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.whatsapp-float-btn:hover .wa-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (max-width: 768px) {
+  .whatsapp-float-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+  }
+}
+</style>
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

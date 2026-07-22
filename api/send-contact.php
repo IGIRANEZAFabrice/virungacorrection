@@ -107,39 +107,13 @@ try {
 
     $mail->send();
 
-    // Send confirmation to user
-    $mail->clearAddresses();
-    $mail->clearReplyTos();
-    $mail->addAddress($email, $name);
-    $mail->setFrom(SMTP_EMAIL, 'Virunga Collective');
-    $mail->Subject = "Thank you for contacting Virunga Collective";
-
-    $mail->Body = "
-        <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'>
-            <div style='background: #1b3a2b; padding: 25px 30px;'>
-                <h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'>Thank you, " . htmlspecialchars($name) . "!</h2>
-            </div>
-            <div style='padding: 40px 30px; background: white;'>
-                <p style='color: #1f2620; font-size: 16px; line-height: 1.8;'>
-                    We have received your message and will get back to you within 24 hours.
-                </p>
-                <div style='padding: 20px; background: #f6f2e9; border-left: 4px solid #c9a24b; margin: 24px 0;'>
-                    <p style='margin: 0; color: #1f2620; font-style: italic;'>
-                        \"Your journey to the heart of Rwanda is important to us.\"
-                    </p>
-                </div>
-                <p style='color: #1f2620; font-size: 16px; line-height: 1.8;'>
-                    In the meantime, feel free to explore our website or contact us via phone at +250 784 513 435.
-                </p>
-            </div>
-            <div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
-                Virunga Collective | Musanze, Rwanda
-            </div>
-        </div>
-    ";
-    $mail->AltBody = "Thank you, $name!\n\nWe have received your message and will get back to you within 24 hours.\n\nBest regards,\nThe Virunga Collective Team";
-
-    $mail->send();
+    // Require localization helper for multilingual email receipt
+    if (file_exists(__DIR__ . '/../config/localization.php')) {
+        require_once __DIR__ . '/../config/localization.php';
+        $userLang = $_POST['user_lang'] ?? null;
+        $details = "<strong>Subject:</strong> " . htmlspecialchars($subject) . "<br><strong>Message:</strong> " . htmlspecialchars($message);
+        send_multilingual_confirmation_email($email, $name, $subject, $details, $userLang);
+    }
 
     echo json_encode(['status' => 'success']);
 

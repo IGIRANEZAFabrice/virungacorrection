@@ -290,16 +290,34 @@
           <button class="lang-btn" id="langBtn" aria-label="Select Language">
             <span class="flag-icon" id="currentFlag">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
           </button>
-          <ul class="lang-menu" id="langMenu">
+          <ul class="lang-menu" id="langMenu" style="max-height: 320px; overflow-y: auto;">
             <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
             <li><a href="#" onclick="changeLanguage('fr'); return false;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
-            <li><a href="#" onclick="changeLanguage('de'); return false;"><span class="flag-icon">🇩🇪</span> Deutsch (DE)</a></li>
             <li><a href="#" onclick="changeLanguage('es'); return false;"><span class="flag-icon">🇪🇸</span> Español (ES)</a></li>
-            <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italiano (IT)</a></li>
-            <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+            <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
             <li><a href="#" onclick="changeLanguage('zh-CN'); return false;"><span class="flag-icon">🇨🇳</span> 中文 (ZH)</a></li>
             <li><a href="#" onclick="changeLanguage('ja'); return false;"><span class="flag-icon">🇯🇵</span> 日本語 (JA)</a></li>
-            <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
+            <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italian (IT)</a></li>
+            <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+            <li><a href="#" onclick="changeLanguage('sv'); return false;"><span class="flag-icon">🇸🇪</span> Svenska (SV)</a></li>
+            <li><a href="#" onclick="changeLanguage('no'); return false;"><span class="flag-icon">🇳🇴</span> Norsk (NO)</a></li>
+            <li><a href="#" onclick="changeLanguage('da'); return false;"><span class="flag-icon">🇩🇰</span> Dansk (DA)</a></li>
+            <li><a href="#" onclick="changeLanguage('ar'); return false;"><span class="flag-icon">🇸🇦</span> العربية (AR)</a></li>
+            <li><a href="#" onclick="changeLanguage('ko'); return false;"><span class="flag-icon">🇰🇷</span> 한국어 (KO)</a></li>
+            <li><a href="#" onclick="changeLanguage('hi'); return false;"><span class="flag-icon">🇮🇳</span> हिन्दी (HI)</a></li>
+            <li><a href="#" onclick="changeLanguage('ru'); return false;"><span class="flag-icon">🇷🇺</span> Русский (RU)</a></li>
+            <li><a href="#" onclick="changeLanguage('pl'); return false;"><span class="flag-icon">🇵🇱</span> Polski (PL)</a></li>
+            <li><a href="#" onclick="changeLanguage('tr'); return false;"><span class="flag-icon">🇹🇷</span> Türkçe (TR)</a></li>
+            <li><a href="#" onclick="changeLanguage('iw'); return false;"><span class="flag-icon">🇮🇱</span> עברית (HE)</a></li>
+            <li><a href="#" onclick="changeLanguage('cs'); return false;"><span class="flag-icon">🇨🇿</span> Čeština (CS)</a></li>
+            <li><a href="#" onclick="changeLanguage('fi'); return false;"><span class="flag-icon">🇫🇮</span> Suomi (FI)</a></li>
+            <li><a href="#" onclick="changeLanguage('ro'); return false;"><span class="flag-icon">🇷🇴</span> Română (RO)</a></li>
+            <li><a href="#" onclick="changeLanguage('id'); return false;"><span class="flag-icon">🇮🇩</span> Bahasa Indonesia (ID)</a></li>
+            <li><a href="#" onclick="changeLanguage('ms'); return false;"><span class="flag-icon">🇲🇾</span> Bahasa Melayu (MS)</a></li>
+            <li><a href="#" onclick="changeLanguage('sw'); return false;"><span class="flag-icon">🇰🇪</span> Kiswahili (SW)</a></li>
+            <li><a href="#" onclick="changeLanguage('th'); return false;"><span class="flag-icon">🇹🇭</span> ไทย (TH)</a></li>
+            <li><a href="#" onclick="changeLanguage('vi'); return false;"><span class="flag-icon">🇻🇳</span> Tiếng Việt (VI)</a></li>
+            <li><a href="#" onclick="changeLanguage('uk'); return false;"><span class="flag-icon">🇺🇦</span> Українська (UK)</a></li>
           </ul>
         </li>
         <li class="cta-link"><a href="<?php echo $baseLink('contact'); ?>">Book Stay</a></li>
@@ -445,10 +463,14 @@
         sessionStorage.setItem('lang_auto_attempted', '1');
         const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
         const langMap = {
-          'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
-          'ja': 'ja', 'pt': 'pt'
+          'fr': 'fr', 'es': 'es', 'pt': 'pt', 'it': 'it', 'nl': 'nl',
+          'sv': 'sv', 'no': 'no', 'da': 'da', 'ar': 'ar', 'ko': 'ko',
+          'hi': 'hi', 'ru': 'ru', 'pl': 'pl', 'tr': 'tr', 'he': 'iw',
+          'iw': 'iw', 'cs': 'cs', 'fi': 'fi', 'ro': 'ro', 'id': 'id',
+          'ms': 'ms', 'sw': 'sw', 'th': 'th', 'vi': 'vi', 'uk': 'uk',
+          'ja': 'ja', 'de': 'de'
         };
-        let detected = rawLang.startsWith('zh') ? 'zh-CN' : langMap[rawLang.substring(0, 2)];
+        let detected = rawLang.startsWith('zh') ? 'zh-CN' : (rawLang.startsWith('ko') ? 'ko' : langMap[rawLang.substring(0, 2)]);
         if (detected && detected !== 'en') {
           changeLanguage(detected);
           return;
@@ -457,8 +479,11 @@
     }
 
     const flagMap = {
-      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
-      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹'
+      'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
+      'ja': '🇯🇵', 'it': '🇮🇹', 'nl': '🇳🇱', 'sv': '🇸🇪', 'no': '🇳🇴', 'da': '🇩🇰',
+      'ar': '🇸🇦', 'ko': '🇰🇷', 'hi': '🇮🇳', 'ru': '🇷🇺', 'pl': '🇵🇱', 'tr': '🇹🇷',
+      'iw': '🇮🇱', 'he': '🇮🇱', 'cs': '🇨🇿', 'fi': '🇫🇮', 'ro': '🇷🇴', 'id': '🇮🇩',
+      'ms': '🇲🇾', 'sw': '🇰🇪', 'th': '🇹🇭', 'vi': '🇻🇳', 'uk': '🇺🇦', 'de': '🇩🇪'
     };
 
     const currentFlag = document.getElementById("currentFlag");
