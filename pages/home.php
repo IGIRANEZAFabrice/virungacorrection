@@ -220,7 +220,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: flex-start;
-        padding: 96px 48px 0;
+        padding: 135px 48px 0;
       }
       .sk-coords {
         display: flex;
@@ -438,7 +438,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: flex-start;
-        padding: 45px 48px 0;
+        padding: 135px 48px 0;
       }
       .hero-coords {
         font-size: 0.72rem;
@@ -921,7 +921,7 @@
       }
       @media (max-width: 860px) {
         .hero-top {
-          padding: 28px 24px 0;
+          padding: 115px 24px 0;
         }
         .hero-content {
           padding: 0 24px 32px;
@@ -953,7 +953,7 @@
           max-height: 100dvh;
         }
         .hero-top {
-          padding: 25px 20px 0;
+          padding: 105px 20px 0;
         }
         .hero-coords {
           font-size: 0.64rem;
@@ -980,7 +980,7 @@
       }
       @media (max-width: 480px) {
         .hero-top {
-          padding: 15px 16px 0;
+          padding: 95px 16px 0;
         }
         .hero-content {
           padding: 0 16px 24px;

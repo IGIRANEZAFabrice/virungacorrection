@@ -267,7 +267,7 @@
 
       <ul class="nav-links">
         <li><a href="<?php echo $baseLink('home'); ?>"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
-        <li><a href="<?php echo $baseLink('homestays'); ?>">Stays Home</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>">Home</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Our Rooms</a></li>
         <li><a href="<?php echo $baseLink('activity'); ?>">Experiences</a></li>
         <li><a href="<?php echo $baseLink('impact'); ?>">Impact</a></li>
