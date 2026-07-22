@@ -34,10 +34,63 @@
     <meta name="twitter:site" content="@virungacollective">
     <meta name="twitter:creator" content="@virungacollective">
     
+    <!-- Canonical & Language Alternates -->
+    <link rel="canonical" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="en" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="fr" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="de" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="es" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="it" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="nl" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="zh" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="ja" href="https://virungacollective.com/" />
+    <link rel="alternate" hreflang="pt" href="https://virungacollective.com/" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TravelAgency",
+      "name": "Virunga Collective",
+      "alternateName": "Virunga Conservation Hospitality Collective",
+      "url": "https://virungacollective.com",
+      "logo": "https://virungacollective.com/img/icon.png",
+      "image": "https://virungacollective.com/img/about.jpeg",
+      "description": "The world's first integrated conservation hospitality, travel, and community collective dedicated to the Virunga Massif.",
+      "telephone": "+250784513435",
+      "email": "hello@virungacollective.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Musanze",
+        "addressRegion": "Northern Province",
+        "addressCountry": "RW"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -1.4961,
+        "longitude": 29.6299
+      },
+      "sameAs": [
+        "https://www.tripadvisor.com/Hotel_Review-g317075-d20326735-Reviews-Virunga_Homestay_Live_the_Virunga_Experience-Ruhengeri_Musanze_District_Northern_Prov.html",
+        "https://instagram.com/virungacollective",
+        "https://facebook.com/virungacollective"
+      ],
+      "priceRange": "$$$",
+      "founders": [
+        {
+          "@type": "Person",
+          "name": "Virunga Collective Team"
+        }
+      ]
+    }
+    </script>
+
     <!-- Favicon & Manifest -->
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($baseLink('img/icon.png')); ?>" />
     <link rel="manifest" href="<?php echo htmlspecialchars($baseLink('manifest.json')); ?>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap"
