@@ -379,46 +379,51 @@
     }, 'google_translate_element');
   }
 
-  function setGoogleTransCookie(langCode) {
-    const val = (langCode && langCode !== 'en') ? '/en/' + langCode : '';
-    const host = window.location.hostname;
-    const parts = host.split('.');
-    
-    const clearCookie = '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-    document.cookie = 'googtrans' + clearCookie;
-    document.cookie = 'googtrans' + clearCookie + '; domain=' + host;
-    document.cookie = 'googtrans' + clearCookie + '; domain=.' + host;
-
-    if (parts.length >= 2) {
-      const rootDomain = parts.slice(-2).join('.');
-      document.cookie = 'googtrans' + clearCookie + '; domain=' + rootDomain;
-      document.cookie = 'googtrans' + clearCookie + '; domain=.' + rootDomain;
+  function hideGoogleTranslateBanner() {
+    const banners = document.querySelectorAll('.goog-te-banner-frame, iframe.goog-te-banner-frame, .goog-te-banner, iframe.skiptranslate');
+    banners.forEach(b => {
+      b.style.setProperty('display', 'none', 'important');
+      b.style.setProperty('visibility', 'hidden', 'important');
+      b.style.setProperty('height', '0px', 'important');
+      b.style.setProperty('opacity', '0', 'important');
+      b.style.setProperty('top', '-9999px', 'important');
+    });
+    if (document.body.style.top !== '0px') {
+      document.body.style.setProperty('top', '0px', 'important');
     }
-
-    if (val) {
-      document.cookie = 'googtrans=' + val + '; path=/';
-      if (parts.length >= 2 && !/^\d+\.\d+\.\d+\.\d+$/.test(host) && host !== 'localhost') {
-        const rootDomain = parts.slice(-2).join('.');
-        document.cookie = 'googtrans=' + val + '; path=/; domain=.' + rootDomain;
-      }
+    if (document.documentElement.style.paddingTop !== '0px') {
+      document.documentElement.style.setProperty('padding-top', '0px', 'important');
     }
   }
+  setInterval(hideGoogleTranslateBanner, 50);
 
   function changeLanguage(langCode) {
-    setGoogleTransCookie(langCode);
+    const val = (langCode && langCode !== 'en') ? '/en/' + langCode : '/en/en';
+    const host = window.location.hostname;
+    
+    document.cookie = 'googtrans=' + val + '; path=/;';
+    document.cookie = 'googtrans=' + val + '; path=/; domain=' + host;
+    
+    const parts = host.split('.');
+    if (parts.length >= 2 && !/^\d+\.\d+\.\d+\.\d+$/.test(host) && host !== 'localhost') {
+      const rootDomain = parts.slice(-2).join('.');
+      document.cookie = 'googtrans=' + val + '; path=/; domain=.' + rootDomain;
+    }
+
     try {
       localStorage.setItem('user_preferred_lang', langCode || 'en');
     } catch(e){}
+
     window.location.reload();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     function getCookie(name) {
-      const nameEQ = name + "=";
-      const ca = document.cookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        const val = parts.pop().split(';').shift();
+        return val ? decodeURIComponent(val) : null;
       }
       return null;
     }
@@ -426,7 +431,7 @@
     const transCookie = getCookie('googtrans');
     let currentLang = 'en';
     
-    if (transCookie) {
+    if (transCookie && transCookie.indexOf('/en/') !== -1) {
       const parts = transCookie.split('/');
       currentLang = parts[parts.length - 1] || 'en';
     } else {
