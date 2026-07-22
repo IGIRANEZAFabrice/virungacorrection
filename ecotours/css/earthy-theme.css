@@ -1,4 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
 :root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
   --forest: #1b3a2b;
   --forest-deep: #122a1f;
   --gold: #c9a24b;
@@ -71,28 +76,13 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold);
 }
-@font-face {
-  font-family: "comm";
-  src: url(./fonts/Commissioner-VariableFont_wght.ttf) format("truetype");
-}
 
-/* @font-face {
-  font-family: "Vacat";
-  src: url(./fonts/Vacation.otf) format("OpenType");
-  line-height: 1.6;
-} */
-@font-face {
-  font-family: "Vacat";
-  src: url(./fonts/CaviarDreams_Bold.ttf) format("truetype");
-  line-height: 1.6;
-}
-h1,h2,h3,h4,h5,h6 { 
-  font-family: 'comm', Tahoma, Geneva, Verdana, sans-serif;
+h1, h2, h3, h4, h5, h6, .hero-title, .info-title, .section-title, .page-title, .heading, .title { 
+  font-family: var(--font-display);
 }
 
 /* Global styles */
 * {
-  font-family: 'vacat', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -100,8 +90,8 @@ h1,h2,h3,h4,h5,h6 {
   text-decoration: none;
 }
 
-body {
+body, button, input, select, textarea {
+  font-family: var(--font-body);
   background-color: var(--neutral-light);
   user-select: none;
 }
-

@@ -25,14 +25,14 @@ ul {
   align-items: center;
   padding: 0 15px;
   background-color: var(--neutral-light);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 
 .trustpilot {
   display: flex;
   align-items: center;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .trustpilot a {
@@ -40,7 +40,7 @@ ul {
   font-size: 14px;
   color: var(--text-medium);
   font-weight: bold;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 /* TripAdvisor styles */
@@ -51,7 +51,7 @@ ul {
 .tripadvisor-link {
   display: flex;
   align-items: center;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 
@@ -90,7 +90,7 @@ ul {
   font-size: 12px;
   color: var(--text-medium);
   font-weight: bold;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .top-nav a:hover {
@@ -110,7 +110,7 @@ ul {
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 5px rgba(58, 48, 38, 0.15);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .logo {
@@ -151,7 +151,7 @@ ul {
 
 .nav-phone-number span {
   font-size: 12px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .closed {
@@ -170,7 +170,7 @@ ul {
   cursor: pointer;
   font-size: 12px;
   transition: all 0.3s ease;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .quote-btn:hover {
@@ -187,7 +187,7 @@ ul {
   z-index: 100;
   padding-left: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .nav-item {
@@ -200,15 +200,15 @@ ul {
   cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: border-color 0.3s ease;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .nav-item span {
   text-transform: uppercase;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 .nav-item span a{
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .nav-item i {
@@ -234,7 +234,7 @@ ul {
   cursor: pointer;
   margin-left: auto;
   transition: background-color 0.3s ease;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .search-btn:hover {
@@ -257,14 +257,14 @@ ul {
   background-color: var(--neutral-light);
   border-top: 3px solid var(--accent-terracotta);
   transform: translateY(-5px);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .nav-item:hover .dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .dropdown-container {
@@ -274,7 +274,7 @@ ul {
 .destination-group {
   display: flex;
   flex-direction: column;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .destination-group a {
@@ -285,7 +285,7 @@ ul {
   display: block;
   text-transform: uppercase;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
   white-space: nowrap;
 }
 
@@ -313,7 +313,7 @@ ul {
   align-items: center;
   text-transform: uppercase;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
   white-space: nowrap;
 }
 
@@ -331,7 +331,7 @@ ul {
   margin-left: 8px;
   transition: transform 0.3s ease;
   color: var(--accent-terracotta);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body, 'Jost', sans-serif);
 }
 
 .nav-item-with-nested:hover > a {
