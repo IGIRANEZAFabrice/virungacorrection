@@ -23,7 +23,9 @@
       />
     </a>
   </div>
-  <div class="top-nav" style="display: flex; align-items: center;">
+  <div class="top-nav" style="display: flex; align-items: center; gap: 15px;">
+    <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../index.php'; ?>" style="font-weight: 700; color: #c9a24b;"><i class="fas fa-globe" style="margin-right: 4px;"></i> Virunga Collective</a>
+    <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('homestays')) : '../homestays'; ?>">Stays</a>
     <a href="./pages/activity.php">Beyond The Park Experience</a>
     <a href="./pages/gallery.php">Our Gallery</a>
     <a href="./pages/faq-page.php">Faqs</a>

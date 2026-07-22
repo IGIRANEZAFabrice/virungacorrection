@@ -1017,12 +1017,126 @@ html {
           const r = this.querySelector('[name="g-recaptcha-response"]');
           if (r && !r.value) {
             e.preventDefault();
-            alert("Please complete the reCAPTCHA verification.");
+            showRecaptchaModal("Please verify that you are human by checking the <strong>\"I'm not a robot\"</strong> box before submitting your custom tour build request.");
           }
         });
       }
     });
+
+    function showRecaptchaModal(msg) {
+      let modal = document.getElementById('customRecaptchaModal');
+      if (!modal) return;
+      if (msg) {
+        let textEl = document.getElementById('customRecaptchaModalMessage');
+        if (textEl) textEl.innerHTML = msg;
+      }
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);
+    }
+
+    function closeRecaptchaModal() {
+      let modal = document.getElementById('customRecaptchaModal');
+      if (!modal) return;
+      modal.classList.remove('show');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
     </script>
+
+    <!-- Custom Verification Modal Backdrop & Card -->
+    <div id="customRecaptchaModal" class="recaptcha-modal-backdrop" style="display:none;" onclick="if(event.target===this) closeRecaptchaModal();">
+      <div class="recaptcha-modal-card">
+        <div class="recaptcha-modal-icon">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h3 class="recaptcha-modal-title">Verification Required</h3>
+        <p id="customRecaptchaModalMessage" class="recaptcha-modal-text">
+          Please verify that you are human by checking the <strong>"I'm not a robot"</strong> reCAPTCHA box before submitting your form.
+        </p>
+        <button type="button" class="recaptcha-modal-btn" onclick="closeRecaptchaModal()">
+          Got It, Verify Now <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
+        </button>
+      </div>
+    </div>
+
+    <style>
+    .recaptcha-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 31, 22, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .recaptcha-modal-backdrop.show {
+      opacity: 1;
+    }
+    .recaptcha-modal-card {
+      background: #122a1f;
+      border: 1px solid rgba(201, 162, 75, 0.4);
+      border-radius: 16px;
+      padding: 36px 28px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 162, 75, 0.2);
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #f6f2e9;
+      font-family: var(--font-body, 'Jost', sans-serif);
+    }
+    .recaptcha-modal-backdrop.show .recaptcha-modal-card {
+      transform: translateY(0) scale(1);
+    }
+    .recaptcha-modal-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      background: rgba(201, 162, 75, 0.18);
+      border: 1px solid rgba(201, 162, 75, 0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c9a24b;
+      font-size: 1.8rem;
+    }
+    .recaptcha-modal-title {
+      font-family: var(--font-display, 'Cormorant Garamond', serif);
+      font-size: 1.85rem;
+      color: #f6f2e9;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .recaptcha-modal-text {
+      font-size: 1rem;
+      color: rgba(246, 242, 233, 0.88);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .recaptcha-modal-btn {
+      background: #c9a24b;
+      color: #122a1f;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(201, 162, 75, 0.3);
+      width: 100%;
+    }
+    .recaptcha-modal-btn:hover {
+      background: #e4c97a;
+      transform: translateY(-2px);
+    }
+    </style>
    <?php include 'includes/footer.php'; ?>
   </body>
 </html>

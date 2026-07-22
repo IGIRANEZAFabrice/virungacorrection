@@ -51,9 +51,13 @@
                         </a>
                     </div>
                     <div class="top-bar-links" style="display: flex; align-items: center; gap: 12px;">
-                        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../index.php'; ?>" class="top-link main-site">
-                            <i class="fas fa-home"></i>
-                            Main Website
+                        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../../index.php'; ?>" class="top-link main-site" style="font-weight: 700; color: #c9a24b;">
+                            <i class="fas fa-globe"></i>
+                            Virunga Collective
+                        </a>
+                        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('homestays')) : '../../homestays'; ?>" class="top-link main-site">
+                            <i class="fas fa-bed"></i>
+                            Stays
                         </a>
                         <div class="lang-dropdown notranslate" translate="no" style="position: relative;">
                             <button class="lang-btn" id="langBtnCom" aria-label="Select Language" style="background: none; border: none; cursor: pointer; font-size: 0.85rem; color: #fff; font-weight: bold; display: flex; align-items: center; gap: 4px;">
@@ -82,8 +86,8 @@
                 <div class="header-content">
                     <!-- Logo -->
                     <div class="community-logo">
-                        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('community')) : 'index.php'; ?>" class="logo-link">
-                            <img src="assets/images/logos/logo.jpg" alt="logo" class="logo-img">
+                        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../../index.php'; ?>" class="logo-link" title="Virunga Collective - Main Homepage">
+                            <img src="assets/images/logos/logo.jpg" alt="Virunga Collective" class="logo-img">
                         </a>
                     </div>
 

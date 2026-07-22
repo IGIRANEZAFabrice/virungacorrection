@@ -7,8 +7,10 @@
           <img src="../images/tripadvisor/logo.png" alt="TripAdvisor" class="tripadvisor-desktop" />
         </a>
       </div>
-      <div class="top-nav" style="display: flex; align-items: center;">
-        <a href="./activity.php">Beyond The Park Exparience</a>
+      <div class="top-nav" style="display: flex; align-items: center; gap: 15px;">
+        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../../index.php'; ?>" style="font-weight: 700; color: #c9a24b;"><i class="fas fa-globe" style="margin-right: 4px;"></i> Virunga Collective</a>
+        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('homestays')) : '../../homestays'; ?>">Stays</a>
+        <a href="./activity.php">Beyond The Park Experience</a>
         <a href="./gallery.php">Our Gallery</a>
         <a href="./faq-page.php">Faqs</a>
         <div class="lang-dropdown notranslate" translate="no" style="position: relative; margin-left: 15px;">
@@ -33,8 +35,8 @@
     <!-- Header -->
     <div class="header">
       <div class="logo">
-        <a href="../index.php">
-          <img src="../images/logos/logo.png" alt="Virunga Ecotours Logo" />
+        <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : '../../index.php'; ?>">
+          <img src="../images/logos/logo.png" alt="Virunga Collective Logo" />
         </a>
       </div>
 

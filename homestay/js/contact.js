@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const recaptchaResponse = form.querySelector('[name="g-recaptcha-response"]');
       if (recaptchaResponse && !recaptchaResponse.value) {
-          alert("Please complete the reCAPTCHA verification.");
+          showRecaptchaModal("Please verify that you are human by checking the <strong>\"I'm not a robot\"</strong> box before sending your message.");
           return;
       }
 
