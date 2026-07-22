@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initMain() {
   // Sticky nav color change on scroll
   const nav = document.getElementById("mainNav");
   if (nav) {
@@ -45,4 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     );
   }
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMain);
+} else {
+  initMain();
+}

@@ -61,6 +61,125 @@
       <link rel="stylesheet" href="./css/<?php echo $css; ?>" />
     <?php endforeach; ?>
 
+    <style>
+      /* Language Selector styling */
+      .lang-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        color: #fdfaf7;
+        font-size: 0.92rem;
+        letter-spacing: 0.03em;
+        font-weight: 500;
+        opacity: 0.88;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 4px;
+        transition: opacity 0.2s, color 0.2s;
+        outline: none;
+      }
+      .lang-btn:hover {
+        opacity: 1;
+        color: #c8711a;
+      }
+      .lang-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 12px;
+        background: #150f0b;
+        border: 1px solid rgba(200, 113, 26, 0.3);
+        border-radius: 8px;
+        list-style: none;
+        padding: 8px 0;
+        min-width: 150px;
+        max-height: 320px;
+        overflow-y: auto;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 10010;
+      }
+      .lang-menu.open {
+        display: block;
+        animation: langFadeInDown 0.2s ease;
+      }
+      .lang-menu li a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        color: #fdfaf7;
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: background 0.2s, color 0.2s;
+      }
+      .lang-menu li a:hover {
+        background: rgba(200, 113, 26, 0.15);
+        color: #e49e54;
+      }
+      .flag-icon {
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+      
+      @keyframes langFadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Hide Google Translate Bar & Popups */
+      .goog-te-banner-frame, 
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-balloon-frame,
+      .goog-te-menu-value,
+      #google_translate_element {
+        display: none !important;
+      }
+      body {
+        top: 0px !important;
+      }
+      font {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+      /* Responsive styling for Mobile Nav */
+      @media (max-width: 767px) {
+        .lang-dropdown {
+          margin-top: 10px;
+          width: 100%;
+        }
+        .lang-btn {
+          width: 100%;
+          justify-content: space-between;
+          padding: 8px 0;
+        }
+        .lang-menu {
+          position: static;
+          box-shadow: none;
+          border: none;
+          background: rgba(255,255,255,0.03);
+          margin-top: 6px;
+          width: 100%;
+          display: none;
+        }
+        .lang-menu.open {
+          display: block;
+        }
+      }
+    </style>
+
     <!-- JSON-LD Schema Markup -->
     <script type="application/ld+json">
     {
@@ -147,6 +266,22 @@
         </li>
         <li><a href="<?php echo $baseLink('about-us'); ?>">Story</a></li>
         <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
+        <li class="lang-dropdown notranslate" translate="no">
+          <button class="lang-btn" id="langBtn" aria-label="Select Language">
+            <span class="flag-icon" id="currentFlag">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+          </button>
+          <ul class="lang-menu" id="langMenu">
+            <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
+            <li><a href="#" onclick="changeLanguage('fr'); return false;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
+            <li><a href="#" onclick="changeLanguage('de'); return false;"><span class="flag-icon">🇩🇪</span> Deutsch (DE)</a></li>
+            <li><a href="#" onclick="changeLanguage('es'); return false;"><span class="flag-icon">🇪🇸</span> Español (ES)</a></li>
+            <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italiano (IT)</a></li>
+            <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+            <li><a href="#" onclick="changeLanguage('zh-CN'); return false;"><span class="flag-icon">🇨🇳</span> 中文 (ZH)</a></li>
+            <li><a href="#" onclick="changeLanguage('ja'); return false;"><span class="flag-icon">🇯🇵</span> 日本語 (JA)</a></li>
+            <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
+          </ul>
+        </li>
         <li class="cta-link"><a href="<?php echo $baseLink('contact'); ?>">Book Stay</a></li>
       </ul>
 
@@ -159,6 +294,24 @@
         <span></span><span></span><span></span>
       </button>
     </nav>
+
+    <script>
+      (function() {
+        function checkNavScroll() {
+          const nav = document.getElementById("mainNav");
+          if (!nav) return;
+          const isScrolled = (window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0) > 15;
+          if (isScrolled) {
+            nav.classList.add("scrolled");
+          } else {
+            nav.classList.remove("scrolled");
+          }
+        }
+        window.addEventListener("scroll", checkNavScroll, { passive: true });
+        window.addEventListener("DOMContentLoaded", checkNavScroll);
+        checkNavScroll();
+      })();
+    </script>
 
     <!-- -- mobile drawer -- -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
@@ -191,3 +344,130 @@
         <li><a href="<?php echo $baseLink('contact'); ?>">Contact Us</a></li>
       </ul>
     </div>
+
+    <!-- Google Translate Widget Container (Hidden) -->
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,fr,de,es,it,nl,zh-CN,ja,pt',
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+
+      function changeLanguage(langCode) {
+        if (langCode === 'en') {
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname;
+          try { localStorage.setItem('user_preferred_lang', 'en'); } catch(e){}
+        } else {
+          document.cookie = "googtrans=/en/" + langCode + "; path=/;";
+          document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=" + window.location.hostname;
+          document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=." + window.location.hostname;
+          try { localStorage.setItem('user_preferred_lang', langCode); } catch(e){}
+        }
+        window.location.reload();
+      }
+
+      // Hide Google Translate toolbar and reset layout shift
+      const hideGoogleTranslateBar = () => {
+        const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe.goog-te-banner-frame") || document.getElementById(":span.global");
+        if (banner) {
+          banner.style.display = "none";
+          banner.style.visibility = "hidden";
+        }
+        document.body.style.top = "0px";
+        document.body.style.position = "static";
+        document.documentElement.style.paddingTop = "0px";
+        
+        // Also remove the native Google Translate iframe wrapper class if present
+        const skipClasses = document.getElementsByClassName("skiptranslate");
+        for (let i = 0; i < skipClasses.length; i++) {
+          if (skipClasses[i].tagName === 'IFRAME') {
+            skipClasses[i].style.display = "none";
+            skipClasses[i].style.visibility = "hidden";
+          }
+        }
+      };
+
+      window.addEventListener("load", () => {
+        hideGoogleTranslateBar();
+        // Run periodically to prevent late loads from shifting the page
+        setInterval(hideGoogleTranslateBar, 150);
+      });
+
+      // Manage UI state and auto-detection
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentFlag = document.getElementById("currentFlag");
+        const langBtn = document.getElementById("langBtn");
+        const langMenu = document.getElementById("langMenu");
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const transCookie = getCookie('googtrans');
+        let savedLang = null;
+        try { savedLang = localStorage.getItem('user_preferred_lang'); } catch(e){}
+
+        let currentLang = 'en';
+        if (transCookie) {
+          const parts = transCookie.split('/');
+          currentLang = parts[parts.length - 1] || 'en';
+        } else if (savedLang) {
+          currentLang = savedLang;
+          if (savedLang !== 'en') {
+            changeLanguage(savedLang);
+            return;
+          }
+        } else {
+          // Auto-detect search engine / browser language on first visit
+          const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+          const langMap = {
+            'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
+            'ja': 'ja', 'pt': 'pt'
+          };
+          
+          let detected = null;
+          if (rawLang.startsWith('zh')) {
+            detected = 'zh-CN';
+          } else {
+            const prefix = rawLang.substring(0, 2);
+            if (langMap[prefix]) {
+              detected = langMap[prefix];
+            }
+          }
+          
+          if (detected && detected !== 'en') {
+            changeLanguage(detected);
+            return;
+          }
+        }
+
+        // Update Flag
+        const flagMap = {
+          'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
+          'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹'
+        };
+        if (currentFlag) {
+          currentFlag.innerText = flagMap[currentLang] || '🇬🇧';
+        }
+
+        // Toggle Dropdown menu
+        if (langBtn && langMenu) {
+          langBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            langMenu.classList.toggle("open");
+          });
+
+          document.addEventListener("click", () => {
+            langMenu.classList.remove("open");
+          });
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

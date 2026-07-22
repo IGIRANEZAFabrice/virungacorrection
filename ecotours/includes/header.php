@@ -23,10 +23,26 @@
       />
     </a>
   </div>
-  <div class="top-nav">
+  <div class="top-nav" style="display: flex; align-items: center;">
     <a href="./pages/activity.php">Beyond The Park Experience</a>
     <a href="./pages/gallery.php">Our Gallery</a>
     <a href="./pages/faq-page.php">Faqs</a>
+    <div class="lang-dropdown notranslate" translate="no" style="position: relative; margin-left: 15px;">
+      <button class="lang-btn" id="langBtnEco" aria-label="Select Language" style="background: none; border: none; cursor: pointer; font-size: 0.85rem; color: var(--text-medium); font-weight: bold; display: flex; align-items: center; gap: 4px;">
+        <span class="flag-icon" id="currentFlagEco">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+      </button>
+      <ul class="lang-menu" id="langMenuEco" style="position: absolute; top: 100%; right: 0; margin-top: 6px; background: #1f3123; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; list-style: none; padding: 6px 0; min-width: 150px; max-height: 280px; overflow-y: auto; display: none; z-index: 10010; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <li><a href="#" onclick="changeLanguage('en'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
+        <li><a href="#" onclick="changeLanguage('fr'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
+        <li><a href="#" onclick="changeLanguage('de'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇩🇪</span> Deutsch (DE)</a></li>
+        <li><a href="#" onclick="changeLanguage('es'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇪🇸</span> Español (ES)</a></li>
+        <li><a href="#" onclick="changeLanguage('it'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇮🇹</span> Italiano (IT)</a></li>
+        <li><a href="#" onclick="changeLanguage('nl'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+        <li><a href="#" onclick="changeLanguage('zh-CN'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇨🇳</span> 中文 (ZH)</a></li>
+        <li><a href="#" onclick="changeLanguage('ja'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇯🇵</span> 日本語 (JA)</a></li>
+        <li><a href="#" onclick="changeLanguage('pt'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -455,3 +471,125 @@
     ><span>Mail</span>
   </div>
 </div>
+
+<!-- Google Translate Widget Container (Hidden) -->
+<div id="google_translate_element" style="display:none;"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,fr,de,es,it,nl,zh-CN,ja,pt',
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+
+  function changeLanguage(langCode) {
+    if (langCode === 'en') {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname;
+      try { localStorage.setItem('user_preferred_lang', 'en'); } catch(e){}
+    } else {
+      document.cookie = "googtrans=/en/" + langCode + "; path=/;";
+      document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=." + window.location.hostname;
+      try { localStorage.setItem('user_preferred_lang', langCode); } catch(e){}
+    }
+    window.location.reload();
+  }
+
+  // Hide Google Translate toolbar and reset layout shift
+  const hideGoogleTranslateBar = () => {
+    const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe.goog-te-banner-frame") || document.getElementById(":span.global");
+    if (banner) {
+      banner.style.display = "none";
+      banner.style.visibility = "hidden";
+    }
+    document.body.style.top = "0px";
+    document.body.style.position = "static";
+    document.documentElement.style.paddingTop = "0px";
+    
+    const skipClasses = document.getElementsByClassName("skiptranslate");
+    for (let i = 0; i < skipClasses.length; i++) {
+      if (skipClasses[i].tagName === 'IFRAME') {
+        skipClasses[i].style.display = "none";
+        skipClasses[i].style.visibility = "hidden";
+      }
+    }
+  };
+
+  window.addEventListener("load", () => {
+    hideGoogleTranslateBar();
+    setInterval(hideGoogleTranslateBar, 150);
+  });
+
+  // Manage UI state and auto-detection
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentFlagEco = document.getElementById("currentFlagEco");
+    const langBtnEco = document.getElementById("langBtnEco");
+    const langMenuEco = document.getElementById("langMenuEco");
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const transCookie = getCookie('googtrans');
+    let savedLang = null;
+    try { savedLang = localStorage.getItem('user_preferred_lang'); } catch(e){}
+
+    let currentLang = 'en';
+    if (transCookie) {
+      const parts = transCookie.split('/');
+      currentLang = parts[parts.length - 1] || 'en';
+    } else if (savedLang) {
+      currentLang = savedLang;
+      if (savedLang !== 'en') {
+        changeLanguage(savedLang);
+        return;
+      }
+    } else {
+      const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+      const langMap = {
+        'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
+        'ja': 'ja', 'pt': 'pt'
+      };
+      
+      let detected = null;
+      if (rawLang.startsWith('zh')) {
+        detected = 'zh-CN';
+      } else {
+        const prefix = rawLang.substring(0, 2);
+        if (langMap[prefix]) {
+          detected = langMap[prefix];
+        }
+      }
+      
+      if (detected && detected !== 'en') {
+        changeLanguage(detected);
+        return;
+      }
+    }
+
+    const flagMap = {
+      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
+      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹'
+    };
+    if (currentFlagEco) {
+      currentFlagEco.innerText = flagMap[currentLang] || '🇬🇧';
+    }
+
+    if (langBtnEco && langMenuEco) {
+      langBtnEco.addEventListener("click", (e) => {
+        e.stopPropagation();
+        langMenuEco.style.display = (langMenuEco.style.display === 'block') ? 'none' : 'block';
+      });
+
+      document.addEventListener("click", () => {
+        langMenuEco.style.display = 'none';
+      });
+    }
+  });
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

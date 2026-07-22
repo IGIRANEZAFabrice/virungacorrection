@@ -37,19 +37,25 @@ body {
 }
 
 #mainNav.scrolled {
-  background-color: var(--color-sand);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: var(--shadow-lg);
-  height: var(--nav-h-sm);
+  background-color: #122a1f !important;
+  background: rgba(18, 42, 31, 0.96) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+  height: 70px !important;
 }
 
-#mainNav.scrolled .nav-links > li > a {
-  color: var(--color-text-on-light);
+#mainNav.scrolled .nav-links > li > a,
+#mainNav.scrolled .nav-links > li > a font,
+#mainNav.scrolled .nav-links > li > a span,
+#mainNav.scrolled .lang-btn,
+#mainNav.scrolled .lang-btn font,
+#mainNav.scrolled .lang-btn i {
+  color: var(--cream) !important;
 }
 
 #mainNav.scrolled .hamburger span {
-  background: var(--color-text-on-light);
+  background: var(--cream) !important;
 }
 
 .logo-wrap {

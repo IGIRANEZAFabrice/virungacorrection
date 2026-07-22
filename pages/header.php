@@ -224,7 +224,9 @@
     border-radius: 8px;
     list-style: none;
     padding: 8px 0;
-    min-width: 140px;
+    min-width: 150px;
+    max-height: 320px;
+    overflow-y: auto;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     display: none;
     z-index: 10010;
@@ -336,7 +338,13 @@
         <ul class="lang-menu" id="langMenu">
           <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
           <li><a href="#" onclick="changeLanguage('fr'); return false;"><span class="flag-icon">🇫🇷</span> Français (FR)</a></li>
+          <li><a href="#" onclick="changeLanguage('de'); return false;"><span class="flag-icon">🇩🇪</span> Deutsch (DE)</a></li>
+          <li><a href="#" onclick="changeLanguage('es'); return false;"><span class="flag-icon">🇪🇸</span> Español (ES)</a></li>
+          <li><a href="#" onclick="changeLanguage('it'); return false;"><span class="flag-icon">🇮🇹</span> Italiano (IT)</a></li>
           <li><a href="#" onclick="changeLanguage('nl'); return false;"><span class="flag-icon">🇳🇱</span> Nederlands (NL)</a></li>
+          <li><a href="#" onclick="changeLanguage('zh-CN'); return false;"><span class="flag-icon">🇨🇳</span> 中文 (ZH)</a></li>
+          <li><a href="#" onclick="changeLanguage('ja'); return false;"><span class="flag-icon">🇯🇵</span> 日本語 (JA)</a></li>
+          <li><a href="#" onclick="changeLanguage('pt'); return false;"><span class="flag-icon">🇵🇹</span> Português (PT)</a></li>
         </ul>
       </li>
     </ul>
@@ -353,16 +361,22 @@
 
 <script>
   // Header scroll effect
-  const header = document.getElementById('siteHeader');
-  if (header) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
+  (function() {
+    function handleHeaderScroll() {
+      const header = document.getElementById('siteHeader');
+      if (header) {
+        const scrolled = (window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0) > 15;
+        if (scrolled) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
       }
-    });
-  }
+    }
+    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+    window.addEventListener('DOMContentLoaded', handleHeaderScroll);
+    handleHeaderScroll();
+  })();
 
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
@@ -396,7 +410,7 @@
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
-      includedLanguages: 'en,fr,nl',
+      includedLanguages: 'en,fr,de,es,it,nl,zh-CN,ja,pt',
       autoDisplay: false
     }, 'google_translate_element');
   }
@@ -406,10 +420,12 @@
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname;
+      try { localStorage.setItem('user_preferred_lang', 'en'); } catch(e){}
     } else {
       document.cookie = "googtrans=/en/" + langCode + "; path=/;";
       document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=" + window.location.hostname;
       document.cookie = "googtrans=/en/" + langCode + "; path=/; domain=." + window.location.hostname;
+      try { localStorage.setItem('user_preferred_lang', langCode); } catch(e){}
     }
     window.location.reload();
   }
@@ -454,26 +470,50 @@
     }
 
     const transCookie = getCookie('googtrans');
+    let savedLang = null;
+    try { savedLang = localStorage.getItem('user_preferred_lang'); } catch(e){}
+
     let currentLang = 'en';
     if (transCookie) {
       const parts = transCookie.split('/');
       currentLang = parts[parts.length - 1] || 'en';
+    } else if (savedLang) {
+      currentLang = savedLang;
+      if (savedLang !== 'en') {
+        changeLanguage(savedLang);
+        return;
+      }
     } else {
-      // Auto-detect browser/system language on first visit
-      const userLang = (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
-      if (['fr', 'nl'].includes(userLang)) {
-        changeLanguage(userLang);
+      // Auto-detect search engine / browser language on first visit
+      const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+      const langMap = {
+        'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
+        'ja': 'ja', 'pt': 'pt'
+      };
+      
+      let detected = null;
+      if (rawLang.startsWith('zh')) {
+        detected = 'zh-CN';
+      } else {
+        const prefix = rawLang.substring(0, 2);
+        if (langMap[prefix]) {
+          detected = langMap[prefix];
+        }
+      }
+      
+      if (detected && detected !== 'en') {
+        changeLanguage(detected);
         return;
       }
     }
 
     // Update Flag
-    if (currentLang === 'fr') {
-      if (currentFlag) currentFlag.innerText = '🇫🇷';
-    } else if (currentLang === 'nl') {
-      if (currentFlag) currentFlag.innerText = '🇳🇱';
-    } else {
-      if (currentFlag) currentFlag.innerText = '🇬🇧';
+    const flagMap = {
+      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
+      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹'
+    };
+    if (currentFlag) {
+      currentFlag.innerText = flagMap[currentLang] || '🇬🇧';
     }
 
     // Toggle Dropdown menu
