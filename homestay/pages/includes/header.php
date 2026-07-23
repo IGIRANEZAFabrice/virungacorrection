@@ -288,7 +288,7 @@
         <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
         <li class="lang-dropdown notranslate" translate="no">
           <button class="lang-btn" id="langBtn" aria-label="Select Language">
-            <span class="flag-icon" id="currentFlag">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+            <span class="flag-icon" id="currentFlag">🇬🇧</span> <span id="currentLangText" style="font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
           </button>
           <ul class="lang-menu" id="langMenu" style="max-height: 320px; overflow-y: auto;">
             <li><a href="#" onclick="changeLanguage('en'); return false;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
@@ -487,8 +487,33 @@
     };
 
     const currentFlag = document.getElementById("currentFlag");
+    const currentLangText = document.getElementById("currentLangText");
     if (currentFlag) {
       currentFlag.innerText = flagMap[currentLang] || '🇬🇧';
+    }
+    if (currentLangText) {
+      currentLangText.innerText = (currentLang === 'zh-CN' || currentLang === 'zh') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
+    }
+
+    // Highlight the active language element in the dropdown list
+    const langMenu = document.getElementById("langMenu");
+    if (langMenu) {
+      const links = langMenu.querySelectorAll("a");
+      links.forEach(link => {
+        const onClickAttr = link.getAttribute("onclick") || "";
+        const targetLang = (currentLang === 'zh' || currentLang === 'zh-CN') ? 'zh-CN' : currentLang;
+        if (onClickAttr.includes(`changeLanguage('${targetLang}')`)) {
+          link.style.backgroundColor = "rgba(201, 162, 75, 0.2)";
+          link.style.color = "#c9a24b";
+          link.style.fontWeight = "bold";
+          link.classList.add("active");
+        } else {
+          link.style.backgroundColor = "";
+          link.style.color = "";
+          link.style.fontWeight = "";
+          link.classList.remove("active");
+        }
+      });
     }
 
     const langBtn = document.getElementById("langBtn");

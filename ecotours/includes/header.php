@@ -31,7 +31,7 @@
     <a href="./pages/faq-page.php">Faqs</a>
     <div class="lang-dropdown notranslate" translate="no" style="position: relative; margin-left: 15px;">
       <button class="lang-btn" id="langBtnEco" aria-label="Select Language" style="background: none; border: none; cursor: pointer; font-size: 0.85rem; color: var(--text-medium); font-weight: bold; display: flex; align-items: center; gap: 4px;">
-        <span class="flag-icon" id="currentFlagEco">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+        <span class="flag-icon" id="currentFlagEco">🇬🇧</span> <span id="currentLangTextEco" style="font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
       </button>
       <ul class="lang-menu" id="langMenuEco" style="position: absolute; top: 100%; right: 0; margin-top: 6px; background: #1f3123; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; list-style: none; padding: 6px 0; min-width: 165px; max-height: 320px; overflow-y: auto; display: none; z-index: 10010; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
         <li><a href="#" onclick="changeLanguage('en'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
@@ -584,13 +584,41 @@
     }
 
     const flagMap = {
-      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
-      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹', 'ko': '🇰🇷'
+      'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
+      'ja': '🇯🇵', 'it': '🇮🇹', 'nl': '🇳🇱', 'sv': '🇸🇪', 'no': '🇳🇴', 'da': '🇩🇰',
+      'ar': '🇸🇦', 'ko': '🇰🇷', 'hi': '🇮🇳', 'ru': '🇷🇺', 'pl': '🇵🇱', 'tr': '🇹🇷',
+      'iw': '🇮🇱', 'he': '🇮🇱', 'cs': '🇨🇿', 'fi': '🇫🇮', 'ro': '🇷🇴', 'id': '🇮🇩',
+      'ms': '🇲🇾', 'sw': '🇰🇪', 'th': '🇹🇭', 'vi': '🇻🇳', 'uk': '🇺🇦', 'de': '🇩🇪'
     };
 
     const activeFlag = document.getElementById("currentFlagEco");
+    const currentLangTextEco = document.getElementById("currentLangTextEco");
     if (activeFlag) {
       activeFlag.innerText = flagMap[currentLang] || '🇬🇧';
+    }
+    if (currentLangTextEco) {
+      currentLangTextEco.innerText = (currentLang === 'zh-CN' || currentLang === 'zh') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
+    }
+
+    // Highlight the active language element in the dropdown list
+    const langMenuEco = document.getElementById("langMenuEco");
+    if (langMenuEco) {
+      const links = langMenuEco.querySelectorAll("a");
+      links.forEach(link => {
+        const onClickAttr = link.getAttribute("onclick") || "";
+        const targetLang = (currentLang === 'zh' || currentLang === 'zh-CN') ? 'zh-CN' : currentLang;
+        if (onClickAttr.includes(`changeLanguage('${targetLang}')`)) {
+          link.style.backgroundColor = "rgba(201, 162, 75, 0.2)";
+          link.style.color = "#c9a24b";
+          link.style.fontWeight = "bold";
+          link.classList.add("active");
+        } else {
+          link.style.backgroundColor = "";
+          link.style.color = "";
+          link.style.fontWeight = "";
+          link.classList.remove("active");
+        }
+      });
     }
 
     const langBtnEco = document.getElementById("langBtnEco");

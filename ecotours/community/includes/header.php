@@ -61,7 +61,7 @@
                         </a>
                         <div class="lang-dropdown notranslate" translate="no" style="position: relative;">
                             <button class="lang-btn" id="langBtnCom" aria-label="Select Language" style="background: none; border: none; cursor: pointer; font-size: 0.85rem; color: #fff; font-weight: bold; display: flex; align-items: center; gap: 4px;">
-                                <span class="flag-icon" id="currentFlagCom">🇬🇧</span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                                <span class="flag-icon" id="currentFlagCom">🇬🇧</span> <span id="currentLangTextCom" style="font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
                             </button>
                             <ul class="lang-menu" id="langMenuCom" style="position: absolute; top: 100%; right: 0; margin-top: 6px; background: #1b3a2b; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; list-style: none; padding: 6px 0; min-width: 165px; max-height: 320px; overflow-y: auto; display: none; z-index: 10010; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                                 <li><a href="#" onclick="changeLanguage('en'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; color: #fff; text-decoration: none; font-size: 0.85rem;"><span class="flag-icon">🇬🇧</span> English (EN)</a></li>
@@ -410,13 +410,41 @@
     }
 
     const flagMap = {
-      'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'es': '🇪🇸', 'it': '🇮🇹',
-      'nl': '🇳🇱', 'zh-CN': '🇨🇳', 'zh': '🇨🇳', 'ja': '🇯🇵', 'pt': '🇵🇹', 'ko': '🇰🇷'
+      'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
+      'ja': '🇯🇵', 'it': '🇮🇹', 'nl': '🇳🇱', 'sv': '🇸🇪', 'no': '🇳🇴', 'da': '🇩🇰',
+      'ar': '🇸🇦', 'ko': '🇰🇷', 'hi': '🇮🇳', 'ru': '🇷🇺', 'pl': '🇵🇱', 'tr': '🇹🇷',
+      'iw': '🇮🇱', 'he': '🇮🇱', 'cs': '🇨🇿', 'fi': '🇫🇮', 'ro': '🇷🇴', 'id': '🇮🇩',
+      'ms': '🇲🇾', 'sw': '🇰🇪', 'th': '🇹🇭', 'vi': '🇻🇳', 'uk': '🇺🇦', 'de': '🇩🇪'
     };
 
     const activeFlag = document.getElementById("currentFlagCom");
+    const currentLangTextCom = document.getElementById("currentLangTextCom");
     if (activeFlag) {
       activeFlag.innerText = flagMap[currentLang] || '🇬🇧';
+    }
+    if (currentLangTextCom) {
+      currentLangTextCom.innerText = (currentLang === 'zh-CN' || currentLang === 'zh') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
+    }
+
+    // Highlight the active language element in the dropdown list
+    const langMenuCom = document.getElementById("langMenuCom");
+    if (langMenuCom) {
+      const links = langMenuCom.querySelectorAll("a");
+      links.forEach(link => {
+        const onClickAttr = link.getAttribute("onclick") || "";
+        const targetLang = (currentLang === 'zh' || currentLang === 'zh-CN') ? 'zh-CN' : currentLang;
+        if (onClickAttr.includes(`changeLanguage('${targetLang}')`)) {
+          link.style.backgroundColor = "rgba(201, 162, 75, 0.2)";
+          link.style.color = "#c9a24b";
+          link.style.fontWeight = "bold";
+          link.classList.add("active");
+        } else {
+          link.style.backgroundColor = "";
+          link.style.color = "";
+          link.style.fontWeight = "";
+          link.classList.remove("active");
+        }
+      });
     }
 
     const langBtnCom = document.getElementById("langBtnCom");
