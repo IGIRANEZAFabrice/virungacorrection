@@ -373,15 +373,24 @@
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) {
         const val = parts.pop().split(';').shift();
-        return val ? decodeURIComponent(val) : null;
+        try {
+          return val ? decodeURIComponent(val) : null;
+        } catch(e) {
+          return val || null;
+        }
       }
       return null;
     }
 
-    const transCookie = getCookie('googtrans');
     let currentLang = 'en';
     
-    if (transCookie && transCookie.indexOf('/en/') !== -1) {
+    // Failsafe Language Detection (HTML attribute or Cookie or localStorage)
+    const htmlLang = document.documentElement.lang || '';
+    const transCookie = getCookie('googtrans');
+    
+    if (htmlLang && htmlLang !== 'en') {
+      currentLang = htmlLang;
+    } else if (transCookie && transCookie.indexOf('/en/') !== -1) {
       const parts = transCookie.split('/');
       currentLang = parts[parts.length - 1] || 'en';
     } else {
@@ -398,16 +407,25 @@
         sessionStorage.setItem('lang_auto_attempted', '1');
         const rawLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
         const langMap = {
-          'fr': 'fr', 'de': 'de', 'es': 'es', 'it': 'it', 'nl': 'nl',
-          'ja': 'ja', 'pt': 'pt'
+          'fr': 'fr', 'es': 'es', 'pt': 'pt', 'it': 'it', 'nl': 'nl',
+          'sv': 'sv', 'no': 'no', 'da': 'da', 'ar': 'ar', 'ko': 'ko',
+          'hi': 'hi', 'ru': 'ru', 'pl': 'pl', 'tr': 'tr', 'he': 'iw',
+          'iw': 'iw', 'cs': 'cs', 'fi': 'fi', 'ro': 'ro', 'id': 'id',
+          'ms': 'ms', 'sw': 'sw', 'th': 'th', 'vi': 'vi', 'uk': 'uk',
+          'ja': 'ja', 'de': 'de'
         };
-        let detected = rawLang.startsWith('zh') ? 'zh-CN' : langMap[rawLang.substring(0, 2)];
+        let detected = rawLang.startsWith('zh') ? 'zh-CN' : (rawLang.startsWith('ko') ? 'ko' : langMap[rawLang.substring(0, 2)]);
         if (detected && detected !== 'en') {
           changeLanguage(detected);
           return;
         }
       }
     }
+
+    // Normalize language code
+    currentLang = currentLang.toLowerCase();
+    if (currentLang === 'zh-cn' || currentLang === 'zh-tw') currentLang = 'zh';
+    if (currentLang === 'he') currentLang = 'iw';
 
     const flagMap = {
       'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
@@ -423,7 +441,7 @@
       activeFlag.innerText = flagMap[currentLang] || '🇬🇧';
     }
     if (currentLangTextCom) {
-      currentLangTextCom.innerText = (currentLang === 'zh-CN' || currentLang === 'zh') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
+      currentLangTextCom.innerText = (currentLang === 'zh-CN' || currentLang === 'zh' || currentLang === 'zh-cn') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
     }
 
     // Highlight the active language element in the dropdown list
@@ -432,7 +450,7 @@
       const links = langMenuCom.querySelectorAll("a");
       links.forEach(link => {
         const onClickAttr = link.getAttribute("onclick") || "";
-        const targetLang = (currentLang === 'zh' || currentLang === 'zh-CN') ? 'zh-CN' : currentLang;
+        const targetLang = (currentLang === 'zh' || currentLang === 'zh-cn' || currentLang === 'zh-tw') ? 'zh-CN' : currentLang;
         if (onClickAttr.includes(`changeLanguage('${targetLang}')`)) {
           link.style.backgroundColor = "rgba(201, 162, 75, 0.2)";
           link.style.color = "#c9a24b";

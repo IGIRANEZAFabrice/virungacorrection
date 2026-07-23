@@ -438,15 +438,24 @@
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) {
         const val = parts.pop().split(';').shift();
-        return val ? decodeURIComponent(val) : null;
+        try {
+          return val ? decodeURIComponent(val) : null;
+        } catch(e) {
+          return val || null;
+        }
       }
       return null;
     }
 
-    const transCookie = getCookie('googtrans');
     let currentLang = 'en';
     
-    if (transCookie && transCookie.indexOf('/en/') !== -1) {
+    // Failsafe Language Detection (HTML attribute or Cookie or localStorage)
+    const htmlLang = document.documentElement.lang || '';
+    const transCookie = getCookie('googtrans');
+    
+    if (htmlLang && htmlLang !== 'en') {
+      currentLang = htmlLang;
+    } else if (transCookie && transCookie.indexOf('/en/') !== -1) {
       const parts = transCookie.split('/');
       currentLang = parts[parts.length - 1] || 'en';
     } else {
@@ -478,6 +487,11 @@
       }
     }
 
+    // Normalize language code
+    currentLang = currentLang.toLowerCase();
+    if (currentLang === 'zh-cn' || currentLang === 'zh-tw') currentLang = 'zh';
+    if (currentLang === 'he') currentLang = 'iw';
+
     const flagMap = {
       'en': '🇬🇧', 'fr': '🇫🇷', 'es': '🇪🇸', 'pt': '🇵🇹', 'zh-CN': '🇨🇳', 'zh': '🇨🇳',
       'ja': '🇯🇵', 'it': '🇮🇹', 'nl': '🇳🇱', 'sv': '🇸🇪', 'no': '🇳🇴', 'da': '🇩🇰',
@@ -492,7 +506,7 @@
       currentFlag.innerText = flagMap[currentLang] || '🇬🇧';
     }
     if (currentLangText) {
-      currentLangText.innerText = (currentLang === 'zh-CN' || currentLang === 'zh') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
+      currentLangText.innerText = (currentLang === 'zh-CN' || currentLang === 'zh' || currentLang === 'zh-cn') ? 'ZH' : currentLang.toUpperCase().split('-')[0];
     }
 
     // Highlight the active language element in the dropdown list
@@ -501,7 +515,7 @@
       const links = langMenu.querySelectorAll("a");
       links.forEach(link => {
         const onClickAttr = link.getAttribute("onclick") || "";
-        const targetLang = (currentLang === 'zh' || currentLang === 'zh-CN') ? 'zh-CN' : currentLang;
+        const targetLang = (currentLang === 'zh' || currentLang === 'zh-cn' || currentLang === 'zh-tw') ? 'zh-CN' : currentLang;
         if (onClickAttr.includes(`changeLanguage('${targetLang}')`)) {
           link.style.backgroundColor = "rgba(201, 162, 75, 0.2)";
           link.style.color = "#c9a24b";
@@ -517,7 +531,6 @@
     }
 
     const langBtn = document.getElementById("langBtn");
-    const langMenu = document.getElementById("langMenu");
 
     if (langBtn && langMenu) {
       langBtn.addEventListener("click", (e) => {
