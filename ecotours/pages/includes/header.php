@@ -394,7 +394,7 @@
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
-      includedLanguages: 'en,fr,de,es,it,nl,zh-CN,ja,pt',
+      includedLanguages: 'en,fr,de,es,pt,zh-CN,ja,it,nl,sv,no,da,ar,ko,hi,ru,pl,tr,iw,cs,fi,ro,id,ms,sw,th,vi,uk',
       autoDisplay: false
     }, 'google_translate_element');
   }
