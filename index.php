@@ -46,6 +46,7 @@ $pages = [
     'ecotours/community' => ['file' => __DIR__ . '/ecotours/community/index.php', 'cwd' => __DIR__ . '/ecotours/community', 'assetBase' => $link('ecotours/community/')],
     'experiences' => ['file' => __DIR__ . '/ecotours/index.php', 'cwd' => __DIR__ . '/ecotours', 'assetBase' => $link('ecotours/')],
     'journeys' => ['file' => __DIR__ . '/ecotours/index.php', 'cwd' => __DIR__ . '/ecotours', 'assetBase' => $link('ecotours/')],
+    'coffee' => ['file' => __DIR__ . '/ecotours/pages/coffee.php', 'cwd' => __DIR__ . '/ecotours/pages', 'assetBase' => $link('ecotours/')],
 ];
 
 $renderPage = function (array $page, string $currentSlug) use ($link): void {

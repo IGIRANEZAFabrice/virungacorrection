@@ -1849,19 +1849,19 @@
           <!-- Card 1: Ecotours -->
           <div class="ecosystem-card reveal" style="--reveal-delay: 0s">
             <div>
-              <h3>Virunga Ecotours</h3>
-              <p>Discover unforgettable wildlife, nature, and cultural adventures guided by local experts.</p>
+              <h3><i class="fa-solid fa-leaf" style="color: var(--gold); margin-right: 8px;"></i> Virunga Ecotours</h3>
+              <p>Immersive Travel Journeys</p>
             </div>
             <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="ecosystem-link">
-              Explore Tours <i class="fas fa-arrow-right"></i>
+              Explore Journeys <i class="fas fa-arrow-right"></i>
             </a>
           </div>
 
           <!-- Card 2: Homestays -->
           <div class="ecosystem-card reveal" style="--reveal-delay: 0.15s">
             <div>
-              <h3>Virunga Homestay</h3>
-              <p>Stay with local families and experience authentic community life with genuine Rwandan hospitality.</p>
+              <h3><i class="fa-solid fa-house-chimney" style="color: var(--gold); margin-right: 8px;"></i> Virunga Homestay</h3>
+              <p>Boutique Immersive Experience</p>
             </div>
             <a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>" class="ecosystem-link">
               Book a Stay <i class="fas fa-arrow-right"></i>
@@ -1871,44 +1871,44 @@
           <!-- Card 3: Signature Experiences -->
           <div class="ecosystem-card reveal" style="--reveal-delay: 0.3s">
             <div>
-              <h3>Virunga Signature Experiences</h3>
-              <p>Exclusive, handcrafted adventures designed for deep connection and available only through our collective.</p>
+              <h3><i class="fa-solid fa-star" style="color: var(--gold); margin-right: 8px;"></i> Virunga Signatures</h3>
+              <p>Exclusive curated experiences</p>
             </div>
             <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="ecosystem-link">
-              View Experiences <i class="fas fa-arrow-right"></i>
+              View Signatures <i class="fas fa-arrow-right"></i>
             </a>
           </div>
 
-          <!-- Card 4: Academy -->
+          <!-- Card 4: Community Impact -->
           <div class="ecosystem-card reveal" style="--reveal-delay: 0s">
             <div>
-              <h3>Virunga Academy</h3>
-              <p>Developing the next generation of local tourism, hospitality, and conservation professionals through hands-on training.</p>
-            </div>
-            <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/training.php')); ?>" class="ecosystem-link">
-              Explore Academy <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-
-          <!-- Card 5: Community Impact -->
-          <div class="ecosystem-card reveal" style="--reveal-delay: 0.15s">
-            <div>
-              <h3>Virunga Community Impact</h3>
-              <p>Creating opportunities that strengthen local livelihoods, fund education, and empower communities.</p>
+              <h3><i class="fa-solid fa-handshake" style="color: var(--gold); margin-right: 8px;"></i> Virunga Community Impact</h3>
+              <p>People • Nature • Conservation</p>
             </div>
             <a href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>" class="ecosystem-link">
               See Our Impact <i class="fas fa-arrow-right"></i>
             </a>
           </div>
 
-          <!-- Card 6: Conservation -->
+          <!-- Card 5: Academy -->
+          <div class="ecosystem-card reveal" style="--reveal-delay: 0.15s">
+            <div>
+              <h3><i class="fa-solid fa-graduation-cap" style="color: var(--gold); margin-right: 8px;"></i> Virunga Academy</h3>
+              <p>Skills, leadership & local capacity</p>
+            </div>
+            <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/training.php')); ?>" class="ecosystem-link">
+              Explore Academy <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <!-- Card 6: Coffee -->
           <div class="ecosystem-card reveal" style="--reveal-delay: 0.3s">
             <div>
-              <h3>Virunga Conservation</h3>
-              <p>Supporting the active protection, monitoring, and restoration of the fragile Virunga ecosystem and volcanic landscape.</p>
+              <h3><i class="fa-solid fa-mug-hot" style="color: var(--gold); margin-right: 8px;"></i> Virunga Coffee</h3>
+              <p>Coffee rooted in the Virunga region</p>
             </div>
-            <a href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>" class="ecosystem-link">
-              Learn More <i class="fas fa-arrow-right"></i>
+            <a href="<?php echo htmlspecialchars($baseLink('coffee')); ?>" class="ecosystem-link">
+              Discover Coffee <i class="fas fa-arrow-right"></i>
             </a>
           </div>
         </div>
