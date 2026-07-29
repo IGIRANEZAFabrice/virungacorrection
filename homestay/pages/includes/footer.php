@@ -267,10 +267,10 @@
       <span class="wa-float__label">Chat with us</span>
     </a>
     <!-- SCRIPTS -->
-    <script src="<?php echo $basePath; ?>/js/main.js"></script>
-    <script src="<?php echo $basePath; ?>/js/count.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/count.js"></script>
     <?php if (!empty($pageScripts) && is_array($pageScripts)) foreach ($pageScripts as $js): ?>
-      <script src="<?php echo $basePath; ?>/js/<?php echo htmlspecialchars($js); ?>"></script>
+      <script src="js/<?php echo htmlspecialchars($js); ?>"></script>
     <?php endforeach; ?>
   </body>
 </html>
