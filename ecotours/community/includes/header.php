@@ -466,7 +466,6 @@
     }
 
     const langBtnCom = document.getElementById("langBtnCom");
-    const langMenuCom = document.getElementById("langMenuCom");
 
     if (langBtnCom && langMenuCom) {
       langBtnCom.addEventListener("click", (e) => {

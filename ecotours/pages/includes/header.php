@@ -536,7 +536,6 @@
     }
 
     const langBtnEcoPages = document.getElementById("langBtnEcoPages");
-    const langMenuEcoPages = document.getElementById("langMenuEcoPages");
 
     if (langBtnEcoPages && langMenuEcoPages) {
       langBtnEcoPages.addEventListener("click", (e) => {

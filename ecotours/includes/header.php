@@ -636,10 +636,10 @@
           link.style.fontWeight = "";
           link.classList.remove("active");
         }
+      });
     }
 
     const langBtnEco = document.getElementById("langBtnEco");
-    const langMenuEco = document.getElementById("langMenuEco");
 
     if (langBtnEco && langMenuEco) {
       langBtnEco.addEventListener("click", (e) => {
