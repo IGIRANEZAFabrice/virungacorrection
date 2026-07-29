@@ -381,6 +381,12 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
       font-size: 2.5rem;
       margin-bottom: 20px;
       display: block;
+      color: var(--gold);
+      transition: color 0.3s ease;
+    }
+
+    .impact-card:hover .icon {
+      color: var(--gold-light);
     }
 
     .impact-card h3 {
@@ -882,25 +888,25 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
 
       <div class="impact-grid">
         <div class="impact-card reveal">
-          <span class="icon">🌱</span>
+          <i class="fas fa-seedling icon"></i>
           <h3>Conservation</h3>
           <p>Funding biodiversity preservation, tree planting, and environmental monitoring in the Virunga region.</p>
         </div>
 
         <div class="impact-card reveal">
-          <span class="icon">👥</span>
+          <i class="fas fa-users icon"></i>
           <h3>Local Development</h3>
           <p>Supporting clean water, local cooperative projects, and directly funding community-led initiatives.</p>
         </div>
 
         <div class="impact-card reveal">
-          <span class="icon">🎓</span>
+          <i class="fas fa-graduation-cap icon"></i>
           <h3>Hospitality Education</h3>
           <p>Empowering local youths with world-class hospitality training through the dedicated Virunga Academy.</p>
         </div>
 
         <div class="impact-card reveal">
-          <span class="icon">🏡</span>
+          <i class="fas fa-store icon"></i>
           <h3>Local Enterprises</h3>
           <p>Investing in micro-businesses, honey producers, and local crafts to generate sustainable livelihoods.</p>
         </div>
