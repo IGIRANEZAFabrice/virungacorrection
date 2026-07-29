@@ -25,3 +25,6 @@ TestResults.xml
 test.html
 
 .env
+
+*.mp4
+*.m4v
