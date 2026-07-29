@@ -1573,7 +1573,7 @@
     <section class="hero">
       <video autoplay muted loop playsinline poster="">
         <source
-          src="<?php echo htmlspecialchars($baseLink('img/hero.mp4')); ?>"
+          src="<?php echo htmlspecialchars($baseLink('img/hero.m4v')); ?>"
           type="video/mp4"
         />
       </video>
