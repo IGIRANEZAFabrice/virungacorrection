@@ -67,6 +67,17 @@ $renderPage = function (array $page, string $currentSlug) use ($link): void {
     }
 };
 
+// Special redirect rules for admin endpoints
+$cleanSlug = rtrim($slug, '/');
+if ($cleanSlug === 'experiences/admin' || $cleanSlug === 'experiences/admin/index.php') {
+    header("Location: " . $link('ecotours/admin/'));
+    exit;
+}
+if ($cleanSlug === 'homestays/admin' || $cleanSlug === 'homestays/admin/index.php' || $cleanSlug === 'stays/admin' || $cleanSlug === 'stays/admin/index.php') {
+    header("Location: " . $link('homestay/admin/'));
+    exit;
+}
+
 if (isset($pages[$slug]) && file_exists($pages[$slug]['file'])) {
     $renderPage($pages[$slug], $slug);
     exit;
