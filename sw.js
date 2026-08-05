@@ -1,5 +1,5 @@
 // Virunga Collective Service Worker - PWA & Asset Caching
-const CACHE_NAME = 'virunga-v2';
+const CACHE_NAME = 'virunga-v3-ai-chat';
 const ASSETS_TO_CACHE = [
   './',
   './manifest.json',

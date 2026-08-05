@@ -613,65 +613,250 @@
   });
 </script>
 
-<!-- Floating WhatsApp Concierge Button -->
-<a href="https://wa.me/250784513435?text=Hello%20Virunga%20Collective,%20I%20would%20like%20to%20enquire%20about%20a%20stay%20or%20guided%20journey." target="_blank" rel="noopener noreferrer" class="whatsapp-float-btn" title="Chat with Virunga Concierge on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-  <span class="wa-tooltip">Direct WhatsApp Concierge</span>
-</a>
+<!-- Floating AI Assistant -->
+<button type="button" id="ai-chat-btn" aria-label="Open Virunga Collective Assistant" title="Virunga Collective Assistant">
+  <i class="fas fa-comments"></i>
+</button>
+
+<section id="ai-chat-modal" class="ai-chat-hidden" aria-label="Virunga Collective Assistant">
+  <div class="ai-chat-header">
+    <div class="ai-chat-title">
+      <span class="ai-status-dot"></span>
+      <strong>Virunga Collective Assistant</strong>
+    </div>
+    <button type="button" class="ai-chat-close" aria-label="Close assistant">&times;</button>
+  </div>
+
+  <div class="ai-chat-messages" id="ai-messages">
+    <div class="ai-msg bot-msg">
+      Hello! How can I help you explore Virunga Collective's tours, stays, activities, or shop items today?
+    </div>
+  </div>
+
+  <form class="ai-chat-input-area" id="ai-chat-form">
+    <input type="text" id="ai-user-input" placeholder="Ask about tours, stays, activities..." autocomplete="off" />
+    <button type="submit">Send</button>
+  </form>
+</section>
 
 <style>
-.whatsapp-float-btn {
+#ai-chat-btn {
   position: fixed;
   bottom: 25px;
   right: 25px;
   width: 56px;
   height: 56px;
-  background: #25d366;
+  background: #1b4332;
   color: #ffffff;
+  border: 1px solid rgba(201, 162, 75, 0.45);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.85rem;
-  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  font-size: 1.45rem;
+  box-shadow: 0 8px 25px rgba(18, 42, 31, 0.38);
   z-index: 99990;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
-.whatsapp-float-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
-  color: #ffffff;
+#ai-chat-btn:hover {
+  transform: scale(1.07);
+  background: #2e7d32;
+  box-shadow: 0 12px 30px rgba(18, 42, 31, 0.48);
 }
-.whatsapp-float-btn .wa-tooltip {
-  position: absolute;
-  right: 70px;
+#ai-chat-modal {
+  position: fixed;
+  bottom: 95px;
+  right: 25px;
+  width: 370px;
+  max-width: calc(100vw - 32px);
+  height: 500px;
+  max-height: calc(100vh - 130px);
+  background: #ffffff;
+  border: 1px solid rgba(18, 42, 31, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 99991;
+  overflow: hidden;
+  font-family: inherit;
+}
+.ai-chat-hidden {
+  display: none !important;
+}
+.ai-chat-header {
   background: #122a1f;
   color: #f6f2e9;
-  font-size: 0.82rem;
-  padding: 6px 14px;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateX(10px);
-  border: 1px solid rgba(201, 162, 75, 0.3);
-  font-family: sans-serif;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
-.whatsapp-float-btn:hover .wa-tooltip {
-  opacity: 1;
-  transform: translateX(0);
+.ai-chat-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.ai-chat-title strong {
+  font-size: 0.96rem;
+  line-height: 1.2;
+}
+.ai-status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4caf50;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.ai-chat-close {
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.ai-chat-messages {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8f7f2;
+}
+.ai-msg {
+  max-width: 84%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.bot-msg {
+  background: #ffffff;
+  color: #233127;
+  align-self: flex-start;
+  border: 1px solid rgba(18, 42, 31, 0.08);
+  border-bottom-left-radius: 4px;
+}
+.user-msg {
+  background: #2e7d32;
+  color: #ffffff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.ai-chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid rgba(18, 42, 31, 0.12);
+  background: #ffffff;
+}
+.ai-chat-input-area input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(18, 42, 31, 0.22);
+  border-radius: 20px;
+  padding: 9px 14px;
+  outline: none;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.ai-chat-input-area input:focus {
+  border-color: #2e7d32;
+}
+.ai-chat-input-area button {
+  background: #1b4332;
+  color: #ffffff;
+  border: 0;
+  border-radius: 20px;
+  padding: 9px 15px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.ai-chat-input-area button:disabled,
+.ai-chat-input-area input:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 @media (max-width: 768px) {
-  .whatsapp-float-btn {
+  #ai-chat-btn {
     bottom: 20px;
     right: 20px;
     width: 50px;
     height: 50px;
-    font-size: 1.6rem;
+    font-size: 1.25rem;
+  }
+  #ai-chat-modal {
+    bottom: 82px;
+    right: 16px;
+    height: 460px;
   }
 }
 </style>
+<script>
+  (() => {
+    const endpoint = "<?php echo isset($baseLink) ? htmlspecialchars($baseLink('chat_api.php'), ENT_QUOTES) : 'chat_api.php'; ?>";
+    const button = document.getElementById('ai-chat-btn');
+    const modal = document.getElementById('ai-chat-modal');
+    const close = modal?.querySelector('.ai-chat-close');
+    const form = document.getElementById('ai-chat-form');
+    const input = document.getElementById('ai-user-input');
+    const messages = document.getElementById('ai-messages');
+
+    const appendMessage = (text, type) => {
+      const div = document.createElement('div');
+      div.className = `ai-msg ${type}-msg`;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+      return div;
+    };
+
+    const toggleChat = () => {
+      modal.classList.toggle('ai-chat-hidden');
+      if (!modal.classList.contains('ai-chat-hidden')) {
+        input.focus();
+      }
+    };
+
+    button?.addEventListener('click', toggleChat);
+    close?.addEventListener('click', toggleChat);
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(text, 'user');
+      input.value = '';
+      input.disabled = true;
+      form.querySelector('button').disabled = true;
+      const botMessage = appendMessage('Thinking...', 'bot');
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text }),
+        });
+        const data = await response.json();
+        botMessage.textContent = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+      } catch (error) {
+        botMessage.textContent = 'Sorry, I am having trouble connecting right now. Please try again later or contact us directly through our Contact page.';
+      } finally {
+        input.disabled = false;
+        form.querySelector('button').disabled = false;
+        input.focus();
+        messages.scrollTop = messages.scrollHeight;
+      }
+    });
+  })();
+</script>
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

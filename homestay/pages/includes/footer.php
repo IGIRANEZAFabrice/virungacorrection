@@ -255,17 +255,236 @@
     </footer>
 
     <!-- ── WHATSAPP FLOATING BUTTON ─────────────────────────── -->
-    <a
-      href="https://wa.me/250784513435"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="wa-float"
-      aria-label="Chat on WhatsApp"
-    >
-      <div class="wa-float__pulse"></div>
-      <div class="wa-float__icon"><i class="fa-brands fa-whatsapp"></i></div>
-      <span class="wa-float__label">Chat with us</span>
-    </a>
+    <button type="button" id="ai-chat-btn" aria-label="Open Virunga Collective Assistant" title="Virunga Collective Assistant">
+      <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <section id="ai-chat-modal" class="ai-chat-hidden" aria-label="Virunga Collective Assistant">
+      <div class="ai-chat-header">
+        <div class="ai-chat-title">
+          <span class="ai-status-dot"></span>
+          <strong>Virunga Collective Assistant</strong>
+        </div>
+        <button type="button" class="ai-chat-close" aria-label="Close assistant">&times;</button>
+      </div>
+
+      <div class="ai-chat-messages" id="ai-messages">
+        <div class="ai-msg bot-msg">
+          Hello! How can I help you explore Virunga Collective's tours, stays, activities, or shop items today?
+        </div>
+      </div>
+
+      <form class="ai-chat-input-area" id="ai-chat-form">
+        <input type="text" id="ai-user-input" placeholder="Ask about tours, stays, activities..." autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <style>
+      #ai-chat-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 62px;
+        height: 62px;
+        background: linear-gradient(135deg, #123c2a 0%, #2e7d32 100%);
+        color: #ffffff;
+        border: 1px solid rgba(218, 177, 82, 0.55);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.45rem;
+        box-shadow: 0 14px 34px rgba(18, 42, 31, 0.36);
+        z-index: 99990;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      #ai-chat-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 18px 42px rgba(18, 42, 31, 0.46);
+      }
+      #ai-chat-modal {
+        position: fixed;
+        bottom: 102px;
+        right: 25px;
+        width: 380px;
+        max-width: calc(100vw - 32px);
+        height: 510px;
+        max-height: calc(100vh - 135px);
+        background: #ffffff;
+        border: 1px solid rgba(18, 42, 31, 0.12);
+        border-radius: 12px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+        display: flex;
+        flex-direction: column;
+        z-index: 99991;
+        overflow: hidden;
+        font-family: inherit;
+      }
+      .ai-chat-hidden { display: none !important; }
+      .ai-chat-header {
+        background: #122a1f;
+        color: #f6f2e9;
+        padding: 15px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .ai-chat-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+      .ai-chat-title strong { font-size: 0.98rem; line-height: 1.2; }
+      .ai-status-dot {
+        width: 8px;
+        height: 8px;
+        background: #4caf50;
+        border-radius: 50%;
+        flex: 0 0 auto;
+      }
+      .ai-chat-close {
+        background: transparent;
+        border: 0;
+        color: #ffffff;
+        font-size: 1.55rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 2px;
+      }
+      .ai-chat-messages {
+        flex: 1;
+        padding: 14px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: #f8f7f2;
+      }
+      .ai-msg {
+        max-width: 84%;
+        padding: 10px 13px;
+        border-radius: 14px;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+      .bot-msg {
+        background: #ffffff;
+        color: #233127;
+        align-self: flex-start;
+        border: 1px solid rgba(18, 42, 31, 0.08);
+        border-bottom-left-radius: 4px;
+      }
+      .user-msg {
+        background: #2e7d32;
+        color: #ffffff;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+      }
+      .ai-chat-input-area {
+        display: flex;
+        gap: 8px;
+        padding: 10px;
+        border-top: 1px solid rgba(18, 42, 31, 0.12);
+        background: #ffffff;
+      }
+      .ai-chat-input-area input {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid rgba(18, 42, 31, 0.22);
+        border-radius: 20px;
+        padding: 9px 14px;
+        outline: none;
+        font-size: 0.9rem;
+        font-family: inherit;
+      }
+      .ai-chat-input-area input:focus { border-color: #2e7d32; }
+      .ai-chat-input-area button {
+        background: #1b4332;
+        color: #ffffff;
+        border: 0;
+        border-radius: 20px;
+        padding: 9px 15px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-family: inherit;
+      }
+      .ai-chat-input-area button:disabled,
+      .ai-chat-input-area input:disabled {
+        opacity: 0.65;
+        cursor: wait;
+      }
+      @media (max-width: 768px) {
+        #ai-chat-btn {
+          bottom: 20px;
+          right: 20px;
+          width: 54px;
+          height: 54px;
+          font-size: 1.25rem;
+        }
+        #ai-chat-modal {
+          bottom: 86px;
+          right: 16px;
+          height: 460px;
+        }
+      }
+    </style>
+    <script>
+      (() => {
+        const endpoint = "<?php echo isset($baseLink) ? htmlspecialchars($baseLink('chat_api.php'), ENT_QUOTES) : '../chat_api.php'; ?>";
+        const button = document.getElementById('ai-chat-btn');
+        const modal = document.getElementById('ai-chat-modal');
+        const close = modal?.querySelector('.ai-chat-close');
+        const form = document.getElementById('ai-chat-form');
+        const input = document.getElementById('ai-user-input');
+        const messages = document.getElementById('ai-messages');
+
+        const appendMessage = (text, type) => {
+          const div = document.createElement('div');
+          div.className = `ai-msg ${type}-msg`;
+          div.textContent = text;
+          messages.appendChild(div);
+          messages.scrollTop = messages.scrollHeight;
+          return div;
+        };
+
+        const toggleChat = () => {
+          modal.classList.toggle('ai-chat-hidden');
+          if (!modal.classList.contains('ai-chat-hidden')) input.focus();
+        };
+
+        button?.addEventListener('click', toggleChat);
+        close?.addEventListener('click', toggleChat);
+
+        form?.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const text = input.value.trim();
+          if (!text) return;
+
+          appendMessage(text, 'user');
+          input.value = '';
+          input.disabled = true;
+          form.querySelector('button').disabled = true;
+          const botMessage = appendMessage('Thinking...', 'bot');
+
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: text }),
+            });
+            const data = await response.json();
+            botMessage.textContent = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+          } catch (error) {
+            botMessage.textContent = 'Sorry, I am having trouble connecting right now. Please try again later or contact us directly through our Contact page.';
+          } finally {
+            input.disabled = false;
+            form.querySelector('button').disabled = false;
+            input.focus();
+            messages.scrollTop = messages.scrollHeight;
+          }
+        });
+      })();
+    </script>
     <!-- SCRIPTS -->
     <script src="js/main.js"></script>
     <script src="js/count.js"></script>
@@ -274,4 +493,3 @@
     <?php endforeach; ?>
   </body>
 </html>
-
