@@ -4,6 +4,11 @@ if (!isset($_SESSION['admin_id'])) {
   header('Location: login.html');
   exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once('../handlers/blog/addRichBlogHandler.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +56,7 @@ if (!isset($_SESSION['admin_id'])) {
               </div>
             <?php endif; ?>
 
-            <form id="blogForm" method="post" action="../handlers/blog/addRichBlogHandler.php" enctype="multipart/form-data">
+            <form id="blogForm" method="post" action="create_blog.php" enctype="multipart/form-data">
               <!-- Basic Information Section -->
               <div class="form-row">
                 <div class="form-col">

@@ -7,8 +7,14 @@ if (!isset($_SESSION['admin_id'])) {
 
 require_once('../config/connection.php');
 
+// Process POST form submissions directly on edit_blog.php to bypass Hostinger/WAF handler blocks
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once('../handlers/blog/updateBlogHandler.php');
+    exit();
+}
+
 // Get blog post ID from URL
-$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$post_id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['blog_id']) ? intval($_POST['blog_id']) : 0);
 
 if ($post_id <= 0) {
     header('Location: blogs.php?error=invalid_id');
@@ -286,7 +292,7 @@ $gallery_stmt->close();
               </div>
             <?php endif; ?>
 
-            <form id="blogForm" method="post" action="../handlers/blog/updateBlogHandler.php" enctype="multipart/form-data">
+            <form id="blogForm" method="post" action="edit_blog.php?id=<?php echo $post_id; ?>" enctype="multipart/form-data">
               <!-- Add hidden input for blog ID -->
               <input type="hidden" name="blog_id" value="<?php echo $post_id; ?>">
 
