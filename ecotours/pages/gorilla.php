@@ -13,6 +13,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="../css/earthy-theme.css">
     <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/gorilla.css">
     
     <!-- FontAwesome -->

@@ -474,26 +474,6 @@
         overflow: hidden;
         color: var(--cream);
       }
-      .hero-bg-poster {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        z-index: 0;
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
-        will-change: opacity;
-      }
-      .hero-bg-poster.is-hidden {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
       .hero video {
         position: absolute;
         top: 50%;
@@ -505,11 +485,6 @@
         object-fit: cover;
         transform: translate(-50%, -50%);
         z-index: 0;
-        opacity: 0;
-        transition: opacity 0.8s ease-in-out;
-      }
-      .hero video.is-playing {
-        opacity: 1;
       }
       @keyframes heroZoom {
         from {
@@ -1647,9 +1622,8 @@
 
     <?php include __DIR__ . '/header.php'; ?>
 
-    <!-- Hero Section - Clean with video background & instant poster fallback -->
+    <!-- Hero Section -->
     <section class="hero">
-      <div class="hero-bg-poster" style="background-image: url('<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>');"></div>
       <video autoplay muted loop playsinline poster="<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>">
         <source src="<?php echo htmlspecialchars($baseLink('img/hero-web-light.mp4')); ?>" type="video/mp4" media="(max-width: 768px)" />
         <source src="<?php echo htmlspecialchars($baseLink('img/hero-web.mp4')); ?>" type="video/mp4" />
@@ -2416,41 +2390,6 @@
 
     <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const heroVideo = document.querySelector('.hero video');
-      const heroPoster = document.querySelector('.hero-bg-poster');
-
-      if (heroVideo && heroPoster) {
-        let revealed = false;
-        const revealVideo = () => {
-          if (revealed) return;
-          revealed = true;
-          heroVideo.classList.add('is-playing');
-          heroPoster.classList.add('is-hidden');
-        };
-
-        if (heroVideo.readyState >= 2 && !heroVideo.paused) {
-          revealVideo();
-        }
-
-        heroVideo.addEventListener('loadeddata', revealVideo, { once: true });
-        heroVideo.addEventListener('canplay', revealVideo, { once: true });
-        heroVideo.addEventListener('playing', revealVideo, { once: true });
-        heroVideo.addEventListener('timeupdate', () => {
-          if (heroVideo.currentTime >= 0) {
-            revealVideo();
-          }
-        });
-
-        const playPromise = heroVideo.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            if (heroVideo.currentTime >= 0 || heroVideo.readyState >= 2) {
-              revealVideo();
-            }
-          }).catch(() => {});
-        }
-      }
-
       const popup = document.getElementById("membershipPopup");
       const closeBtn = document.getElementById("closeMemberPopup");
       const ecosystemSection = document.getElementById("ecosystem");
