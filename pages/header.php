@@ -18,8 +18,9 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   }
   header.scrolled .brand img {
-    background-color: white;
-    padding: 8px;
+    background-color: #122a1f;
+    border-radius: 6px;
+    padding: 6px 12px;
   }
   nav {
     display: flex;

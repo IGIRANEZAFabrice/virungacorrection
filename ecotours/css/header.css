@@ -155,6 +155,9 @@ ul {
 .logo a {
   display: flex;
   align-items: center;
+  background-color: #122a1f;
+  padding: 6px 14px;
+  border-radius: 6px;
 }
 
 .logo img {
