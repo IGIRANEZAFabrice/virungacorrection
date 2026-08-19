@@ -51,17 +51,65 @@ function initializeFormElements() {
     });
   });
 
-  // Form submission
+  // Form submission via AJAX
   const blogForm = document.getElementById("blogForm");
   if (blogForm) {
     blogForm.addEventListener("submit", function (e) {
+      e.preventDefault();
       if (!validateForm()) {
-        e.preventDefault();
         showNotification(
           "Please fill in all required fields correctly.",
           "error"
         );
+        return;
       }
+
+      const submitBtn = blogForm.querySelector('button[type="submit"]') || blogForm.querySelector('.btn-primary');
+      const originalText = submitBtn ? submitBtn.innerHTML : "Save Changes";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      }
+
+      const formData = new FormData(blogForm);
+
+      fetch(blogForm.action, {
+        method: "POST",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(`Server Error (${response.status}): ${text || response.statusText}`);
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "success") {
+          showNotification(data.message || "Blog post updated successfully!", "success");
+          setTimeout(() => {
+            window.location.href = data.redirect || "blogs.php?status=success&message=" + encodeURIComponent("Blog post updated successfully!");
+          }, 1000);
+        } else {
+          showNotification(data.message || "Failed to update blog post.", "error");
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          }
+        }
+      })
+      .catch(error => {
+        console.error("Blog update error:", error);
+        showNotification("Submission failed: " + (error.message || "Unknown error"), "error");
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      });
     });
   }
 }

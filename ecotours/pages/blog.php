@@ -91,7 +91,7 @@ $categories_result = $conn->query($categories_query);
     <section class="hero">
       <div class="hero-image"></div>
       <div class="hero-overlay">
-        <h1 class="hero-title">Virunga Ecotours Stories</h1>
+        <h1 class="hero-title">The Virunga Journal</h1>
         <p class="hero-subtitle">
           Discover the heart of Africa's most diverse mountain range through our
           expert insights, travel tips, and authentic local experiences.
@@ -102,7 +102,7 @@ $categories_result = $conn->query($categories_query);
 
     <section class="blog-section">
       <div class="container">
-        <h2 class="section-title">Virunga Ecotours Stories</h2>
+        <h2 class="section-title">The Virunga Journal</h2>
 
         <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">ALL</button>

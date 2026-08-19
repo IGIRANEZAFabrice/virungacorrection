@@ -1,7 +1,16 @@
 <?php
 session_start();
+
+$isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+          || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => 'Admin session expired. Please log in again.']);
+        exit();
+    }
     header('Location: ../../pages/login.html');
     exit();
 }
@@ -432,6 +441,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // --- Commit Transaction ---
         $conn->commit();
 
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Blog post updated successfully!',
+                'redirect' => 'blogs.php?status=success&message=' . urlencode('Blog post updated successfully!')
+            ]);
+            exit();
+        }
+
         // --- Success Redirect ---
         header('Location: ../../pages/blogs.php?status=success&message=' . urlencode('Blog post updated successfully!'));
         exit();
@@ -440,6 +459,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // --- Rollback and Error Handling ---
         $conn->rollback();
         error_log("Blog Update Error: " . $e->getMessage() . " for blog_id: " . ($blog_id ?? 'unknown')); // Log the error
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            exit();
+        }
+
         // Redirect back to edit page with error message
         $redirect_url = '../../pages/edit_blog.php?id=' . ($blog_id ?? 0) . '&status=error&message=' . urlencode($e->getMessage());
         header('Location: ' . $redirect_url);
@@ -447,6 +473,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 } else {
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+        exit();
+    }
     // Invalid request method
     header('Location: ../../pages/blogs.php');
     exit();
