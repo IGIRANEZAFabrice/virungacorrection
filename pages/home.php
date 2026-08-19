@@ -476,25 +476,37 @@
       }
       .hero-bg-poster {
         position: absolute;
-        inset: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background-size: cover;
-        background-position: center;
+        background-position: center center;
+        background-repeat: no-repeat;
         z-index: 0;
-        transform: scale(1.06);
-        animation: heroZoom 16s ease-out forwards;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+        will-change: opacity;
+      }
+      .hero-bg-poster.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
       }
       .hero video {
         position: absolute;
         top: 50%;
         left: 50%;
+        min-width: 100%;
+        min-height: 100%;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transform: translate(-50%, -50%) scale(1.06);
+        transform: translate(-50%, -50%);
         z-index: 0;
         opacity: 0;
-        transition: opacity 0.6s ease;
-        animation: heroZoom 16s ease-out forwards;
+        transition: opacity 0.8s ease-in-out;
       }
       .hero video.is-playing {
         opacity: 1;
@@ -2407,16 +2419,24 @@
     <script>
     document.addEventListener("DOMContentLoaded", () => {
       const heroVideo = document.querySelector('.hero video');
-      if (heroVideo) {
-        const onVideoPlay = () => {
+      const heroPoster = document.querySelector('.hero-bg-poster');
+
+      if (heroVideo && heroPoster) {
+        const revealVideo = () => {
           heroVideo.classList.add('is-playing');
+          heroPoster.classList.add('is-hidden');
         };
-        if (heroVideo.readyState >= 3) {
-          onVideoPlay();
+
+        if (heroVideo.readyState >= 3 && !heroVideo.paused) {
+          revealVideo();
         } else {
-          heroVideo.addEventListener('playing', onVideoPlay, { once: true });
-          heroVideo.addEventListener('canplaythrough', onVideoPlay, { once: true });
-          heroVideo.addEventListener('timeupdate', onVideoPlay, { once: true });
+          heroVideo.addEventListener('playing', revealVideo, { once: true });
+          heroVideo.addEventListener('canplaythrough', revealVideo, { once: true });
+          heroVideo.addEventListener('timeupdate', () => {
+            if (heroVideo.currentTime > 0.05) {
+              revealVideo();
+            }
+          }, { once: true });
         }
       }
 
