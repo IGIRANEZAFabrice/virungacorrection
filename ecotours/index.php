@@ -8,37 +8,28 @@ require_once 'indexhandler.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php $resolvedAssetBase = !empty($assetBase) ? $assetBase : './'; ?>
     <base href="<?php echo htmlspecialchars($resolvedAssetBase, ENT_QUOTES); ?>">
-    <link rel="canonical" href="https://virungaecotours.com/" />
+    <link rel="canonical" href="https://virungacollective.com/experiences" />
+
     <!-- Primary Meta Tags -->
-<title>Authentic Virunga Journeys | Rwanda Gorilla Trekking & Community Tourism | Virunga Ecotours</title>
-<meta name="description" content="Experience authentic community tourism in Rwanda's Virunga Mountains. Sustainable gorilla trekking, cultural immersion, and spiritual journeys across Rwanda, Uganda, and Congo with local expert guides.">
-<meta name="keywords" content="Rwanda gorilla trekking, community tourism Rwanda, Virunga Mountains, tours, authentic Rwanda experiences, sustainable ecotourism, mountain gorilla adventures, cultural tourism Rwanda">
+    <title>Luxury Rwanda Safaris & Gorilla Trekking Expeditions | Virunga Ecotours</title>
+    <meta name="description" content="Experience luxury gorilla trekking safaris and bespoke expeditions in Volcanoes National Park with Virunga Ecotours. Private journeys, expert guides, and authentic community impact.">
+    <meta name="keywords" content="luxury Rwanda safari, luxury gorilla trekking Rwanda, private Rwanda safari, Volcanoes National Park tours, Virunga Ecotours, bespoke expeditions">
 
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="Virunga Ecotours Authentic Virunga Journeys | Rwanda Community Tourism">
-<meta property="og:description" content="Virunga Ecotours Discover Rwanda's hidden treasures through community-based tourism. Mountain gorilla trekking, cultural experiences, and spiritual journeys in the Virunga Mountains.">
-<meta property="og:image" content="https://virungaecotours.com/images/virunga-gorillas-hero.jpg">
-<meta property="og:url" content="https://virungaecotours.com">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Virunga Ecotours">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
+    <meta property="og:description" content="Discover bespoke luxury safaris, gorilla trekking expeditions, and volcanic journeys in Rwanda with local experts.">
+    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
+    <meta property="og:url" content="https://virungacollective.com/experiences">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Virunga Ecotours">
 
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Authentic Virunga Journeys | Rwanda Community Tourism">
-<meta name="twitter:description" content="Experience authentic community tourism in Rwanda's Virunga Mountains. Sustainable gorilla trekking, cultural immersion, and spiritual journeys across Rwanda, Uganda, and Congo with local expert guides.">
-<meta name="twitter:image" content="https://virungaecotours.com/images/virunga-gorillas-hero.jpg">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
+    <meta name="twitter:description" content="Bespoke luxury safaris, mountain gorilla trekking, and community journeys across the Virunga Massif.">
+    <meta name="twitter:image" content="https://virungacollective.com/img/about.jpeg">
 
-<!-- Additional SEO Meta Tags -->
-<meta name="robots" content="index, follow">
-<meta name="author" content="Virunga Ecotours">
-<meta name="geo.region" content="RW">
-<meta name="geo.placename" content="Rwanda, Virunga Massif">
-<meta name="geo.position" content="-1.9403,29.8739">
-<meta name="ICBM" content="-1.9403,29.8739">
-
-<!-- Structured Data for Home Page -->
-<script type="application/ld+json">
-{
+    <script type="application/ld+json">
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Virunga Ecotours",

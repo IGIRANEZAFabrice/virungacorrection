@@ -14,11 +14,14 @@
     <meta name="author" content="Virunga Collective">
     <meta name="robots" content="index, follow">
     
+    <!-- Canonical & Alternate Links -->
+    <link rel="canonical" href="https://virungacollective.com/about" />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://virungacollective.com/about-us">
-    <meta property="og:title" content="About Us | Virunga Collective — A Living Travel Ecosystem">
-    <meta property="og:description" content="Discover the story behind Virunga Collective, a regenerative travel ecosystem uniting Virunga Ecotours, Virunga Homestay, and Virunga Community Impact.">
+    <meta property="og:url" content="https://virungacollective.com/about">
+    <meta property="og:title" content="About Virunga Collective | Luxury Conservation Travel Ecosystem">
+    <meta property="og:description" content="Discover the story behind Virunga Collective: connecting luxury homestays, gorilla trekking expeditions, volcanic coffee, and community conservation in Rwanda.">
     <meta property="og:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -27,12 +30,33 @@
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://virungacollective.com/about-us">
-    <meta name="twitter:title" content="About Us | Virunga Collective">
-    <meta name="twitter:description" content="Learn about Virunga Collective's regenerative travel philosophy and our three pillars: Ecotours, Homestay, and Community Impact.">
+    <meta name="twitter:url" content="https://virungacollective.com/about">
+    <meta name="twitter:title" content="About Virunga Collective | Luxury Travel Ecosystem">
+    <meta name="twitter:description" content="Learn about Virunga Collective's 100-year legacy commitment uniting luxury hospitality, gorilla safaris, volcanic coffee, and community stewardship.">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
     <meta name="twitter:site" content="@virungacollective">
     <meta name="twitter:creator" content="@virungacollective">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "About Virunga Collective",
+      "url": "https://virungacollective.com/about",
+      "description": "Discover the brand story, 100-year vision, and conservation hospitality ecosystem of Virunga Collective in Rwanda.",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Virunga Collective",
+        "url": "https://virungacollective.com",
+        "logo": "https://virungacollective.com/img/icon.png",
+        "sameAs": [
+          "https://instagram.com/virungacollective",
+          "https://facebook.com/virungacollective"
+        ]
+      }
+    }
+    </script>
     
     <!-- Favicon & Manifest -->
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($baseLink('img/icon.png')); ?>" />

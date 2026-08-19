@@ -76,36 +76,88 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "TravelAgency",
-      "name": "Virunga Collective",
-      "alternateName": "Virunga Conservation Hospitality Collective",
-      "url": "https://virungacollective.com",
-      "logo": "https://virungacollective.com/img/icon.png",
-      "image": "https://virungacollective.com/img/about.jpeg",
-      "description": "The world's first integrated conservation hospitality, travel, and community collective dedicated to the Virunga Massif.",
-      "telephone": "+250784513435",
-      "email": "hello@virungacollective.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Musanze",
-        "addressRegion": "Northern Province",
-        "addressCountry": "RW"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -1.4961,
-        "longitude": 29.6299
-      },
-      "sameAs": [
-        "https://www.tripadvisor.com/Hotel_Review-g317075-d20326735-Reviews-Virunga_Homestay_Live_the_Virunga_Experience-Ruhengeri_Musanze_District_Northern_Prov.html",
-        "https://instagram.com/virungacollective",
-        "https://facebook.com/virungacollective"
-      ],
-      "priceRange": "$$$",
-      "founders": [
+      "@graph": [
         {
-          "@type": "Person",
-          "name": "Virunga Collective Team"
+          "@type": "TravelAgency",
+          "@id": "https://virungacollective.com/#organization",
+          "name": "Virunga Collective",
+          "alternateName": "Virunga Conservation Hospitality Collective",
+          "url": "https://virungacollective.com",
+          "logo": "https://virungacollective.com/img/icon.png",
+          "image": "https://virungacollective.com/img/about.jpeg",
+          "description": "Rwanda's premier destination ecosystem—connecting luxury homestays, bespoke gorilla trekking safaris, volcanic coffee, and community impact in the Virunga Massif.",
+          "telephone": "+250784513435",
+          "email": "hello@virungacollective.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Musanze",
+            "addressRegion": "Northern Province",
+            "addressCountry": "RW"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -1.4961,
+            "longitude": 29.6299
+          },
+          "knowsAbout": [
+            "Luxury Rwanda Safaris",
+            "Gorilla Trekking Rwanda",
+            "Volcanoes National Park",
+            "Bespoke Virunga Journeys",
+            "Regenerative Tourism Rwanda",
+            "Virunga Coffee"
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Virunga Collective Ecosystem",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga Ecotours",
+                "description": "Bespoke Gorilla Trekking & Wildlife Expeditions"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga House & Homestay",
+                "description": "Boutique Luxury Hospitality in Musanze"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga Signatures",
+                "description": "Exclusive Curated Experiences & Private Safaris"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga Community Impact",
+                "description": "Conservation, People & Local Livelihoods"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga Academy",
+                "description": "Leadership, Skills & Capacity Building"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Virunga Coffee",
+                "description": "Volcanic Coffee Experience Farm to Cup"
+              }
+            ]
+          },
+          "sameAs": [
+            "https://www.tripadvisor.com/Hotel_Review-g317075-d20326735-Reviews-Virunga_Homestay_Live_the_Virunga_Experience-Ruhengeri_Musanze_District_Northern_Prov.html",
+            "https://instagram.com/virungacollective",
+            "https://facebook.com/virungacollective"
+          ],
+          "priceRange": "$$$"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://virungacollective.com/#website",
+          "url": "https://virungacollective.com",
+          "name": "Virunga Collective",
+          "publisher": {
+            "@id": "https://virungacollective.com/#organization"
+          }
         }
       ]
     }
@@ -422,6 +474,15 @@
         overflow: hidden;
         color: var(--cream);
       }
+      .hero-bg-poster {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+        transform: scale(1.06);
+        animation: heroZoom 16s ease-out forwards;
+      }
       .hero video {
         position: absolute;
         top: 50%;
@@ -431,7 +492,12 @@
         object-fit: cover;
         transform: translate(-50%, -50%) scale(1.06);
         z-index: 0;
+        opacity: 0;
+        transition: opacity 0.6s ease;
         animation: heroZoom 16s ease-out forwards;
+      }
+      .hero video.is-playing {
+        opacity: 1;
       }
       @keyframes heroZoom {
         from {
@@ -1569,9 +1635,10 @@
 
     <?php include __DIR__ . '/header.php'; ?>
 
-    <!-- Hero Section - Clean with video background -->
+    <!-- Hero Section - Clean with video background & instant poster fallback -->
     <section class="hero">
-      <video autoplay muted loop playsinline poster="">
+      <div class="hero-bg-poster" style="background-image: url('<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>');"></div>
+      <video autoplay muted loop playsinline poster="<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>">
         <source
           src="<?php echo htmlspecialchars($baseLink('img/hero.mp4')); ?>"
           type="video/mp4"
@@ -2339,6 +2406,20 @@
 
     <script>
     document.addEventListener("DOMContentLoaded", () => {
+      const heroVideo = document.querySelector('.hero video');
+      if (heroVideo) {
+        const onVideoPlay = () => {
+          heroVideo.classList.add('is-playing');
+        };
+        if (heroVideo.readyState >= 3) {
+          onVideoPlay();
+        } else {
+          heroVideo.addEventListener('playing', onVideoPlay, { once: true });
+          heroVideo.addEventListener('canplaythrough', onVideoPlay, { once: true });
+          heroVideo.addEventListener('timeupdate', onVideoPlay, { once: true });
+        }
+      }
+
       const popup = document.getElementById("membershipPopup");
       const closeBtn = document.getElementById("closeMemberPopup");
       const ecosystemSection = document.getElementById("ecosystem");

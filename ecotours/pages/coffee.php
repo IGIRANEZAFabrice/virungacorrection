@@ -4,8 +4,68 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coffee Tours in the Virunga Massif | Virunga Ecotours</title>
-    <meta name="description" content="Experience community-led coffee tours around the Virunga Massif: farm walks, harvesting, processing, roasting & tasting, and cultural exchange while supporting local livelihoods." />
+    <title>Virunga Coffee Experience & Volcanic Farm Tours | Virunga Collective</title>
+    <meta name="description" content="Immerse in the Virunga Coffee experience: organic volcanic farm walks, harvesting, roasting masterclasses, and tasting in Musanze, Rwanda." />
+    <meta name="keywords" content="Virunga Coffee, Rwanda coffee tours, volcanic coffee Musanze, farm to cup Rwanda, coffee tasting Volcanoes National Park" />
+
+    <link rel="canonical" href="https://virungacollective.com/coffee" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://virungacollective.com/coffee">
+    <meta property="og:title" content="Virunga Coffee Experience & Volcanic Farm Tours | Virunga Collective">
+    <meta property="og:description" content="Discover coffee rooted in the Virunga region: volcanic farm walks, traditional roasting, and authentic Rwandan community heritage.">
+    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
+    <meta property="og:site_name" content="Virunga Collective">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://virungacollective.com/coffee">
+    <meta name="twitter:title" content="Virunga Coffee Experience | Virunga Collective">
+    <meta name="twitter:description" content="Volcanic coffee experiences in Musanze, Rwanda. From soil to cup with local farming communities.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TouristAttraction",
+          "@id": "https://virungacollective.com/coffee#attraction",
+          "name": "Virunga Coffee Experience",
+          "url": "https://virungacollective.com/coffee",
+          "description": "Community-based volcanic coffee tour from farm walk to cup tasting in Musanze, Rwanda.",
+          "touristType": ["Coffee Enthusiasts", "Eco-Tourists", "Cultural Travelers"],
+          "location": {
+            "@type": "Place",
+            "name": "Musanze Volcanic Region",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Musanze",
+              "addressCountry": "RW"
+            }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://virungacollective.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Virunga Coffee",
+              "item": "https://virungacollective.com/coffee"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png" />

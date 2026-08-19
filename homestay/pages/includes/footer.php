@@ -438,10 +438,16 @@
         const input = document.getElementById('ai-user-input');
         const messages = document.getElementById('ai-messages');
 
-        const appendMessage = (text, type) => {
+        const chatHistory = [];
+
+        const appendMessage = (content, type, isHTML = false) => {
           const div = document.createElement('div');
           div.className = `ai-msg ${type}-msg`;
-          div.textContent = text;
+          if (isHTML) {
+            div.innerHTML = content;
+          } else {
+            div.textContent = content;
+          }
           messages.appendChild(div);
           messages.scrollTop = messages.scrollHeight;
           return div;
@@ -455,25 +461,49 @@
         button?.addEventListener('click', toggleChat);
         close?.addEventListener('click', toggleChat);
 
+        const parseMarkdown = (text) => {
+          if (!text) return '';
+          let str = text.trim();
+
+          // Clean up stray markdown artifacts like :* or * :
+          str = str.replace(/^[:*#\s]+/gm, '');
+
+          str = str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/__(.*?)__/g, '<strong>$1</strong>')
+            .replace(/\*([^\*]+)\*/g, '<em>$1</em>')
+            .replace(/^[\s]*[-•*]\s+(.*)$/gm, '• $1')
+            .replace(/\n/g, '<br>');
+
+          return str;
+        };
+
         form?.addEventListener('submit', async (event) => {
           event.preventDefault();
           const text = input.value.trim();
           if (!text) return;
 
           appendMessage(text, 'user');
+          chatHistory.push({ role: 'user', text: text });
+
           input.value = '';
           input.disabled = true;
           form.querySelector('button').disabled = true;
-          const botMessage = appendMessage('Thinking...', 'bot');
+          const botMessage = appendMessage('<span class="wa-typing-container">typing <span class="wa-typing-dots"><span class="wa-dot"></span><span class="wa-dot"></span><span class="wa-dot"></span></span></span>', 'bot', true);
 
           try {
             const response = await fetch(endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ message: text }),
+              body: JSON.stringify({ message: text, history: chatHistory.slice(-8) }),
             });
             const data = await response.json();
-            botMessage.textContent = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+            const reply = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+            botMessage.innerHTML = parseMarkdown(reply);
+            chatHistory.push({ role: 'bot', text: reply });
           } catch (error) {
             botMessage.textContent = 'Sorry, I am having trouble connecting right now. Please try again later or contact us directly through our Contact page.';
           } finally {

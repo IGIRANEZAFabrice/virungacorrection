@@ -345,7 +345,7 @@
     </div>
     <ul class="nav-links" id="navLinks">
       <li><a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">Journeys</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Stays</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Our Stay</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>">Community Impact</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('membership')); ?>">Membership</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('about')); ?>">Story</a></li>
@@ -720,6 +720,55 @@
   cursor: pointer;
   padding: 0 2px;
 }
+.ai-chat-messages .bot-msg {
+  background: #ffffff;
+  color: #233127;
+  align-self: flex-start;
+  border: 1px solid rgba(18, 42, 31, 0.08);
+  border-bottom-left-radius: 4px;
+}
+.wa-typing-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: #1b3a2b;
+  font-weight: 500;
+  padding: 2px 0;
+}
+.wa-typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.wa-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #1b3a2b;
+  border-radius: 50%;
+  display: inline-block;
+  animation: waDotBounce 1.4s infinite ease-in-out both;
+}
+.wa-dot:nth-child(1) { animation-delay: 0s; }
+.wa-dot:nth-child(2) { animation-delay: 0.2s; }
+.wa-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes waDotBounce {
+  0%, 60%, 100% {
+    transform: translateY(0) scale(0.85);
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-5px) scale(1.2);
+    opacity: 1;
+  }
+}
+.user-msg {
+  background: #2e7d32;
+  color: #ffffff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
 .ai-chat-messages {
   flex: 1;
   padding: 14px;
@@ -810,10 +859,16 @@
     const input = document.getElementById('ai-user-input');
     const messages = document.getElementById('ai-messages');
 
-    const appendMessage = (text, type) => {
+    const chatHistory = [];
+
+    const appendMessage = (content, type, isHTML = false) => {
       const div = document.createElement('div');
       div.className = `ai-msg ${type}-msg`;
-      div.textContent = text;
+      if (isHTML) {
+        div.innerHTML = content;
+      } else {
+        div.textContent = content;
+      }
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
       return div;
@@ -829,25 +884,49 @@
     button?.addEventListener('click', toggleChat);
     close?.addEventListener('click', toggleChat);
 
+    const parseMarkdown = (text) => {
+      if (!text) return '';
+      let str = text.trim();
+
+      // Clean up stray markdown artifacts like :* or * :
+      str = str.replace(/^[:*#\s]+/gm, '');
+
+      str = str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.*?)__/g, '<strong>$1</strong>')
+        .replace(/\*([^\*]+)\*/g, '<em>$1</em>')
+        .replace(/^[\s]*[-•*]\s+(.*)$/gm, '• $1')
+        .replace(/\n/g, '<br>');
+
+      return str;
+    };
+
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
       const text = input.value.trim();
       if (!text) return;
 
       appendMessage(text, 'user');
+      chatHistory.push({ role: 'user', text: text });
+
       input.value = '';
       input.disabled = true;
       form.querySelector('button').disabled = true;
-      const botMessage = appendMessage('Thinking...', 'bot');
+      const botMessage = appendMessage('<span class="wa-typing-container">typing <span class="wa-typing-dots"><span class="wa-dot"></span><span class="wa-dot"></span><span class="wa-dot"></span></span></span>', 'bot', true);
 
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text }),
+          body: JSON.stringify({ message: text, history: chatHistory.slice(-8) }),
         });
         const data = await response.json();
-        botMessage.textContent = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+        const reply = data.response || 'Sorry, I could not process that right now. Please contact us directly through our Contact page.';
+        botMessage.innerHTML = parseMarkdown(reply);
+        chatHistory.push({ role: 'bot', text: reply });
       } catch (error) {
         botMessage.textContent = 'Sorry, I am having trouble connecting right now. Please try again later or contact us directly through our Contact page.';
       } finally {

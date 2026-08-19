@@ -6,29 +6,28 @@
     <?php $resolvedAssetBase = !empty($assetBase) ? $assetBase : './'; ?>
     <base href="<?php echo htmlspecialchars($resolvedAssetBase, ENT_QUOTES); ?>">
     <title><?php 
-      $displayTitle = isset($pageTitle) ? $pageTitle : 'Virunga Homestay';
-      if (isset($slug) && $slug !== 'home') {
-        echo $displayTitle . ' | Virunga Homestay - Musanze Rwanda';
+      if (isset($pageTitle) && !empty($pageTitle)) {
+        echo htmlspecialchars($pageTitle);
       } else {
-        echo 'Virunga Homestay | Best Accommodation in Musanze, Rwanda';
+        echo 'Virunga House & Luxury Homestay Musanze | Virunga Collective';
       }
     ?></title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?php echo isset($pageDescription) ? $pageDescription : 'Experience authentic Rwandan hospitality at Virunga Homestay in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
-    <meta name="keywords" content="<?php echo isset($pageKeywords) ? $pageKeywords : 'homestay Musanze, Virunga accommodation, Rwanda gorilla trekking stay, Volcanoes National Park lodging, authentic Rwanda travel'; ?>">
+    <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House. Authentic Rwandan warmth, volcano views, and bespoke immersion near Volcanoes National Park.'; ?>">
+    <meta name="keywords" content="<?php echo isset($pageKeywords) ? htmlspecialchars($pageKeywords) : 'Virunga Homestay, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda'; ?>">
     <?php
-      $canonicalSlug = (isset($slug) && $slug !== 'home') ? $slug : '';
-      $canonicalUrl = 'https://virungahomestay.com/' . $canonicalSlug;
+      $canonicalSlug = (isset($slug) && $slug !== 'home') ? $slug : 'homestays';
+      $canonicalUrl = 'https://virungacollective.com/' . $canonicalSlug;
     ?>
     <link rel="canonical" href="<?php echo $canonicalUrl; ?>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo $canonicalUrl; ?>">
-    <meta property="og:title" content="<?php echo isset($pageTitle) ? $pageTitle : 'Virunga Homestay'; ?>">
-    <meta property="og:description" content="<?php echo isset($pageDescription) ? $pageDescription : 'Experience the best stay at Virunga Homestay. Your perfect sanctuary in the heart of nature near Virunga volcanoes.'; ?>">
-    <meta property="og:image" content="<?php echo 'https://virungahomestay.com/img/hero/room.jpg'; ?>">
+    <meta property="og:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Virunga House & Luxury Homestay'; ?>">
+    <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House.'; ?>">
+    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">

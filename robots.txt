@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /ecotours/admin/
+Disallow: /homestay/admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /scratch/
 
 Sitemap: https://virungacollective.com/sitemap.xml

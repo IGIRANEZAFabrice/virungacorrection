@@ -1,7 +1,7 @@
 <?php
-  $pageTitle = 'Virunga Homestay - More than a stay — a real connection to Rwanda';
-  $pageDescription = 'Experience the best stay at Virunga Homestay. Your perfect sanctuary in the heart of nature near Virunga volcanoes.';
-  $pageKeywords = 'homestay, Virunga, Rwanda, accommodation, travel, nature, volcanoes';
+  $pageTitle = 'Virunga House & Luxury Homestay Musanze | Virunga Collective';
+  $pageDescription = 'Experience boutique luxury hospitality in Musanze at Virunga House. Authentic Rwandan warmth, volcano views, and bespoke immersion near Volcanoes National Park.';
+  $pageKeywords = 'Virunga Homestay, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda';
   $pageCss = ['room-cards.css','activity.css','home.css','day-at-virunga.css'];
   $pageHeroKey = null; // home has its own hero
   $pageScripts = ['home.js'];
