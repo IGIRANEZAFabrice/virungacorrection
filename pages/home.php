@@ -1624,9 +1624,8 @@
 
     <!-- Hero Section -->
     <section class="hero">
-      <video autoplay muted loop playsinline poster="<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>">
-        <source src="<?php echo htmlspecialchars($baseLink('img/hero-web-light.mp4')); ?>" type="video/mp4" media="(max-width: 768px)" />
-        <source src="<?php echo htmlspecialchars($baseLink('img/hero-web.mp4')); ?>" type="video/mp4" />
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="<?php echo htmlspecialchars($baseLink('img/hero.mp4')); ?>" type="video/mp4" />
       </video>
 
       <div class="hero-top">
