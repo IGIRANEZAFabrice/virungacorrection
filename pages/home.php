@@ -1651,10 +1651,8 @@
     <section class="hero">
       <div class="hero-bg-poster" style="background-image: url('<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>');"></div>
       <video autoplay muted loop playsinline poster="<?php echo htmlspecialchars($baseLink('img/hero-poster.webp')); ?>">
-        <source
-          src="<?php echo htmlspecialchars($baseLink('img/hero.mp4')); ?>"
-          type="video/mp4"
-        />
+        <source src="<?php echo htmlspecialchars($baseLink('img/hero-web-light.mp4')); ?>" type="video/mp4" media="(max-width: 768px)" />
+        <source src="<?php echo htmlspecialchars($baseLink('img/hero-web.mp4')); ?>" type="video/mp4" />
       </video>
 
       <div class="hero-top">
@@ -2422,21 +2420,34 @@
       const heroPoster = document.querySelector('.hero-bg-poster');
 
       if (heroVideo && heroPoster) {
+        let revealed = false;
         const revealVideo = () => {
+          if (revealed) return;
+          revealed = true;
           heroVideo.classList.add('is-playing');
           heroPoster.classList.add('is-hidden');
         };
 
-        if (heroVideo.readyState >= 3 && !heroVideo.paused) {
+        if (heroVideo.readyState >= 2 && !heroVideo.paused) {
           revealVideo();
-        } else {
-          heroVideo.addEventListener('playing', revealVideo, { once: true });
-          heroVideo.addEventListener('canplaythrough', revealVideo, { once: true });
-          heroVideo.addEventListener('timeupdate', () => {
-            if (heroVideo.currentTime > 0.05) {
+        }
+
+        heroVideo.addEventListener('loadeddata', revealVideo, { once: true });
+        heroVideo.addEventListener('canplay', revealVideo, { once: true });
+        heroVideo.addEventListener('playing', revealVideo, { once: true });
+        heroVideo.addEventListener('timeupdate', () => {
+          if (heroVideo.currentTime >= 0) {
+            revealVideo();
+          }
+        });
+
+        const playPromise = heroVideo.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            if (heroVideo.currentTime >= 0 || heroVideo.readyState >= 2) {
               revealVideo();
             }
-          }, { once: true });
+          }).catch(() => {});
         }
       }
 
