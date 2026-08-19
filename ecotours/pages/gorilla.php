@@ -47,7 +47,7 @@
         <div class="container">
             <div class="section-grid">
                 <div class="history-image">
-                    <img src="../images/stories/mutima.jpg" alt="Dian Fossey and Gorillas" class="main-img">
+                    <img src="../images/gorilla/under.jpg" alt="Dian Fossey and Gorillas" class="main-img">
                     <div class="img-badge">
                         <span class="year">1967</span>
                         <span class="text">Mission Began</span>
@@ -90,7 +90,7 @@
                 <!-- Susa Family -->
                 <div class="family-card-modern">
                     <div class="card-img-wrapper">
-                        <img src="../images/bird/ny.jpg" alt="Susa Family">
+                        <img src="../images/gorilla/hero2.jpg" alt="Susa Family">
                         <div class="card-tag">The Legend</div>
                     </div>
                     <div class="card-body">
@@ -112,7 +112,7 @@
                 <!-- Kwitonda Family -->
                 <div class="family-card-modern">
                     <div class="card-img-wrapper">
-                        <img src="../images/bird/ny.jpg" alt="Kwitonda Family">
+                        <img src="../images/conservationist/gorilla.jpg" alt="Kwitonda Family">
                         <div class="card-tag">The Wise One</div>
                     </div>
                     <div class="card-body">
@@ -134,7 +134,7 @@
                 <!-- Pablo Family -->
                 <div class="family-card-modern">
                     <div class="card-img-wrapper">
-                        <img src="../images/bird/ny.jpg" alt="Pablo Family">
+                        <img src="../images/gorilla/under.jpg" alt="Pablo Family">
                         <div class="card-tag">The Dynasty</div>
                     </div>
                     <div class="card-body">
@@ -156,7 +156,7 @@
                 <!-- Amahoro Family -->
                 <div class="family-card-modern">
                     <div class="card-img-wrapper">
-                        <img src="../images/bird/ny.jpg" alt="Amahoro Family">
+                        <img src="../images/gorilla/hero.jpg" alt="Amahoro Family">
                         <div class="card-tag">The Peaceful</div>
                     </div>
                     <div class="card-body">

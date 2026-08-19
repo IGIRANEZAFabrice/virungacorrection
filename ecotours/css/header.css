@@ -158,14 +158,12 @@ ul {
 }
 
 .logo img {
-  max-width: 240px;
+  max-width: 220px;
   margin: 0;
   padding: 0;
-  height: 48px; /* keeps header height stable */
+  height: 48px;
   width: auto;
   display: block;
-  transform: scale(2.3); /* visually larger without affecting layout height */
-  transform-origin: left center;
 }
 
 
