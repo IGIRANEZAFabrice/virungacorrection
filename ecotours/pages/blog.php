@@ -93,8 +93,7 @@ $categories_result = $conn->query($categories_query);
       <div class="hero-overlay">
         <h1 class="hero-title">The Virunga Journal</h1>
         <p class="hero-subtitle">
-          Discover the heart of Africa's most diverse mountain range through our
-          expert insights, travel tips, and authentic local experiences.
+          Stories, people and experiences from the Virunga region.
         </p>
         <a href="#" class="cta-btn">Plan Your Journey</a>
       </div>
