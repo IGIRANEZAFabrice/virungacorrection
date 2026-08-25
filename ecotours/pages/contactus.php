@@ -57,7 +57,7 @@ session_start();
                     </div>
                     <div class="info-detail-content">
                         <i class="fas fa-envelope"></i>
-                        <p>info@virungaecotours.com</p>
+                        <p>info@virungajourneys.com</p>
                     </div>
                     <div class="info-detail-content">
                         <i class="fas fa-envelope"></i>

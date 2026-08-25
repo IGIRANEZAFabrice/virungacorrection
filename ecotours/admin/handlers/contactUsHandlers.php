@@ -85,7 +85,7 @@ function buildContactCustomerEmail($customerName, $subjectLine) {
               <tr>
                 <td style="font-size:14px;line-height:1.7;color:#1f2a36;">
                   <strong>Need anything urgent?</strong><br/>
-                  <span style="display:block;margin-top:6px;">📧 <a href="mailto:info@virungaecotours.com" style="color:#1f7a5a;text-decoration:none;">info@virungaecotours.com</a></span>
+                  <span style="display:block;margin-top:6px;">📧 <a href="mailto:info@virungajourneys.com" style="color:#1f7a5a;text-decoration:none;">info@virungajourneys.com</a></span>
                   <span style="display:block;">📱 +250 784 513 435 (WhatsApp / Call)</span>
                 </td>
               </tr>
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 2) Send email notifications (both recipients) right after DB save.
-        $recipients = ['virungahomestay@gmail.com', 'info@virungaecotours.com'];
+        $recipients = ['virungahomestay@gmail.com', 'info@virungajourneys.com'];
         $fullName = trim($firstName . ' ' . $lastName);
         $subjectEmail = 'New Contact Message - ' . $fullName;
 

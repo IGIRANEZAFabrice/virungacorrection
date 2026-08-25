@@ -379,7 +379,7 @@ $partnerships_result = mysqli_query($conn, $partnerships_query);
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email Us</h4>
-                            <p>info@virungaecotours.com</p>
+                            <p>info@virungajourneys.com</p>
                         </div>
                     </div>
                     <div class="contact-item">

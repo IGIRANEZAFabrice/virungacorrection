@@ -8,19 +8,19 @@
     <meta name="description" content="Immerse in the Virunga Coffee experience: organic volcanic farm walks, harvesting, roasting masterclasses, and tasting in Musanze, Rwanda." />
     <meta name="keywords" content="Virunga Coffee, Rwanda coffee tours, volcanic coffee Musanze, farm to cup Rwanda, coffee tasting Volcanoes National Park" />
 
-    <link rel="canonical" href="https://virungacollective.com/coffee" />
+    <link rel="canonical" href="https://virungajourneys.com/coffee" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://virungacollective.com/coffee">
+    <meta property="og:url" content="https://virungajourneys.com/coffee">
     <meta property="og:title" content="Virunga Coffee Experience & Volcanic Farm Tours | Virunga Collective">
     <meta property="og:description" content="Discover coffee rooted in the Virunga region: volcanic farm walks, traditional roasting, and authentic Rwandan community heritage.">
-    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
+    <meta property="og:image" content="https://virungajourneys.com/img/about.jpeg">
     <meta property="og:site_name" content="Virunga Collective">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://virungacollective.com/coffee">
+    <meta name="twitter:url" content="https://virungajourneys.com/coffee">
     <meta name="twitter:title" content="Virunga Coffee Experience | Virunga Collective">
     <meta name="twitter:description" content="Volcanic coffee experiences in Musanze, Rwanda. From soil to cup with local farming communities.">
 
@@ -31,9 +31,9 @@
       "@graph": [
         {
           "@type": "TouristAttraction",
-          "@id": "https://virungacollective.com/coffee#attraction",
+          "@id": "https://virungajourneys.com/coffee#attraction",
           "name": "Virunga Coffee Experience",
-          "url": "https://virungacollective.com/coffee",
+          "url": "https://virungajourneys.com/coffee",
           "description": "Community-based volcanic coffee tour from farm walk to cup tasting in Musanze, Rwanda.",
           "touristType": ["Coffee Enthusiasts", "Eco-Tourists", "Cultural Travelers"],
           "location": {
@@ -53,13 +53,13 @@
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://virungacollective.com/"
+              "item": "https://virungajourneys.com/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Virunga Coffee",
-              "item": "https://virungacollective.com/coffee"
+              "item": "https://virungajourneys.com/coffee"
             }
           ]
         }

@@ -216,8 +216,8 @@
               <div class="contact-text">
                 <span class="contact-label">Email</span>
                 <span class="contact-value"
-                  ><a href="mailto:info@virungahomestay.com"
-                    >info@virungahomestay.com</a
+                  ><a href="mailto:info@virungajourneys.com"
+                    >info@virungajourneys.com</a
                   ><br/>
                   <a href="mailto:virungahomestay@gmail.com"
                     >virungahomestay@gmail.com</a

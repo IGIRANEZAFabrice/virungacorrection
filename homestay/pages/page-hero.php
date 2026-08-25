@@ -96,7 +96,7 @@ $config = $pageHeroConfig[$key];
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://virungahomestay.com/"
+    "item": "https://virungajourneys.com/"
   },{
     "@type": "ListItem",
     "position": 2,

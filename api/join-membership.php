@@ -78,9 +78,8 @@ if ($mailLoaded) {
         // Send to admin
         $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Membership');
         $mail->addAddress(SMTP_EMAIL);
-        $mail->addAddress('hello@virungacollective.com');
+        $mail->addAddress('info@virungajourneys.com');
         $mail->addAddress('virungahomestay@gmail.com');
-        $mail->addAddress('info@virungaecotours.com');
         $mail->addReplyTo($email, "$firstName $lastName");
 
         $mail->isHTML(true);

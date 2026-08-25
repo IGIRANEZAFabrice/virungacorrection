@@ -107,7 +107,7 @@ try {
     // Send notification to admin
     $mail->setFrom($email_config['from_email'], $email_config['from_name']);
     $mail->addAddress('virungahomestay@gmail.com');
-    $mail->addAddress('info@virungaecotours.com');
+    $mail->addAddress('info@virungajourneys.com');
     $mail->addReplyTo($email, $name);
     $mail->isHTML(true);
     $mail->Subject = 'VETI Training Inquiry - ' . htmlspecialchars($name);
@@ -117,7 +117,7 @@ try {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungaecotours.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
+            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
             <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">VETI Training Inquiry</div>
           </td>
         </tr>
@@ -169,14 +169,17 @@ try {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungaecotours.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
+            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
             <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Ecotours Training Institute</div>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 28px 0;">
-            <h1 style="margin:0;font-size:22px;font-weight:700;color:#1f2a36;">Hi ' . htmlspecialchars($fname) . ', thanks for your interest!</h1>
-            <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#2f3b47;">We received your inquiry about the <strong>' . htmlspecialchars($program) . '</strong> program. Our training team will review your submission and get back to you shortly.</p>
+          <td style="padding:14px 28px 4px;">
+            <div style="font-size:20px;font-weight:700;color:#183b2b;margin-bottom:10px;">We Received Your Training Inquiry!</div>
+            <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#2c3e50;">
+              Hello <strong>' . htmlspecialchars($name) . '</strong>,<br/><br/>
+              Thank you for reaching out to the <strong>Virunga Ecotours Training Institute (VETI)</strong>. We have received your inquiry and our training coordinator will get back to you within 24–48 hours with course details and next steps.
+            </p>
           </td>
         </tr>
         <tr>
@@ -185,7 +188,7 @@ try {
               <tr>
                 <td style="font-size:14px;line-height:1.7;color:#1f2a36;">
                   <strong>Need anything urgent?</strong><br/>
-                  <span style="display:block;margin-top:6px;">📧 <a href="mailto:info@virungaecotours.com" style="color:#1f7a5a;text-decoration:none;">info@virungaecotours.com</a></span>
+                  <span style="display:block;margin-top:6px;">📧 <a href="mailto:info@virungajourneys.com" style="color:#1f7a5a;text-decoration:none;">info@virungajourneys.com</a></span>
                   <span style="display:block;">📱 +250 784 513 435 (WhatsApp / Call)</span>
                 </td>
               </tr>

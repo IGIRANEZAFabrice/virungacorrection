@@ -41,9 +41,9 @@
             <div class="container">
                 <div class="top-bar-content">
                     <div class="header-contact-info">
-                        <a href="mailto:community@virungaecotours.com" class="header-contact-item">
+                        <a href="mailto:info@virungajourneys.com" class="header-contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>info@virungaecotours.com</span>
+                            <span>info@virungajourneys.com</span>
                         </a>
                         <a href="tel:+250784513435" class="header-contact-item">
                             <i class="fas fa-phone"></i>
@@ -289,9 +289,9 @@
                             <i class="fas fa-phone"></i>
                             +(250) 784 513 435
                         </a>
-                        <a href="mailto:community@virungaecotours.com">
+                        <a href="mailto:info@virungajourneys.com">
                             <i class="fas fa-envelope"></i>
-                            info@virungaecotours.com
+                            info@virungajourneys.com
                         </a>
                     </div>
                     

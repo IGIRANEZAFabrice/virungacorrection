@@ -8,7 +8,7 @@ require_once 'indexhandler.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php $resolvedAssetBase = !empty($assetBase) ? $assetBase : './'; ?>
     <base href="<?php echo htmlspecialchars($resolvedAssetBase, ENT_QUOTES); ?>">
-    <link rel="canonical" href="https://virungacollective.com/experiences" />
+    <link rel="canonical" href="https://virungajourneys.com/experiences" />
 
     <!-- Primary Meta Tags -->
     <title>Luxury Rwanda Safaris & Gorilla Trekking Expeditions | Virunga Ecotours</title>
@@ -18,8 +18,8 @@ require_once 'indexhandler.php';
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
     <meta property="og:description" content="Discover bespoke luxury safaris, gorilla trekking expeditions, and volcanic journeys in Rwanda with local experts.">
-    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
-    <meta property="og:url" content="https://virungacollective.com/experiences">
+    <meta property="og:image" content="https://virungajourneys.com/img/about.jpeg">
+    <meta property="og:url" content="https://virungajourneys.com/experiences">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Virunga Ecotours">
 
@@ -27,46 +27,46 @@ require_once 'indexhandler.php';
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
     <meta name="twitter:description" content="Bespoke luxury safaris, mountain gorilla trekking, and community journeys across the Virunga Massif.">
-    <meta name="twitter:image" content="https://virungacollective.com/img/about.jpeg">
+    <meta name="twitter:image" content="https://virungajourneys.com/img/about.jpeg">
 
     <script type="application/ld+json">
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Virunga Ecotours",
-  "alternateName": "Virunga Ecotours Authentic Virunga Journeys",
-  "url": "https://virungaecotours.com",
-  "logo": "https://virungaecotours.com/images/logos/logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+250 784 513 435",
-    "contactType": "customer service",
-    "areaServed": ["RW", "UG", "CD"],
-    "availableLanguage": "English"
-  },
-  "sameAs": [
-    "https://www.tripadvisor.com/Attraction_Review-g317075-d21346700-Reviews-VIRUNGA_ECOTOURS-Ruhengeri_Musanze_District_Northern_Province.html"
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "url": "https://virungaecotours.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://virungaecotours.com/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Virunga Ecotours",
+      "alternateName": "Virunga Ecotours Authentic Virunga Journeys",
+      "url": "https://virungajourneys.com/experiences",
+      "logo": "https://virungajourneys.com/ecotours/images/logos/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+250 784 513 435",
+        "contactType": "customer service",
+        "areaServed": ["RW", "UG", "CD"],
+        "availableLanguage": "English"
+      },
+      "sameAs": [
+        "https://www.tripadvisor.com/Attraction_Review-g317075-d21346700-Reviews-VIRUNGA_ECOTOURS-Ruhengeri_Musanze_District_Northern_Province.html"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://virungajourneys.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://virungajourneys.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
     <link
       rel="shortcut icon"
       href="./images/logos/icon.png?v=1.1"
       type="image/x-icon"
     />
-    <title>Virunga Ecotours || Visit-Conect-Contribute</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="css/earthy-theme.css" />
     <link rel="stylesheet" href="css/header.css" />

@@ -110,7 +110,7 @@ $page_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVE
         "organizer": {
             "@type": "Organization",
             "name": "Virunga Ecotours",
-            "url": "https://virungaecotours.com"
+            "url": "https://virungajourneys.com"
         }
     }
     </script>

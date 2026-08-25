@@ -802,7 +802,7 @@ require_once '../admin/config/connection.php';
                             </div>
                             <div>
                                 <span class="contact-detail-label">Email</span>
-                                <a href="mailto:info@virungaecotours.com">info@virungaecotours.com</a>
+                                <a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a>
                             </div>
                         </div>
                         <div class="contact-detail-item">

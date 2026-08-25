@@ -15,11 +15,11 @@
     <meta name="robots" content="index, follow">
     
     <!-- Canonical & Alternate Links -->
-    <link rel="canonical" href="https://virungacollective.com/about" />
+    <link rel="canonical" href="https://virungajourneys.com/about" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://virungacollective.com/about">
+    <meta property="og:url" content="https://virungajourneys.com/about">
     <meta property="og:title" content="About Virunga Collective | Luxury Conservation Travel Ecosystem">
     <meta property="og:description" content="Discover the story behind Virunga Collective: connecting luxury homestays, gorilla trekking expeditions, volcanic coffee, and community conservation in Rwanda.">
     <meta property="og:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
@@ -30,7 +30,7 @@
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://virungacollective.com/about">
+    <meta name="twitter:url" content="https://virungajourneys.com/about">
     <meta name="twitter:title" content="About Virunga Collective | Luxury Travel Ecosystem">
     <meta name="twitter:description" content="Learn about Virunga Collective's 100-year legacy commitment uniting luxury hospitality, gorilla safaris, volcanic coffee, and community stewardship.">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
@@ -43,13 +43,13 @@
       "@context": "https://schema.org",
       "@type": "AboutPage",
       "name": "About Virunga Collective",
-      "url": "https://virungacollective.com/about",
+      "url": "https://virungajourneys.com/about",
       "description": "Discover the brand story, 100-year vision, and conservation hospitality ecosystem of Virunga Collective in Rwanda.",
       "mainEntity": {
         "@type": "Organization",
         "name": "Virunga Collective",
-        "url": "https://virungacollective.com",
-        "logo": "https://virungacollective.com/img/icon.png",
+        "url": "https://virungajourneys.com",
+        "logo": "https://virungajourneys.com/img/icon.png",
         "sameAs": [
           "https://instagram.com/virungacollective",
           "https://facebook.com/virungacollective"

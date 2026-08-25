@@ -60,7 +60,7 @@
                                 <i class="fas fa-envelope"></i>
                                 <div class="contact-details">
                                     <span class="contact-label">Email</span>
-                                    <a href="mailto:community@virungaecotours.com">info@virungaecotours.com</a>
+                                    <a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a>
                                 </div>
                             </div>
                             <div class="contact-item">

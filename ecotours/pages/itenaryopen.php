@@ -320,7 +320,7 @@ require_once './itenaryopenhandler.php';
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="info@virungaecotours.com"
+                  placeholder="info@virungajourneys.com"
                   required
                 />
                 <div class="input-icon">
@@ -660,7 +660,7 @@ require_once './itenaryopenhandler.php';
         <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #c9a24b; margin-bottom: 25px;">
           <h1 style="color: #1b3a2b; margin: 0; font-size: 26px; font-family: 'Cormorant Garamond', serif;">VIRUNGA ECOTOURS</h1>
           <p style="color: #6e8270; margin: 5px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;">Regenerative Safaris & Community Journeys in Rwanda</p>
-          <p style="color: #a37f30; margin: 4px 0 0; font-size: 12px;">Website: www.virungacollective.com | WhatsApp: +250 784 513 435</p>
+          <p style="color: #a37f30; margin: 4px 0 0; font-size: 12px;">Website: www.virungajourneys.com | WhatsApp: +250 784 513 435</p>
         </div>
       `;
 

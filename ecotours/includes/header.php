@@ -1,8 +1,8 @@
 <!-- Top Bar -->
 <div class="top-bar">
   <div class="trustpilot">
-    <a href="mailto:info@virungaecotours.com" rel="noopener noreferrer"
-      >info@virungaecotours.com</a
+    <a href="mailto:info@virungajourneys.com" rel="noopener noreferrer"
+      >info@virungajourneys.com</a
     >
     <span class="separator">|</span>
     <a
@@ -108,7 +108,7 @@
     </a>
   </div>
   <div class="mobile-side-btn">
-    <a href="mailto:info@virungaecotours.com">
+    <a href="mailto:info@virungajourneys.com">
       <i class="fas fa-envelope"></i>
       <span>Mail</span>
     </a>
@@ -486,7 +486,7 @@
     ><span>Calls</span>
   </div>
   <div class="side-btn">
-    <a href="mailto:info@virungaecotours.com">
+    <a href="mailto:info@virungajourneys.com">
       <i class="fas fa-envelope"></i> </a
     ><span>Mail</span>
   </div>

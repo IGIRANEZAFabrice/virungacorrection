@@ -72,7 +72,7 @@ try {
 
     // Send to admin
     $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Website');
-    $mail->addAddress('hello@virungacollective.com');
+    $mail->addAddress('info@virungajourneys.com');
     $mail->addAddress('virungahomestay@gmail.com');
     $mail->addReplyTo($email, $name);
     $mail->isHTML(true);

@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if (mysqli_query($conn, $insert_query)) {
                     // Send email notifications (both recipients) right after DB save.
-                    $recipients = ['virungahomestay@gmail.com', 'info@virungaecotours.com'];
+                    $recipients = ['virungahomestay@gmail.com', 'info@virungajourneys.com'];
 
                     $emailBody = '
                         <h2 style="color:#2a4858;">New Community Contact Message</h2>
@@ -537,7 +537,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
                             <div class="contact-contact-details">
                                 <h4>Email</h4>
                                 <p><a href="mailto:community@virungaecotours.com">virungacommunityprograms@gmail.com</a></p>
-                                <p><a href="mailto:info@virungaecotours.com">info@virungaecotours.com</a></p>
+                                <p><a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a></p>
                             </div>
                         </div>
 

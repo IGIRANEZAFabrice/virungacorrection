@@ -723,7 +723,7 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
       <div class="contact-reach" style="margin-top: 60px;">
         <p class="curated-eyebrow">REACH US DIRECTLY</p>
         <p class="contact-reach__info">
-          <a href="mailto:info@virungacollective.com">info@virungacollective.com</a>
+          <a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a>
           <a href="tel:+250784513435">+250 784 513 435</a>
         </p>
       </div>

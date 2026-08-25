@@ -129,7 +129,7 @@ include './includes/header.php';
             <div class="contact-card" style="background-color: #f2e8dc;">
               <div class="contact-icon"><i class="fas fa-envelope"></i></div>
               <h4>Email</h4>
-              <p style="color: #000000;">info@virungaecotours.com</p>
+              <p style="color: #000000;">info@virungajourneys.com</p>
             </div>
             <div class="contact-card" style="background-color: #f2e8dc;">
               <div class="contact-icon"><i class="fas fa-phone"></i></div>

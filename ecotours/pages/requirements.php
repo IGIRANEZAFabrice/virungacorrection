@@ -443,13 +443,13 @@
                 </h2>
                 <p>Virunga Ecotours provides professional assistance for all aspects of your journey across Rwanda, Uganda, and DRC, including permit facilitation, transport coordination, and expert guidance.</p>
                 <div class="contact-info">
-                    <a href="mailto:info@virungaecotours.com" class="contact-item">
+                    <a href="mailto:info@virungajourneys.com" class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        info@virungaecotours.com
+                        info@virungajourneys.com
                     </a>
-                    <a href="https://www.virungaecotours.com" class="contact-item" target="_blank">
+                    <a href="https://www.virungajourneys.com" class="contact-item" target="_blank">
                         <i class="fas fa-globe"></i>
-                        www.virungaecotours.com
+                        www.virungajourneys.com
                     </a>
                 </div>
             </div>

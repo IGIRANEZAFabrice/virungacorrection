@@ -6,7 +6,7 @@
     <title>Mountain Gorilla Legacies | Virunga Ecotours</title>
     <meta name="description" content="Explore the legendary gorilla families of the Virunga Massif. From the iconic Susa family to the rising dynasties of Igisha, Isimbi, and more.">
     
-    <link rel="canonical" href="https://virungaecotours.com/pages/gorilla.php" />
+    <link rel="canonical" href="https://virungajourneys.com/ecotours/pages/gorilla.php" />
     <!-- Favicon -->
     <link rel="shortcut icon" href="../images/logos/icon.png?v=1.1" type="image/x-icon" />
     
@@ -218,7 +218,7 @@
                     <p>Reserve your gorilla trekking experience today and walk with history in the misty forests of the Virunga Massif. Your journey helps protect their home and sustain their future.</p>
                     <div class="cta-btns">
                         <a href="../contact.php" class="btn btn-primary">Book Your Trek</a>
-                        <a href="mailto:info@virungaecotours.com" class="btn btn-outline-white">Inquire Now</a>
+                        <a href="mailto:info@virungajourneys.com" class="btn btn-outline-white">Inquire Now</a>
                     </div>
                 </div>
             </div>

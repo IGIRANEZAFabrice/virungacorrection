@@ -18,7 +18,7 @@
     <meta name="keywords" content="<?php echo isset($pageKeywords) ? htmlspecialchars($pageKeywords) : 'Virunga Homestay, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda'; ?>">
     <?php
       $canonicalSlug = (isset($slug) && $slug !== 'home') ? $slug : 'homestays';
-      $canonicalUrl = 'https://virungacollective.com/' . $canonicalSlug;
+      $canonicalUrl = 'https://virungajourneys.com/' . $canonicalSlug;
     ?>
     <link rel="canonical" href="<?php echo $canonicalUrl; ?>">
 
@@ -27,14 +27,14 @@
     <meta property="og:url" content="<?php echo $canonicalUrl; ?>">
     <meta property="og:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Virunga House & Luxury Homestay'; ?>">
     <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House.'; ?>">
-    <meta property="og:image" content="https://virungacollective.com/img/about.jpeg">
+    <meta property="og:image" content="https://virungajourneys.com/img/about.jpeg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="<?php echo $canonicalUrl; ?>">
     <meta property="twitter:title" content="<?php echo isset($pageTitle) ? $pageTitle : 'Virunga Homestay'; ?>">
     <meta property="twitter:description" content="<?php echo isset($pageDescription) ? $pageDescription : 'Experience authentic Rwandan hospitality at Virunga Homestay in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
-    <meta property="twitter:image" content="<?php echo 'https://virungahomestay.com/img/hero/room.jpg'; ?>">
+    <meta property="twitter:image" content="<?php echo 'https://virungajourneys.com/homestay/img/hero/room.jpg'; ?>">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/logo/logo-small.png">

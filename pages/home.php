@@ -22,7 +22,7 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://virungacollective.com/">
+    <meta property="og:url" content="https://virungajourneys.com/">
     <meta property="og:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
     <meta property="og:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
@@ -33,7 +33,7 @@
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://virungacollective.com/">
+    <meta name="twitter:url" content="https://virungajourneys.com/">
     <meta name="twitter:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
     <meta name="twitter:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
@@ -41,36 +41,36 @@
     <meta name="twitter:creator" content="@virungacollective">
     
     <!-- Canonical & 27-Language Hreflang Alternates -->
-    <link rel="canonical" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="x-default" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="en" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="fr" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="de" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="es" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="it" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="nl" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="pt" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="zh" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ja" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="sv" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="no" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="da" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ar" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ko" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="hi" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ru" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="pl" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="tr" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="he" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="cs" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="fi" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ro" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="id" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="ms" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="sw" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="th" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="vi" href="https://virungacollective.com/" />
-    <link rel="alternate" hreflang="uk" href="https://virungacollective.com/" />
+    <link rel="canonical" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="en" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="fr" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="de" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="es" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="it" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="nl" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="pt" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="zh" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ja" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="sv" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="no" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="da" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ar" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ko" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="hi" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ru" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="pl" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="tr" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="he" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="cs" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="fi" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ro" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="id" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="ms" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="sw" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="th" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="vi" href="https://virungajourneys.com/" />
+    <link rel="alternate" hreflang="uk" href="https://virungajourneys.com/" />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -79,15 +79,15 @@
       "@graph": [
         {
           "@type": "TravelAgency",
-          "@id": "https://virungacollective.com/#organization",
+          "@id": "https://virungajourneys.com/#organization",
           "name": "Virunga Collective",
           "alternateName": "Virunga Conservation Hospitality Collective",
-          "url": "https://virungacollective.com",
-          "logo": "https://virungacollective.com/img/icon.png",
-          "image": "https://virungacollective.com/img/about.jpeg",
+          "url": "https://virungajourneys.com",
+          "logo": "https://virungajourneys.com/img/icon.png",
+          "image": "https://virungajourneys.com/img/about.jpeg",
           "description": "Rwanda's premier destination ecosystem—connecting luxury homestays, bespoke gorilla trekking safaris, volcanic coffee, and community impact in the Virunga Massif.",
           "telephone": "+250784513435",
-          "email": "hello@virungacollective.com",
+          "email": "info@virungajourneys.com",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Musanze",
@@ -152,11 +152,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://virungacollective.com/#website",
-          "url": "https://virungacollective.com",
+          "@id": "https://virungajourneys.com/#website",
+          "url": "https://virungajourneys.com",
           "name": "Virunga Collective",
           "publisher": {
-            "@id": "https://virungacollective.com/#organization"
+            "@id": "https://virungajourneys.com/#organization"
           }
         }
       ]
@@ -2093,7 +2093,7 @@
             <a href="<?php echo htmlspecialchars($baseLink('contact-us')); ?>" class="btn" style="border-color: var(--cream);">
               Partner With Us <i class="fas fa-handshake"></i>
             </a>
-            <a href="mailto:info@virungacollective.com" class="btn" style="border-color: var(--cream);">
+            <a href="mailto:info@virungajourneys.com" class="btn" style="border-color: var(--cream);">
               Contact Our Team <i class="fas fa-envelope"></i>
             </a>
           </div>
@@ -2263,7 +2263,7 @@
         {
           "@type": "TravelAgency",
           "name": "Virunga Collective",
-          "url": "https://virungacollective.com",
+          "url": "https://virungajourneys.com",
           "description": "Boutique stays, curated journeys, and community impact experiences in Rwanda, Uganda, and DR Congo.",
           "areaServed": [
             "Rwanda",
@@ -2279,7 +2279,7 @@
         {
           "@type": "LodgingBusiness",
           "name": "Virunga Homestay",
-          "url": "https://virungacollective.com/homestay",
+          "url": "https://virungajourneys.com/homestays",
           "description": "Boutique stay near Volcanoes National Park with authentic Rwandan hospitality.",
           "address": {
             "@type": "PostalAddress",

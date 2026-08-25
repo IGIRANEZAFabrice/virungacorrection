@@ -446,13 +446,13 @@ function send_multilingual_confirmation_email($userEmail, $userName, $formSubjec
                     </div>
 
                     <div style='text-align: center; margin-top: 30px;'>
-                        <a href='https://virungacollective.com/' style='display: inline-block; background: #c9a24b; color: #1b3a2b; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: bold; font-size: 14px;'>" . $receipt['contact_btn'] . " &rarr;</a>
+                        <a href='https://virungajourneys.com/' style='display: inline-block; background: #c9a24b; color: #1b3a2b; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: bold; font-size: 14px;'>" . $receipt['contact_btn'] . " &rarr;</a>
                     </div>
                 </div>
                 <div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.75); line-height: 1.6;'>
                     <strong>Virunga Collective</strong> • Musanze, Northern Province, Rwanda<br>
                     Integrated Conservation, Hospitality & Community Impact Ecosystem<br>
-                    Direct WhatsApp: +250 784 513 435 | Email: hello@virungacollective.com
+                    Direct WhatsApp: +250 784 513 435 | Email: info@virungajourneys.com
                 </div>
             </div>
         ";

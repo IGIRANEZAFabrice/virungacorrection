@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         // 2) Send email notifications (both recipients) right after DB save.
-        $recipients = ['virungahomestay@gmail.com', 'info@virungaecotours.com'];
+        $recipients = ['virungahomestay@gmail.com', 'info@virungajourneys.com'];
 
         $subject = 'New Trip Planner Request - ' . $names;
         $bodyHtml = '

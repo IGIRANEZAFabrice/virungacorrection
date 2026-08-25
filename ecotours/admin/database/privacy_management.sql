@@ -217,7 +217,7 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 **Phone:** +250 788 123 456
 **Address:** Virunga Ecotours, P.O. Box 6754, Kigali, Rwanda
 
-**Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungaecotours.com.
+**Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungajourneys.com.
 
 We will respond to your inquiry as soon as possible and within the timeframe required by applicable law.
 
@@ -423,7 +423,7 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 **Phone:** +250 788 123 456
 **Address:** Virunga Ecotours, P.O. Box 6754, Kigali, Rwanda
 
-**Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungaecotours.com.
+**Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungajourneys.com.
 
 We will respond to your inquiry as soon as possible and within the timeframe required by applicable law.
 
