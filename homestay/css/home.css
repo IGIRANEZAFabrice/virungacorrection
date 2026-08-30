@@ -197,14 +197,37 @@
   gap: 10px;
 }
 
-.about-badges span {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-dark);
-  padding: 8px 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  border-radius: 999px;
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  background: #2c332b;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.badge-arrow {
+  display: inline-block;
+  transform: translateX(-4px);
+  opacity: 0.7;
+  transition: all 0.35s ease;
+}
+
+.modern-badge:hover .badge-arrow {
+  transform: translateX(6px);
+  opacity: 1;
+}
+
+.modern-badge:hover {
+  padding-right: 24px;
+  transform: translateY(-2px);
+  color: #fff;
 }
 
 .about-visual {
