@@ -79,7 +79,7 @@
           <p class="about-body"><?php echo $body; ?></p>
           <div class="about-badges">
             <?php if ($badge1): ?>
-              <a href="<?php echo $baseLink('about-us'); ?>" class="modern-badge">
+              <a href="<?php echo $baseLink('rooms'); ?>" class="modern-badge">
                 <span><?php echo htmlspecialchars($badge1); ?></span>
                 <span class="badge-arrow">→</span>
               </a>
