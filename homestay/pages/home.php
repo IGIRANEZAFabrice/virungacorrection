@@ -78,7 +78,12 @@
           <h2 class="section-heading"><?php echo $heading; ?></h2>
           <p class="about-body"><?php echo $body; ?></p>
           <div class="about-badges">
-            <?php if ($badge1) echo '<span>' . $badge1 . '</span>'; ?>
+            <?php if ($badge1): ?>
+              <a href="<?php echo $baseLink('about-us'); ?>" class="modern-badge">
+                <span><?php echo htmlspecialchars($badge1); ?></span>
+                <span class="badge-arrow">→</span>
+              </a>
+            <?php endif; ?>
           </div>
         </div>
         <div class="about-visual" data-reveal data-delay="300">
