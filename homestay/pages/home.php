@@ -77,11 +77,101 @@
           <p class="section-label"><?php echo $label; ?></p>
           <h2 class="section-heading"><?php echo $heading; ?></h2>
           <p class="about-body"><?php echo $body; ?></p>
+          <style>
+            #home-about .about-badges {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 14px;
+              margin-top: 26px;
+            }
+            #home-about a.modern-badge,
+            #home-about .modern-badge {
+              display: inline-flex !important;
+              align-items: center !important;
+              gap: 14px !important;
+              padding: 14px 32px !important;
+              background: #1b3a2b !important;
+              color: #ffffff !important;
+              text-decoration: none !important;
+              border: 1px solid #1b3a2b !important;
+              border-radius: 0 !important;
+              font-family: var(--font-body, 'Jost', sans-serif) !important;
+              font-size: 0.82rem !important;
+              font-weight: 600 !important;
+              letter-spacing: 0.16em !important;
+              text-transform: uppercase !important;
+              position: relative !important;
+              overflow: hidden !important;
+              cursor: pointer !important;
+              box-shadow: 0 4px 18px rgba(18, 42, 31, 0.15) !important;
+              transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease !important;
+            }
+            #home-about a.modern-badge::after,
+            #home-about .modern-badge::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.25) 50%,
+                transparent 100%
+              );
+              transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+              pointer-events: none;
+            }
+            #home-about a.modern-badge span,
+            #home-about .modern-badge span {
+              position: relative;
+              z-index: 2;
+              color: #ffffff !important;
+              text-decoration: none !important;
+              transition: color 0.35s ease;
+            }
+            #home-about a.modern-badge .badge-arrow,
+            #home-about .modern-badge .badge-arrow {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.85rem;
+              position: relative;
+              z-index: 2;
+              color: #c9a24b !important;
+              transform: translateX(0);
+              transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s ease;
+            }
+            #home-about a.modern-badge:hover,
+            #home-about .modern-badge:hover {
+              background: #c9a24b !important;
+              border-color: #c9a24b !important;
+              color: #0d1f16 !important;
+              transform: translateY(-2px);
+              box-shadow: 0 10px 28px rgba(201, 162, 75, 0.38) !important;
+              text-decoration: none !important;
+            }
+            #home-about a.modern-badge:hover::after,
+            #home-about .modern-badge:hover::after {
+              left: 100%;
+            }
+            #home-about a.modern-badge:hover span,
+            #home-about .modern-badge:hover span {
+              color: #0d1f16 !important;
+              text-decoration: none !important;
+            }
+            #home-about a.modern-badge:hover .badge-arrow,
+            #home-about .modern-badge:hover .badge-arrow {
+              transform: translateX(6px);
+              color: #0d1f16 !important;
+            }
+          </style>
           <div class="about-badges">
             <?php if ($badge1): ?>
               <a href="<?php echo $baseLink('rooms'); ?>" class="modern-badge">
                 <span><?php echo htmlspecialchars($badge1); ?></span>
-                <span class="badge-arrow">→</span>
+                <i class="fas fa-arrow-right badge-arrow"></i>
               </a>
             <?php endif; ?>
           </div>
