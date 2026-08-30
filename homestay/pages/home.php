@@ -34,12 +34,11 @@
       ?>
       <div class="hero-static-bg" style="background-image: url('<?php echo htmlspecialchars($imgAttr); ?>');"></div>
       <div class="hero-content">
-        <p class="hero-tag">Virunga Homestay</p>
+        <p class="hero-tag">VIRUNGA HOUSE</p>
         <h1 class="hero-title"><?php echo $title; ?></h1>
         <p class="hero-desc"><?php echo $paragraph; ?></p>
         <div class="hero-actions">
-          <a href="<?php echo $baseLink('rooms'); ?>" class="btn-primary">Book a Stay</a>
-          <a href="<?php echo $baseLink('activity'); ?>" class="btn-outline">Explore Experiences</a>
+          <a href="<?php echo $baseLink('rooms'); ?>" class="btn-primary">ENQUIRE TO STAY</a>
         </div>
       </div>
   <?php } ?>
@@ -53,7 +52,7 @@
       $resAbout = $conn->query($sqlAbout);
       $about = $resAbout ? $resAbout->fetch_assoc() : null;
 
-      $label = $about ? htmlspecialchars($about['label']) : 'Welcome to Virunga Homestay';
+      $label = $about ? htmlspecialchars($about['label']) : 'Welcome to VIRUNGA HOUSE';
       $heading = $about ? htmlspecialchars($about['heading']) : 'Your Musanze basecamp for volcano sunrises, slow-evening fires, and effortless guided days.';
       $body = $about ? htmlspecialchars($about['body']) : 'Live inside a warm local home, wake to mountain air, and lean on accredited bilingual specialists for every trek, transfer, and taste of Rwanda, Uganda, or DRC. We blend heartfelt hosting with pro-level trip support so you can explore boldly and unwind completely.';
       
@@ -80,13 +79,11 @@
           <p class="about-body"><?php echo $body; ?></p>
           <div class="about-badges">
             <?php if ($badge1) echo '<span>' . $badge1 . '</span>'; ?>
-            <?php if ($badge2) echo '<span>' . $badge2 . '</span>'; ?>
-            <?php if ($badge3) echo '<span>' . $badge3 . '</span>'; ?>
           </div>
         </div>
         <div class="about-visual" data-reveal data-delay="300">
           <div class="about-image-frame">
-            <img src="./img/about.jpeg" alt="Cycling adventure at Virunga Homestay" class="about-image" loading="lazy">
+            <img src="./img/about.jpeg" alt="Cycling adventure at VIRUNGA HOUSE" class="about-image" loading="lazy">
             <div class="about-card" id="about" data-reveal data-delay="500">
               <div class="about-card__metric">
                 <span class="metric-num" data-count data-target="<?php echo $m1_num; ?>" <?php if($m1_suf) echo 'data-suffix="'.$m1_suf.'"'; ?>>0</span>
@@ -213,7 +210,7 @@
     <!-- ══ A DAY AT VIRUNGA ══ -->
     <section class="day-section" id="daySection">
       <div class="day-sticky-wrapper">
-        <div class="day-brand">Virunga Homestay</div>
+        <div class="day-brand">VIRUNGA HOUSE</div>
         <nav class="day-progress" aria-label="Section navigation">
           <div class="day-dot active" data-index="0"></div>
           <div class="day-dot" data-index="1"></div>
@@ -249,7 +246,7 @@
 
         <!-- SLIDES -->
         <!-- SLIDES -->
-<div class="day-slides" role="region" aria-label="A day in life at Virunga Homestay">
+<div class="day-slides" role="region" aria-label="A day in life at VIRUNGA HOUSE">
 
   <!-- 0: WAKE UP -->
   <div class="day-slide s0 active" data-index="0">
@@ -391,40 +388,40 @@
     <section id="guest-reviews">
       <div class="section-container">
         <p class="guest-reviews__lead">
-          Every stay at Virunga Homestay becomes a story worth sharing. Here is what our guests have experienced in their own words:
+          Every stay at VIRUNGA HOUSE becomes a story worth sharing. Here is what our guests have experienced in their own words:
         </p>
 
         <div class="guest-reviews__grid">
           <!-- Cards remain the same -->
-          <article class="guest-review-card" data-reveal title="John, Emmy, and the whole team made our stay unforgettable. Amazing volcano views, thoughtful service, and help with park trips Virunga Homestay comes highly recommended!">
+          <article class="guest-review-card" data-reveal title="John, Emmy, and the whole team made our stay unforgettable. Amazing volcano views, thoughtful service, and help with park trips VIRUNGA HOUSE comes highly recommended!">
             <h3>A Dream Stay in Musanze</h3>
             <p class="guest-review-card__source">Tripadvisor Review</p>
             <p>
-              John, Emmy, and the whole team made our stay unforgettable. Amazing volcano views, thoughtful service, and help with park trips Virunga Homestay comes highly recommended!
+              John, Emmy, and the whole team made our stay unforgettable. Amazing volcano views, thoughtful service, and help with park trips VIRUNGA HOUSE comes highly recommended!
             </p>
           </article>
 
-          <article class="guest-review-card" data-reveal title="Our honeymoon stay at Virunga Homestay last week was a truly remarkable experience. The warm welcome, the peaceful setting, and the personal touches made us feel right at home from the very first day. As part of our celebration, we were gifted a once-in-a-lifetime gorilla visit....">
-            <h3>Our Honeymoon Stay at Virunga Homestay</h3>
+          <article class="guest-review-card" data-reveal title="Our honeymoon stay at VIRUNGA HOUSE last week was a truly remarkable experience. The warm welcome, the peaceful setting, and the personal touches made us feel right at home from the very first day. As part of our celebration, we were gifted a once-in-a-lifetime gorilla visit....">
+            <h3>Our Honeymoon Stay at VIRUNGA HOUSE</h3>
             <p class="guest-review-card__source">Tripadvisor Review</p>
             <p>
-              Our honeymoon stay at Virunga Homestay last week was a truly remarkable experience. The warm welcome, the peaceful setting, and the personal touches made us feel right at home from the very first day. As part of our celebration, we were gifted a once-in-a-lifetime gorilla visit....
+              Our honeymoon stay at VIRUNGA HOUSE last week was a truly remarkable experience. The warm welcome, the peaceful setting, and the personal touches made us feel right at home from the very first day. As part of our celebration, we were gifted a once-in-a-lifetime gorilla visit....
             </p>
           </article>
 
           <article class="guest-review-card" data-reveal title="Welcomed like family, we cooked traditional dishes, explored local farms, and made banana beer. Evenings were full of laughter, music, and delicious meals. A true Rwandan experience with lasting memories highly recommended in Musanze!">
-            <h3>Unforgettable Moments at Virunga Homestay!</h3>
+            <h3>Unforgettable Moments at VIRUNGA HOUSE!</h3>
             <p class="guest-review-card__source">Tripadvisor Review</p>
             <p>
               Welcomed like family, we cooked traditional dishes, explored local farms, and made banana beer. Evenings were full of laughter, music, and delicious meals. A true Rwandan experience with lasting memories highly recommended in Musanze!
             </p>
           </article>
 
-          <article class="guest-review-card" data-reveal title="An unforgettable 10-day, 11-night journey through Rwanda was made exceptional by Emmy’s professionalism and warm hospitality from Virunga Homestay. His deep knowledge and flexibility enriched every moment, turning the trip into an inspiring exploration of Rwanda’s culture and landscapes. With four nights in a clean, safe, and welcoming homestay that felt like home, the experience was deeply rewarding highly recommended for those seeking authentic connection and lasting memories.">
+          <article class="guest-review-card" data-reveal title="An unforgettable 10-day, 11-night journey through Rwanda was made exceptional by Emmy’s professionalism and warm hospitality from VIRUNGA HOUSE. His deep knowledge and flexibility enriched every moment, turning the trip into an inspiring exploration of Rwanda’s culture and landscapes. With four nights in a clean, safe, and welcoming homestay that felt like home, the experience was deeply rewarding highly recommended for those seeking authentic connection and lasting memories.">
             <h3>Feel Rwanda, Not Just Visit</h3>
             <p class="guest-review-card__source">Tripadvisor Review</p>
             <p>
-              An unforgettable 10-day, 11-night journey through Rwanda was made exceptional by Emmy’s professionalism and warm hospitality from Virunga Homestay. His deep knowledge and flexibility enriched every moment, turning the trip into an inspiring exploration of Rwanda’s culture and landscapes. With four nights in a clean, safe, and welcoming homestay that felt like home, the experience was deeply rewarding highly recommended for those seeking authentic connection and lasting memories.
+              An unforgettable 10-day, 11-night journey through Rwanda was made exceptional by Emmy’s professionalism and warm hospitality from VIRUNGA HOUSE. His deep knowledge and flexibility enriched every moment, turning the trip into an inspiring exploration of Rwanda’s culture and landscapes. With four nights in a clean, safe, and welcoming homestay that felt like home, the experience was deeply rewarding highly recommended for those seeking authentic connection and lasting memories.
             </p>
           </article>
         </div>
