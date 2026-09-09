@@ -1,27 +1,87 @@
 <?php
 require_once '../config/database.php';
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['admin_id'])) {
-  header("Location: login.html");
-  exit();
+    header("Location: login.html");
+    exit();
 }
-// Get messages from session
-$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : null;
-$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : null;
 
-// Clear the messages from session
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+// Flash messages
+$success_message = $_SESSION['success_message'] ?? null;
+$error_message = $_SESSION['error_message'] ?? null;
+unset($_SESSION['success_message'], $_SESSION['error_message']);
 
-// Update the delete handling section at the top of the file
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_tour'])) {
+// Handle AJAX Fetch Single Tour Details (for Quick View and Edit modal)
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['fetch_tour'])) {
+    header('Content-Type: application/json');
     try {
-        $tour_id = $_POST['tour_id'];
+        $tour_id = (int)($_GET['id'] ?? 0);
+        $stmt = $pdo->prepare("SELECT * FROM tours WHERE tour_id = ?");
+        $stmt->execute([$tour_id]);
+        $tour = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$tour) {
+            echo json_encode(['success' => false, 'message' => 'Tour not found']);
+            exit;
+        }
+
+        // Fetch tour days
+        $stmt = $pdo->prepare("SELECT day_id, day_number, day_title, day_description FROM tour_days WHERE tour_id = ? ORDER BY day_number ASC");
+        $stmt->execute([$tour_id]);
+        $tour['days'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch tour highlights
+        $stmt = $pdo->prepare("SELECT highlight_id, image_path, display_order FROM tour_highlights WHERE tour_id = ? ORDER BY display_order ASC");
+        $stmt->execute([$tour_id]);
+        $tour['highlights'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch included items
+        $stmt = $pdo->prepare("SELECT included_id, item_description FROM tour_included WHERE tour_id = ?");
+        $stmt->execute([$tour_id]);
+        $tour['included'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch excluded items
+        $stmt = $pdo->prepare("SELECT excluded_id, item_description FROM tour_excluded WHERE tour_id = ?");
+        $stmt->execute([$tour_id]);
+        $tour['excluded'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch to bring items
+        $stmt = $pdo->prepare("SELECT to_bring_id, item_description FROM tour_to_bring WHERE tour_id = ?");
+        $stmt->execute([$tour_id]);
+        $tour['to_bring'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch pricing tiers
+        $stmt = $pdo->prepare("SELECT id, group_size, price_per_person FROM pricing_tiers WHERE tour_id = ? ORDER BY id ASC");
+        $stmt->execute([$tour_id]);
+        $tour['pricing_tiers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch pricing notes
+        $stmt = $pdo->prepare("SELECT id, note FROM pricing_notes WHERE tour_id = ? ORDER BY id ASC");
+        $stmt->execute([$tour_id]);
+        $tour['pricing_notes'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['success' => true, 'data' => $tour]);
+        exit;
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        exit;
+    }
+}
+
+// Handle Delete Tour (POST via AJAX or standard form submission)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['delete_tour']) || (isset($_POST['action']) && $_POST['action'] === 'delete'))) {
+    $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+    try {
+        $tour_id = (int)($_POST['tour_id'] ?? 0);
+        if ($tour_id <= 0) throw new Exception("Invalid Tour ID.");
+
         $pdo->beginTransaction();
 
-        // Delete from child tables first due to foreign key constraints
-        $tables = [
+        $childTables = [
             'tour_highlights',
             'tour_days',
             'tour_included',
@@ -31,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_tour'])) {
             'pricing_notes'
         ];
 
-        foreach ($tables as $table) {
+        foreach ($childTables as $table) {
             $stmt = $pdo->prepare("DELETE FROM $table WHERE tour_id = ?");
             $stmt->execute([$tour_id]);
         }
 
-        // Get image paths before deleting tour record
+        // Get image paths before deleting record
         $stmt = $pdo->prepare("SELECT cover_image_path FROM tours WHERE tour_id = ?");
         $stmt->execute([$tour_id]);
         $tour = $stmt->fetch();
@@ -45,95 +105,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_tour'])) {
         $stmt = $pdo->prepare("DELETE FROM tours WHERE tour_id = ?");
         $stmt->execute([$tour_id]);
 
-        // Delete associated files if they exist
-        if ($tour && $tour['cover_image_path']) {
+        // Delete associated cover image file if exists
+        if ($tour && !empty($tour['cover_image_path'])) {
             $file_path = '../../' . $tour['cover_image_path'];
-            if (file_exists($file_path)) {
-                unlink($file_path);
+            if (file_exists($file_path) && is_file($file_path)) {
+                @unlink($file_path);
             }
         }
 
         $pdo->commit();
-        $success_message = "Tour deleted successfully!";
+
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Tour deleted successfully!']);
+            exit;
+        }
+
+        $_SESSION['success_message'] = "Tour deleted successfully!";
         header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     } catch (Exception $e) {
-        $pdo->rollBack();
-        $error_message = "Error deleting tour: " . $e->getMessage();
-    }
-}
-
-// Update the fetch handler section
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['fetch_tour'])) {
-    try {
-        $tour_id = $_GET['id'];
-        // First get the main tour data
-        $stmt = $pdo->prepare("SELECT * FROM tours WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$tour) {
-            throw new Exception("Tour not found");
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Error deleting tour: ' . $e->getMessage()]);
+            exit;
         }
-
-        // Fetch tour days
-        $stmt = $pdo->prepare("SELECT day_number, day_title, day_description FROM tour_days WHERE tour_id = ? ORDER BY day_number ASC");
-        $stmt->execute([$tour_id]);
-        $tour['days'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch tour highlights
-        $stmt = $pdo->prepare("SELECT image_path, display_order FROM tour_highlights WHERE tour_id = ? ORDER BY display_order");
-        $stmt->execute([$tour_id]);
-        $tour['highlights'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch included items
-        $stmt = $pdo->prepare("SELECT item_description FROM tour_included WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour['included'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch excluded items
-        $stmt = $pdo->prepare("SELECT item_description FROM tour_excluded WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour['excluded'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch to bring items
-        $stmt = $pdo->prepare("SELECT item_description FROM tour_to_bring WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour['to_bring'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch pricing tiers
-        $stmt = $pdo->prepare("SELECT group_size, price_per_person FROM pricing_tiers WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour['pricing_tiers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Fetch pricing notes
-        $stmt = $pdo->prepare("SELECT note FROM pricing_notes WHERE tour_id = ?");
-        $stmt->execute([$tour_id]);
-        $tour['pricing_notes'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'data' => $tour]);
-        exit;
-    } catch (Exception $e) {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        $_SESSION['error_message'] = "Error deleting tour: " . $e->getMessage();
+        header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     }
 }
 
-// Update the tour creation/update handler
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Handle Tour Create & Update (POST)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST['save_tour']) || isset($_POST['update_tour']) || isset($_POST['tourTitle']))) {
+    header('Content-Type: application/json');
     try {
         $pdo->beginTransaction();
-        $is_update = isset($_POST['update_tour']);
-        $tour_id = $is_update ? $_POST['tour_id'] : null;
-        
+        $is_update = !empty($_POST['tour_id']);
+        $tour_id = $is_update ? (int)$_POST['tour_id'] : null;
+
+        $tourTitle = trim($_POST['tourTitle'] ?? '');
+        $tourCategory = trim($_POST['tourCategory'] ?? '');
+        $tourCountry = trim($_POST['tourCountry'] ?? '');
+        $tourDays = max(1, (int)($_POST['tourDays'] ?? 1));
+        $tourDesc = trim($_POST['tourDesc'] ?? '');
+        $whyAttend = trim($_POST['whyAttend'] ?? '');
+
+        if (empty($tourTitle)) throw new Exception("Tour title is required.");
+        if (empty($tourCategory)) throw new Exception("Category is required.");
+        if (empty($tourCountry)) throw new Exception("Country is required.");
+
         // Handle cover image upload
         $cover_image_path = null;
-        if (isset($_FILES['coverImage']) && $_FILES['coverImage']['error'] === 0) {
+        if (isset($_FILES['coverImage']) && $_FILES['coverImage']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = '../../images/tours/';
             if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
-            $file_name = uniqid() . '.' . pathinfo($_FILES['coverImage']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower(pathinfo($_FILES['coverImage']['name'], PATHINFO_EXTENSION));
+            $file_name = uniqid('tour_') . '.' . $ext;
             if (move_uploaded_file($_FILES['coverImage']['tmp_name'], $upload_dir . $file_name)) {
                 $cover_image_path = 'images/tours/' . $file_name;
             }
@@ -141,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($is_update) {
             $sql = "UPDATE tours SET title = ?, category = ?, country = ?, days_count = ?, short_description = ?, why_attend = ?";
-            $params = [$_POST['tourTitle'], $_POST['tourCategory'], $_POST['tourCountry'], $_POST['tourDays'], $_POST['tourDesc'], $_POST['whyAttend']];
+            $params = [$tourTitle, $tourCategory, $tourCountry, $tourDays, $tourDesc, $whyAttend];
             if ($cover_image_path) {
                 $sql .= ", cover_image_path = ?";
                 $params[] = $cover_image_path;
@@ -152,25 +181,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute($params);
         } else {
             $stmt = $pdo->prepare("INSERT INTO tours (title, category, country, days_count, cover_image_path, short_description, why_attend) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$_POST['tourTitle'], $_POST['tourCategory'], $_POST['tourCountry'], $_POST['tourDays'], $cover_image_path, $_POST['tourDesc'], $_POST['whyAttend']]);
-            $tour_id = $pdo->lastInsertId();
+            $stmt->execute([$tourTitle, $tourCategory, $tourCountry, $tourDays, $cover_image_path, $tourDesc, $whyAttend]);
+            $tour_id = (int)$pdo->lastInsertId();
         }
 
-        // Process highlight images
+        // Process highlight images (1 to 4)
         for ($i = 1; $i <= 4; $i++) {
-            if (isset($_FILES["highlight$i"]) && $_FILES["highlight$i"]['error'] === 0) {
+            if (isset($_FILES["highlight$i"]) && $_FILES["highlight$i"]['error'] === UPLOAD_ERR_OK) {
                 $upload_dir = '../../images/tours/highlights/';
                 if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
-                $file_name = uniqid() . '.' . pathinfo($_FILES["highlight$i"]['name'], PATHINFO_EXTENSION);
+                $ext = strtolower(pathinfo($_FILES["highlight$i"]['name'], PATHINFO_EXTENSION));
+                $file_name = uniqid('hl_' . $i . '_') . '.' . $ext;
                 if (move_uploaded_file($_FILES["highlight$i"]['tmp_name'], $upload_dir . $file_name)) {
                     $img_path = 'images/tours/highlights/' . $file_name;
-                    
+
                     if ($is_update) {
-                        // Check if highlight exists for this order
                         $checkStmt = $pdo->prepare("SELECT highlight_id FROM tour_highlights WHERE tour_id = ? AND display_order = ?");
                         $checkStmt->execute([$tour_id, $i]);
                         $highlight = $checkStmt->fetch();
-                        
+
                         if ($highlight) {
                             $stmt = $pdo->prepare("UPDATE tour_highlights SET image_path = ? WHERE highlight_id = ?");
                             $stmt->execute([$img_path, $highlight['highlight_id']]);
@@ -186,52 +215,171 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Helper for child tables
-        $updateChildTable = function($pdo, $tour_id, $tableName, $dataJson, $insertSql, $paramsMapFunc) {
+        // Child tables update
+        $updateChildTable = function(PDO $pdo, int $tour_id, string $tableName, $dataJson, string $insertSql, callable $paramsMapFunc) {
             $stmt = $pdo->prepare("DELETE FROM $tableName WHERE tour_id = ?");
             $stmt->execute([$tour_id]);
-            $items = json_decode($dataJson, true);
-            if ($items) {
+
+            $items = is_string($dataJson) ? json_decode($dataJson, true) : (is_array($dataJson) ? $dataJson : []);
+            if (!empty($items) && is_array($items)) {
                 $stmt = $pdo->prepare($insertSql);
                 foreach ($items as $item) {
                     $params = $paramsMapFunc($tour_id, $item);
-                    if ($params) $stmt->execute($params);
+                    if ($params !== null) {
+                        $stmt->execute($params);
+                    }
                 }
             }
         };
 
-        $updateChildTable($pdo, $tour_id, 'tour_days', $_POST['activities'] ?? '[]', 
+        // Itinerary
+        $updateChildTable($pdo, $tour_id, 'tour_days', $_POST['activities'] ?? '[]',
             "INSERT INTO tour_days (tour_id, day_number, day_title, day_description) VALUES (?, ?, ?, ?)",
-            fn($tid, $i) => !empty($i['title']) ? [$tid, $i['day_number'], $i['title'], $i['description']] : null);
+            fn($tid, $i) => !empty($i['title']) ? [$tid, $i['day_number'] ?? 1, $i['title'], $i['description'] ?? ''] : null
+        );
 
-        $updateChildTable($pdo, $tour_id, 'tour_included', $_POST['includedItems'] ?? '[]', 
+        // Inclusions
+        $updateChildTable($pdo, $tour_id, 'tour_included', $_POST['includedItems'] ?? '[]',
             "INSERT INTO tour_included (tour_id, item_description) VALUES (?, ?)",
-            fn($tid, $i) => !empty($i) ? [$tid, $i] : null);
+            fn($tid, $i) => (is_string($i) && trim($i) !== '') ? [$tid, trim($i)] : (!empty($i['item_description']) ? [$tid, trim($i['item_description'])] : null)
+        );
 
-        $updateChildTable($pdo, $tour_id, 'tour_excluded', $_POST['excludedItems'] ?? '[]', 
+        // Exclusions
+        $updateChildTable($pdo, $tour_id, 'tour_excluded', $_POST['excludedItems'] ?? '[]',
             "INSERT INTO tour_excluded (tour_id, item_description) VALUES (?, ?)",
-            fn($tid, $i) => !empty($i) ? [$tid, $i] : null);
+            fn($tid, $i) => (is_string($i) && trim($i) !== '') ? [$tid, trim($i)] : (!empty($i['item_description']) ? [$tid, trim($i['item_description'])] : null)
+        );
 
-        $updateChildTable($pdo, $tour_id, 'tour_to_bring', $_POST['toBringItems'] ?? '[]', 
+        // What to bring
+        $updateChildTable($pdo, $tour_id, 'tour_to_bring', $_POST['toBringItems'] ?? '[]',
             "INSERT INTO tour_to_bring (tour_id, item_description) VALUES (?, ?)",
-            fn($tid, $i) => !empty($i) ? [$tid, $i] : null);
+            fn($tid, $i) => (is_string($i) && trim($i) !== '') ? [$tid, trim($i)] : (!empty($i['item_description']) ? [$tid, trim($i['item_description'])] : null)
+        );
 
-        $updateChildTable($pdo, $tour_id, 'pricing_tiers', $_POST['pricingTiers'] ?? '[]', 
+        // Pricing Tiers
+        $updateChildTable($pdo, $tour_id, 'pricing_tiers', $_POST['pricingTiers'] ?? '[]',
             "INSERT INTO pricing_tiers (tour_id, group_size, price_per_person) VALUES (?, ?, ?)",
-            fn($tid, $i) => !empty($i['group_size']) ? [$tid, $i['group_size'], $i['price_per_person']] : null);
+            fn($tid, $i) => (!empty($i['group_size']) && isset($i['price_per_person'])) ? [$tid, $i['group_size'], (float)$i['price_per_person']] : null
+        );
 
-        $updateChildTable($pdo, $tour_id, 'pricing_notes', $_POST['pricingNotes'] ?? '[]', 
+        // Pricing Notes
+        $updateChildTable($pdo, $tour_id, 'pricing_notes', $_POST['pricingNotes'] ?? '[]',
             "INSERT INTO pricing_notes (tour_id, note) VALUES (?, ?)",
-            fn($tid, $i) => !empty($i) ? [$tid, $i] : null);
+            fn($tid, $i) => (is_string($i) && trim($i) !== '') ? [$tid, trim($i)] : (!empty($i['note']) ? [$tid, trim($i['note'])] : null)
+        );
 
         $pdo->commit();
-        echo json_encode(['success' => true, 'message' => "Tour " . ($is_update ? "updated" : "saved") . " successfully!"]);
+        echo json_encode([
+            'success' => true,
+            'message' => "Tour " . ($is_update ? "updated" : "created") . " successfully!",
+            'tour_id' => $tour_id
+        ]);
         exit;
     } catch (Exception $e) {
         if ($pdo->inTransaction()) $pdo->rollBack();
         echo json_encode(['success' => false, 'message' => "Error: " . $e->getMessage()]);
         exit;
     }
+}
+
+// -------------------------------------------------------------
+// Read & Pagination Parameters
+// -------------------------------------------------------------
+$page = max(1, isset($_GET['page']) ? (int)$_GET['page'] : 1);
+$per_page = isset($_GET['per_page']) ? min(60, max(4, (int)$_GET['per_page'])) : 8; // Default 8 per page
+$search = trim($_GET['search'] ?? '');
+$category_filter = trim($_GET['category'] ?? '');
+$country_filter = trim($_GET['country'] ?? '');
+$sort = trim($_GET['sort'] ?? 'newest');
+
+// Fetch distinct categories and countries for filter dropdowns
+$categoriesList = $pdo->query("SELECT DISTINCT category FROM tours WHERE category IS NOT NULL AND category != '' ORDER BY category ASC")->fetchAll(PDO::FETCH_COLUMN);
+$countriesList = $pdo->query("SELECT DISTINCT country FROM tours WHERE country IS NOT NULL AND country != '' ORDER BY country ASC")->fetchAll(PDO::FETCH_COLUMN);
+
+// Fetch Overall KPI Dashboard Stats
+$stats = [
+    'total_tours' => (int)$pdo->query("SELECT COUNT(*) FROM tours")->fetchColumn(),
+    'rwanda_tours' => (int)$pdo->query("SELECT COUNT(*) FROM tours WHERE LOWER(country) = 'rwanda'")->fetchColumn(),
+    'other_tours' => (int)$pdo->query("SELECT COUNT(*) FROM tours WHERE LOWER(country) != 'rwanda'")->fetchColumn(),
+    'total_categories' => count($categoriesList),
+    'total_activities' => (int)$pdo->query("SELECT COUNT(*) FROM tour_days")->fetchColumn()
+];
+
+// Build Where Clause for paginated list
+$whereClauses = [];
+$queryParams = [];
+
+if ($search !== '') {
+    $whereClauses[] = "(t.title LIKE :search OR t.short_description LIKE :search OR t.category LIKE :search OR t.country LIKE :search)";
+    $queryParams[':search'] = '%' . $search . '%';
+}
+
+if ($category_filter !== '' && $category_filter !== 'all') {
+    $whereClauses[] = "t.category = :category";
+    $queryParams[':category'] = $category_filter;
+}
+
+if ($country_filter !== '' && $country_filter !== 'all') {
+    $whereClauses[] = "LOWER(t.country) = LOWER(:country)";
+    $queryParams[':country'] = $country_filter;
+}
+
+$whereSql = !empty($whereClauses) ? "WHERE " . implode(" AND ", $whereClauses) : "";
+
+// Count Total Filtered Records
+$countSql = "SELECT COUNT(*) FROM tours t $whereSql";
+$countStmt = $pdo->prepare($countSql);
+foreach ($queryParams as $key => $val) {
+    $countStmt->bindValue($key, $val);
+}
+$countStmt->execute();
+$total_records = (int)$countStmt->fetchColumn();
+
+$total_pages = max(1, (int)ceil($total_records / $per_page));
+if ($page > $total_pages && $total_records > 0) {
+    $page = $total_pages;
+}
+$offset = ($page - 1) * $per_page;
+
+// Determine Sort Order
+$orderBy = match ($sort) {
+    'oldest' => 't.created_at ASC, t.tour_id ASC',
+    'title_asc' => 't.title ASC',
+    'title_desc' => 't.title DESC',
+    'days_desc' => 't.days_count DESC, t.title ASC',
+    'days_asc' => 't.days_count ASC, t.title ASC',
+    default => 't.created_at DESC, t.tour_id DESC'
+};
+
+// Fetch Paginated Tours
+$toursQuery = "SELECT t.tour_id, t.title, t.category, t.country, t.days_count, t.cover_image_path, t.short_description, t.why_attend, t.created_at,
+              COUNT(DISTINCT td.day_id) as total_days, COUNT(DISTINCT th.highlight_id) as total_highlights
+              FROM tours t
+              LEFT JOIN tour_days td ON t.tour_id = td.tour_id
+              LEFT JOIN tour_highlights th ON t.tour_id = th.tour_id
+              $whereSql
+              GROUP BY t.tour_id
+              ORDER BY $orderBy
+              LIMIT :limit OFFSET :offset";
+
+$toursStmt = $pdo->prepare($toursQuery);
+foreach ($queryParams as $key => $val) {
+    $toursStmt->bindValue($key, $val);
+}
+$toursStmt->bindValue(':limit', $per_page, PDO::PARAM_INT);
+$toursStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$toursStmt->execute();
+$tours = $toursStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Helper for Pagination URL generation
+function buildPageUrl(int $pageNum, array $extraParams = []): string {
+    $params = $_GET;
+    $params['page'] = $pageNum;
+    foreach ($extraParams as $k => $v) {
+        if ($v === null) unset($params[$k]);
+        else $params[$k] = $v;
+    }
+    return '?' . http_build_query($params);
 }
 ?>
 <!DOCTYPE html>
@@ -242,274 +390,723 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Tours Management - Virunga Ecotours</title>
     <link rel="shortcut icon" href="../../images/logos/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/tours.css" />
-    <script src="../js/common.js" defer></script>
-    <script src="../js/tours.js" defer></script>
+    <link rel="stylesheet" href="../css/common.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="../css/tours.css?v=<?php echo time(); ?>" />
+    <script src="../js/common.js?v=<?php echo time(); ?>" defer></script>
+    <script src="../js/tours.js?v=<?php echo time(); ?>" defer></script>
   </head>
   <body>
     <div class="admin-container">
       <?php include_once './includes/sidebar.php'; ?>
+      
       <main class="main-content">
         <?php include_once './includes/header.php'; ?>
-        <div class="content-panels">
-          <div class="panel active" id="tours-panel">
-            <div class="container">
-              <div class="tours-header">
-                <button class="add-tour-btn" data-state="add"><span class="btn-text">Add New Tour</span></button>
-                <div class="view-switcher">
-                  <button class="view-btn active" id="listViewBtn" title="List View"><i class="fas fa-list"></i></button>
-                  <button class="view-btn" id="cardViewBtn" title="Card View"><i class="fas fa-th-large"></i></button>
+
+        <div class="tabler-tours-wrapper">
+          
+          <!-- Clean Page Header -->
+          <div class="tours-page-header">
+            <div class="header-titles">
+              <h2 class="page-main-heading">Tours & Experiences</h2>
+              <div class="page-meta-row">
+                <span class="meta-item"><i class="fas fa-layer-group"></i> <?php echo $stats['total_tours']; ?> Packages</span>
+                <span class="sep">•</span>
+                <span class="meta-item"><i class="fas fa-tag"></i> <?php echo $stats['total_categories']; ?> Categories</span>
+              </div>
+            </div>
+            
+            <div class="header-actions-group">
+              <div class="view-switch-pills">
+                <button type="button" class="btn-pill-view active" id="listViewBtn" title="List View">
+                  <i class="fas fa-table-list"></i>
+                </button>
+                <button type="button" class="btn-pill-view" id="cardViewBtn" title="Card View">
+                  <i class="fas fa-grip"></i>
+                </button>
+              </div>
+
+              <button type="button" class="btn btn-sm btn-primary" id="openAddTourBtn">
+                <i class="fas fa-plus"></i> Add New Tour
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Tabler-Style Metric KPI Cards -->
+          <div class="tours-kpi-row">
+            <div class="kpi-mini-card">
+              <div class="kpi-top">
+                <span class="kpi-num"><?php echo $stats['total_tours']; ?></span>
+                <span class="kpi-badge badge-green"><i class="fas fa-arrow-up"></i> Live</span>
+              </div>
+              <span class="kpi-title">Total Tour Packages</span>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-top">
+                <span class="kpi-num"><?php echo $stats['rwanda_tours']; ?></span>
+                <span class="kpi-badge badge-blue">Rwanda</span>
+              </div>
+              <span class="kpi-title">Volcanoes & Primates</span>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-top">
+                <span class="kpi-num"><?php echo $stats['other_tours']; ?></span>
+                <span class="kpi-badge badge-amber">Regional</span>
+              </div>
+              <span class="kpi-title">Cross-Border Trips</span>
+            </div>
+
+            <div class="kpi-mini-card">
+              <div class="kpi-top">
+                <span class="kpi-num"><?php echo $stats['total_categories']; ?></span>
+                <span class="kpi-badge badge-indigo">Styles</span>
+              </div>
+              <span class="kpi-title">Active Categories</span>
+            </div>
+          </div>
+
+          <!-- Clean Filter Toolbar -->
+          <div class="tours-filter-bar">
+            <form method="GET" action="tours.php" class="filter-controls-row" id="filterForm">
+              <input type="hidden" name="per_page" value="<?php echo htmlspecialchars($per_page); ?>" />
+              
+              <div class="filter-search-input">
+                <i class="fas fa-search"></i>
+                <input 
+                  type="text" 
+                  name="search" 
+                  id="tourSearchInput"
+                  value="<?php echo htmlspecialchars($search); ?>" 
+                  placeholder="Search tours..."
+                  autocomplete="off"
+                />
+                <?php if (!empty($search)): ?>
+                  <a href="<?php echo buildPageUrl(1, ['search' => null]); ?>" class="clear-search" title="Clear"><i class="fas fa-times"></i></a>
+                <?php endif; ?>
+              </div>
+
+              <div class="filter-select-group">
+                <select name="country" onchange="this.form.submit()" class="clean-select">
+                  <option value="all">All Countries</option>
+                  <option value="rwanda" <?php echo strtolower($country_filter) === 'rwanda' ? 'selected' : ''; ?>>Rwanda</option>
+                  <option value="uganda" <?php echo strtolower($country_filter) === 'uganda' ? 'selected' : ''; ?>>Uganda</option>
+                  <option value="congo" <?php echo strtolower($country_filter) === 'congo' || strtolower($country_filter) === 'dr congo' ? 'selected' : ''; ?>>DR Congo</option>
+                  <option value="burundi" <?php echo strtolower($country_filter) === 'burundi' ? 'selected' : ''; ?>>Burundi</option>
+                </select>
+
+                <select name="category" onchange="this.form.submit()" class="clean-select">
+                  <option value="all">All Categories</option>
+                  <?php foreach ($categoriesList as $cat): ?>
+                    <option value="<?php echo htmlspecialchars($cat); ?>" <?php echo $category_filter === $cat ? 'selected' : ''; ?>>
+                      <?php echo htmlspecialchars($cat); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+
+                <select name="sort" onchange="this.form.submit()" class="clean-select">
+                  <option value="newest" <?php echo $sort === 'newest' ? 'selected' : ''; ?>>Newest First</option>
+                  <option value="oldest" <?php echo $sort === 'oldest' ? 'selected' : ''; ?>>Oldest First</option>
+                  <option value="title_asc" <?php echo $sort === 'title_asc' ? 'selected' : ''; ?>>Title (A-Z)</option>
+                  <option value="title_desc" <?php echo $sort === 'title_desc' ? 'selected' : ''; ?>>Title (Z-A)</option>
+                  <option value="days_desc" <?php echo $sort === 'days_desc' ? 'selected' : ''; ?>>Duration (Long)</option>
+                  <option value="days_asc" <?php echo $sort === 'days_asc' ? 'selected' : ''; ?>>Duration (Short)</option>
+                </select>
+
+                <?php if (!empty($search) || (!empty($category_filter) && $category_filter !== 'all') || (!empty($country_filter) && $country_filter !== 'all') || $sort !== 'newest'): ?>
+                  <a href="tours.php" class="btn-reset-link" title="Reset filters">
+                    <i class="fas fa-rotate-left"></i> Reset
+                  </a>
+                <?php endif; ?>
+              </div>
+            </form>
+          </div>
+
+          <!-- Main Content: Data Table / Cards -->
+          <div class="tours-content-box">
+            <?php if (empty($tours)): ?>
+              <div class="empty-state-clean">
+                <i class="fas fa-compass"></i>
+                <h4>No tour packages found</h4>
+                <p>No results match your selected filters. Try resetting filters or add a new tour.</p>
+                <div class="empty-btns">
+                  <a href="tours.php" class="btn btn-sm btn-outline">Reset Filters</a>
+                  <button type="button" class="btn btn-sm btn-primary" onclick="openAddTourModal()">+ Add New Tour</button>
+                </div>
+              </div>
+            <?php else: ?>
+              
+              <div class="tours-display list-view" id="toursDisplay">
+                
+                <!-- Table View -->
+                <div class="table-container">
+                  <table class="tabler-data-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 50px;">Photo</th>
+                        <th>Tour Title & Category</th>
+                        <th>Destination</th>
+                        <th>Duration</th>
+                        <th>Activities</th>
+                        <th style="text-align: right; width: 110px;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="toursTableBody">
+                      <?php foreach ($tours as $row): 
+                        $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
+                        $tourId = (int)$row['tour_id'];
+                      ?>
+                        <tr class="tour-row" data-id="<?php echo $tourId; ?>">
+                          <td>
+                            <div class="thumb-cell" onclick="openPreviewModal(<?php echo $tourId; ?>)">
+                              <img src="<?php echo $coverImg; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" onerror="this.src='../../images/default-tour.jpg';" />
+                            </div>
+                          </td>
+                          <td>
+                            <div class="tour-text-cell">
+                              <strong class="tour-title-link" onclick="openPreviewModal(<?php echo $tourId; ?>)">
+                                <?php echo htmlspecialchars($row['title']); ?>
+                              </strong>
+                              <span class="category-tag"><?php echo htmlspecialchars($row['category']); ?></span>
+                            </div>
+                          </td>
+                          <td>
+                            <span class="country-badge-clean">
+                              <?php echo htmlspecialchars(ucfirst($row['country'])); ?>
+                            </span>
+                          </td>
+                          <td>
+                            <span class="duration-text"><i class="fas fa-clock"></i> <?php echo (int)$row['days_count']; ?> Days</span>
+                          </td>
+                          <td>
+                            <span class="meta-count"><?php echo (int)$row['total_days']; ?> Acts • <?php echo (int)$row['total_highlights']; ?> Photos</span>
+                          </td>
+                          <td style="text-align: right;">
+                            <div class="action-btn-row">
+                              <button type="button" class="action-icon-btn btn-view" onclick="openPreviewModal(<?php echo $tourId; ?>)" title="View Details">
+                                <i class="fas fa-eye"></i>
+                              </button>
+                              <button type="button" class="action-icon-btn btn-edit" onclick="editTour(<?php echo $tourId; ?>)" title="Edit Tour">
+                                <i class="fas fa-pen"></i>
+                              </button>
+                              <button type="button" class="action-icon-btn btn-delete" onclick="promptDeleteTour(<?php echo $tourId; ?>, '<?php echo addslashes(htmlspecialchars($row['title'])); ?>')" title="Delete Tour">
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Grid Card View -->
+                <div class="cards-container" id="toursCardsContainer">
+                  <?php foreach ($tours as $row): 
+                    $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
+                    $tourId = (int)$row['tour_id'];
+                  ?>
+                    <div class="tour-clean-card" data-id="<?php echo $tourId; ?>">
+                      <div class="card-cover-media" onclick="openPreviewModal(<?php echo $tourId; ?>)">
+                        <img src="<?php echo $coverImg; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" onerror="this.src='../../images/default-tour.jpg';" />
+                        <span class="card-country-pill"><?php echo htmlspecialchars(ucfirst($row['country'])); ?></span>
+                        <span class="card-days-pill"><?php echo (int)$row['days_count']; ?> Days</span>
+                      </div>
+
+                      <div class="card-body-inner">
+                        <span class="card-cat"><?php echo htmlspecialchars($row['category']); ?></span>
+                        <h4 class="card-tour-heading" onclick="openPreviewModal(<?php echo $tourId; ?>)">
+                          <?php echo htmlspecialchars($row['title']); ?>
+                        </h4>
+                        <p class="card-desc-snippet">
+                          <?php echo htmlspecialchars(mb_strimwidth($row['short_description'], 0, 95, '...')); ?>
+                        </p>
+
+                        <div class="card-footer-btns">
+                          <button type="button" class="btn btn-sm btn-outline btn-flex" onclick="openPreviewModal(<?php echo $tourId; ?>)">
+                            <i class="fas fa-eye"></i> View
+                          </button>
+                          <button type="button" class="btn btn-sm btn-primary btn-flex" onclick="editTour(<?php echo $tourId; ?>)">
+                            <i class="fas fa-edit"></i> Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline btn-trash" onclick="promptDeleteTour(<?php echo $tourId; ?>, '<?php echo addslashes(htmlspecialchars($row['title'])); ?>')">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+
+              </div>
+
+              <!-- Clean Pagination Footer -->
+              <div class="tabler-pagination-bar">
+                <span class="pagination-info">
+                  Showing <strong><?php echo min($total_records, $offset + 1); ?></strong> to <strong><?php echo min($total_records, $offset + count($tours)); ?></strong> of <strong><?php echo $total_records; ?></strong> packages
+                </span>
+
+                <?php if ($total_pages > 1): ?>
+                  <ul class="clean-pagination-nav">
+                    <!-- Prev -->
+                    <li class="page-node <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                      <a href="<?php echo buildPageUrl(max(1, $page - 1)); ?>" title="Previous"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+
+                    <!-- Pages -->
+                    <?php
+                      $range = 2;
+                      $startPage = max(1, $page - $range);
+                      $endPage = min($total_pages, $page + $range);
+
+                      if ($startPage > 1) {
+                          echo '<li class="page-node"><a href="' . buildPageUrl(1) . '">1</a></li>';
+                          if ($startPage > 2) echo '<li class="page-node disabled"><span>...</span></li>';
+                      }
+
+                      for ($i = $startPage; $i <= $endPage; $i++) {
+                          $active = ($i === $page) ? 'active' : '';
+                          echo '<li class="page-node ' . $active . '"><a href="' . buildPageUrl($i) . '">' . $i . '</a></li>';
+                      }
+
+                      if ($endPage < $total_pages) {
+                          if ($endPage < $total_pages - 1) echo '<li class="page-node disabled"><span>...</span></li>';
+                          echo '<li class="page-node"><a href="' . buildPageUrl($total_pages) . '">' . $total_pages . '</a></li>';
+                      }
+                    ?>
+
+                    <!-- Next -->
+                    <li class="page-node <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                      <a href="<?php echo buildPageUrl(min($total_pages, $page + 1)); ?>" title="Next"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                  </ul>
+                <?php endif; ?>
+
+                <div class="per-page-wrap">
+                  <label>Per page:</label>
+                  <select onchange="location.href='<?php echo buildPageUrl(1); ?>&per_page=' + this.value" class="per-page-select">
+                    <option value="6" <?php echo $per_page == 6 ? 'selected' : ''; ?>>6</option>
+                    <option value="8" <?php echo $per_page == 8 ? 'selected' : ''; ?>>8</option>
+                    <option value="12" <?php echo $per_page == 12 ? 'selected' : ''; ?>>12</option>
+                    <option value="24" <?php echo $per_page == 24 ? 'selected' : ''; ?>>24</option>
+                  </select>
                 </div>
               </div>
 
-              <div class="add-tour-form" id="addTourForm">
-                <h2 class="form-title"><i class="fas fa-plus-circle"></i> Add New Tour</h2>
-                <form id="tourForm" method="POST" enctype="multipart/form-data">
-                  <div class="form-row">
-                    <div class="form-col">
-                      <div class="form-group">
-                        <label for="tourTitle"><i class="fas fa-heading"></i> Tour Title</label>
-                        <input type="text" id="tourTitle" name="tourTitle" required />
-                      </div>
-                    </div>
-                    <div class="form-col">
-                      <div class="form-group">
-                        <label for="tourCountry"><i class="fas fa-globe"></i> Country</label>
-                        <select id="tourCountry" name="tourCountry" required>
-                          <option value="">Select Country</option>
-                          <option value="all">All</option>
-                          <option value="rwanda">Rwanda</option>
-                          <option value="uganda">Uganda</option>
-                          <option value="congo">DR Congo</option>
-                          <option value="burundi">Burundi</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-col">
-                      <div class="form-group">
-                        <label for="tourCategory"><i class="fas fa-tag"></i> Category</label>
-                        <div class="category-input-container">
-                          <select id="tourCategory" name="tourCategory" required>
-                            <option value="">Select a category</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Cultural">Cultural</option>
-                            <option value="City Tours">City Tours</option>
-                            <option value="Comunity Based Tourism">Comunity Based Tourism</option>
-                            <option value="Family Friendly">Family Friendly</option>
-                            <option value="Food & Culinary">Food & Culinary</option>
-                            <option value="Gastronomy">Gastronomy</option>
-                            <option value="Highlights">Highlights</option>
-                            <option value="Nature">Nature</option>
-                            <option value="Off the beaten Path">Off the beaten Path</option>
-                            <option value="Historical">Historical</option>
-                            <option value="Spiritual">Spiritual</option>
-                            <option value="add_new">+ Add New Category</option>
-                          </select>
-                          <div id="newCategoryContainer" class="new-category-container" style="display: none;">
-                            <input type="text" id="newCategoryInput" placeholder="Enter new category name" maxlength="50">
-                            <div class="category-actions">
-                              <button type="button" id="confirmNewCategory" class="btn-confirm"><i class="fas fa-check"></i></button>
-                              <button type="button" id="cancelNewCategory" class="btn-cancel"><i class="fas fa-times"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+            <?php endif; ?>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 1: ADD & EDIT TOUR (Multi-Step & Tabs Modal)           -->
+    <!-- ============================================================ -->
+    <div class="modal-backdrop" id="tourFormModal" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="dialog" aria-modal="true" aria-labelledby="modalFormTitle">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <h4 class="modal-title" id="modalFormTitle">Add New Tour Package</h4>
+            <button type="button" class="modal-close-btn" onclick="closeTourModal()" aria-label="Close modal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Stepper Tab Navigation -->
+          <div class="stepper-nav" id="formStepper">
+            <button type="button" class="step-btn active" data-tab="tab-basics">
+              <span class="step-num">1</span>
+              <span class="step-label">Basics</span>
+            </button>
+            <button type="button" class="step-btn" data-tab="tab-itinerary">
+              <span class="step-num">2</span>
+              <span class="step-label">Itinerary</span>
+            </button>
+            <button type="button" class="step-btn" data-tab="tab-media">
+              <span class="step-num">3</span>
+              <span class="step-label">Media</span>
+            </button>
+            <button type="button" class="step-btn" data-tab="tab-inclusions">
+              <span class="step-num">4</span>
+              <span class="step-label">Inclusions</span>
+            </button>
+            <button type="button" class="step-btn" data-tab="tab-pricing">
+              <span class="step-num">5</span>
+              <span class="step-label">Pricing</span>
+            </button>
+          </div>
+
+          <!-- Modal Body with Form -->
+          <form id="tourForm" method="POST" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="tour_id" id="formTourId" value="" />
+            <input type="hidden" name="save_tour" value="1" />
+
+            <div class="modal-body-scroll">
+              
+              <!-- STEP 1: BASICS -->
+              <div class="tab-pane active" id="tab-basics">
+                <div class="form-grid-2">
+                  <div class="form-group full-span">
+                    <label for="tourTitle" class="form-label required">Tour Title</label>
+                    <input type="text" id="tourTitle" name="tourTitle" placeholder="e.g. 5-Day Living Virunga & Gorilla Immersion" required />
                   </div>
 
-                  <div class="form-row">
-                    <div class="form-col">
-                      <div class="form-group">
-                        <label for="tourDays"><i class="fas fa-calendar-day"></i> Number of Days</label>
-                        <input type="number" id="tourDays" name="tourDays" min="1" placeholder="e.g. 5" required />
-                      </div>
-                    </div>
-                    <div class="form-col">
-                      <div class="form-group image-upload">
-                        <label for="coverImage"><i class="fas fa-image"></i> Cover Image</label>
-                        <div class="image-preview" id="coverPreview">
-                          <i class="fas fa-cloud-upload-alt"></i><span>Click to upload cover image</span>
+                  <div class="form-group">
+                    <label for="tourCountry" class="form-label required">Destination Country</label>
+                    <select id="tourCountry" name="tourCountry" required>
+                      <option value="">-- Select Country --</option>
+                      <option value="rwanda">Rwanda</option>
+                      <option value="uganda">Uganda</option>
+                      <option value="congo">DR Congo</option>
+                      <option value="burundi">Burundi</option>
+                      <option value="all">Multi-Country / Regional</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tourCategory" class="form-label required">Category</label>
+                    <div class="category-select-wrapper">
+                      <select id="tourCategory" name="tourCategory" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Signature Journeys">Signature Journeys</option>
+                        <option value="Private Experiences">Private Experiences</option>
+                        <option value="Wildlife & The Volcanoes">Wildlife & The Volcanoes</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="City Tours">City Tours</option>
+                        <option value="Community Based Tourism">Community Based Tourism</option>
+                        <option value="Family Friendly">Family Friendly</option>
+                        <option value="Food & Culinary">Food & Culinary</option>
+                        <option value="Nature">Nature</option>
+                        <option value="Off the beaten Path">Off the beaten Path</option>
+                        <option value="Historical">Historical</option>
+                        <option value="Spiritual">Spiritual</option>
+                        <option value="add_new">+ Add Custom Category...</option>
+                      </select>
+                      
+                      <div id="newCategoryContainer" class="new-category-inline" style="display: none;">
+                        <input type="text" id="newCategoryInput" placeholder="Enter new category name..." maxlength="60" />
+                        <div class="inline-btn-group">
+                          <button type="button" id="confirmNewCategory" class="btn btn-sm btn-primary" title="Add"><i class="fas fa-check"></i></button>
+                          <button type="button" id="cancelNewCategory" class="btn btn-sm btn-outline" title="Cancel"><i class="fas fa-times"></i></button>
                         </div>
-                        <input type="file" id="coverImage" name="coverImage" accept="image/*" style="display: none;" />
                       </div>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="tourDesc"><i class="fas fa-align-left"></i> Short Description</label>
-                    <textarea id="tourDesc" name="tourDesc" placeholder="Enter a brief description of the tour" required></textarea>
+                    <label for="tourDays" class="form-label required">Total Duration (Days)</label>
+                    <input type="number" id="tourDays" name="tourDays" min="1" max="90" placeholder="e.g. 5" required />
                   </div>
+                </div>
 
-                  <h3 class="section-title"><i class="fas fa-images"></i> Highlight Images</h3>
-                  <div class="highlight-images">
-                    <?php for($i=1; $i<=4; $i++): ?>
-                    <div class="form-group image-upload">
-                      <div class="image-preview highlight-image" id="highlight<?php echo $i; ?>Preview">
-                        <i class="fas fa-camera"></i><span>Highlight <?php echo $i; ?></span>
-                      </div>
-                      <input type="file" id="highlight<?php echo $i; ?>" name="highlight<?php echo $i; ?>" accept="image/*" style="display: none;" />
-                    </div>
-                    <?php endfor; ?>
-                  </div>
+                <div class="form-group full-span">
+                  <label for="tourDesc" class="form-label required">Short Summary / Teaser</label>
+                  <textarea id="tourDesc" name="tourDesc" rows="3" placeholder="Briefly describe what makes this experience extraordinary..." required></textarea>
+                </div>
 
-                  <h3 class="section-title"><i class="fas fa-route"></i> Tour Itinerary</h3>
-                  <div id="daysContainer">
-                    <div class="day-container">
-                      <div class="day-header"><h4 class="day-title"><i class="fas fa-map-marker-alt"></i> Activity 1</h4></div>
-                      <div class="form-group">
-                        <label><i class="fas fa-heading"></i> Activity Title</label>
-                        <input type="text" class="activity-title" placeholder="Enter title" required>
-                      </div>
-                      <div class="form-group">
-                        <label><i class="fas fa-align-left"></i> Activity Description</label>
-                        <textarea class="activity-desc" placeholder="Describe the activity" required></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addActivityBtn"><i class="fas fa-plus"></i> Add More Activities</button>
-
-                  <h3 class="section-title"><i class="fas fa-check-circle"></i> What's Included</h3>
-                  <div class="list-container" id="includedList">
-                    <div class="list-item"><input type="text" placeholder="Enter item"><button type="button" class="btn remove-btn"><i class="fas fa-trash"></i></button></div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addIncludedBtn"><i class="fas fa-plus"></i> Add More</button>
-
-                  <h3 class="section-title"><i class="fas fa-times-circle"></i> What's Excluded</h3>
-                  <div class="list-container" id="excludedList">
-                    <div class="list-item"><input type="text" placeholder="Enter item"><button type="button" class="btn remove-btn"><i class="fas fa-trash"></i></button></div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addExcludedBtn"><i class="fas fa-plus"></i> Add More</button>
-
-                  <h3 class="section-title"><i class="fas fa-suitcase"></i> What to Bring</h3>
-                  <div class="list-container" id="bringList">
-                    <div class="list-item"><input type="text" placeholder="Enter item"><button type="button" class="btn remove-btn"><i class="fas fa-trash"></i></button></div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addBringBtn"><i class="fas fa-plus"></i> Add More</button>
-
-                  <h3 class="section-title"><i class="fas fa-star"></i> Why Attend</h3>
-                  <textarea id="whyAttend" name="whyAttend" placeholder="Enter reasons why people should attend this tour"></textarea>
-
-                  <h3 class="section-title"><i class="fas fa-money-bill-wave"></i> Pricing Tiers</h3>
-                  <div class="list-container" id="pricingTiersList">
-                    <div class="list-item pricing-tier">
-                      <input type="text" placeholder="Group Size (e.g. 1-2 people)" class="tier-group">
-                      <input type="number" step="0.01" placeholder="Price" class="tier-price">
-                      <button type="button" class="btn remove-btn"><i class="fas fa-trash"></i></button>
-                    </div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addPricingBtn"><i class="fas fa-plus"></i> Add More Tiers</button>
-
-                  <h3 class="section-title"><i class="fas fa-sticky-note"></i> Pricing Notes</h3>
-                  <div class="list-container" id="pricingNotesList">
-                    <div class="list-item"><input type="text" placeholder="Enter pricing note" class="pricing-note"><button type="button" class="btn remove-btn"><i class="fas fa-trash"></i></button></div>
-                  </div>
-                  <button type="button" class="btn add-btn" id="addPricingNoteBtn"><i class="fas fa-plus"></i> Add More Notes</button>
-
-                  <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Create Tour</button>
-                </form>
-              </div>
-
-              <div class="table-section" id="tableSection">
-                <?php
-                $query = "SELECT t.tour_id, t.title, t.category, t.country, t.days_count, t.cover_image_path, t.short_description,
-                          COUNT(DISTINCT td.day_id) as total_days, COUNT(DISTINCT th.highlight_id) as total_highlights
-                          FROM tours t LEFT JOIN tour_days td ON t.tour_id = td.tour_id LEFT JOIN tour_highlights th ON t.tour_id = th.tour_id
-                          GROUP BY t.tour_id ORDER BY t.created_at DESC";
-                try {
-                    $stmt = $pdo->query($query); $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    ?>
-                    <div class="tours-display list-view" id="toursDisplay">
-                        <div class="table-container">
-                            <table class="tours-table">
-                                <thead>
-                                    <tr><th>Image</th><th><i class="fas fa-heading"></i> Title</th><th><i class="fas fa-tag"></i> Category</th><th><i class="fas fa-globe"></i> Country</th><th><i class="fas fa-calendar-alt"></i> Activities</th><th><i class="fas fa-images"></i> Highlights</th><th style="text-align: right;"><i class="fas fa-cog"></i> Actions</th></tr>
-                                 </thead>
-                                 <tbody>
-                                     <?php foreach ($tours as $row) { ?>
-                                         <tr data-id="<?php echo $row['tour_id']; ?>">
-                                             <td class="table-img"><img src="../../<?php echo htmlspecialchars($row['cover_image_path'] ?: 'images/default-tour.jpg'); ?>" alt=""></td>
-                                             <td><strong><?php echo htmlspecialchars($row['title']); ?></strong></td>
-                                             <td><span class="category-badge"><?php echo htmlspecialchars($row['category']); ?></span></td>
-                                             <td><span class="country-badge"><?php echo htmlspecialchars($row['country']); ?></span></td>
-                                             <td><?php echo $row['total_days']; ?> Days</td>
-                                             <td><?php echo $row['total_highlights']; ?> Images</td>
-                                            <td class="actions" style="justify-content: flex-end;">
-                                                <button class="edit-btn" onclick="editTour(<?php echo $row['tour_id']; ?>)" title="Edit Tour"><i class="fas fa-edit"></i></button>
-                                                <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?');">
-                                                    <input type="hidden" name="delete_tour" value="1"><input type="hidden" name="tour_id" value="<?php echo $row['tour_id']; ?>">
-                                                    <button type="submit" class="delete-btn" title="Delete Tour"><i class="fas fa-trash"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="cards-container">
-                            <?php foreach ($tours as $row) { ?>
-                                <div class="tour-card" data-id="<?php echo $row['tour_id']; ?>">
-                                    <div class="card-img">
-                                        <img src="../../<?php echo htmlspecialchars($row['cover_image_path'] ?: 'images/default-tour.jpg'); ?>" alt="">
-                                        <div class="card-badges"><span class="card-category"><?php echo htmlspecialchars($row['category']); ?></span><span class="card-country"><i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($row['country']); ?></span></div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3 class="card-title"><?php echo htmlspecialchars($row['title']); ?></h3>
-                                        <p class="card-desc"><?php echo htmlspecialchars(substr($row['short_description'], 0, 80)) . '...'; ?></p>
-                                        <div class="card-meta"><span><i class="fas fa-calendar-alt"></i> <?php echo $row['total_days']; ?> Days</span><span><i class="fas fa-images"></i> <?php echo $row['total_highlights']; ?> Highlights</span></div>
-                                        <div class="card-actions">
-                                            <button class="edit-btn" onclick="editTour(<?php echo $row['tour_id']; ?>)"><i class="fas fa-edit"></i> Edit</button>
-                                            <form method="POST" onsubmit="return confirm('Are you sure?');">
-                                                <input type="hidden" name="delete_tour" value="1"><input type="hidden" name="tour_id" value="<?php echo $row['tour_id']; ?>">
-                                                <button type="submit" class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <?php
-                } catch(PDOException $e) { echo "<p class='error-message'>Error: " . $e->getMessage() . "</p>"; }
-                ?>
-                <div class="pagination">
-                    <?php
-                    $total = $pdo->query("SELECT COUNT(*) FROM tours")->fetchColumn();
-                    $totalPages = ceil($total / 10); $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                    if ($totalPages > 1) {
-                        if ($currentPage > 1) echo '<button class="page-btn" onclick="changePage('.($currentPage-1).')"><i class="fas fa-chevron-left"></i></button>';
-                        for ($i = 1; $i <= $totalPages; $i++) echo '<button class="page-btn '.($i==$currentPage?'active':'').'" onclick="changePage('.$i.')">'.$i.'</button>';
-                        if ($currentPage < $totalPages) echo '<button class="page-btn" onclick="changePage('.($currentPage+1).')"><i class="fas fa-chevron-right"></i></button>';
-                    }
-                    ?>
+                <div class="form-group full-span">
+                  <label for="whyAttend" class="form-label">Why Attend Overview</label>
+                  <textarea id="whyAttend" name="whyAttend" rows="2" placeholder="Key highlights why travelers choose this expedition..."></textarea>
                 </div>
               </div>
 
-              <script>
-              const addTourForm = document.getElementById("addTourForm");
-              const tableSection = document.getElementById("tableSection");
-              const addTourBtn = document.querySelector(".add-tour-btn");
-              const btnText = addTourBtn.querySelector(".btn-text");
+              <!-- STEP 2: ITINERARY -->
+              <div class="tab-pane" id="tab-itinerary">
+                <div class="tab-header-flex">
+                  <h5>Day-by-Day Activities</h5>
+                  <button type="button" class="btn btn-sm btn-outline" id="addActivityBtn">
+                    <i class="fas fa-plus"></i> Add Activity
+                  </button>
+                </div>
 
-              function toggleFormAndTable() {
-                addTourForm.classList.toggle("active");
-                tableSection.classList.toggle("hidden");
-                if (addTourBtn.dataset.state === "add") {
-                  addTourBtn.dataset.state = "close";
-                  btnText.textContent = "Close Form";
-                } else {
-                  addTourBtn.dataset.state = "add";
-                  btnText.textContent = "Add New Tour";
-                  if (typeof resetFormToAddMode === 'function') resetFormToAddMode();
-                }
-              }
-              if (addTourBtn) addTourBtn.addEventListener("click", toggleFormAndTable);
-              function changePage(page) { window.location.href = `?page=${page}`; }
-              </script>
+                <div id="daysContainer" class="itinerary-builder-list">
+                  <div class="day-card-item">
+                    <div class="day-card-header">
+                      <span class="day-num-badge">Activity 1</span>
+                      <button type="button" class="btn-remove-day" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Title</label>
+                      <input type="text" class="activity-title" placeholder="e.g. Arrival in Kigali & Scenic Transfer" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Description</label>
+                      <textarea class="activity-desc" rows="2" placeholder="Describe the day's schedule..." required></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 3: MEDIA -->
+              <div class="tab-pane" id="tab-media">
+                <div class="media-upload-section">
+                  <label class="form-label required">Cover Photo</label>
+                  <div class="main-cover-dropzone" id="coverDropzone">
+                    <div class="dropzone-preview" id="coverPreview">
+                      <div class="dropzone-empty-prompt">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <h5>Click or Drag Cover Image</h5>
+                        <p>1920x1080px recommended</p>
+                      </div>
+                    </div>
+                    <input type="file" id="coverImage" name="coverImage" accept="image/*" style="display: none;" />
+                  </div>
+                </div>
+
+                <div class="highlights-upload-section">
+                  <label class="form-label">Highlight Photos (Up to 4)</label>
+                  <div class="highlights-grid">
+                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                      <div class="highlight-dropzone" id="highlight<?php echo $i; ?>Dropzone">
+                        <div class="dropzone-preview highlight-preview" id="highlight<?php echo $i; ?>Preview">
+                          <i class="fas fa-image"></i>
+                          <span>Highlight <?php echo $i; ?></span>
+                        </div>
+                        <input type="file" id="highlight<?php echo $i; ?>" name="highlight<?php echo $i; ?>" accept="image/*" style="display: none;" />
+                      </div>
+                    <?php endfor; ?>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 4: INCLUSIONS & EXCLUSIONS -->
+              <div class="tab-pane" id="tab-inclusions">
+                <div class="inclusions-grid-3">
+                  <div class="inclusion-builder-card">
+                    <div class="card-head">
+                      <strong class="text-success"><i class="fas fa-check-circle"></i> Included</strong>
+                    </div>
+                    <div class="dynamic-items-list" id="includedList">
+                      <div class="dynamic-item-row">
+                        <input type="text" placeholder="e.g. Park Permit" />
+                        <button type="button" class="btn-remove-row"><i class="fas fa-times"></i></button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-add-item" id="addIncludedBtn">+ Add Item</button>
+                  </div>
+
+                  <div class="inclusion-builder-card">
+                    <div class="card-head">
+                      <strong class="text-danger"><i class="fas fa-times-circle"></i> Excluded</strong>
+                    </div>
+                    <div class="dynamic-items-list" id="excludedList">
+                      <div class="dynamic-item-row">
+                        <input type="text" placeholder="e.g. Flights" />
+                        <button type="button" class="btn-remove-row"><i class="fas fa-times"></i></button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-add-item" id="addExcludedBtn">+ Add Item</button>
+                  </div>
+
+                  <div class="inclusion-builder-card">
+                    <div class="card-head">
+                      <strong class="text-amber"><i class="fas fa-suitcase"></i> What to Bring</strong>
+                    </div>
+                    <div class="dynamic-items-list" id="bringList">
+                      <div class="dynamic-item-row">
+                        <input type="text" placeholder="e.g. Hiking Boots" />
+                        <button type="button" class="btn-remove-row"><i class="fas fa-times"></i></button>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-add-item" id="addBringBtn">+ Add Item</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 5: PRICING -->
+              <div class="tab-pane" id="tab-pricing">
+                <div class="pricing-card">
+                  <div class="pricing-card-header">
+                    <strong>Pricing Tiers (USD / person)</strong>
+                    <button type="button" class="btn btn-sm btn-outline" id="addPricingBtn">+ Add Tier</button>
+                  </div>
+                  <div class="pricing-tier-list" id="pricingTiersList">
+                    <div class="pricing-tier-row">
+                      <input type="text" class="tier-group" placeholder="Group Size (e.g. 1 Person)" value="1 Person" required />
+                      <input type="number" step="0.01" class="tier-price" placeholder="Price ($)" required />
+                      <button type="button" class="btn-remove-tier"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pricing-card" style="margin-top: 14px;">
+                  <div class="pricing-card-header">
+                    <strong>Pricing Notes & Terms</strong>
+                    <button type="button" class="btn btn-sm btn-outline" id="addPricingNoteBtn">+ Add Note</button>
+                  </div>
+                  <div class="pricing-notes-list" id="pricingNotesList">
+                    <div class="pricing-note-row">
+                      <input type="text" class="pricing-note" placeholder="e.g. Rates subject to permit availability." />
+                      <button type="button" class="btn-remove-row"><i class="fas fa-times"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Modal Sticky Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-outline" id="btnPrevStep" style="display: none;">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <div style="margin-left: auto; display: flex; gap: 8px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="closeTourModal()">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btnNextStep">
+                  Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" class="btn btn-sm btn-primary" id="btnSubmitForm" style="display: none;">
+                  <i class="fas fa-check"></i> <span id="submitBtnLabel">Save Package</span>
+                </button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 2: QUICK PREVIEW / VIEW TOUR MODAL                     -->
+    <!-- ============================================================ -->
+    <div class="modal-backdrop" id="quickViewModal" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+        <div class="modal-content">
+          
+          <div class="quick-view-hero" id="qvHero">
+            <div class="hero-overlay"></div>
+            <button type="button" class="modal-close-btn hero-close" onclick="closeQuickViewModal()" aria-label="Close">
+              <i class="fas fa-times"></i>
+            </button>
+            <div class="hero-content">
+              <div class="hero-badges">
+                <span class="badge" id="qvCategoryBadge">Category</span>
+                <span class="badge" id="qvCountryBadge">Country</span>
+                <span class="badge" id="qvDurationBadge">0 Days</span>
+              </div>
+              <h3 class="hero-title" id="qvTitle">Tour Title</h3>
             </div>
           </div>
+
+          <div class="quick-view-tabs-nav">
+            <button type="button" class="qv-tab-btn active" data-qv="qv-overview">Overview</button>
+            <button type="button" class="qv-tab-btn" data-qv="qv-itinerary">Itinerary</button>
+            <button type="button" class="qv-tab-btn" data-qv="qv-gallery">Highlights</button>
+            <button type="button" class="qv-tab-btn" data-qv="qv-inclusions">Inclusions</button>
+            <button type="button" class="qv-tab-btn" data-qv="qv-pricing">Pricing</button>
+          </div>
+
+          <div class="modal-body-scroll qv-body" id="qvBody">
+            <div class="qv-tab-pane active" id="qv-overview">
+              <p id="qvSummary" class="qv-lead-text"></p>
+              <div id="qvWhyAttendWrap">
+                <h5 style="margin-bottom: 6px;">Why Attend</h5>
+                <div id="qvWhyAttend" class="qv-highlight-box"></div>
+              </div>
+            </div>
+
+            <div class="qv-tab-pane" id="qv-itinerary">
+              <div class="qv-itinerary-timeline" id="qvItineraryTimeline"></div>
+            </div>
+
+            <div class="qv-tab-pane" id="qv-gallery">
+              <div class="qv-gallery-grid" id="qvGalleryGrid"></div>
+            </div>
+
+            <div class="qv-tab-pane" id="qv-inclusions">
+              <div class="qv-inclusions-row">
+                <div class="qv-inc-col">
+                  <h5><i class="fas fa-check-circle text-success"></i> Included</h5>
+                  <ul id="qvIncludedList" class="qv-bullet-list inc-list"></ul>
+                </div>
+                <div class="qv-inc-col">
+                  <h5><i class="fas fa-times-circle text-danger"></i> Excluded</h5>
+                  <ul id="qvExcludedList" class="qv-bullet-list exc-list"></ul>
+                </div>
+                <div class="qv-inc-col">
+                  <h5><i class="fas fa-suitcase text-amber"></i> To Bring</h5>
+                  <ul id="qvBringList" class="qv-bullet-list bring-list"></ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="qv-tab-pane" id="qv-pricing">
+              <div class="qv-tiers-cards" id="qvTiersCards"></div>
+              <div id="qvNotesWrap" style="margin-top: 14px;">
+                <h6>Important Notes</h6>
+                <ul id="qvNotesList" class="qv-notes-list"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-outline" onclick="closeQuickViewModal()">Close</button>
+            <button type="button" class="btn btn-sm btn-primary" id="qvEditBtn"><i class="fas fa-edit"></i> Edit Tour</button>
+          </div>
+
         </div>
-      </main>
+      </div>
     </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 3: DELETE CONFIRMATION MODAL                           -->
+    <!-- ============================================================ -->
+    <div class="modal-backdrop" id="deleteModal" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <div class="modal-content" style="padding: 20px; text-align: center;">
+          <h4 id="deleteModalTitle" style="margin-bottom: 8px;">Delete Tour Package</h4>
+          <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+            Are you sure you want to delete <strong id="deleteTourName">this tour</strong>?
+          </p>
+
+          <form id="deleteForm" method="POST">
+            <input type="hidden" name="delete_tour" value="1" />
+            <input type="hidden" name="tour_id" id="deleteTourId" value="" />
+            <div style="display: flex; justify-content: center; gap: 8px;">
+              <button type="button" class="btn btn-sm btn-outline" onclick="closeDeleteModal()">Cancel</button>
+              <button type="submit" class="btn btn-sm" style="background: #fa5252; color: #fff;" id="confirmDeleteBtn">
+                <i class="fas fa-trash"></i> Yes, Delete
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 4: IMAGE LIGHTBOX                                      -->
+    <!-- ============================================================ -->
+    <div class="image-lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+      <button type="button" class="lightbox-close"><i class="fas fa-times"></i></button>
+      <img id="lightboxImg" src="" alt="Full Preview" onclick="event.stopPropagation()" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <?php if (!empty($success_message)): ?>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          if (typeof showToast === 'function') {
+            showToast('<?php echo addslashes($success_message); ?>', 'success');
+          }
+        });
+      </script>
+    <?php endif; ?>
+
+    <?php if (!empty($error_message)): ?>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          if (typeof showToast === 'function') {
+            showToast('<?php echo addslashes($error_message); ?>', 'error');
+          }
+        });
+      </script>
+    <?php endif; ?>
+
   </body>
 </html>

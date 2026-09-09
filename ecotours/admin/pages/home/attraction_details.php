@@ -45,7 +45,7 @@ function getStmtResult($stmt) {
 // Check if user is logged in
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../../login.php');
+    header('Location: ../login.html');
     exit();
 }
 

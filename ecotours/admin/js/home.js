@@ -1,248 +1,173 @@
-const homeSections = document.querySelectorAll(".home-section");
+/**
+ * Modern Home Management JavaScript
+ * Controls carousel preview, pill tab switching, dropzone file previews, and modals.
+ */
 
-function initHeroCarousel() {
-  const carousel = document.querySelector(".hero-carousel");
-  if (!carousel) {
-    console.warn("Hero carousel not found in the DOM");
-    return;
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. Live Carousel Preview Switching
+  const slides = document.querySelectorAll(".hero-slide");
+  const dots = document.querySelectorAll(".dot-indicator");
+  const prevBtn = document.getElementById("prevSlideBtn");
+  const nextBtn = document.getElementById("nextSlideBtn");
+  let currentSlideIndex = 0;
+  let autoplayTimer = null;
+
+  function showSlide(index) {
+    if (!slides.length) return;
+    slides.forEach((s) => s.classList.remove("active"));
+    dots.forEach((d) => d.classList.remove("active"));
+
+    currentSlideIndex = (index + slides.length) % slides.length;
+    if (slides[currentSlideIndex]) {
+      slides[currentSlideIndex].classList.add("active");
+    }
+    if (dots[currentSlideIndex]) {
+      dots[currentSlideIndex].classList.add("active");
+    }
   }
 
-  console.log("Initializing hero carousel");
-
-  const slides = carousel.querySelectorAll(".hero-slide");
-  const indicators = carousel.querySelectorAll(".indicator");
-  const prevBtn = carousel.querySelector(".carousel-arrow.prev");
-  const nextBtn = carousel.querySelector(".carousel-arrow.next");
-
-  let currentSlide = 0;
-  let slideInterval;
-
-  // Initialize autoplay
-  const autoplayCheckbox = document.getElementById("carousel-autoplay");
-  const intervalInput = document.getElementById("carousel-interval");
-
-  const startAutoplay = function () {
-    if (autoplayCheckbox && autoplayCheckbox.checked) {
-      const interval =
-        (intervalInput ? parseInt(intervalInput.value) : 5) * 1000;
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, interval);
-    }
-  };
-
-  const stopAutoplay = function () {
-    clearInterval(slideInterval);
-  };
-
-  // Show slide by index
-  const showSlide = function (index) {
-    slides.forEach((slide) => slide.classList.remove("active"));
-    indicators.forEach((indicator) => indicator.classList.remove("active"));
-
-    currentSlide = (index + slides.length) % slides.length;
-    slides[currentSlide].classList.add("active");
-
-    if (indicators[currentSlide]) {
-      indicators[currentSlide].classList.add("active");
-    }
-  };
-
-  // Next slide function
-  const nextSlide = function () {
-    showSlide(currentSlide + 1);
-  };
-
-  // Previous slide function
-  const prevSlide = function () {
-    showSlide(currentSlide - 1);
-  };
-
-  // Event listeners
   if (prevBtn) {
-    prevBtn.addEventListener("click", function () {
-      prevSlide();
+    prevBtn.addEventListener("click", function (e) {
+      e.preventDefault();
       stopAutoplay();
-      startAutoplay();
+      showSlide(currentSlideIndex - 1);
     });
   }
 
   if (nextBtn) {
-    nextBtn.addEventListener("click", function () {
-      nextSlide();
+    nextBtn.addEventListener("click", function (e) {
+      e.preventDefault();
       stopAutoplay();
-      startAutoplay();
+      showSlide(currentSlideIndex + 1);
     });
   }
 
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener("click", function () {
-      showSlide(index);
+  dots.forEach((dot, idx) => {
+    dot.addEventListener("click", function () {
       stopAutoplay();
-      startAutoplay();
+      showSlide(idx);
     });
   });
 
-  // Handle autoplay toggle
-  if (autoplayCheckbox) {
-    autoplayCheckbox.addEventListener("change", function () {
-      if (this.checked) {
-        startAutoplay();
-      } else {
-        stopAutoplay();
-      }
-    });
+  function startAutoplay() {
+    if (slides.length > 1) {
+      autoplayTimer = setInterval(() => {
+        showSlide(currentSlideIndex + 1);
+      }, 4500);
+    }
   }
 
-  // Handle interval change
-  if (intervalInput) {
-    intervalInput.addEventListener("change", function () {
-      if (autoplayCheckbox && autoplayCheckbox.checked) {
-        stopAutoplay();
-        startAutoplay();
-      }
-    });
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
   }
 
-  // Transition effect change
-  const transitionSelect = document.getElementById("carousel-transition");
-  const speedInput = document.getElementById("carousel-speed");
-
-  if (transitionSelect) {
-    transitionSelect.addEventListener("change", function () {
-      const effect = this.value;
-      slides.forEach((slide) => {
-        const speed = speedInput ? speedInput.value : 500;
-        slide.style.transition = `${
-          effect === "fade" ? "opacity" : "transform"
-        } ${speed}ms ease`;
-      });
-    });
-  }
-
-  // Speed change
-  if (speedInput) {
-    speedInput.addEventListener("change", function () {
-      const speed = this.value;
-      slides.forEach((slide) => {
-        slide.style.transitionDuration = `${speed}ms`;
-      });
-    });
-  }
-
-  // Start autoplay on init if enabled
   startAutoplay();
 
-  // Stop autoplay when user interacts with carousel settings
-  const carouselSettings = document.querySelectorAll(
-    ".hero-carousel-settings input, .hero-carousel-settings select"
-  );
-  carouselSettings.forEach((setting) => {
-    setting.addEventListener("focus", stopAutoplay);
-  });
+  // 2. Pill Tabs Switching
+  const tabButtons = document.querySelectorAll(".pill-tab-btn");
+  const tabPanes = document.querySelectorAll(".tab-pane");
 
-  // Preview carousel tab switching
-  const heroTabButtons = document.querySelectorAll(
-    '.tab-btn[data-target^="slide"]'
-  );
-  heroTabButtons.forEach((button, index) => {
-    button.addEventListener("click", function () {
-      showSlide(index);
+  tabButtons.forEach((btn, idx) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute("data-target");
+
+      tabButtons.forEach((b) => b.classList.remove("active"));
+      tabPanes.forEach((p) => p.classList.remove("active"));
+
+      this.classList.add("active");
+      const activePane = document.getElementById(targetId);
+      if (activePane) {
+        activePane.classList.add("active");
+      }
+
+      // Sync with preview slide if available
+      stopAutoplay();
+      showSlide(idx);
     });
   });
-}
 
-const tabButtons = document.querySelectorAll(".tab-btn:not(.add-tab)");
-tabButtons.forEach((button) => {
-  button.addEventListener("click", function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute("data-target");
-    const tabsContainer = this.closest(".tabs-container");
+  // 3. Dropzone Instant Image Preview
+  const dropzones = document.querySelectorAll(".dropzone-box");
+  dropzones.forEach((zone) => {
+    const fileInput = zone.querySelector('input[type="file"]');
+    const previewImg = zone.querySelector(".dropzone-thumb-wrap img");
+    const previewContainer = zone.querySelector(".dropzone-thumb-wrap");
 
-    // Update active button
-    tabsContainer.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.classList.remove("active");
-    });
-    this.classList.add("active");
+    if (!fileInput) return;
 
-    // Update active content
-    tabsContainer.querySelectorAll(".tab-content").forEach((content) => {
-      content.classList.remove("active");
-    });
-    tabsContainer.querySelector(`#${targetId}`).classList.add("active");
-  });
-});
-
-// Initialize hero carousel if it exists on the page and we're on the hero section
-if (document.querySelector(".home-section.active#hero-section")) {
-  initHeroCarousel();
-}
-
-// Handle file uploads
-  const fileInputs = document.querySelectorAll('input[type="file"]');
-  fileInputs.forEach((input) => {
-    input.addEventListener("change", function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        const filePreview =
-          this.closest(".file-upload").querySelector(".file-preview");
+    fileInput.addEventListener("change", function () {
+      const file = this.files && this.files[0];
+      if (file && file.type.startsWith("image/")) {
         const reader = new FileReader();
-
         reader.onload = function (e) {
-          filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+          if (previewImg) {
+            previewImg.src = e.target.result;
+          } else if (previewContainer) {
+            previewContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Preview" />`;
+          }
         };
-
         reader.readAsDataURL(file);
       }
+    });
+
+    // Drag and Drop styling
+    ["dragenter", "dragover"].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.add("dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.remove("dragover");
+      });
     });
   });
 
-  // Modal functions for adding new hero slides
-function openAddHeroSlideModal() {
-  const modal = document.getElementById('addHeroSlideModal');
-  modal.style.display = 'flex';
+  // 4. Modal Helpers
+  window.openModal = function (modalId) {
+    const m = document.getElementById(modalId);
+    if (m) {
+      m.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+  };
 
-  // Reset form
-  document.getElementById('addHeroSlideForm').reset();
-  document.getElementById('newSlideImagePreview').innerHTML = '<p>No image selected</p>';
-}
+  window.closeModal = function (modalId) {
+    const m = document.getElementById(modalId);
+    if (m) {
+      m.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+  };
 
-function closeAddHeroSlideModal() {
-  const modal = document.getElementById('addHeroSlideModal');
-  modal.style.display = 'none';
-}
-
-// Handle new slide image preview
-document.addEventListener('DOMContentLoaded', function() {
-  const newSlideImageInput = document.getElementById('newSlideImage');
-  if (newSlideImageInput) {
-    newSlideImageInput.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      const preview = document.getElementById('newSlideImagePreview');
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; height: auto;">`;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        preview.innerHTML = '<p>No image selected</p>';
+  // Close modal when clicking on backdrop
+  document.querySelectorAll(".modal-backdrop-custom").forEach((modal) => {
+    modal.addEventListener("click", function (e) {
+      if (e.target === this) {
+        this.classList.remove("show");
+        document.body.style.overflow = "";
       }
     });
-  }
+  });
 });
 
-// Function to delete a hero slide
+// Delete Slide Handler (used in hero.php)
 function deleteHeroSlide(slideId) {
-  if (confirm('Are you sure you want to delete this slide? This action cannot be undone.')) {
-    // Create a form to submit the delete request
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '../../handlers/home/deleteHeroSlideHandler.php';
+  if (confirm("Are you sure you want to delete this hero slide? This action cannot be undone.")) {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "../../handlers/home/deleteHeroSlideHandler.php";
 
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'slide_id';
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "slide_id";
     input.value = slideId;
 
     form.appendChild(input);
@@ -251,10 +176,20 @@ function deleteHeroSlide(slideId) {
   }
 }
 
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-  const modal = document.getElementById('addHeroSlideModal');
-  if (event.target === modal) {
-    closeAddHeroSlideModal();
+// Delete Partner Handler (used in partners.php)
+function confirmDeletePartner(partnerId) {
+  if (confirm("Are you sure you want to delete this partner?")) {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "../../handlers/home/deletePartnerHandler.php";
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "partner_id";
+    input.value = partnerId;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
   }
-});
+}

@@ -1,12 +1,23 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+          || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => 'Admin session expired. Please log in again.']);
+        exit();
+    }
     header('Location: ../../pages/login.html');
     exit();
 }
 
-include '../../config/connection.php';
+require_once __DIR__ . '/../../config/connection.php';
 
 // Function to create a slug from a title
 function createSlug($string) {
@@ -23,13 +34,15 @@ function uploadImage($file, $targetDir) {
         mkdir($targetDir, 0777, true);
     }
     
-    $fileName = time() . '_' . basename($file['name']);
+    $baseName = pathinfo($file['name'], PATHINFO_FILENAME);
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $safeBaseName = preg_replace("/[^a-zA-Z0-9_-]/", "_", $baseName);
+    $fileName = time() . '_' . $safeBaseName . '.' . $extension;
     $targetFilePath = $targetDir . $fileName;
-    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
     
     // Allow certain file formats
     $allowedTypes = array('jpg', 'jpeg', 'png', 'gif', 'webp');
-    if (!in_array(strtolower($fileType), $allowedTypes)) {
+    if (!in_array(strtolower($extension), $allowedTypes)) {
         return false;
     }
     
@@ -55,6 +68,28 @@ function safeDecodeInput($val) {
     return $val;
 }
 
+function cleanBlogText($val) {
+    $text = (string) $val;
+    $text = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $text);
+    $text = stripslashes($text);
+    $lineBreak = '(?:<br\s*/?>|\R)';
+    $text = preg_replace('~(' . $lineBreak . '\s*)n{1,3}(\s*' . $lineBreak . ')~i', '$1$2', $text);
+    $text = preg_replace('~^\s*n{1,3}\s*' . $lineBreak . '~i', '', $text);
+    $text = preg_replace('~' . $lineBreak . '\s*n{1,3}\s*$~i', '', $text);
+    return $text;
+}
+
+function normalizeQuoteStyle($style) {
+    $style = (string) $style;
+    $map = [
+        'large' => 'pullquote',
+        'highlight' => 'blockquote',
+    ];
+
+    $style = $map[$style] ?? $style;
+    return in_array($style, ['standard', 'pullquote', 'blockquote'], true) ? $style : 'standard';
+}
+
 // Initialize response data
 $response = [
     'status' => 'error',
@@ -72,23 +107,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        if (!isset($conn) || !$conn) {
+            throw new Exception("Database connection is not available.");
+        }
+
         // Start transaction
         $conn->begin_transaction();
         
         // Basic blog information
-        $title = $_POST['blogTitle'];
-        $author = $_POST['author'];
-        $readMin = intval($_POST['readMin']);
-        $category = $_POST['category'];
-        $bigTitle = $_POST['bigTitle'];
-        $bigDescription = $_POST['bigDescription'];
+        $title = cleanBlogText($_POST['blogTitle'] ?? '');
+        $author = cleanBlogText($_POST['author'] ?? '');
+        $readMin = isset($_POST['readMin']) ? intval($_POST['readMin']) : 1;
+        $category = $_POST['category'] ?? '';
+        $bigTitle = cleanBlogText($_POST['bigTitle'] ?? '');
+        $bigDescription = cleanBlogText($_POST['bigDescription'] ?? '');
         $adminId = $_SESSION['admin_id'];
         $slug = createSlug($title) . '-' . uniqid();
         
+        if (empty($title)) {
+            throw new Exception("Blog title is required.");
+        }
+
         // Upload cover image
-        $coverImagePath = uploadImage($_FILES['coverImage'], '../../images/blog/covers/');
+        if (!isset($_FILES['coverImage']) || $_FILES['coverImage']['error'] !== UPLOAD_ERR_OK) {
+            throw new Exception("Please select a valid cover image.");
+        }
+
+        $coverImagePath = uploadImage($_FILES['coverImage'], __DIR__ . '/../../images/blog/covers/');
         if (!$coverImagePath) {
-            throw new Exception("Invalid cover image format. Please use JPG, JPEG, PNG or GIF.");
+            throw new Exception("Invalid cover image format. Allowed formats: JPG, JPEG, PNG, GIF, WEBP.");
         }
         
         // Get category ID from slug
@@ -98,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $stmt->bind_result($categoryId);
         if (!$stmt->fetch()) {
+            $stmt->close();
             throw new Exception("Invalid category selected.");
         }
         $stmt->close();
@@ -107,15 +155,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       main_headline, introduction, status, created_by) 
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'published', ?)";
         $stmt = $conn->prepare($blogQuery);
-        $stmt->bind_param("sssissssi", $title, $slug, $author, $readMin, $categoryId, 
+        $stmt->bind_param("sssiisssi", $title, $slug, $author, $readMin, $categoryId, 
                          $coverImagePath, $bigTitle, $bigDescription, $adminId);
         $stmt->execute();
         $blogId = $conn->insert_id;
+        $stmt->close();
         
         // Process content blocks
         $blockOrder = 1;
         
-        // --- MODIFIED BLOCK DETECTION ---
         // Detect all potential block IDs from POST and FILES data
         $blockIds = [];
         $blockPattern = '/^block(Title|Description|Image|Quote|ListItems|ImageCaption|ImageAlignment|QuoteAttribution|QuoteStyle|ListTitle|ListType)(\d+)$/';
@@ -123,9 +171,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check POST data
         foreach ($_POST as $key => $value) {
             if (preg_match($blockPattern, $key, $matches)) {
-                $blockIds[$matches[2]] = true; // Use keys to store unique IDs
+                $blockIds[$matches[2]] = true;
             }
-            // Specifically check for list items array
             if (preg_match('/^blockListItems(\d+)$/', $key, $matches)) {
                  $blockIds[$matches[1]] = true;
             }
@@ -134,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check FILES data for image blocks
         foreach ($_FILES as $key => $value) {
             if (preg_match('/^blockImage(\d+)$/', $key, $matches)) {
-                if ($value['size'] > 0) { // Ensure a file was actually uploaded
+                if ($value['size'] > 0) {
                     $blockIds[$matches[1]] = true;
                 }
             }
@@ -143,40 +190,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Get unique block IDs and sort them numerically to maintain order
         $uniqueBlockIds = array_keys($blockIds);
         sort($uniqueBlockIds, SORT_NUMERIC);
-        // --- END OF MODIFIED BLOCK DETECTION ---
 
         // Process each detected content block
-        foreach ($uniqueBlockIds as $blockId) { // Use the new $uniqueBlockIds array
+        foreach ($uniqueBlockIds as $blockId) {
             $blockType = '';
             
-            // Determine block type (using the existing logic, which is fine)
-            // Check for text block first (most specific fields)
+            // Check for text block
             if (isset($_POST['blockTitle' . $blockId]) || isset($_POST['blockDescription' . $blockId])) {
-                 // Prioritize text if both title/desc and other fields exist for the same ID
-                 // Check if description is non-empty, as title might be optional
                  if (!empty($_POST['blockDescription' . $blockId])) {
                     $blockType = 'text';
                  }
             } 
             
-            // Check for image block if not text
+            // Check for image block
             if (empty($blockType) && isset($_FILES['blockImage' . $blockId]) && $_FILES['blockImage' . $blockId]['size'] > 0) {
                 $blockType = 'image';
             } 
             
-            // Check for quote block if not text or image
+            // Check for quote block
             if (empty($blockType) && isset($_POST['blockQuote' . $blockId])) {
-                 // Ensure quote text is not empty
                  if (!empty($_POST['blockQuote' . $blockId])) {
                     $blockType = 'quote';
                  }
             } 
             
-            // Check for list block if not text, image, or quote
+            // Check for list block
             if (empty($blockType) && isset($_POST['blockListItems' . $blockId])) {
-                 // Ensure list items array is not empty
                  if (!empty($_POST['blockListItems' . $blockId]) && is_array($_POST['blockListItems' . $blockId])) {
-                     // Check if at least one item is non-empty
                      $hasContent = false;
                      foreach($_POST['blockListItems' . $blockId] as $item) {
                          if (!empty(trim($item))) {
@@ -197,104 +237,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_param("isi", $blogId, $blockType, $blockOrder);
                 $stmt->execute();
                 $contentBlockId = $conn->insert_id;
+                $stmt->close();
                 
                 // Process specific block type
                 switch ($blockType) {
                     case 'text':
-                        $sectionTitle = isset($_POST['blockTitle' . $blockId]) ? 
-                            $_POST['blockTitle' . $blockId] : '';
-                        // Ensure description exists and is not empty before accessing
-                        $content = isset($_POST['blockDescription' . $blockId]) ? 
-                            $_POST['blockDescription' . $blockId] : '';
+                        $sectionTitle = cleanBlogText($_POST['blockTitle' . $blockId] ?? '');
+                        $content = cleanBlogText($_POST['blockDescription' . $blockId] ?? '');
                         
-                        // Only insert if content is not empty
                         if (!empty($content)) {
                             $textQuery = "INSERT INTO blog_text_blocks (block_id, section_title, content) VALUES (?, ?, ?)";
                             $stmt = $conn->prepare($textQuery);
                             $stmt->bind_param("iss", $contentBlockId, $sectionTitle, $content);
                             $stmt->execute();
+                            $stmt->close();
                         } else {
-                             // If content is empty, maybe rollback the content_block insert or skip?
-                             // For now, let's assume an empty description means the block shouldn't be saved.
-                             // We need to delete the previously inserted content block row.
-                             $deleteEmptyBlock = $conn->prepare("DELETE FROM blog_content_blocks WHERE block_id = ?");
-                             $deleteEmptyBlock->bind_param("i", $contentBlockId);
-                             $deleteEmptyBlock->execute();
-                             $contentBlockId = null; // Reset block ID
+                            $deleteEmptyBlock = $conn->prepare("DELETE FROM blog_content_blocks WHERE block_id = ?");
+                            $deleteEmptyBlock->bind_param("i", $contentBlockId);
+                            $deleteEmptyBlock->execute();
+                            $deleteEmptyBlock->close();
+                            $contentBlockId = null;
                         }
                         break;
                         
                     case 'image':
-                        $imagePath = uploadImage($_FILES['blockImage' . $blockId], '../../images/blog/content/');
+                        $imagePath = uploadImage($_FILES['blockImage' . $blockId], __DIR__ . '/../../images/blog/content/');
                         if (!$imagePath) {
-                            // Rollback the content_block insert if image upload fails
                             $deleteEmptyBlock = $conn->prepare("DELETE FROM blog_content_blocks WHERE block_id = ?");
                             $deleteEmptyBlock->bind_param("i", $contentBlockId);
                             $deleteEmptyBlock->execute();
+                            $deleteEmptyBlock->close();
                             $contentBlockId = null; 
-                            throw new Exception("Invalid or failed image upload in content block " . $blockId . ".");
+                            throw new Exception("Failed to upload image in content block " . $blockId . ".");
                         }
                         
-                        $caption = isset($_POST['blockImageCaption' . $blockId]) ? 
-                            $_POST['blockImageCaption' . $blockId] : '';
-                        $alignment = isset($_POST['blockImageAlignment' . $blockId]) ? 
-                            $_POST['blockImageAlignment' . $blockId] : 'center';
+                        $caption = cleanBlogText($_POST['blockImageCaption' . $blockId] ?? '');
+                        $alignment = isset($_POST['blockImageAlignment' . $blockId]) ? $_POST['blockImageAlignment' . $blockId] : 'center';
                         
-                        $imageQuery = "INSERT INTO blog_image_blocks (block_id, image_path, caption, alignment) 
-                                       VALUES (?, ?, ?, ?)";
+                        $imageQuery = "INSERT INTO blog_image_blocks (block_id, image_path, caption, alignment) VALUES (?, ?, ?, ?)";
                         $stmt = $conn->prepare($imageQuery);
                         $stmt->bind_param("isss", $contentBlockId, $imagePath, $caption, $alignment);
                         $stmt->execute();
+                        $stmt->close();
                         break;
                         
                     case 'quote':
-                         // Ensure quote text exists and is not empty
-                        $quoteText = isset($_POST['blockQuote' . $blockId]) ? 
-                            $_POST['blockQuote' . $blockId] : '';
+                        $quoteText = cleanBlogText($_POST['blockQuote' . $blockId] ?? '');
 
                         if (!empty($quoteText)) {
-                            $attribution = isset($_POST['blockQuoteAttribution' . $blockId]) ? 
-                                $_POST['blockQuoteAttribution' . $blockId] : '';
-                            $style = isset($_POST['blockQuoteStyle' . $blockId]) ? 
-                                $_POST['blockQuoteStyle' . $blockId] : 'standard';
+                            $attribution = cleanBlogText($_POST['blockQuoteAttribution' . $blockId] ?? '');
+                            $style = normalizeQuoteStyle($_POST['blockQuoteStyle' . $blockId] ?? 'standard');
                             
-                            $quoteQuery = "INSERT INTO blog_quote_blocks (block_id, quote_text, attribution, style) 
-                                           VALUES (?, ?, ?, ?)";
+                            $quoteQuery = "INSERT INTO blog_quote_blocks (block_id, quote_text, attribution, style) VALUES (?, ?, ?, ?)";
                             $stmt = $conn->prepare($quoteQuery);
                             $stmt->bind_param("isss", $contentBlockId, $quoteText, $attribution, $style);
                             $stmt->execute();
+                            $stmt->close();
                         } else {
-                            // Rollback content_block insert if quote text is empty
                             $deleteEmptyBlock = $conn->prepare("DELETE FROM blog_content_blocks WHERE block_id = ?");
                             $deleteEmptyBlock->bind_param("i", $contentBlockId);
                             $deleteEmptyBlock->execute();
+                            $deleteEmptyBlock->close();
                             $contentBlockId = null; 
                         }
                         break;
                         
                     case 'list':
-                        // Ensure list items exist and is an array
                         $listItems = isset($_POST['blockListItems' . $blockId]) && is_array($_POST['blockListItems' . $blockId]) ? 
                             $_POST['blockListItems' . $blockId] : [];
                         
-                        // Filter out empty items
                         $filteredListItems = array_filter($listItems, function($item) {
                             return !empty(trim($item));
                         });
 
                         if (!empty($filteredListItems)) {
-                            // Remove real_escape_string
-                            $listTitle = isset($_POST['blockListTitle' . $blockId]) ? 
-                                $_POST['blockListTitle' . $blockId] : ''; 
-                            $listType = isset($_POST['blockListType' . $blockId]) ? 
-                                $_POST['blockListType' . $blockId] : 'bullet'; 
+                            $listTitle = cleanBlogText($_POST['blockListTitle' . $blockId] ?? ''); 
+                            $listType = isset($_POST['blockListType' . $blockId]) ? $_POST['blockListType' . $blockId] : 'bullet'; 
                             
                             $listQuery = "INSERT INTO blog_list_blocks (block_id, list_title, list_type) VALUES (?, ?, ?)";
                             $stmt = $conn->prepare($listQuery);
-                            // Pass raw variables to bind_param
                             $stmt->bind_param("iss", $contentBlockId, $listTitle, $listType); 
                             $stmt->execute();
                             $listBlockId = $conn->insert_id;
+                            $stmt->close();
                             
                             // Insert list items
                             $itemOrder = 1;
@@ -302,45 +327,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $stmt = $conn->prepare($itemQuery);
                             
                             foreach ($filteredListItems as $item) {
-                                // Remove real_escape_string
-                                $itemText = $item; 
-                                // Pass raw variable to bind_param
+                                $itemText = cleanBlogText($item); 
                                 $stmt->bind_param("isi", $listBlockId, $itemText, $itemOrder); 
                                 $stmt->execute();
                                 $itemOrder++;
                             }
+                            $stmt->close();
                         } else {
-                             // Rollback content_block insert if list is empty
                             $deleteEmptyBlock = $conn->prepare("DELETE FROM blog_content_blocks WHERE block_id = ?");
                             $deleteEmptyBlock->bind_param("i", $contentBlockId);
                             $deleteEmptyBlock->execute();
+                            $deleteEmptyBlock->close();
                             $contentBlockId = null; 
                         }
                         break;
                 }
 
-                // Only increment blockOrder if a block was successfully inserted and not rolled back
                 if ($contentBlockId !== null) {
                     $blockOrder++;
                 }
             }
-        } // End foreach ($uniqueBlockIds as $blockId)
+        }
 
-        // Process gallery images (existing logic seems okay)
-        $galleryOrder = 1;
+        // Process gallery images
         for ($i = 0; $i < 6; $i++) {
             $galleryInputName = "galleryImage" . ($i + 1);
             
-            if (isset($_FILES[$galleryInputName]) && $_FILES[$galleryInputName]['size'] > 0) {
-                $galleryPath = uploadImage($_FILES[$galleryInputName], '../../images/blog/gallery/');
+            if (isset($_FILES[$galleryInputName]) && $_FILES[$galleryInputName]['error'] === UPLOAD_ERR_OK && $_FILES[$galleryInputName]['size'] > 0) {
+                $galleryPath = uploadImage($_FILES[$galleryInputName], __DIR__ . '/../../images/blog/gallery/');
                 if (!$galleryPath) {
-                    throw new Exception("Invalid gallery image format.");
+                    throw new Exception("Invalid gallery image format for image " . ($i + 1) . ".");
                 }
                 
                 $galleryQuery = "INSERT INTO blog_gallery_images (blog_id, image_path, image_order) VALUES (?, ?, ?)";
                 $stmt = $conn->prepare($galleryQuery);
                 $stmt->bind_param("isi", $blogId, $galleryPath, $i);
                 $stmt->execute();
+                $stmt->close();
             }
         }
         
@@ -349,35 +372,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $response['status'] = 'success';
         $response['message'] = 'Blog post created successfully!';
+        $response['redirect'] = 'blogs.php?status=success';
         
     } catch (Exception $e) {
-        // Rollback transaction on error
-        $conn->rollback();
+        if (isset($conn) && $conn instanceof mysqli) {
+            $conn->rollback();
+        }
+        $response['status'] = 'error';
         $response['message'] = $e->getMessage();
-        // Log the detailed error
-        error_log("Error creating blog post: " . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+        error_log("Error creating blog post: " . $e->getMessage());
 
     } finally {
-        // Close statement if it was prepared
-        if (isset($stmt) && $stmt instanceof mysqli_stmt) {
-            $stmt->close();
+        if (isset($conn) && $conn instanceof mysqli) {
+            $conn->close();
         }
-        // Close connection
-        $conn->close();
     }
     
-    // Redirect back to the form page with status message
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
+
     $redirectUrl = '../../pages/blogs.php?status=' . $response['status'];
     if ($response['status'] === 'error') {
-        $redirectUrl .= '&message=' . urlencode($response['message']);
+        $redirectUrl = '../../pages/create_blog.php?status=error&message=' . urlencode($response['message']);
     }
     header('Location: ' . $redirectUrl);
     exit();
     
 } else {
-    // Handle invalid request method
-    header('HTTP/1.1 405 Method Not Allowed');
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+        exit();
+    }
+    header('Location: ../../pages/blogs.php');
     exit();
 }
 ?>

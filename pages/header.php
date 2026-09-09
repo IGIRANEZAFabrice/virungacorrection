@@ -19,7 +19,7 @@
   }
   header.scrolled .brand img {
     background-color: #122a1f;
-    border-radius: 6px;
+    border-radius: 0;
     padding: 6px 12px;
   }
   nav {
@@ -133,18 +133,21 @@
   }
 
   /* ---------- Responsive for Nav ---------- */
-  @media (max-width: 767px) {
+  @media (max-width: 900px) {
     header {
-      padding: 12px 0;
+      padding: 10px 0;
     }
     header.scrolled {
-      padding: 8px 0;
+      padding: 6px 0;
     }
     .nav-shell {
+      width: 100%;
+      justify-content: space-between;
       background: rgba(18, 42, 31, 0.94);
-      padding: 10px 14px;
+      padding: 10px 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 0;
     }
     .brand .logo-full {
@@ -152,29 +155,34 @@
     }
     .brand .logo-icon {
       display: block;
-      height: 50px;
+      height: 48px;
     }
     header.scrolled .brand .logo-icon {
-      height: 40px;
-      padding: 4px;
+      height: 38px;
+      padding: 2px;
     }
     .nav-links {
       position: fixed;
       top: 0;
-      left: 0;
+      right: 0;
+      left: auto;
       height: 100vh;
-      width: 100vw;
+      width: min(320px, 85vw);
       background: var(--forest-deep);
       flex-direction: column;
-      padding: 96px 24px 32px;
+      padding: 85px 24px 32px;
       transform: translateX(100%);
-      transition: transform 0.3s ease;
-      gap: 26px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+      gap: 22px;
       z-index: 1010;
       display: flex;
+      visibility: hidden;
+      box-shadow: -8px 0 30px rgba(0,0,0,0.35);
+      overflow-y: auto;
     }
     .nav-links.open {
       transform: translateX(0);
+      visibility: visible;
     }
     .nav-toggle {
       display: inline-flex;
@@ -183,10 +191,12 @@
       width: 38px;
       height: 38px;
       background: rgba(246,242,233,0.08);
+      border-radius: 4px;
       margin-left: 6px;
     }
     .nav-close.open {
       display: inline-flex;
+      z-index: 1025;
     }
   }
 
@@ -345,12 +355,11 @@
       </button>
     </div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">Journeys</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Our Stay</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>">Community Impact</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('membership')); ?>">Membership</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('about')); ?>">Story</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('contact-us')); ?>">Enquire</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('#signatures')); ?>">Signatures</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Virunga House</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('about')); ?>">Our Story</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('#journal')); ?>">Journal</a></li>
+      <li><a href="<?php echo htmlspecialchars($baseLink('#planner')); ?>" class="nav-cta-link" style="color: var(--gold-light, #deb862); font-weight: 600; letter-spacing: 0.04em;">PLAN YOUR JOURNEY</a></li>
       <li class="lang-dropdown notranslate" translate="no">
         <button class="lang-btn" id="langBtn" aria-label="Select Language">
           <span class="flag-icon" id="currentFlag">🇬🇧</span> <span id="currentLangText" style="font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>

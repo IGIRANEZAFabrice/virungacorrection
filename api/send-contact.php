@@ -16,40 +16,50 @@ if (file_exists($phpmailerPath . 'Exception.php') && file_exists($phpmailerPath 
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'Invalid request method']);
     exit;
 }
 
-// Validate reCAPTCHA
-$recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
-
-if (empty($recaptchaResponse)) {
-    echo json_encode(['status' => 'error', 'message' => 'Please complete the reCAPTCHA']);
-    exit;
+// Read input (handles both JSON and multipart/form-data POST)
+$inputData = [];
+if (!empty($_POST)) {
+    $inputData = $_POST;
+} else {
+    $rawInput = file_get_contents('php://input');
+    if (!empty($rawInput)) {
+        $json = json_decode($rawInput, true);
+        if (is_array($json)) {
+            $inputData = $json;
+        }
+    }
 }
 
-if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
-    echo json_encode(['status' => 'error', 'message' => 'reCAPTCHA verification failed']);
-    exit;
+// Validate reCAPTCHA if provided
+$recaptchaResponse = $inputData['g-recaptcha-response'] ?? '';
+if (!empty($recaptchaResponse)) {
+    if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+        echo json_encode(['status' => 'error', 'success' => false, 'message' => 'reCAPTCHA verification failed']);
+        exit;
+    }
 }
 
 // Get form data
-$fname = trim($_POST['fname'] ?? '');
-$lname = trim($_POST['lname'] ?? '');
-$name = trim($_POST['name'] ?? ($fname . ' ' . $lname));
-$email = trim($_POST['email'] ?? '');
-$phone = trim($_POST['phone'] ?? '');
-$subject = trim($_POST['subject'] ?? '');
-$message = trim($_POST['message'] ?? '');
+$fname = trim($inputData['fname'] ?? '');
+$lname = trim($inputData['lname'] ?? '');
+$name = trim($inputData['name'] ?? ($fname . ' ' . $lname));
+$email = trim($inputData['email'] ?? '');
+$phone = trim($inputData['phone'] ?? '');
+$subject = trim($inputData['subject'] ?? 'New Journey Designer Request');
+$message = trim($inputData['message'] ?? '');
 
 // Validate
-if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-    echo json_encode(['status' => 'error', 'message' => 'Please fill in all required fields']);
+if (empty($name) || empty($email) || empty($message)) {
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'Please fill in all required fields']);
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['status' => 'error', 'message' => 'Please enter a valid email address']);
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'Please enter a valid email address']);
     exit;
 }
 
@@ -70,57 +80,67 @@ try {
         ]
     ];
 
-    // Send to admin
-    $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Website');
-    $mail->addAddress('info@virungajourneys.com');
-    $mail->addAddress('virungahomestay@gmail.com');
+    // Send to both admin recipients
+    $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Journeys');
+    $mail->addAddress('info@virungajourneys.com', 'Virunga Journeys Concierge');
+    $mail->addAddress('virungahomestay@gmail.com', 'Virunga Homestay Operations');
     $mail->addReplyTo($email, $name);
     $mail->isHTML(true);
-    $mail->Subject = "New Contact Form: " . $subject;
+    $mail->Subject = "New Journey Inquiry: " . $subject;
 
     $mail->Body = "
-        <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background: #f6f2e9; border: 1px solid #eee;'>
-            <div style='background: #1b3a2b; padding: 25px 30px;'>
-                <h2 style='color: #f6f2e9; margin: 0; font-family: \"Cormorant Garamond\", serif;'>New Message Received</h2>
+        <div style='max-width: 620px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background: #fbf9f4; border: 1px solid #e2ded5;'>
+            <div style='background: #122a1f; padding: 28px 32px; border-bottom: 2px solid #c9a24b;'>
+                <span style='color: #c9a24b; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 6px;'>Virunga Collective · Bespoke Concierge</span>
+                <h2 style='color: #f6f2e9; margin: 0; font-size: 22px; font-family: Georgia, serif;'>New Journey Request Received</h2>
             </div>
-            <div style='padding: 40px 30px; background: white;'>
-                <p style='color: #1f2620; font-size: 16px; margin-bottom: 24px;'>
-                    You have received a new message from the Virunga Collective contact form.
+            <div style='padding: 36px 32px; background: #ffffff;'>
+                <p style='color: #2b332c; font-size: 15px; margin-bottom: 24px; line-height: 1.6;'>
+                    A traveler has submitted an inquiry through the <strong>Design Your Virunga Journey</strong> concierge planner.
                 </p>
-                <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px;'>
-                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270; width: 120px;'>Name:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620; font-weight: bold;'>" . htmlspecialchars($name) . "</td></tr>
-                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Email:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'><a href='mailto:" . htmlspecialchars($email) . "' style='color: #c9a24b; text-decoration: none;'>" . htmlspecialchars($email) . "</a></td></tr>
-                    " . (!empty($phone) ? "<tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Phone:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($phone) . "</td></tr>" : "") . "
-                    <tr><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #6e8270;'>Subject:</td><td style='padding: 10px 0; border-bottom: 1px solid #eee; color: #1f2620;'>" . htmlspecialchars($subject) . "</td></tr>
+                <table style='width: 100%; border-collapse: collapse; margin-bottom: 28px; font-size: 14px;'>
+                    <tr>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #5a6e60; width: 130px; font-weight: 600;'>Traveler Name:</td>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #122a1f; font-weight: bold;'>" . htmlspecialchars($name) . "</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #5a6e60;'>Email Address:</td>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #122a1f;'><a href='mailto:" . htmlspecialchars($email) . "' style='color: #b08d38; text-decoration: none; font-weight: 600;'>" . htmlspecialchars($email) . "</a></td>
+                    </tr>
+                    " . (!empty($phone) ? "<tr><td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #5a6e60;'>WhatsApp / Phone:</td><td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #122a1f; font-weight: 600;'>" . htmlspecialchars($phone) . "</td></tr>" : "") . "
+                    <tr>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #5a6e60;'>Journey Scope:</td>
+                        <td style='padding: 11px 0; border-bottom: 1px solid #eee; color: #122a1f; font-weight: 600;'>" . htmlspecialchars($subject) . "</td>
+                    </tr>
                 </table>
-                <div style='padding: 20px; background: #f6f2e9;'>
-                    <strong style='display: block; margin-bottom: 12px; color: #1b3a2b;'>Message:</strong>
-                    <p style='color: #1f2620; margin: 0; line-height: 1.6;'>" . nl2br(htmlspecialchars($message)) . "</p>
+                <div style='padding: 22px; background: #fbf9f4; border-left: 3px solid #c9a24b;'>
+                    <strong style='display: block; margin-bottom: 10px; color: #122a1f; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;'>Inquiry Notes & Vision:</strong>
+                    <p style='color: #2b332c; margin: 0; line-height: 1.7; font-size: 14px; white-space: pre-wrap;'>" . nl2br(htmlspecialchars($message)) . "</p>
                 </div>
             </div>
-            <div style='background: #1b3a2b; padding: 20px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
-                &copy; 2026 Virunga Collective. All rights reserved.
+            <div style='background: #122a1f; padding: 20px 32px; text-align: center; font-size: 12px; color: rgba(246,242,233,0.7);'>
+                &copy; 2026 Virunga Collective · Private Journeys & Bespoke Hospitality · Rwanda
             </div>
         </div>
     ";
-    $mail->AltBody = "New Message Received\n\nName: $name\nEmail: $email" . (!empty($phone) ? "\nPhone: $phone" : "") . "\nSubject: $subject\n\nMessage:\n$message";
+    $mail->AltBody = "New Journey Request\n\nName: $name\nEmail: $email" . (!empty($phone) ? "\nPhone: $phone" : "") . "\nSubject: $subject\n\nMessage:\n$message";
 
     $mail->send();
 
     // Require localization helper for multilingual email receipt
     if (file_exists(__DIR__ . '/../config/localization.php')) {
         require_once __DIR__ . '/../config/localization.php';
-        $userLang = $_POST['user_lang'] ?? null;
-        $details = "<strong>Subject:</strong> " . htmlspecialchars($subject) . "<br><strong>Message:</strong> " . htmlspecialchars($message);
+        $userLang = $inputData['user_lang'] ?? null;
+        $details = "<strong>Subject:</strong> " . htmlspecialchars($subject) . "<br><strong>Message:</strong> " . nl2br(htmlspecialchars($message));
         send_multilingual_confirmation_email($email, $name, $subject, $details, $userLang);
     }
 
-    echo json_encode(['status' => 'success']);
+    echo json_encode(['status' => 'success', 'success' => true]);
 
 } catch (Exception $e) {
     $errorLog = __DIR__ . '/contact-error.log';
     $logMessage = "[" . date('Y-m-d H:i:s') . "] PHPMailer Error: " . $e->getMessage() . "\n";
     file_put_contents($errorLog, $logMessage, FILE_APPEND);
-    echo json_encode(['status' => 'error', 'message' => 'An error occurred while sending your message. Please try again later.']);
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'An error occurred while sending your message. Please try again later.']);
 }
 

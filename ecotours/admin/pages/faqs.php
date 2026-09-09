@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_id'])) {
   exit();
 }
 
-// Initialize message variables
 $message = '';
 $messageType = '';
 
@@ -28,14 +27,13 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
 // Handle form submission (Add/Edit FAQ)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        $category = $_POST['category'];
-        $question = $_POST['question'];
-        $answer = $_POST['answer'];
-        $display_order = intval($_POST['display_order']);
+        $category = trim($_POST['category'] ?? 'General');
+        $question = trim($_POST['question'] ?? '');
+        $answer = trim($_POST['answer'] ?? '');
+        $display_order = intval($_POST['display_order'] ?? 1);
         $is_active = isset($_POST['is_active']) ? 1 : 0;
 
         if (isset($_POST['faq_id']) && !empty($_POST['faq_id'])) {
-            // Update existing FAQ
             $stmt = $pdo->prepare("UPDATE faqs SET 
                 category = ?, 
                 question = ?, 
@@ -49,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $messageType = "success";
             }
         } else {
-            // Add new FAQ
             $stmt = $pdo->prepare("INSERT INTO faqs (category, question, answer, display_order, is_active) 
                                  VALUES (?, ?, ?, ?, ?)");
             
@@ -59,27 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } catch(PDOException $e) {
-        $message = "Error processing FAQ: " . $e->getMessage();
-        $messageType = "danger";
-    }
-}
-
-// Fetch FAQ for editing
-$editFaq = null;
-if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM faqs WHERE id = ?");
-        $stmt->execute([$_GET['edit']]);
-        $editFaq = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch(PDOException $e) {
-        $message = "Error fetching FAQ: " . $e->getMessage();
+        $message = "Error saving FAQ: " . $e->getMessage();
         $messageType = "danger";
     }
 }
 
 // Fetch all FAQs
 try {
-    $stmt = $pdo->query("SELECT * FROM faqs ORDER BY category, display_order");
+    $stmt = $pdo->query("SELECT * FROM faqs ORDER BY category, display_order ASC");
     $faqs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Group FAQs by category
@@ -88,7 +72,6 @@ try {
         $faqsByCategory[$faq['category']][] = $faq;
     }
 
-    // Get unique categories
     $categories = array_unique(array_column($faqs, 'category'));
 } catch(PDOException $e) {
     $message = "Error fetching FAQs: " . $e->getMessage();
@@ -96,172 +79,269 @@ try {
     $faqsByCategory = [];
     $categories = [];
 }
-?>
 
+$total_faqs = count($faqs);
+$active_faqs = 0;
+foreach ($faqs as $f) {
+    if ($f['is_active']) $active_faqs++;
+}
+
+$selected_cat = trim($_GET['cat'] ?? '');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ Management - Admin Dashboard</title>
-    <link rel="shortcut icon" href="../../images/logos/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>FAQ Management - Virunga Admin</title>
+    <link rel="shortcut icon" href="../images/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/faqs.css">
     <script src="../js/common.js" defer></script>
 </head>
 <body>
     <div class="admin-container">
-           <!-- Include sidebar template -->
-      <?php include_once './includes/sidebar.php'; ?>
+        <!-- Include sidebar template -->
+        <?php include_once './includes/sidebar.php'; ?>
 
-      <main class="main-content">
-        <!-- Include header template -->
-        <?php include_once './includes/header.php'; ?>
+        <main class="main-content">
+            <!-- Top Header -->
+            <?php include_once './includes/header.php'; ?>
 
-            <div class="faq-container">
-                <h1 class="page-title">FAQ Management</h1>
+            <div class="faq-management-container">
+                
+                <!-- Page Header Row -->
+                <div class="page-header-row">
+                    <div class="page-title-wrap">
+                        <div class="breadcrumb-trail">
+                            <a href="../index.php">Dashboard</a>
+                            <span>/</span>
+                            <span>FAQs Management</span>
+                        </div>
+                        <h1 class="page-title">
+                            <i class="fas fa-circle-question" style="color: #206bc4;"></i>
+                            Frequently Asked Questions
+                        </h1>
+                        <p class="page-subtitle">
+                            Curate travel advisories, permit requirements, booking logistics, and common inquiries.
+                        </p>
+                    </div>
 
-                <button class="add-faq-btn" id="toggleFormBtn">
-                    <i class="fas fa-plus"></i>
-                    <span>Add New FAQ</span>
-                </button>
+                    <div class="page-actions-wrap">
+                        <a href="../../faq.php" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fas fa-eye"></i> View Live FAQ Page
+                        </a>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="openFaqModal()">
+                            <i class="fas fa-plus"></i> Add New Question
+                        </button>
+                    </div>
+                </div>
 
+                <!-- Status Alert -->
                 <?php if ($message): ?>
                     <div class="alert alert-<?php echo $messageType; ?>">
-                        <?php echo $message; ?>
+                        <i class="fas <?php echo $messageType === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'; ?>"></i>
+                        <span><?php echo htmlspecialchars($message); ?></span>
+                        <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
                     </div>
                 <?php endif; ?>
 
-                <!-- Add/Edit FAQ Form -->
-                <div class="form-container" id="faqForm">
-                    <h3><?php echo $editFaq ? 'Edit FAQ' : 'Add New FAQ'; ?></h3>
-                    <form method="POST" action="">
-                        <?php if ($editFaq): ?>
-                            <input type="hidden" name="faq_id" value="<?php echo $editFaq['id']; ?>">
-                        <?php endif; ?>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Category</label>
-                                <input type="text" class="form-control" name="category" list="categoryList" 
-                                       value="<?php echo $editFaq ? htmlspecialchars($editFaq['category']) : ''; ?>" required>
-                                <datalist id="categoryList">
-                                    <?php foreach ($categories as $cat): ?>
-                                        <option value="<?php echo htmlspecialchars($cat); ?>">
-                                    <?php endforeach; ?>
-                                </datalist>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Display Order</label>
-                                <input type="number" class="form-control" name="display_order" 
-                                       value="<?php echo $editFaq ? $editFaq['display_order'] : '0'; ?>" min="0">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-switch">
-                                    <input type="checkbox" name="is_active" 
-                                           <?php echo (!$editFaq || $editFaq['is_active']) ? 'checked' : ''; ?>>
-                                    Active
-                                </label>
-                            </div>
+                <!-- KPI Metric Row -->
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <div class="kpi-top">
+                            <span class="kpi-num"><?php echo $total_faqs; ?></span>
+                            <span class="kpi-badge badge-blue"><i class="fas fa-question"></i> Questions</span>
                         </div>
+                        <span class="kpi-title">Total FAQ Entries</span>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Question</label>
-                            <input type="text" class="form-control" name="question" 
-                                   value="<?php echo $editFaq ? htmlspecialchars($editFaq['question']) : ''; ?>" required>
+                    <div class="kpi-card">
+                        <div class="kpi-top">
+                            <span class="kpi-num"><?php echo count($categories); ?></span>
+                            <span class="kpi-badge badge-purple"><i class="fas fa-folder-tree"></i> Topics</span>
                         </div>
+                        <span class="kpi-title">Knowledge Categories</span>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Answer</label>
-                            <textarea class="form-control" name="answer" required>
-                                <?php echo $editFaq ? htmlspecialchars($editFaq['answer']) : ''; ?>
-                            </textarea>
+                    <div class="kpi-card">
+                        <div class="kpi-top">
+                            <span class="kpi-num"><?php echo $active_faqs; ?></span>
+                            <span class="kpi-badge badge-green"><i class="fas fa-check"></i> Published</span>
                         </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">
-                                <?php echo $editFaq ? 'Update FAQ' : 'Add FAQ'; ?>
-                            </button>
-                            <?php if ($editFaq): ?>
-                                <a href="faqs.php" class="btn btn-secondary">Cancel</a>
-                            <?php endif; ?>
-                        </div>
-                    </form>
+                        <span class="kpi-title">Active on Website</span>
+                    </div>
                 </div>
 
-                <!-- FAQ List -->
-                <div class="faq-list">
-                    <h3>Existing FAQs</h3>
-                    <?php if (empty($faqsByCategory)): ?>
-                        <div class="alert alert-info">No FAQs found. Add your first FAQ above!</div>
-                    <?php else: ?>
-                        <?php foreach ($faqsByCategory as $category => $categoryFaqs): ?>
-                            <div class="category-header">
-                                <i class="fas fa-folder"></i>
-                                <?php echo htmlspecialchars($category); ?>
+                <!-- Category Filter Toolbar -->
+                <div class="toolbar-card">
+                    <div class="filter-pills-wrap">
+                        <a href="faqs.php" class="filter-pill <?php echo empty($selected_cat) ? 'active' : ''; ?>">
+                            All Categories <span class="count"><?php echo $total_faqs; ?></span>
+                        </a>
+                        <?php foreach ($categories as $cat): 
+                            $cCount = count($faqsByCategory[$cat] ?? []);
+                        ?>
+                            <a href="faqs.php?cat=<?php echo urlencode($cat); ?>" class="filter-pill <?php echo ($selected_cat === $cat) ? 'active' : ''; ?>">
+                                <i class="fas fa-tag" style="font-size: 10px;"></i> <?php echo htmlspecialchars($cat); ?> <span class="count"><?php echo $cCount; ?></span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- FAQ Grouped Content -->
+                <?php if (!empty($faqsByCategory)): ?>
+                    <?php foreach ($faqsByCategory as $catName => $catFaqs): 
+                        if (!empty($selected_cat) && $selected_cat !== $catName) continue;
+                    ?>
+                        <div class="faq-category-block">
+                            <div class="category-header-pill">
+                                <i class="fas fa-folder-open"></i> <?php echo htmlspecialchars($catName); ?>
+                                <span style="font-size: 11px; font-weight: 500; color: #64748b;">(<?php echo count($catFaqs); ?> questions)</span>
                             </div>
-                            
-                            <?php foreach ($categoryFaqs as $faq): ?>
-                                <div class="faq-item">
-                                    <div class="flex-between">
-                                        <div class="faq-content">
-                                            <h4><?php echo htmlspecialchars($faq['question']); ?></h4>
-                                            <p><?php echo nl2br(htmlspecialchars($faq['answer'])); ?></p>
-                                            <div class="text-small">
-                                                Order: <?php echo $faq['display_order']; ?> | 
-                                                Status: <?php echo $faq['is_active'] ? 'Active' : 'Inactive'; ?>
+
+                            <div class="faq-items-stack">
+                                <?php foreach ($catFaqs as $item): ?>
+                                    <div class="faq-item-card">
+                                        <div class="faq-item-top">
+                                            <h4 class="faq-question">
+                                                <i class="fas fa-circle-question"></i>
+                                                <?php echo htmlspecialchars($item['question']); ?>
+                                            </h4>
+                                            <span class="badge <?php echo $item['is_active'] ? 'badge-green' : 'badge-rose'; ?>" style="font-size: 10.5px;">
+                                                <?php echo $item['is_active'] ? 'Active' : 'Draft'; ?>
+                                            </span>
+                                        </div>
+
+                                        <p class="faq-answer">
+                                            <?php echo nl2br(htmlspecialchars($item['answer'])); ?>
+                                        </p>
+
+                                        <div class="faq-meta-bar">
+                                            <span><i class="fas fa-arrow-down-1-9"></i> Order: <strong>#<?php echo $item['display_order']; ?></strong></span>
+                                            
+                                            <div class="faq-actions">
+                                                <button type="button" class="btn-icon" title="Edit FAQ" onclick="openFaqModal(<?php echo htmlspecialchars(json_encode($item)); ?>)">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <a href="faqs.php?delete=<?php echo $item['id']; ?>" class="btn-icon danger" title="Delete FAQ" onclick="return confirm('Are you sure you want to delete this FAQ?');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="faq-actions">
-                                            <a href="?edit=<?php echo $faq['id']; ?>" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="?delete=<?php echo $faq['id']; ?>" class="btn btn-sm btn-danger" 
-                                               onclick="return confirm('Are you sure you want to delete this FAQ?')">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="card" style="text-align: center; padding: 3rem 1rem; color: #64748b;">
+                        <i class="fas fa-circle-question" style="font-size: 40px; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+                        <p style="margin: 0 0 12px;">No FAQs configured yet.</p>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="openFaqModal()">Add First FAQ</button>
+                    </div>
+                <?php endif; ?>
+
             </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const toggleBtn = document.getElementById('toggleFormBtn');
-                    const faqForm = document.getElementById('faqForm');
-                    
-                    // Show form if there are validation errors or editing
-                    <?php if ($message || isset($_GET['edit'])): ?>
-                        faqForm.classList.add('active');
-                        toggleBtn.classList.add('active');
-                    <?php endif; ?>
-
-                    toggleBtn.addEventListener('click', function() {
-                        faqForm.classList.toggle('active');
-                        this.classList.toggle('active');
-                        
-                        // Change button text based on state
-                        const btnText = this.querySelector('span');
-                        if (faqForm.classList.contains('active')) {
-                            btnText.textContent = 'Close Form';
-                        } else {
-                            btnText.textContent = 'Add New FAQ';
-                            // Reset form if it's not in edit mode
-                            if (!document.querySelector('input[name="faq_id"]')) {
-                                document.querySelector('form').reset();
-                            }
-                        }
-                    });
-                });
-            </script>
         </main>
     </div>
+
+    <!-- Modern Add/Edit FAQ Modal -->
+    <div id="faqModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalHeadingText"><i class="fas fa-plus-circle" style="color: #206bc4; margin-right: 6px;"></i> Add New FAQ</h3>
+                <button type="button" class="modal-close" onclick="closeFaqModal()">&times;</button>
+            </div>
+            <form method="POST" action="faqs.php">
+                <input type="hidden" id="faqIdInput" name="faq_id" />
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="faqCategoryInput">Category / Topic</label>
+                        <input type="text" id="faqCategoryInput" name="category" list="categoryList" class="form-control" placeholder="e.g. Gorilla Permits, Travel Logistics..." required />
+                        <datalist id="categoryList">
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?php echo htmlspecialchars($cat); ?>">
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="faqQuestionInput">Question</label>
+                        <input type="text" id="faqQuestionInput" name="question" class="form-control" placeholder="e.g. How far in advance do I need to book gorilla permits?" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="faqAnswerInput">Detailed Answer</label>
+                        <textarea id="faqAnswerInput" name="answer" class="form-control" rows="4" placeholder="Provide clear, concise guidance for travelers..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="faqOrderInput">Display Order</label>
+                        <input type="number" id="faqOrderInput" name="display_order" class="form-control" value="1" required />
+                    </div>
+
+                    <div class="form-switch">
+                        <input type="checkbox" id="faqActiveCheck" name="is_active" value="1" checked />
+                        <label for="faqActiveCheck" style="margin: 0; font-size: 13px; font-weight: 600; color: #0f172a; cursor: pointer;">
+                            Display Live on Website
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="closeFaqModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Save Question
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openFaqModal(data = null) {
+            const modal = document.getElementById('faqModal');
+            const heading = document.getElementById('modalHeadingText');
+            const idInput = document.getElementById('faqIdInput');
+            const catInput = document.getElementById('faqCategoryInput');
+            const qInput = document.getElementById('faqQuestionInput');
+            const aInput = document.getElementById('faqAnswerInput');
+            const oInput = document.getElementById('faqOrderInput');
+            const activeCheck = document.getElementById('faqActiveCheck');
+
+            if (data) {
+                heading.innerHTML = '<i class="fas fa-edit" style="color: #206bc4; margin-right: 6px;"></i> Edit FAQ';
+                idInput.value = data.id;
+                catInput.value = data.category || '';
+                qInput.value = data.question || '';
+                aInput.value = data.answer || '';
+                oInput.value = data.display_order || 1;
+                activeCheck.checked = (data.is_active == 1);
+            } else {
+                heading.innerHTML = '<i class="fas fa-plus-circle" style="color: #206bc4; margin-right: 6px;"></i> Add New FAQ';
+                idInput.value = '';
+                catInput.value = '<?php echo addslashes($selected_cat ?: "General Travel"); ?>';
+                qInput.value = '';
+                aInput.value = '';
+                oInput.value = 1;
+                activeCheck.checked = true;
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeFaqModal() {
+            document.getElementById('faqModal').classList.remove('show');
+        }
+
+        document.getElementById('faqModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFaqModal();
+            }
+        });
+    </script>
 </body>
 </html>

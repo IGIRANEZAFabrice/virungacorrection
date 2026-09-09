@@ -60,7 +60,7 @@
             <h3>Need to update your info?</h3>
             <p>If you'd like to review or delete any details you've shared with us, our inbox is always open.</p>
             <div class="cta-buttons">
-                <a href="mailto:hello@yourhomestay.com" class="btn-primary">
+                <a href="mailto:info@virungajourneys.com" class="btn-primary">
                     <i class="fas fa-paper-plane"></i> Get in Touch
                 </a>
             </div>

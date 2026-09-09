@@ -1,17 +1,28 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
+    || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
 if (!isset($_SESSION['admin_id'])) {
+  if ($isAjax) {
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'error', 'message' => 'Admin session expired. Please log in again.']);
+    exit();
+  }
   header('Location: login.html');
   exit();
 }
 
-require_once('../config/connection.php');
-
 // Process POST form submissions directly on edit_blog.php to bypass Hostinger/WAF handler blocks
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once('../handlers/blog/updateBlogHandler.php');
+    require_once __DIR__ . '/../handlers/blog/updateBlogHandler.php';
     exit();
 }
+
+require_once __DIR__ . '/../config/connection.php';
 
 // Get blog post ID from URL
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['blog_id']) ? intval($_POST['blog_id']) : 0);
@@ -147,135 +158,10 @@ $gallery_stmt->close();
     <link rel="stylesheet" href="../css/create_blog.css" />
     <script src="../js/common.js" defer></script>
     <script src="../js/edit_blog.js" defer></script>
-    <style>
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-
-      .content-block {
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-      }
-      .remove-block {
-        float: right;
-        color: red;
-        cursor: pointer;
-      }
-
-      /* --- Gallery Styles --- */
-      .gallery-section {
-          margin-top: 20px;
-          padding-top: 20px;
-          border-top: 1px solid #eee;
-      }
-
-      .gallery-grid {
-          display: grid;
-          /* Creates columns that are at least 120px wide, filling the container */
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 15px; /* Space between grid items */
-          margin-top: 10px;
-          margin-bottom: 20px; /* Space before the file input */
-      }
-
-      .gallery-item {
-          position: relative; /* Needed for absolute positioning of the remove button */
-          border: 1px solid #ddd;
-          border-radius: 5px; /* Slightly rounded corners */
-          overflow: hidden; /* Ensures image respects the border radius */
-          background-color: #f9f9f9; /* Light background */
-          box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
-          transition: transform 0.2s ease-in-out; /* Smooth hover effect */
-          cursor: pointer;
-      }
-
-      .gallery-item:hover {
-          transform: translateY(-2px); /* Slight lift on hover */
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
-      }
-
-      .gallery-item img {
-          display: block; /* Remove extra space below image */
-          width: 100%;
-          height: auto; /* Fixed height for uniform look */
-          object-fit: cover; /* Scales the image while preserving aspect ratio, cropping if necessary */
-          aspect-ratio: 1 / 1; /* Makes the image container square */
-      }
-
-      .gallery-placeholder {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 200px;
-          color: #999;
-          font-size: 14px;
-      }
-
-      .gallery-placeholder i {
-          font-size: 2em;
-          margin-bottom: 10px;
-      }
-
-      .gallery-upload {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          opacity: 0;
-          cursor: pointer;
-          z-index: 5;
-      }
-
-      .gallery-item .remove-gallery-image {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          background-color: rgba(220, 53, 69, 0.9); /* Semi-transparent red background */
-          color: white;
-          border: none;
-          border-radius: 50%; /* Circular button */
-          width: 26px; /* Size of the button */
-          height: 26px;
-          font-size: 12px; /* Size of the 'x' icon */
-          line-height: 26px; /* Vertically center the icon */
-          text-align: center; /* Horizontally center the icon */
-          cursor: pointer;
-          opacity: 0.8; /* Slightly visible by default */
-          transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
-          z-index: 10; /* Ensure it's above the image */
-      }
-
-      .gallery-item:hover .remove-gallery-image {
-          opacity: 1; /* Show on hover */
-          transform: scale(1.1);
-      }
-
-      .gallery-item .remove-gallery-image:hover {
-          background-color: rgba(200, 33, 49, 1); /* Darker red on hover */
-          transform: scale(1.2);
-      }
-
-      /* Styles for the preview area of newly added gallery images */
-      #galleryImagePreview img {
-          max-width: 100px;
-          max-height: 100px;
-          margin: 5px;
-          border: 1px solid #eee;
-          border-radius: 3px;
-      }
-      /* --- End Gallery Styles --- */
-
-    </style>
   </head>
-  <body>
+  <body class="edit-blog-page">
     <div class="admin-container">
-      <!-- Include sidebar template -->
+      <!-- Sidebar Navigation -->
       <?php include_once './includes/sidebar.php'; ?>
 
       <main class="main-content">
@@ -283,24 +169,45 @@ $gallery_stmt->close();
         <?php include_once './includes/header.php'; ?>
 
         <div class="container">
-          <div class="blog-form-container" id="blogFormContainer">
-            <h2 class="form-header">Edit Blog Post: <?php echo htmlspecialchars(stripslashes($post['title'])); ?></h2>
-            <?php if (isset($_GET['status'])): ?>
-              <div class="message-receiver <?php echo $_GET['status'] === 'success' ? 'success' : 'error'; ?>">
-                <i class="fas <?php echo $_GET['status'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                <span><?php echo htmlspecialchars($_GET['message'] ?? ($_GET['status'] === 'success' ? 'Changes saved successfully!' : 'An error occurred')); ?></span>
+          <!-- Page Header Row -->
+          <div class="page-header-row edit-page-header">
+            <div class="page-header-info">
+              <h1><i class="fas fa-edit"></i> Edit Blog Post</h1>
+              <p>Editing: <strong><?php echo htmlspecialchars(stripslashes($post['title'])); ?></strong></p>
+            </div>
+            <div class="page-header-actions">
+              <a href="view_blog.php?id=<?php echo $post_id; ?>" class="btn-secondary-outline" target="_blank">
+                <i class="fas fa-eye"></i> View Post
+              </a>
+              <a href="blogs.php" class="btn-secondary-outline">
+                <i class="fas fa-arrow-left"></i> Back to Blog List
+              </a>
+            </div>
+          </div>
+
+          <?php if (isset($_GET['status'])): ?>
+            <div class="message-receiver <?php echo $_GET['status'] === 'success' ? 'success' : 'error'; ?>">
+              <i class="fas <?php echo $_GET['status'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+              <span><?php echo htmlspecialchars($_GET['message'] ?? ($_GET['status'] === 'success' ? 'Changes saved successfully!' : 'An error occurred')); ?></span>
+            </div>
+          <?php endif; ?>
+
+          <form id="blogForm" method="post" action="edit_blog.php?id=<?php echo $post_id; ?>" enctype="multipart/form-data" class="blog-form-container">
+            <!-- Hidden Post ID -->
+            <input type="hidden" name="blog_id" value="<?php echo $post_id; ?>">
+
+            <!-- SECTION 1: Post Essentials & Cover Image -->
+            <div class="card-section edit-hero-section">
+              <div class="card-section-header">
+                <h3 class="card-section-title"><i class="fas fa-info-circle"></i> Post Essentials & Cover Image</h3>
               </div>
-            <?php endif; ?>
 
-            <form id="blogForm" method="post" action="edit_blog.php?id=<?php echo $post_id; ?>" enctype="multipart/form-data">
-              <!-- Add hidden input for blog ID -->
-              <input type="hidden" name="blog_id" value="<?php echo $post_id; ?>">
-
-              <!-- Basic Information Section -->
-              <div class="form-row">
-                <div class="form-col">
+              <div class="edit-hero-grid">
+                <!-- Left Column: Details -->
+                <div class="edit-details-panel">
+                  <p class="card-section-subtitle">Update the story details, reading time, category, and featured hero image.</p>
                   <div class="form-group">
-                    <label for="blogTitle">Blog Title</label>
+                    <label for="blogTitle">Blog Title <span class="required-badge">*</span></label>
                     <input
                       type="text"
                       id="blogTitle"
@@ -310,60 +217,36 @@ $gallery_stmt->close();
                       required
                     />
                   </div>
-                </div>
-                <div class="form-col">
-                  <div class="form-group">
-                    <label for="coverImage">Cover Image</label>
-                    <input
-                      type="file"
-                      id="coverImage"
-                      name="coverImage"
-                      accept="image/*"
-                    />
-                    <div class="image-preview-container" id="coverImagePreview">
-                      <?php if (!empty($post['cover_image'])): ?>
-                        <img id="coverImagePreviewImg" src="../images/blog/covers/<?php echo htmlspecialchars($post['cover_image']); ?>" style="display: block; max-width: 200px; margin-top: 10px;"/>
-                      <?php else: ?>
-                        <img id="coverImagePreviewImg" style="display: none; max-width: 200px; margin-top: 10px;"/>
-                      <?php endif; ?>
-                    </div>
-                    <!-- Add hidden input to keep track of existing image -->
-                    <input type="hidden" name="existing_cover_image" value="<?php echo htmlspecialchars($post['cover_image'] ?? ''); ?>">
-                  </div>
-                </div>
-              </div>
 
-              <div class="form-row">
-                <div class="form-col">
-                  <div class="form-group">
-                    <label for="author">Author</label>
-                    <input
-                      type="text"
-                      id="author"
-                      name="author"
-                      placeholder="Enter author name"
-                      value="<?php echo htmlspecialchars(stripslashes($post['author'])); ?>"
-                      required
-                    />
+                  <div class="form-row compact-form-row">
+                    <div class="form-group">
+                      <label for="author">Author Name <span class="required-badge">*</span></label>
+                      <input
+                        type="text"
+                        id="author"
+                        name="author"
+                        placeholder="Enter author name"
+                        value="<?php echo htmlspecialchars(stripslashes($post['author'])); ?>"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="readMin">Read Time (minutes) <span class="required-badge">*</span></label>
+                      <input
+                        type="number"
+                        id="readMin"
+                        name="readMin"
+                        min="1"
+                        max="120"
+                        placeholder="Estimated read time"
+                        value="<?php echo htmlspecialchars($post['read_minutes']); ?>"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="form-col">
+
                   <div class="form-group">
-                    <label for="readMin">Read Time (minutes)</label>
-                    <input
-                      type="number"
-                      id="readMin"
-                      name="readMin"
-                      min="1"
-                      placeholder="Estimated read time"
-                      value="<?php echo htmlspecialchars($post['read_minutes']); ?>"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-col">
-                  <div class="form-group">
-                    <label for="category">Category</label>
+                    <label for="category">Category <span class="required-badge">*</span></label>
                     <select id="category" name="category" required>
                       <option value="">Select a category</option>
                       <?php foreach ($categories as $category): ?>
@@ -374,11 +257,63 @@ $gallery_stmt->close();
                     </select>
                   </div>
                 </div>
-              </div>
 
-              <!-- Introduction Section -->
+                <!-- Right Column: Cover Image Upload & Live Preview -->
+                <div class="edit-cover-panel">
+                  <div class="cover-upload-container">
+                    <label>Hero Featured Image <span class="help-hint">(Shown at the top of the article)</span></label>
+                    
+                    <!-- Drag & Drop Zone -->
+                    <div class="cover-dropzone" id="coverDropzone" style="<?php echo !empty($post['cover_image']) ? 'display: none;' : ''; ?>">
+                      <input
+                        type="file"
+                        id="coverImage"
+                        name="coverImage"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                      />
+                      <i class="fas fa-cloud-upload-alt cover-dropzone-icon"></i>
+                      <div class="cover-dropzone-title">Click or drag a hero image</div>
+                      <div class="cover-dropzone-hint">Supports JPG, PNG, WEBP up to 10MB</div>
+                    </div>
+
+                    <!-- Live Image Preview Card -->
+                    <div class="cover-preview-card <?php echo !empty($post['cover_image']) ? 'active' : ''; ?>" id="coverPreviewCard">
+                      <img
+                        id="coverPreviewImg"
+                        src="<?php echo !empty($post['cover_image']) ? '../images/blog/covers/' . htmlspecialchars($post['cover_image']) : ''; ?>"
+                        alt="Cover Image Preview"
+                      />
+                      <div class="cover-preview-overlay">
+                        <div class="cover-preview-info">
+                          <i class="fas fa-image" style="color: #4ade80;"></i>
+                          <span id="coverFileName"><?php echo htmlspecialchars($post['cover_image'] ?? 'Current Cover Image'); ?></span>
+                        </div>
+                        <div class="cover-preview-actions">
+                          <button type="button" class="btn-preview-action" id="btnChangeCover">
+                            <i class="fas fa-sync-alt"></i> Change
+                          </button>
+                          <button type="button" class="btn-preview-action remove-btn" id="btnRemoveCover">
+                            <i class="fas fa-trash-alt"></i> Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Hidden input to keep track of existing image -->
+                    <input type="hidden" id="existingCoverImage" name="existing_cover_image" value="<?php echo htmlspecialchars($post['cover_image'] ?? ''); ?>">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: Lead Headline & Introduction -->
+            <div class="card-section">
+              <div class="card-section-header">
+                <h3 class="card-section-title"><i class="fas fa-paragraph"></i> Lead Headline & Introduction</h3>
+              </div>
+              <p class="card-section-subtitle">Introduce the core subject and capture your readers' attention right away.</p>
+
               <div class="form-group">
-                <label for="bigTitle">Main Headline</label>
+                <label for="bigTitle">Main Headline <span class="required-badge">*</span></label>
                 <input
                   type="text"
                   id="bigTitle"
@@ -390,7 +325,7 @@ $gallery_stmt->close();
               </div>
 
               <div class="form-group">
-                <label for="bigDescription">Introduction</label>
+                <label for="bigDescription">Introduction Content <span class="required-badge">*</span></label>
                 <textarea
                   id="bigDescription"
                   name="bigDescription"
@@ -398,133 +333,177 @@ $gallery_stmt->close();
                   required
                 ><?php echo htmlspecialchars(stripslashes($post['introduction'])); ?></textarea>
               </div>
+            </div>
 
-              <!-- Dynamic Content Blocks -->
-              <h3 style="margin-top: 30px; color: var(--primary-green)">
-                Content Blocks
-              </h3>
+            <!-- SECTION 3: Dynamic Content Blocks -->
+            <div class="card-section">
+              <div class="content-blocks-header">
+                <div>
+                  <h3 class="card-section-title"><i class="fas fa-layer-group"></i> Article Content Blocks</h3>
+                  <p class="card-section-subtitle" style="margin-top: 4px; margin-bottom: 0;">
+                    Manage paragraphs, captioned photos, quotes, and lists. Use reorder buttons to organize.
+                  </p>
+                </div>
+              </div>
 
+              <!-- Content Blocks Container -->
               <div class="content-blocks" id="contentBlocks">
-                <!-- Content blocks will be loaded dynamically -->
                 <?php
                 $blockCounter = 1;
                 foreach ($content_blocks as $index => $block):
                   $blockType = $block['block_type'];
                   $blockDetails = $block['details'];
+
+                  $typeIcon = 'fa-font';
+                  $typeName = 'Text Block';
+                  if ($blockType === 'image') { $typeIcon = 'fa-image'; $typeName = 'Image Block'; }
+                  if ($blockType === 'quote') { $typeIcon = 'fa-quote-left'; $typeName = 'Quote Block'; }
+                  if ($blockType === 'list') { $typeIcon = 'fa-list-ul'; $typeName = 'List Block'; }
                 ?>
-                <div class="content-block" data-block-type="<?php echo $blockType; ?>">
+                <div class="content-block" data-block-type="<?php echo $blockType; ?>" data-block-id="<?php echo $blockCounter; ?>">
                   <div class="block-header">
-                    <span class="block-title">Content Block <?php echo $blockCounter; ?></span>
-                    <button type="button" class="remove-block">
-                      <i class="fas fa-times"></i>
-                    </button>
+                    <span class="block-badge">
+                      <i class="fas <?php echo $typeIcon; ?>"></i> <span class="block-title-text"><?php echo $typeName . ' ' . $blockCounter; ?></span>
+                    </span>
+                    <div class="block-header-controls">
+                      <button type="button" class="btn-block-action move-up-block" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+                      <button type="button" class="btn-block-action move-down-block" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+                      <button type="button" class="btn-block-action remove-block" title="Delete Block"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                   </div>
 
-                  <!-- Hidden input to store block ID for update -->
+                  <!-- Hidden inputs for backend update matching -->
                   <input type="hidden" name="block_id[]" value="<?php echo $block['block_id']; ?>">
                   <input type="hidden" name="block_type[]" value="<?php echo $blockType; ?>">
                   <input type="hidden" name="block_order[]" value="<?php echo $index + 1; ?>">
 
                   <?php if ($blockType === 'text'): ?>
                     <div class="form-group">
-                      <label for="blockTitle<?php echo $blockCounter; ?>">Section Title</label>
+                      <label for="blockTitle<?php echo $blockCounter; ?>">Section Subheading <span class="help-hint">(Optional)</span></label>
                       <input
                         type="text"
                         id="blockTitle<?php echo $blockCounter; ?>"
                         name="blockTitle[]"
-                        placeholder="Enter section title"
-                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['section_title'])); ?>"
+                        placeholder="Enter section subheading"
+                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['section_title'] ?? '')); ?>"
                       />
                     </div>
                     <div class="form-group">
-                      <label for="blockContent<?php echo $blockCounter; ?>">Content</label>
+                      <label for="blockContent<?php echo $blockCounter; ?>">Section Paragraph Content <span class="required-badge">*</span></label>
                       <textarea
                         id="blockContent<?php echo $blockCounter; ?>"
                         name="blockContent[]"
                         placeholder="Write your content here"
-                      ><?php echo htmlspecialchars(stripslashes($blockDetails['content'])); ?></textarea>
+                      ><?php echo htmlspecialchars(stripslashes($blockDetails['content'] ?? '')); ?></textarea>
                     </div>
+
                   <?php elseif ($blockType === 'image'): ?>
-                    <div class="form-group">
-                      <label for="blockImageCaption<?php echo $blockCounter; ?>">Image Caption</label>
-                      <input
-                        type="text"
-                        id="blockImageCaption<?php echo $blockCounter; ?>"
-                        name="blockImageCaption[]"
-                        placeholder="Enter image caption"
-                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['caption'])); ?>"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="blockImage<?php echo $blockCounter; ?>">Image</label>
-                      <input
-                        type="file"
-                        id="blockImage<?php echo $blockCounter; ?>"
-                        name="blockImage[]"
-                        accept="image/*"
-                        class="block-image-input"
-                        data-block-id="<?php echo $blockCounter; ?>"
-                      />
-                      <div class="image-preview" id="imagePreview<?php echo $blockCounter; ?>">
-                        <?php if (!empty($blockDetails['image_path'])): ?>
-                          <img src="../images/blog/content/<?php echo htmlspecialchars($blockDetails['image_path']); ?>" style="max-width: 80%; margin-top: 20px; border-radius: 10px; display: block;" class="preview-image">
-                        <?php endif; ?>
+                    <div class="form-row" style="margin-bottom: 12px;">
+                      <div class="form-group" style="flex: 2;">
+                        <label for="blockImageCaption<?php echo $blockCounter; ?>">Image Caption <span class="help-hint">(Optional)</span></label>
+                        <input
+                          type="text"
+                          id="blockImageCaption<?php echo $blockCounter; ?>"
+                          name="blockImageCaption[]"
+                          placeholder="Enter image caption"
+                          value="<?php echo htmlspecialchars(stripslashes($blockDetails['caption'] ?? '')); ?>"
+                        />
                       </div>
-                      <input type="hidden" name="existing_block_image[]" value="<?php echo htmlspecialchars($blockDetails['image_path'] ?? ''); ?>">
                     </div>
+                    <div class="form-group">
+                      <label>Photo <span class="help-hint">(Click to replace)</span></label>
+                      <div class="block-image-upload-wrapper">
+                        <div class="block-image-dropzone">
+                          <input
+                            type="file"
+                            id="blockImage<?php echo $blockCounter; ?>"
+                            name="blockImage[]"
+                            accept="image/*"
+                            class="block-image-input"
+                            data-block-id="<?php echo $blockCounter; ?>"
+                          />
+                          <i class="fas fa-image"></i>
+                          <span>Click or drop new photo to replace</span>
+                        </div>
+                        
+                        <!-- CONSTRAINED IMAGE PREVIEW CONTAINER -->
+                        <div class="image-preview" id="imagePreview<?php echo $blockCounter; ?>">
+                          <?php if (!empty($blockDetails['image_path'])): ?>
+                            <div class="block-preview-box">
+                              <div class="block-preview-img-container">
+                                <img src="../images/blog/content/<?php echo htmlspecialchars($blockDetails['image_path']); ?>" alt="Image Block Preview" />
+                              </div>
+                              <div class="block-preview-footer">
+                                <span><i class="fas fa-check-circle" style="color:#2e7d32;"></i> <?php echo htmlspecialchars($blockDetails['image_path']); ?></span>
+                              </div>
+                            </div>
+                          <?php endif; ?>
+                        </div>
+                        <input type="hidden" name="existing_block_image[]" value="<?php echo htmlspecialchars($blockDetails['image_path'] ?? ''); ?>">
+                      </div>
+                    </div>
+
                   <?php elseif ($blockType === 'quote'): ?>
                     <div class="form-group">
-                      <label for="blockQuote<?php echo $blockCounter; ?>">Quote Text</label>
+                      <label for="blockQuote<?php echo $blockCounter; ?>">Quote Text <span class="required-badge">*</span></label>
                       <textarea
                         id="blockQuote<?php echo $blockCounter; ?>"
                         name="blockQuote[]"
                         placeholder="Enter the quote"
-                      ><?php echo htmlspecialchars(stripslashes($blockDetails['quote_text'])); ?></textarea>
+                        style="min-height: 80px;"
+                      ><?php echo htmlspecialchars(stripslashes($blockDetails['quote_text'] ?? '')); ?></textarea>
                     </div>
-                    <div class="form-group">
-                      <label for="blockQuoteAuthor<?php echo $blockCounter; ?>">Quote Author</label>
-                      <input
-                        type="text"
-                        id="blockQuoteAuthor<?php echo $blockCounter; ?>"
-                        name="blockQuoteAuthor[]"
-                        placeholder="Enter the author of the quote"
-                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['attribution'])); ?>"
-                      />
+                    <div class="form-row" style="margin-bottom: 0;">
+                      <div class="form-group" style="flex: 2;">
+                        <label for="blockQuoteAuthor<?php echo $blockCounter; ?>">Quote Author / Attribution <span class="help-hint">(Optional)</span></label>
+                        <input
+                          type="text"
+                          id="blockQuoteAuthor<?php echo $blockCounter; ?>"
+                          name="blockQuoteAuthor[]"
+                          placeholder="Enter the author of the quote"
+                          value="<?php echo htmlspecialchars(stripslashes($blockDetails['attribution'] ?? '')); ?>"
+                        />
+                      </div>
                     </div>
+
                   <?php elseif ($blockType === 'list'): ?>
                     <div class="form-group">
-                      <label for="blockListTitle<?php echo $blockCounter; ?>">List Title</label>
+                      <label for="blockListTitle<?php echo $blockCounter; ?>">List Title <span class="help-hint">(Optional)</span></label>
                       <input
                         type="text"
                         id="blockListTitle<?php echo $blockCounter; ?>"
                         name="blockListTitle[]"
                         placeholder="Enter list title"
-                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['title'])); ?>"
+                      value="<?php echo htmlspecialchars(stripslashes($blockDetails['list_title'] ?? '')); ?>"
                       />
                     </div>
-                    <div class="list-items-container">
-                      <?php foreach ($blockDetails['items'] as $itemIndex => $item): ?>
-                        <div class="list-item">
-                          <div class="form-group">
-                            <label>List Item <?php echo $itemIndex + 1; ?></label>
-                            <div class="list-item-input-group">
-                              <input
-                                type="text"
-                                name="listItems[<?php echo $blockCounter - 1; ?>][]"
-                                placeholder="Enter list item"
-                                value="<?php echo htmlspecialchars(stripslashes($item['item_text'])); ?>"
-                              />
-                              <button type="button" class="remove-list-item">
-                                <i class="fas fa-times"></i>
-                              </button>
-                            </div>
+                    <div class="form-group">
+                      <label>List Items <span class="required-badge">*</span></label>
+                      <div class="list-items-container">
+                        <?php 
+                        $itemsList = $blockDetails['items'] ?? [];
+                        if (empty($itemsList)) {
+                          $itemsList = [['item_text' => '']];
+                        }
+                        foreach ($itemsList as $itemIndex => $item): 
+                        ?>
+                          <div class="list-item-input-group">
+                            <input
+                              type="text"
+                              name="listItems[<?php echo $blockCounter - 1; ?>][]"
+                              placeholder="Enter list item"
+                              value="<?php echo htmlspecialchars(stripslashes($item['item_text'] ?? '')); ?>"
+                            />
+                            <button type="button" class="btn-remove-list-item" title="Remove Item">
+                              <i class="fas fa-trash-alt"></i>
+                            </button>
                           </div>
-                        </div>
-                      <?php endforeach; ?>
+                        <?php endforeach; ?>
+                      </div>
+                      <button type="button" class="btn-add-list-item">
+                        <i class="fas fa-plus"></i> Add List Item
+                      </button>
                     </div>
-                    <button type="button" class="add-list-item-btn">
-                      <i class="fas fa-plus"></i> Add List Item
-                    </button>
                   <?php endif; ?>
                 </div>
                 <?php
@@ -533,32 +512,42 @@ $gallery_stmt->close();
                 ?>
               </div>
 
-              <!-- Add Block Buttons -->
-              <div class="add-block-buttons">
-                <button type="button" class="add-block-btn" data-block-type="text">
-                  <i class="fas fa-paragraph"></i> Add Text Block
-                </button>
-                <button type="button" class="add-block-btn" data-block-type="image">
-                  <i class="fas fa-image"></i> Add Image Block
-                </button>
+              <!-- Add Block Buttons Card -->
+              <div class="add-block-buttons-card">
+                <div class="add-block-prompt">Insert New Content Section:</div>
+                <div class="add-block-buttons">
+                  <button type="button" class="add-block-btn" data-block-type="text">
+                    <i class="fas fa-font"></i> Add Text Block
+                  </button>
+                  <button type="button" class="add-block-btn" data-block-type="image">
+                    <i class="fas fa-image"></i> Add Image Block
+                  </button>
+                  <button type="button" class="add-block-btn" data-block-type="quote">
+                    <i class="fas fa-quote-left"></i> Add Quote Block
+                  </button>
+                  <button type="button" class="add-block-btn" data-block-type="list">
+                    <i class="fas fa-list-ul"></i> Add List Block
+                  </button>
+                </div>
               </div>
+            </div>
 
-              <!-- Gallery Section -->
-              <h3 style="margin-top: 30px; color: var(--primary-green)">
-                Gallery Images
-              </h3>
-              <p>Add up to 6 images to be displayed in the blog post gallery.</p>
+            <!-- SECTION 4: Gallery Section -->
+            <div class="card-section">
+              <div class="card-section-header">
+                <h3 class="card-section-title"><i class="fas fa-images"></i> Photo Gallery</h3>
+              </div>
+              <p class="card-section-subtitle">Add up to 6 images to be displayed in the blog post gallery.</p>
 
-              <div class="gallery-container" id="galleryContainer">
+              <div class="gallery-grid" id="galleryContainer">
                 <?php
-                // Display existing gallery images
                 for ($i = 0; $i < 6; $i++):
                   $galleryImage = isset($gallery_images[$i]) ? $gallery_images[$i] : null;
                 ?>
-                <div class="gallery-item" data-slot="<?php echo $i+1; ?>">
-                  <div class="gallery-placeholder" <?php echo $galleryImage ? 'style="display: none;"' : ''; ?>>
-                    <i class="fas fa-image"></i>
-                    <span>Click to add image</span>
+                <div class="gallery-item <?php echo $galleryImage ? 'has-image' : ''; ?>" data-slot="<?php echo $i+1; ?>">
+                  <div class="gallery-placeholder">
+                    <i class="fas fa-camera"></i>
+                    <span>Photo <?php echo $i+1; ?></span>
                   </div>
                   <input
                     type="file"
@@ -570,35 +559,41 @@ $gallery_stmt->close();
                     <img
                       src="../images/blog/gallery/<?php echo htmlspecialchars($galleryImage['image_path']); ?>"
                       class="gallery-preview"
-                      style="display: block;"
+                      alt="Gallery Photo <?php echo $i+1; ?>"
                     />
-                    <button type="button" class="remove-gallery-image" onclick="removeGalleryImage(<?php echo $galleryImage['gallery_image_id']; ?>, this)">
+                    <button type="button" class="remove-gallery-image" title="Remove Photo" onclick="removeGalleryImage(<?php echo $galleryImage['gallery_image_id']; ?>, this)">
                       <i class="fas fa-times"></i>
                     </button>
                     <input type="hidden" name="existing_gallery_image<?php echo $i+1; ?>" value="<?php echo htmlspecialchars($galleryImage['image_path']); ?>">
                     <input type="hidden" name="gallery_image_id<?php echo $i+1; ?>" value="<?php echo $galleryImage['gallery_image_id']; ?>">
                   <?php else: ?>
-                    <img src="" class="gallery-preview" style="display: none;" />
+                    <img src="" class="gallery-preview" alt="Gallery Photo <?php echo $i+1; ?>" />
+                    <button type="button" class="remove-gallery-image" title="Remove Photo">
+                      <i class="fas fa-times"></i>
+                    </button>
                     <input type="hidden" name="existing_gallery_image<?php echo $i+1; ?>" value="">
                     <input type="hidden" name="gallery_image_id<?php echo $i+1; ?>" value="0">
                   <?php endif; ?>
                 </div>
                 <?php endfor; ?>
               </div>
+            </div>
 
-              <!-- Hidden container for gallery inputs -->
-              <div id="galleryInputsContainer" style="display: none;"></div>
-
-              <!-- Submit Button -->
-              <div class="form-actions">
-                <button type="submit" class="submit-btn">
-                  <i class="fas fa-save"></i> Update Blog Post
-                </button>
-              </div>
-            </form>
-          </div>
+            <!-- SECTION 5: Submit Actions Bar -->
+            <div class="form-actions-bar">
+              <a href="blogs.php" class="btn-secondary-outline">
+                <i class="fas fa-times"></i> Cancel
+              </a>
+              <button type="submit" class="submit-btn" id="submitBlogBtn">
+                <i class="fas fa-save"></i> Update Blog Post
+              </button>
+            </div>
+          </form>
         </div>
       </main>
     </div>
+
+    <!-- Toast container -->
+    <div id="toast-container"></div>
   </body>
 </html>

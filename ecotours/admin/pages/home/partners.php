@@ -3,35 +3,29 @@ require_once('../../config/connection.php');
 
 session_start();
 
-// if (!isset($_SESSION['admin_id'])) {
-//   header("Location: ../login.html");
-//   exit();
-// }
+if (!isset($_SESSION['admin_id'])) {
+  header("Location: ../login.html");
+  exit();
+}
 
 $partners = [];
-$query = "SELECT * FROM home_partners";
+$query = "SELECT * FROM home_partners ORDER BY id ASC";
 $result = mysqli_query($conn, $query);
-if($result) {
-    while($row = mysqli_fetch_assoc($result)) {
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
         $partners[] = $row;
     }
 }
+$total_partners = count($partners);
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - Virunga Ecotours</title>
-    <link
-      rel="shortcut icon"
-      href="../../../images/logos/icon.png"
-      type="image/x-icon"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    />
+    <title>Partners Management - Virunga Admin</title>
+    <link rel="shortcut icon" href="../../images/icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="../../css/common.css" />
     <link rel="stylesheet" href="../../css/home.css" />
     <script src="../../js/common.js" defer></script>
@@ -39,330 +33,262 @@ if($result) {
   </head>
   <body>
     <div class="admin-container">
-     <!-- Include sidebar template -->
       <?php include_once './include/sidebar.php'; ?>
+      
       <main class="main-content">
-        <!-- Top Header -->
         <?php include_once './include/header.php'; ?>
 
-        <div class="content-panels">
-          <!-- Dashboard specific content -->
-          <form
-            action="../../handlers/home/homePartnersHandler.php"
-            method="post"
-            enctype="multipart/form-data"
-          >
-            <div class="panel active" id="home-schema-panel">
-              <div class="panel-header">
-                <h1>Home Page Management</h1>
-                <div class="panel-actions">
-                  <button class="action-button" type="submit">
-                    <i class="fas fa-save"></i> Save Changes
-                  </button>
-                  <button type="button" class="action-button add-partner-btn" onclick="openAddPartnerModal()">
-                    <i class="fas fa-plus"></i> Add New Partner
-                  </button>
-                </div>
-                <?php if (isset($_GET['status'])): ?>
-                  <div class="message-receiver <?php echo $_GET['status'] === 'success' ? 'success' : 'error'; ?>">
-                    <i class="fas <?php echo $_GET['status'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                    <span><?php echo $_GET['status'] === 'success' ? 'Changes saved successfully!' : htmlspecialchars($_GET['message'] ?? 'An error occurred'); ?></span>
-                  </div>
-                <?php endif; ?>
+        <div class="home-management-container">
+          
+          <!-- Page Header Row -->
+          <div class="page-header-row">
+            <div class="page-title-wrap">
+              <div class="breadcrumb-trail">
+                <a href="../../index.php">Dashboard</a>
+                <span>/</span>
+                <a href="#">Home</a>
+                <span>/</span>
+                <span>Partners</span>
               </div>
+              <h1 class="page-title">
+                <i class="fas fa-handshake" style="color: #206bc4;"></i>
+                Partners & Affiliates Management
+              </h1>
+              <p class="page-subtitle">
+                Manage global travel networks, conservation alliances, and eco-tourism partner logos displayed on the homepage.
+              </p>
+            </div>
 
-              <!-- Home Schema Sections -->
-              <div class="home-sections">
-                <!-- Attractions Section -->
-                <div class="home-section active" id="hero-section">
-                  <div class="section-header">
-                    <h2>
-                      <i class="fas fa-landmark"></i> Partners Management
-                    </h2>
-                    <p class="section-desc">
-                      Manage the partners section on the home page.
-                    </p>
+            <div class="page-actions-wrap">
+              <a href="../../../index.php" target="_blank" class="btn btn-outline btn-sm">
+                <i class="fas fa-eye"></i> View Live Site
+              </a>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openModal('addPartnerModal')">
+                <i class="fas fa-plus"></i> Add New Partner
+              </button>
+            </div>
+          </div>
+
+          <!-- Status Alert Banner -->
+          <?php if (isset($_GET['status'])): ?>
+            <div class="alert <?php echo $_GET['status'] === 'success' ? 'alert-success' : 'alert-danger'; ?>">
+              <i class="fas <?php echo $_GET['status'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'; ?>"></i>
+              <span><?php echo $_GET['status'] === 'success' ? 'Partner changes saved successfully!' : htmlspecialchars($_GET['message'] ?? 'An error occurred while saving.'); ?></span>
+              <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+            </div>
+          <?php endif; ?>
+
+          <!-- KPI Metric Row -->
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-num"><?php echo $total_partners; ?></span>
+                <span class="kpi-badge badge-blue"><i class="fas fa-handshake-angle"></i> Affiliates</span>
+              </div>
+              <span class="kpi-title">Active Partner Logos</span>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-num">PNG / SVG</span>
+                <span class="kpi-badge badge-green"><i class="fas fa-check"></i> Transparent</span>
+              </div>
+              <span class="kpi-title">Recommended Logo Format</span>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-num">Carousel</span>
+                <span class="kpi-badge badge-amber"><i class="fas fa-infinity"></i> Continuous</span>
+              </div>
+              <span class="kpi-title">Display Layout</span>
+            </div>
+          </div>
+
+          <!-- Main Grid -->
+          <form action="../../handlers/home/homePartnersHandler.php" method="POST" enctype="multipart/form-data">
+            <div class="home-grid-layout">
+              
+              <!-- Left Column: Partners Overview Grid & Mockup Preview -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title"><i class="fas fa-desktop"></i> Partners Showcase</h3>
+                    <p class="card-subtitle">Current partner logos and destination links</p>
                   </div>
+                  <span class="badge badge-green"><i class="fas fa-circle" style="font-size: 8px;"></i> Live</span>
+                </div>
 
-                  <div class="section-content">
-                    <div class="content-preview">
-                      <div class="preview-header">
-                        <h3>Current Partners</h3>
-                        
-                      </div>
-                      <div class="preview-container">
-                        <div class="hero-carousel">
-                          <div class="carousel-navigation">
-                            <span class="carousel-arrow prev">
-                              <i class="fas fa-chevron-left"></i>
-                            </span>
-                            <div class="carousel-indicators">
-                              <?php foreach($partners as $index => $partner): ?>
-                              <span class="indicator <?php echo $index === 0 ? 'active' : ''; ?>"></span>
-                              <?php endforeach; ?>
-                            </div>
-                            <span class="carousel-arrow next">
-                              <i class="fas fa-chevron-right"></i>
-                            </span>
+                <div class="card-body">
+                  <?php if (!empty($partners)): ?>
+                    <div class="items-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+                      <?php foreach ($partners as $idx => $partner): ?>
+                        <div class="item-thumb-card" style="align-items: center; text-align: center;">
+                          <div style="height: 90px; width: 100%; display: flex; align-items: center; justify-content: center; padding: 12px; background: #ffffff; box-sizing: border-box;">
+                            <img 
+                              src="<?php echo htmlspecialchars($partner['logo_url']); ?>" 
+                              alt="Partner Logo" 
+                              style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                              onerror="this.src='../../images/icon.png';"
+                            />
                           </div>
-                          <div class="hero-slides">
-                            <?php foreach($partners as $index => $partner): ?>
-                            <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-                              <img
-                                src="<?php echo htmlspecialchars($partner['logo_url']); ?>"
-                                alt="<?php echo htmlspecialchars($partner['web_url']); ?>"
-                              />
-                              <div class="hero-overlay">
-                                <h2><?php echo htmlspecialchars($partner['web_url']); ?></h2>
-                              </div>
-                            </div>
-                            <?php endforeach; ?>
+                          <div class="item-thumb-body" style="padding: 8px 12px; width: 100%; box-sizing: border-box;">
+                            <a href="<?php echo htmlspecialchars($partner['web_url']); ?>" target="_blank" style="font-size: 11.5px; color: #206bc4; text-decoration: none; word-break: break-all; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                              <i class="fas fa-external-link-alt"></i> <?php echo htmlspecialchars($partner['web_url'] ?: 'No website link'); ?>
+                            </a>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="content-editor">
-                      <div class="tabs-container">
-                        <div class="tabs-header">
-                          <?php foreach($partners as $index => $partner): ?>
-                          <div class="tab-container">
-                            <button class="tab-btn <?php echo $index === 0 ? 'active' : ''; ?>" data-target="slide<?php echo $index + 1; ?>">
-                              Paterner <?php echo $index + 1; ?>
+                          <div class="item-thumb-actions" style="width: 100%; box-sizing: border-box;">
+                            <span class="badge badge-blue" style="font-size: 10px;">#<?php echo $idx + 1; ?></span>
+                            <button type="button" class="btn btn-danger-outline btn-sm" style="padding: 3px 8px; font-size: 11px;" onclick="confirmDeletePartner(<?php echo $partner['id']; ?>)">
+                              <i class="fas fa-trash-alt"></i> Delete
                             </button>
                           </div>
-                          <?php endforeach; ?>
+                        </div>
+                      <?php endforeach; ?>
+                    </div>
+                  <?php else: ?>
+                    <div style="text-align: center; padding: 2.5rem 1rem; color: #64748b;">
+                      <i class="fas fa-handshake-slash" style="font-size: 36px; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+                      <p>No partners configured yet. Click "Add New Partner" to create one.</p>
+                    </div>
+                  <?php endif; ?>
+                </div>
+
+                <div class="card-footer">
+                  <span style="font-size: 12px; color: #64748b;">
+                    <i class="fas fa-info-circle"></i> High-resolution logos with transparent backgrounds give the best visual impact.
+                  </span>
+                </div>
+              </div>
+
+              <!-- Right Column: Partners Tabbed Editor -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title"><i class="fas fa-sliders"></i> Edit Partner Details</h3>
+                    <p class="card-subtitle">Update website links and replace logos</p>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fas fa-save"></i> Save All
+                  </button>
+                </div>
+
+                <div class="card-body">
+                  <?php if (!empty($partners)): ?>
+                    <!-- Pill Tabs Header -->
+                    <div class="pills-tab-header">
+                      <?php foreach ($partners as $idx => $partner): ?>
+                        <button type="button" class="pill-tab-btn <?php echo $idx === 0 ? 'active' : ''; ?>" data-target="partnerTab<?php echo $idx + 1; ?>">
+                          <i class="fas fa-handshake"></i> Partner <?php echo $idx + 1; ?>
+                        </button>
+                      <?php endforeach; ?>
+                    </div>
+
+                    <!-- Tab Panes -->
+                    <?php foreach ($partners as $idx => $partner): 
+                      $slide_num = $idx + 1;
+                    ?>
+                      <div class="tab-pane <?php echo $idx === 0 ? 'active' : ''; ?>" id="partnerTab<?php echo $slide_num; ?>">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                          <span style="font-weight: 600; font-size: 13px; color: #0f172a;">Partner Record #<?php echo $slide_num; ?></span>
+                          <button type="button" class="btn btn-danger-outline btn-sm" onclick="confirmDeletePartner(<?php echo $partner['id']; ?>)">
+                            <i class="fas fa-trash-alt"></i> Delete Partner
+                          </button>
                         </div>
 
-                        <?php foreach($partners as $index => $partner): ?>
-                        <div class="tab-content <?php echo $index === 0 ? 'active' : ''; ?>" id="slide<?php echo $index + 1; ?>">
-                          <div class="editor-form">
-                            <div class="form-group-header">
-                              <h3>Partner Details</h3>
-                              <button type="button" class="delete-btn" onclick="confirmDeletePartner(<?php echo $partner['id']; ?>)">
-                                <i class="fas fa-trash"></i>
-                                <span class="tooltip">Delete Partner</span>
-                              </button>
+                        <div class="form-group">
+                          <label class="form-label" for="partner<?php echo $slide_num; ?>Url">Partner Website URL</label>
+                          <input 
+                            type="url" 
+                            id="partner<?php echo $slide_num; ?>Url" 
+                            name="slide<?php echo $slide_num; ?>-title" 
+                            class="form-control" 
+                            placeholder="https://example.com" 
+                            value="<?php echo htmlspecialchars($partner['web_url']); ?>" 
+                          />
+                          <span class="form-hint">Destination link opened when visitor clicks the partner logo.</span>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="form-label">Partner Logo</label>
+                          <div class="dropzone-box">
+                            <input 
+                              type="file" 
+                              id="partner<?php echo $slide_num; ?>Img" 
+                              name="slide<?php echo $slide_num; ?>-img" 
+                              accept="image/png,image/jpeg,image/svg+xml,image/webp" 
+                            />
+                            <div class="dropzone-thumb-wrap" style="background: #ffffff; display: flex; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box;">
+                              <img src="<?php echo htmlspecialchars($partner['logo_url']); ?>" alt="Current Partner Logo" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
                             </div>
-                            <div class="form-group">
-                              <label for="slide<?php echo $index + 1; ?>-title">website link</label>
-                              <input
-                                type="text"
-                                id="slide<?php echo $index + 1; ?>-title"
-                                name="slide<?php echo $index + 1; ?>-title"
-                                value="<?php echo htmlspecialchars($partner['web_url']); ?>"
-                              />
-                            </div>
-                            <div class="form-group">
-                              <label for="slide<?php echo $index + 1; ?>-img">Company logo</label>
-                              <div class="file-upload">
-                                <input type="file" id="slide<?php echo $index + 1; ?>-img" name="slide<?php echo $index + 1; ?>-img" />
-                                <div class="file-preview">
-                                  <img
-                                    src="<?php echo htmlspecialchars($partner['logo_url']); ?>"
-                                    alt="Current Hero Image"
-                                  />
-                                </div>
-                                <button class="file-button">
-                                  <i class="fas fa-upload"></i> Choose File
-                                </button>
-                              </div>
-                              <p class="input-help">
-                                Recommended size: 1920x1080px, max file size:
-                                2MB
-                              </p>
+                            <div class="dropzone-content-prompt">
+                              <i class="fas fa-cloud-arrow-up"></i>
+                              <span>Click or drag to replace logo (PNG/SVG recommended)</span>
                             </div>
                           </div>
                         </div>
-                        <?php endforeach; ?>
                       </div>
-                    </div>
-                  </div>
+                    <?php endforeach; ?>
+                  <?php else: ?>
+                    <p style="color: #64748b; text-align: center; padding: 2rem 0;">No partners added yet.</p>
+                  <?php endif; ?>
+                </div>
+
+                <div class="card-footer">
+                  <span style="font-size: 12px; color: #64748b;">
+                    <i class="fas fa-shield-alt"></i> Changes apply immediately upon saving.
+                  </span>
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fas fa-save"></i> Save All Changes
+                  </button>
                 </div>
               </div>
             </div>
           </form>
 
-          <!-- Add Partner Modal -->
-          <div id="addPartnerModal" class="modal">
-            <div class="modal-content">
-              <span class="close" onclick="closeAddPartnerModal()">&times;</span>
-              <h2>Add New Partner</h2>
-              <form id="addPartnerForm" action="../../handlers/home/addPartnerHandler.php" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                  <label for="partnerWebsite">Website URL</label>
-                  <input type="url" id="partnerWebsite" name="website" required placeholder="https://example.com">
-                </div>
-                <div class="form-group">
-                  <label for="partnerLogo">Company Logo</label>
-                  <div class="file-upload">
-                    <input type="file" id="partnerLogo" name="logo" required accept="image/*">
-                    <div class="file-preview" id="logoPreview">
-                      <p>No image selected</p>
-                    </div>
-                    <button type="button" class="file-button" onclick="document.getElementById('partnerLogo').click()">
-                      <i class="fas fa-upload"></i> Choose File
-                    </button>
-                  </div>
-                  <p class="input-help">Recommended size: 200x100px, max file size: 1MB</p>
-                </div>
-                <div class="form-actions">
-                  <button type="submit" class="action-button">
-                    <i class="fas fa-save"></i> Save Partner
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <style>
-            .panel-actions {
-              display: flex;
-              gap: 10px;
-            }
-            
-            .modal {
-              display: none;
-              position: fixed;
-              z-index: 1000;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              background-color: rgba(0,0,0,0.5);
-              overflow-y: scroll;
-            }
-
-            .modal-content {
-              background-color: #fefefe;
-              margin: 15% auto;
-              padding: 20px;
-              border: 1px solid #888;
-              width: 80%;
-              max-width: 500px;
-              border-radius: 8px;
-              position: relative;
-              overflow-y: scroll;
-            }
-
-            .close {
-              position: absolute;
-              right: 15px;
-              top: 10px;
-              font-size: 28px;
-              cursor: pointer;
-            }
-
-            .form-actions {
-              margin-top: 20px;
-              text-align: right;
-            }
-
-            #logoPreview img {
-              max-width: 200px;
-              max-height: 100px;
-              object-fit: contain;
-            }
-
-            .tab-container {
-              display: flex;
-              align-items: center;
-              gap: 5px;
-            }
-
-            .form-group-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 20px;
-              padding-bottom: 10px;
-              border-bottom: 1px solid #eee;
-            }
-
-            .form-group-header h3 {
-              margin: 0;
-              color: #333;
-            }
-
-            .delete-btn {
-              background: transparent;
-              color: #dc3545;
-              border: none;
-              padding: 8px;
-              cursor: pointer;
-              border-radius: 50%;
-              width: 40px;
-              height: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: relative;
-              transition: all 0.3s ease;
-            }
-
-            .delete-btn:hover {
-              background: rgba(220, 53, 69, 0.1);
-              transform: scale(1.05);
-            }
-
-            .delete-btn .tooltip {
-              position: absolute;
-              background: #333;
-              color: white;
-              padding: 5px 10px;
-              border-radius: 4px;
-              font-size: 12px;
-              bottom: -30px;
-              white-space: nowrap;
-              visibility: hidden;
-              opacity: 0;
-              transition: all 0.3s ease;
-            }
-
-            .delete-btn:hover .tooltip {
-              visibility: visible;
-              opacity: 1;
-            }
-          </style>
-
-          <script>
-            function openAddPartnerModal() {
-              document.getElementById('addPartnerModal').style.display = 'block';
-            }
-
-            function closeAddPartnerModal() {
-              document.getElementById('addPartnerModal').style.display = 'none';
-            }
-
-            // Close modal when clicking outside
-            window.onclick = function(event) {
-              if (event.target == document.getElementById('addPartnerModal')) {
-                closeAddPartnerModal();
-              }
-            }
-
-            // Preview uploaded logo
-            document.getElementById('partnerLogo').addEventListener('change', function(e) {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                  document.getElementById('logoPreview').innerHTML = `
-                    <img src="${e.target.result}" alt="Logo preview">
-                  `;
-                }
-                reader.readAsDataURL(file);
-              }
-            });
-
-            function confirmDeletePartner(partnerId) {
-              if (confirm('Are you sure you want to delete this partner?')) {
-                window.location.href = `../../handlers/home/deletePartnerHandler.php?id=${partnerId}`;
-              }
-            }
-          </script>
         </div>
       </main>
     </div>
+
+    <!-- Modern Add Partner Modal -->
+    <div id="addPartnerModal" class="modal-backdrop-custom">
+      <div class="modal-card">
+        <div class="modal-header-custom">
+          <h3><i class="fas fa-plus-circle" style="color: #206bc4; margin-right: 6px;"></i> Add New Partner</h3>
+          <button type="button" class="modal-close-btn" onclick="closeModal('addPartnerModal')">&times;</button>
+        </div>
+        <form id="addPartnerForm" action="../../handlers/home/addPartnerHandler.php" method="POST" enctype="multipart/form-data">
+          <div class="modal-body-custom">
+            <div class="form-group">
+              <label class="form-label" for="newPartnerWebsite">Website URL</label>
+              <input type="url" id="newPartnerWebsite" name="website" class="form-control" required placeholder="https://partner-organization.org" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Upload Partner Logo</label>
+              <div class="dropzone-box">
+                <input type="file" id="newPartnerLogo" name="logo" required accept="image/png,image/jpeg,image/svg+xml,image/webp" />
+                <div class="dropzone-thumb-wrap" style="display: flex; align-items: center; justify-content: center; background: #ffffff; color: #94a3b8;">
+                  <i class="fas fa-image" style="font-size: 32px;"></i>
+                </div>
+                <div class="dropzone-content-prompt">
+                  <i class="fas fa-cloud-arrow-up"></i>
+                  <span>Choose Transparent PNG or SVG (Max 2MB)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer-custom">
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('addPartnerModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus"></i> Add Partner
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <?php if (isset($conn) && $conn instanceof mysqli) $conn->close(); ?>
   </body>
 </html>

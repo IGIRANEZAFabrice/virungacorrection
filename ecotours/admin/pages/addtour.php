@@ -40,6 +40,8 @@
               <option value="Adventure">Adventure</option>
               <option value="Cultural">Cultural</option>
               <option value="City Tours">City Tours</option>
+              <option value="Signature Journeys">Signature Journeys</option>
+              <option value="Private Experiences">Private Experiences</option>
               <option value="Community Based Experience">Community Based Experience</option>
               <option value="Family Friendly">Family Friendly</option>
               <option value="Food & Culinary">Food & Culinary</option>

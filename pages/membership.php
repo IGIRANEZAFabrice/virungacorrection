@@ -1029,32 +1029,7 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
   </section>
 
   <!-- Shared Footer -->
-  <footer>
-    <div class="wrap">
-      <div class="footer-grid">
-        <div>
-          <p class="footer-brand">
-            <img src="<?php echo $baseLink('img/logo.png'); ?>" alt="Virunga Collective Logo">
-            Virunga Collective
-          </p>
-          <p class="footer-note">
-            Boutique stays, curated journeys, and community impact in the Virunga
-            region of Rwanda. Formerly Virunga Ecotours and Virunga Homestay.
-          </p>
-        </div>
-        <ul class="footer-links">
-          <li><a href="<?php echo $baseLink('homestays'); ?>">Stays</a></li>
-          <li><a href="<?php echo $baseLink('experiences'); ?>">Journeys</a></li>
-          <li><a href="<?php echo $baseLink('ecotours/community'); ?>">Community</a></li>
-          <li><a href="<?php echo $baseLink('about'); ?>">Our Story</a></li>
-        </ul>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 Virunga Collective. All rights reserved.</span>
-        <span>Musanze, Rwanda</span>
-      </div>
-    </div>
-  </footer>
+    <?php include __DIR__ . '/footer.php'; ?>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {

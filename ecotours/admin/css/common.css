@@ -1,39 +1,40 @@
 /* CSS Variables */
 :root {
   /* Primary Colors */
-  --primary-green: #2a4858;
-  /* --primary-green: #5B7801; */
+  --primary-green: #1e323e;
+  --primary-teal: #0d9488;
+  --primary-emerald: #10b981;
   --primary-brown: #8b7355;
 
   /* Accent Colors */
-  --accent-sage: #2a4858ac;
-  --accent-terracotta: #967259;
+  --accent-sage: #2a4858;
+  --accent-terracotta: #c97a3e;
   --accent-light-brown: #a68c69;
 
   /* Neutral Colors */
   --neutral-cream: #f2e8dc;
-  --neutral-beige: #d8c3a5;
-  --neutral-light: #f6f4f0;
-  --neutral-dark: #3a3026;
+  --neutral-beige: #e2e8f0;
+  --neutral-light: #f4f6fa;
+  --neutral-dark: #1e293b;
 
   /* Text Colors */
-  --text-dark: #3a3026;
-  --text-medium: #5d4e41;
-  --text-light: #f6f4f0;
+  --text-dark: #1e293b;
+  --text-medium: #64748b;
+  --text-light: #f8fafc;
 
   /* Additional Admin Dashboard Colors */
-  --success: #4caf50;
-  --warning: #ffc107;
-  --danger: #f44336;
-  --info: #2196f3;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #0ea5e9;
 
   /* Layout Variables */
-  --sidebar-width: 220px;
-  --sidebar-collapsed-width: 80px;
-  --header-height: 70px;
+  --sidebar-width: 230px;
+  --sidebar-collapsed-width: 68px;
+  --header-height: 56px;
   --border-radius: 8px;
-  --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  --transition-speed: 0.3s;
+  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --transition-speed: 0.25s;
 }
 
 /* Base Styles */
@@ -48,11 +49,12 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--neutral-light);
   color: var(--text-dark);
-  line-height: 1.6;
+  line-height: 1.5;
   overflow-x: hidden;
+  font-size: 14px;
 }
 
 a {
@@ -68,7 +70,7 @@ button,
 input,
 select {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border: none;
   outline: none;
 }
@@ -84,13 +86,13 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-dark);
 }
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar:horizontal {
@@ -98,26 +100,25 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--neutral-light);
-  border-radius: 10px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-green);
+  background: #cbd5e1;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-sage);
+  background: #94a3b8;
 }
 
 .message-receiver {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 1rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -126,27 +127,28 @@ h6 {
   transform: translateY(-20px);
   animation: fadeInSlideDown 0.4s ease-out forwards;
   max-width: 400px;
+  font-size: 13.5px;
 }
 
 .message-receiver.success {
-  background-color: rgba(76, 175, 80, 0.9);
+  background-color: #059669;
   color: white;
 }
 
 .message-receiver.error {
-  background-color: rgba(244, 67, 54, 0.9);
+  background-color: #dc2626;
   color: white;
 }
 
 .message-receiver i {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .message-receiver .progress-bar {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 4px;
+  height: 3px;
   background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
   transform-origin: left;
@@ -174,13 +176,14 @@ h6 {
   display: flex;
   min-height: 100vh;
   position: relative;
+  background-color: var(--neutral-light);
 }
 
-/* Sidebar Styles */
+/* Sidebar Styles - Sleek Modern Dark Slate */
 .sidebar {
   width: var(--sidebar-width);
-  background-color: var(--primary-green);
-  color: var(--text-light);
+  background-color: #16242f;
+  color: #e2e8f0;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -189,9 +192,8 @@ h6 {
   display: flex;
   flex-direction: column;
   transition: width var(--transition-speed) ease-in-out;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.05);
   overflow-x: hidden;
-  transition: all var(--transition-speed) ease;
 }
 
 .sidebar.collapsed {
@@ -200,28 +202,33 @@ h6 {
 
 .sidebar-header {
   height: var(--header-height);
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .sidebar-header .logo {
-  height: 40px;
+  height: 32px;
+  width: 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .sidebar-header .logo img {
   height: 100%;
+  width: 100%;
   object-fit: contain;
 }
 
 .sidebar-header h2 {
-  color: var(--text-light);
-  font-size: 1.5rem;
-  margin-left: 0.5rem;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   transition: opacity var(--transition-speed) ease-in-out;
@@ -233,48 +240,55 @@ h6 {
 }
 
 .sidebar-toggle {
-  color: var(--primary-green);
+  color: #64748b;
   background: transparent;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-speed) ease-in-out;
+  transition: color 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
 }
 
-.sidebar.collapsed .sidebar-toggle {
-  transform: rotate(180deg);
-  margin-left: 0.8rem;
+.sidebar-toggle:hover {
+  color: #1e293b;
+  background: #f1f5f9;
 }
 
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 0;
+  padding: 0.6rem 0.5rem;
 }
 
 .nav-item {
   position: relative;
-  transition: background-color var(--transition-speed) ease;
+  margin-bottom: 2px;
 }
 
 .nav-item a {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  padding: 0.55rem 0.75rem;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
   transition: all var(--transition-speed) ease;
   white-space: nowrap;
 }
 
 .nav-item a i {
-  font-size: 1.2rem;
-  min-width: 30px;
+  font-size: 1.05rem;
+  min-width: 26px;
   text-align: center;
-  margin-right: 0.75rem;
-  transition: margin var(--transition-speed) ease-in-out;
+  margin-right: 0.6rem;
+  color: #64748b;
+  transition: color var(--transition-speed) ease;
 }
 
 .sidebar.collapsed .nav-item a i {
@@ -292,46 +306,64 @@ h6 {
   width: 0;
 }
 
-.nav-item:hover a,
+.nav-item:hover a {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item:hover a i {
+  color: #38bdf8;
+}
+
 .nav-item.active a {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  background-color: #203340;
+  font-weight: 600;
+}
+
+.nav-item.active a i {
+  color: #0d9488;
 }
 
 .nav-item.active::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
-  height: 100%;
-  width: 4px;
-  background-color: var(--accent-terracotta);
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background-color: #0d9488;
 }
 
 .sidebar-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 4px;
 }
 
 .sidebar-footer a {
   display: flex;
   align-items: center;
-  color: rgba(255, 255, 255, 0.8);
-  transition: color var(--transition-speed) ease;
+  padding: 0.5rem 0.75rem;
+  color: #94a3b8;
+  font-size: 12.5px;
+  border-radius: 6px;
+  transition: all var(--transition-speed) ease;
 }
 
 .sidebar-footer a i {
-  font-size: 1.1rem;
-  min-width: 30px;
+  font-size: 1rem;
+  min-width: 26px;
   text-align: center;
-  margin-right: 0.75rem;
+  margin-right: 0.6rem;
 }
 
 .sidebar-footer a:hover {
-  color: #fff;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar.collapsed .sidebar-footer a span {
@@ -347,17 +379,19 @@ h6 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #f6f8fb;
 }
 
 .sidebar.collapsed ~ .main-content {
   margin-left: var(--sidebar-collapsed-width);
 }
 
-/* Header Styles */
+/* Header Styles - Modern Slim Navbar */
 .top-header {
   height: var(--header-height);
-  background-color: #fff;
-  box-shadow: var(--box-shadow);
+  background-color: #ffffff;
+  border-bottom: 1px solid #eef0f4;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
   display: flex;
   align-items: center;
   justify-content: space-between;

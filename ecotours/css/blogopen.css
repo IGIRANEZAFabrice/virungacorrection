@@ -222,6 +222,24 @@ body {
   animation: slide-up 0.8s 0.8s ease forwards;
 }
 
+.content-paragraph ul,
+.content-paragraph ol {
+  margin: 18px 0 24px;
+  padding-left: 2.4rem;
+  list-style-position: outside;
+}
+
+.content-paragraph li {
+  margin: 8px 0;
+  padding-left: 0.35rem;
+  line-height: 1.75;
+}
+
+.content-paragraph li::marker {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .content-subheading {
   font-size: 1.8rem;
   margin: 40px 0 20px;

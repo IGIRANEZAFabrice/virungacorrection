@@ -1,48 +1,174 @@
 /**
- * Edit Blog JavaScript
- * Comprehensive JavaScript functionality for the edit blog page
- * Handles content blocks, gallery management, form validation, and rich text editing
+ * Modern Edit Blog Post JavaScript
+ * Handles live cover preview, constrained image previews, content block builders, rich text editing, and AJAX submission.
  */
 
-// Global variables
 let blockCounter = 0;
 let richTextEditors = new Map();
 
-// Initialize everything when DOM is loaded
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   initializeEditBlogPage();
 });
 
-/**
- * Main initialization function
- */
 function initializeEditBlogPage() {
-  console.log("Initializing Edit Blog Page...");
+  console.log("Initializing Modern Edit Blog Page...");
 
-  // Initialize core functionality
-  initializeBlockCounter();
-  initializeFormElements();
-  initializeContentBlocks();
-  initializeGalleryManagement();
-  initializeFormValidation();
-  initializeCoverImagePreview();
+  const contentBlocks = document.getElementById("contentBlocks");
+  const blogForm = document.getElementById("blogForm");
+  const toastContainer = document.getElementById("toast-container") || createToastContainer();
 
-  console.log("Edit Blog Page initialized successfully");
-}
+  // Helper: Toast Notifications
+  function createToastContainer() {
+    const el = document.createElement("div");
+    el.id = "toast-container";
+    document.body.appendChild(el);
+    return el;
+  }
 
-/**
- * Initialize block counter based on existing blocks
- */
-function initializeBlockCounter() {
+  function showToast(message, type = "success", duration = 4000) {
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+    
+    let icon = "fa-check-circle";
+    if (type === "error") icon = "fa-exclamation-circle";
+    if (type === "warning") icon = "fa-exclamation-triangle";
+    if (type === "info") icon = "fa-info-circle";
+
+    toast.innerHTML = `
+      <div class="toast-content">
+        <i class="fas ${icon}"></i>
+        <span>${escapeHTML(message)}</span>
+      </div>
+      <button type="button" class="toast-close"><i class="fas fa-times"></i></button>
+    `;
+
+    toast.querySelector(".toast-close").addEventListener("click", () => {
+      toast.remove();
+    });
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = "toast-slide-in 0.35s reverse ease forwards";
+      setTimeout(() => toast.remove(), 350);
+    }, duration);
+  }
+
+  window.showNotification = showToast; // Backward compatibility
+
+  function escapeHTML(str) {
+    return String(str).replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+
+  function normalizeBlogContent(value) {
+    return String(value || "")
+      .replace(/\\r\\n|\\n|\\r/g, "\n")
+      .replace(/((?:<br\s*\/?>|\n)\s*)n{1,3}(\s*(?:<br\s*\/?>|\n))/gi, "$1$2")
+      .replace(/^\s*n{1,3}\s*(?:<br\s*\/?>|\n)/i, "")
+      .replace(/(?:<br\s*\/?>|\n)\s*n{1,3}\s*$/i, "");
+  }
+
+  // Count existing blocks
   const existingBlocks = document.querySelectorAll(".content-block").length;
   blockCounter = Math.max(blockCounter, existingBlocks);
-  console.log(`Block counter initialized to: ${blockCounter}`);
-}
 
-/**
- * Initialize form elements and event listeners
- */
-function initializeFormElements() {
+  // ==========================================
+  // 1. COVER IMAGE UPLOAD & LIVE PREVIEW
+  // ==========================================
+  const coverImageInput = document.getElementById("coverImage");
+  const coverDropzone = document.getElementById("coverDropzone");
+  const coverPreviewCard = document.getElementById("coverPreviewCard");
+  const coverPreviewImg = document.getElementById("coverPreviewImg");
+  const coverFileName = document.getElementById("coverFileName");
+  const btnChangeCover = document.getElementById("btnChangeCover");
+  const btnRemoveCover = document.getElementById("btnRemoveCover");
+  const existingCoverInput = document.getElementById("existingCoverImage");
+
+  if (coverImageInput) {
+    coverImageInput.addEventListener("change", function () {
+      handleCoverFile(this.files[0]);
+    });
+
+    if (coverDropzone) {
+      ["dragenter", "dragover"].forEach(event => {
+        coverDropzone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          coverDropzone.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        coverDropzone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          coverDropzone.classList.remove("dragover");
+        });
+      });
+
+      coverDropzone.addEventListener("drop", (e) => {
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          coverImageInput.files = e.dataTransfer.files;
+          handleCoverFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    if (btnChangeCover) {
+      btnChangeCover.addEventListener("click", () => {
+        coverImageInput.click();
+      });
+    }
+
+    if (btnRemoveCover) {
+      btnRemoveCover.addEventListener("click", () => {
+        if (confirm("Remove cover image? (You can upload a new one before saving)")) {
+          coverImageInput.value = "";
+          coverPreviewImg.src = "";
+          if (existingCoverInput) existingCoverInput.value = "";
+          coverPreviewCard.classList.remove("active");
+          if (coverDropzone) coverDropzone.style.display = "flex";
+          showToast("Cover image removed", "info", 2000);
+        }
+      });
+    }
+  }
+
+  function handleCoverFile(file) {
+    if (!file) return;
+
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      showToast("Please select a valid image (JPG, PNG, WEBP, or GIF).", "error");
+      coverImageInput.value = "";
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("Cover image size must be under 10MB.", "warning");
+      coverImageInput.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      coverPreviewImg.src = e.target.result;
+      if (coverFileName) {
+        coverFileName.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      }
+      if (coverDropzone) coverDropzone.style.display = "none";
+      coverPreviewCard.classList.add("active");
+      showToast("Cover image preview loaded", "info", 2000);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ==========================================
+  // 2. DYNAMIC CONTENT BLOCKS BUILDER
+  // ==========================================
+
   // Add block buttons
   document.querySelectorAll(".add-block-btn").forEach((button) => {
     button.addEventListener("click", function () {
@@ -51,27 +177,462 @@ function initializeFormElements() {
     });
   });
 
-  // Form submission via AJAX
-  const blogForm = document.getElementById("blogForm");
-  if (blogForm) {
-    blogForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (!validateForm()) {
-        showNotification(
-          "Please fill in all required fields correctly.",
-          "error"
-        );
+  // Event delegation on contentBlocks container
+  if (contentBlocks) {
+    contentBlocks.addEventListener("click", (e) => {
+      const block = e.target.closest(".content-block");
+      if (!block) return;
+
+      // Remove Block
+      if (e.target.closest(".remove-block")) {
+        if (confirm("Are you sure you want to remove this content block?")) {
+          block.remove();
+          updateBlockNumbers();
+          showToast("Content block removed", "info", 2000);
+        }
         return;
       }
 
-      const submitBtn = blogForm.querySelector('button[type="submit"]') || blogForm.querySelector('.btn-primary');
-      const originalText = submitBtn ? submitBtn.innerHTML : "Save Changes";
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      // Move Up
+      if (e.target.closest(".move-up-block")) {
+        const prev = block.previousElementSibling;
+        if (prev) {
+          contentBlocks.insertBefore(block, prev);
+          updateBlockNumbers();
+        }
+        return;
       }
 
-      // Build FormData and Base64-encode text fields to bypass ModSecurity WAF rules (403 Forbidden)
+      // Move Down
+      if (e.target.closest(".move-down-block")) {
+        const next = block.nextElementSibling;
+        if (next) {
+          contentBlocks.insertBefore(next, block);
+          updateBlockNumbers();
+        }
+        return;
+      }
+
+      // Add List Item
+      if (e.target.closest(".btn-add-list-item")) {
+        const container = block.querySelector(".list-items-container");
+        if (container) {
+          const blockIndex = Array.from(contentBlocks.children).indexOf(block);
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "list-item-input-group";
+          itemDiv.innerHTML = `
+            <input type="text" name="listItems[${blockIndex}][]" placeholder="Enter list item..." required />
+            <button type="button" class="btn-remove-list-item" title="Remove list item"><i class="fas fa-trash-alt"></i></button>
+          `;
+          container.appendChild(itemDiv);
+        }
+        return;
+      }
+
+      // Remove List Item
+      if (e.target.closest(".btn-remove-list-item")) {
+        const itemGroup = e.target.closest(".list-item-input-group");
+        const container = itemGroup ? itemGroup.parentElement : null;
+        if (container && container.querySelectorAll(".list-item-input-group").length > 1) {
+          itemGroup.remove();
+        } else {
+          showToast("A list must have at least one item.", "warning");
+        }
+        return;
+      }
+    });
+
+    // Existing block file change listeners
+    contentBlocks.querySelectorAll('.block-image-input').forEach(input => {
+      input.addEventListener('change', function () {
+        handleBlockImagePreview(this);
+      });
+    });
+
+    // Existing textareas rich editor initialization
+    contentBlocks.querySelectorAll('textarea').forEach(ta => {
+      initializeRichTextEditor(ta);
+    });
+  }
+
+  // Introduction rich editor initialization
+  document.querySelectorAll("#bigDescription").forEach((ta) => {
+    initializeRichTextEditor(ta);
+  });
+
+  function addContentBlock(blockType) {
+    blockCounter++;
+    const currentBlockCount = contentBlocks.querySelectorAll(".content-block").length + 1;
+
+    const blockElement = document.createElement("div");
+    blockElement.className = "content-block";
+    blockElement.setAttribute("data-block-type", blockType);
+    blockElement.setAttribute("data-block-id", blockCounter);
+
+    let typeIcon = "fa-font";
+    let typeName = "Text Block";
+    if (blockType === "image") { typeIcon = "fa-image"; typeName = "Image Block"; }
+    if (blockType === "quote") { typeIcon = "fa-quote-left"; typeName = "Quote Block"; }
+    if (blockType === "list") { typeIcon = "fa-list-ul"; typeName = "List Block"; }
+
+    let blockHTML = `
+      <div class="block-header">
+        <span class="block-badge">
+          <i class="fas ${typeIcon}"></i> <span class="block-title-text">${typeName} ${currentBlockCount}</span>
+        </span>
+        <div class="block-header-controls">
+          <button type="button" class="btn-block-action move-up-block" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+          <button type="button" class="btn-block-action move-down-block" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+          <button type="button" class="btn-block-action remove-block" title="Delete Block"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
+
+      <!-- Hidden inputs for backend updates -->
+      <input type="hidden" name="block_id[]" value="0">
+      <input type="hidden" name="block_type[]" value="${blockType}">
+      <input type="hidden" name="block_order[]" value="${currentBlockCount}">
+    `;
+
+    if (blockType === "text") {
+      blockHTML += `
+        <div class="form-group">
+          <label for="blockTitle${blockCounter}">Section Subheading <span class="help-hint">(Optional)</span></label>
+          <input type="text" id="blockTitle${blockCounter}" name="blockTitle[]" placeholder="Enter section subheading"/>
+        </div>
+        <div class="form-group">
+          <label for="blockContent${blockCounter}">Section Paragraph Content <span class="required-badge">*</span></label>
+          <textarea id="blockContent${blockCounter}" name="blockContent[]" placeholder="Write section content here..."></textarea>
+        </div>
+      `;
+    } else if (blockType === "image") {
+      blockHTML += `
+        <div class="form-row" style="margin-bottom: 12px;">
+          <div class="form-group" style="flex: 2;">
+            <label for="blockImageCaption${blockCounter}">Image Caption <span class="help-hint">(Optional)</span></label>
+            <input type="text" id="blockImageCaption${blockCounter}" name="blockImageCaption[]" placeholder="Enter image caption"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Photo <span class="required-badge">*</span></label>
+          <div class="block-image-upload-wrapper">
+            <div class="block-image-dropzone">
+              <input type="file" id="blockImage${blockCounter}" name="blockImage[]" accept="image/*" class="block-image-input" data-block-id="${blockCounter}" required/>
+              <i class="fas fa-image"></i>
+              <span>Click or drop photo here</span>
+            </div>
+            <!-- CONSTRAINED IMAGE PREVIEW CONTAINER -->
+            <div class="image-preview" id="imagePreview${blockCounter}"></div>
+            <input type="hidden" name="existing_block_image[]" value="">
+          </div>
+        </div>
+      `;
+    } else if (blockType === "quote") {
+      blockHTML += `
+        <div class="form-group">
+          <label for="blockQuote${blockCounter}">Quote Text <span class="required-badge">*</span></label>
+          <textarea id="blockQuote${blockCounter}" name="blockQuote[]" placeholder="Enter quote..." style="min-height: 80px;"></textarea>
+        </div>
+        <div class="form-row" style="margin-bottom: 0;">
+          <div class="form-group" style="flex: 2;">
+            <label for="blockQuoteAuthor${blockCounter}">Quote Author / Attribution <span class="help-hint">(Optional)</span></label>
+            <input type="text" id="blockQuoteAuthor${blockCounter}" name="blockQuoteAuthor[]" placeholder="e.g., Dian Fossey"/>
+          </div>
+        </div>
+      `;
+    } else if (blockType === "list") {
+      const blockIndex = currentBlockCount - 1;
+      blockHTML += `
+        <div class="form-group">
+          <label for="blockListTitle${blockCounter}">List Title <span class="help-hint">(Optional)</span></label>
+          <input type="text" id="blockListTitle${blockCounter}" name="blockListTitle[]" placeholder="Enter list title"/>
+        </div>
+        <div class="form-group">
+          <label>List Items <span class="required-badge">*</span></label>
+          <div class="list-items-container">
+            <div class="list-item-input-group">
+              <input type="text" name="listItems[${blockIndex}][]" placeholder="Enter list item..." required />
+              <button type="button" class="btn-remove-list-item" title="Remove list item"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+          <button type="button" class="btn-add-list-item">
+            <i class="fas fa-plus"></i> Add List Item
+          </button>
+        </div>
+      `;
+    }
+
+    blockElement.innerHTML = blockHTML;
+    contentBlocks.appendChild(blockElement);
+
+    // Initialize rich editor for new textareas
+    blockElement.querySelectorAll("textarea").forEach((ta) => {
+      initializeRichTextEditor(ta);
+    });
+
+    // Initialize image preview
+    if (blockType === "image") {
+      const fileInput = blockElement.querySelector(".block-image-input");
+      if (fileInput) {
+        fileInput.addEventListener("change", function () {
+          handleBlockImagePreview(this);
+        });
+      }
+    }
+
+    setTimeout(() => {
+      blockElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 50);
+
+    showToast(`Added new ${typeName}`, "info", 1500);
+  }
+
+  function updateBlockNumbers() {
+    const blocks = contentBlocks.querySelectorAll(".content-block");
+    blocks.forEach((block, index) => {
+      const type = block.getAttribute("data-block-type");
+      let typeName = "Text Block";
+      if (type === "image") typeName = "Image Block";
+      if (type === "quote") typeName = "Quote Block";
+      if (type === "list") typeName = "List Block";
+
+      const titleSpan = block.querySelector(".block-title-text");
+      if (titleSpan) {
+        titleSpan.textContent = `${typeName} ${index + 1}`;
+      }
+
+      const orderInput = block.querySelector('input[name="block_order[]"]');
+      if (orderInput) {
+        orderInput.value = index + 1;
+      }
+
+      // Update listItems input names
+      block.querySelectorAll('input[name^="listItems"]').forEach(input => {
+        input.name = `listItems[${index}][]`;
+      });
+    });
+  }
+
+  // Handle Constrained Image Block Preview
+  function handleBlockImagePreview(input) {
+    const blockId = input.getAttribute("data-block-id");
+    let previewContainer = input.parentElement.querySelector(".image-preview");
+    if (!previewContainer) {
+    previewContainer = document.getElementById(`imagePreview${blockId}`);
+    }
+    if (!previewContainer) return;
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        previewContainer.innerHTML = `
+          <div class="block-preview-box">
+            <div class="block-preview-img-container">
+              <img src="${e.target.result}" alt="Preview" />
+            </div>
+            <div class="block-preview-footer">
+              <span><i class="fas fa-image"></i> ${escapeHTML(file.name)}</span>
+              <span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+            </div>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // ==========================================
+  // 3. RICH TEXT EDITOR INITIALIZATION
+  // ==========================================
+  function initializeRichTextEditor(textarea) {
+    if (!textarea || textarea.dataset.editorInitialized) return;
+    textarea.dataset.editorInitialized = "true";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "rich-text-wrapper";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "rich-text-toolbar";
+    toolbar.innerHTML = `
+      <button type="button" data-cmd="bold" title="Bold (Ctrl+B)"><i class="fas fa-bold"></i></button>
+      <button type="button" data-cmd="italic" title="Italic (Ctrl+I)"><i class="fas fa-italic"></i></button>
+      <button type="button" data-cmd="underline" title="Underline (Ctrl+U)"><i class="fas fa-underline"></i></button>
+      <span class="toolbar-divider"></span>
+      <button type="button" data-cmd="insertUnorderedList" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+      <button type="button" data-cmd="insertOrderedList" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+      <span class="toolbar-divider"></span>
+      <button type="button" class="btn-tool-link" title="Insert Link"><i class="fas fa-link"></i></button>
+      <button type="button" data-cmd="unlink" title="Remove Link"><i class="fas fa-unlink"></i></button>
+      <span class="toolbar-divider"></span>
+      <button type="button" class="btn-tool-quote" title="Insert Blockquote"><i class="fas fa-quote-left"></i></button>
+    `;
+
+    const editor = document.createElement("div");
+    editor.className = "rich-text-editor";
+    editor.contentEditable = "true";
+    editor.setAttribute("data-placeholder", textarea.placeholder || "Enter formatted text here...");
+    editor.innerHTML = normalizeBlogContent(textarea.value);
+    textarea.value = editor.innerHTML;
+
+    toolbar.querySelectorAll("button[data-cmd]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const cmd = btn.getAttribute("data-cmd");
+        document.execCommand(cmd, false, null);
+        editor.focus();
+      });
+    });
+
+    const btnLink = toolbar.querySelector(".btn-tool-link");
+    if (btnLink) {
+      btnLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        const selection = window.getSelection();
+        const selectedText = selection.toString();
+        let url = prompt("Enter hyperlink URL:", "https://");
+        if (url) {
+          if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:")) {
+            url = "https://" + url;
+          }
+          if (!selectedText) {
+            let linkText = prompt("Enter link text:", "Click here");
+            if (linkText) {
+              document.execCommand("insertHTML", false, `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(linkText)}</a>`);
+            }
+          } else {
+            document.execCommand("createLink", false, url);
+          }
+        }
+        editor.focus();
+      });
+    }
+
+    const btnQuote = toolbar.querySelector(".btn-tool-quote");
+    if (btnQuote) {
+      btnQuote.addEventListener("click", (e) => {
+        e.preventDefault();
+        const selection = window.getSelection();
+        const text = selection.toString() || prompt("Enter quote text:");
+        if (text) {
+          document.execCommand("insertHTML", false, `<blockquote>${escapeHTML(text)}</blockquote><p><br></p>`);
+        }
+        editor.focus();
+      });
+    }
+
+    editor.addEventListener("input", () => {
+      textarea.value = normalizeBlogContent(editor.innerHTML);
+    });
+
+    editor.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const text = normalizeBlogContent((e.clipboardData || window.clipboardData).getData("text/plain"));
+      document.execCommand("insertHTML", false, escapeHTML(text).replace(/\n/g, "<br>"));
+    });
+
+    wrapper.appendChild(toolbar);
+    wrapper.appendChild(editor);
+    textarea.parentNode.insertBefore(wrapper, textarea);
+    wrapper.appendChild(textarea);
+    textarea.style.display = "none";
+  }
+
+  // ==========================================
+  // 4. GALLERY IMAGES MANAGEMENT
+  // ==========================================
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  galleryItems.forEach((item) => {
+    const fileInput = item.querySelector(".gallery-upload");
+    const previewImg = item.querySelector(".gallery-preview");
+    const removeBtn = item.querySelector(".remove-gallery-image");
+
+    if (fileInput && previewImg) {
+      fileInput.addEventListener("change", function () {
+        if (this.files && this.files[0]) {
+          const file = this.files[0];
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            item.classList.add("has-image");
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    if (removeBtn && fileInput && !removeBtn.getAttribute("onclick")) {
+      removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        fileInput.value = "";
+        previewImg.src = "";
+        item.classList.remove("has-image");
+      });
+    }
+  });
+
+  window.removeGalleryImage = function (imageId, buttonElement) {
+    if (confirm("Remove this gallery image? This change will be applied upon saving.")) {
+      const item = buttonElement.closest(".gallery-item");
+      if (item) {
+        const previewImg = item.querySelector(".gallery-preview");
+        const existingInput = item.querySelector('input[name^="existing_gallery_image"]');
+        const fileInput = item.querySelector(".gallery-upload");
+
+        if (previewImg) previewImg.src = "";
+        if (fileInput) fileInput.value = "";
+        if (existingInput) existingInput.value = "";
+        item.classList.remove("has-image");
+
+        // Append deletion marker
+        const delInput = document.createElement("input");
+        delInput.type = "hidden";
+        delInput.name = "delete_gallery_images[]";
+        delInput.value = imageId;
+        blogForm.appendChild(delInput);
+
+        showToast("Gallery image marked for deletion", "info", 2000);
+      }
+    }
+  };
+
+  // ==========================================
+  // 5. AJAX FORM SUBMISSION & VALIDATION
+  // ==========================================
+  if (blogForm) {
+    blogForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const blogTitle = document.getElementById("blogTitle");
+      if (!blogTitle || !blogTitle.value.trim()) {
+        showToast("Please enter a blog title.", "warning");
+        if (blogTitle) blogTitle.focus();
+        return;
+      }
+
+      const bigTitle = document.getElementById("bigTitle");
+      if (!bigTitle || !bigTitle.value.trim()) {
+        showToast("Please enter a main headline.", "warning");
+        if (bigTitle) bigTitle.focus();
+        return;
+      }
+
+      const bigDescription = document.getElementById("bigDescription");
+      if (!bigDescription || !bigDescription.value.trim()) {
+        showToast("Please provide an introduction.", "warning");
+        if (bigDescription) bigDescription.focus();
+        return;
+      }
+
+      const submitBtn = document.getElementById("submitBlogBtn") || blogForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.innerHTML : "Update Blog Post";
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Changes...';
+      }
+
+      // Base64 encode text strings to bypass ModSecurity WAF rules (403 Forbidden)
       const formData = new FormData();
       formData.append('_b64', '1');
 
@@ -90,8 +651,7 @@ function initializeFormElements() {
             formData.append(el.name, el.value);
           }
         } else {
-          // Base64 encode text strings to prevent WAF 403 blocks
-          let val = el.value || '';
+          let val = normalizeBlogContent(el.value || '');
           try {
             val = btoa(unescape(encodeURIComponent(val)));
           } catch(err) {
@@ -111,19 +671,19 @@ function initializeFormElements() {
       .then(response => {
         if (!response.ok) {
           return response.text().then(text => {
-            throw new Error(`Server Error (${response.status}): ${text || response.statusText}`);
+            throw new Error(`Server returned ${response.status}: ${text}`);
           });
         }
         return response.json();
       })
       .then(data => {
         if (data.status === "success") {
-          showNotification(data.message || "Blog post updated successfully!", "success");
+          showToast(data.message || "Blog post updated successfully!", "success");
           setTimeout(() => {
-            window.location.href = data.redirect || "blogs.php?status=success&message=" + encodeURIComponent("Blog post updated successfully!");
+            window.location.href = data.redirect || "blogs.php?status=success";
           }, 1000);
         } else {
-          showNotification(data.message || "Failed to update blog post.", "error");
+          showToast(data.message || "Failed to update blog post.", "error");
           if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
@@ -132,7 +692,7 @@ function initializeFormElements() {
       })
       .catch(error => {
         console.error("Blog update error:", error);
-        showNotification("Submission failed: " + (error.message || "Unknown error"), "error");
+        showToast("Error updating blog: " + (error.message || "Please check inputs and try again."), "error");
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
@@ -140,964 +700,6 @@ function initializeFormElements() {
       });
     });
   }
+
+  console.log("Modern Edit Blog Page initialized successfully");
 }
-
-/**
- * Initialize existing content blocks
- */
-function initializeContentBlocks() {
-  // Initialize remove buttons for existing blocks
-  document.querySelectorAll(".content-block .remove-block").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const block = this.closest(".content-block");
-      removeContentBlock(block);
-    });
-  });
-
-  // Initialize rich text editors for existing textareas
-  document.querySelectorAll(".content-block textarea").forEach((textarea) => {
-    initializeRichTextEditor(textarea);
-  });
-
-  // Initialize image previews for existing blocks
-  document
-    .querySelectorAll('.content-block input[type="file"]')
-    .forEach((input) => {
-      input.addEventListener("change", function () {
-        handleBlockImagePreview(this);
-      });
-    });
-
-  // Initialize list item management
-  initializeListItemManagement();
-}
-
-/**
- * Initialize gallery management functionality
- */
-function initializeGalleryManagement() {
-  // Add event listeners to all gallery upload inputs
-  document.querySelectorAll(".gallery-upload").forEach((input) => {
-    input.addEventListener("change", function () {
-      handleGalleryImagePreview(this);
-    });
-  });
-}
-
-/**
- * Initialize cover image preview
- */
-function initializeCoverImagePreview() {
-  const coverImageInput = document.getElementById("coverImage");
-  if (coverImageInput) {
-    coverImageInput.addEventListener("change", function () {
-      handleCoverImagePreview(this);
-    });
-  }
-}
-
-/**
- * Handle cover image preview
- */
-function handleCoverImagePreview(input) {
-  const previewImg = document.getElementById("coverImagePreviewImg");
-
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      previewImg.src = e.target.result;
-      previewImg.style.display = "block";
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    previewImg.style.display = "none";
-  }
-}
-
-/**
- * Add a new content block
- */
-function addContentBlock(blockType) {
-  const contentBlocks = document.getElementById("contentBlocks");
-  blockCounter++;
-
-  const currentBlockCount =
-    contentBlocks.querySelectorAll(".content-block").length + 1;
-
-  const blockElement = document.createElement("div");
-  blockElement.className = "content-block";
-  blockElement.setAttribute("data-block-type", blockType);
-
-  let blockHTML = `
-        <div class="block-header">
-            <span class="block-title">${capitalizeFirst(
-              blockType
-            )} Block ${currentBlockCount}</span>
-            <button type="button" class="remove-block">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <!-- Hidden inputs for new blocks -->
-        <input type="hidden" name="block_id[]" value="0">
-        <input type="hidden" name="block_type[]" value="${blockType}">
-        <input type="hidden" name="block_order[]" value="${currentBlockCount}">
-    `;
-
-  // Add block-specific content
-  switch (blockType) {
-    case "text":
-      blockHTML += generateTextBlockHTML(blockCounter);
-      break;
-    case "image":
-      blockHTML += generateImageBlockHTML(blockCounter);
-      break;
-  }
-
-  blockElement.innerHTML = blockHTML;
-  contentBlocks.appendChild(blockElement);
-
-  // Initialize functionality for the new block
-  initializeNewBlock(blockElement, blockType);
-
-  // Scroll to new block
-  setTimeout(() => {
-    blockElement.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 100);
-
-  console.log(`Added new ${blockType} block`);
-}
-
-/**
- * Generate HTML for text block
- */
-function generateTextBlockHTML(counter) {
-  return `
-        <div class="form-group">
-            <label for="blockTitle${counter}">Section Title</label>
-            <input
-                type="text"
-                id="blockTitle${counter}"
-                name="blockTitle[]"
-                placeholder="Enter section title"
-            />
-        </div>
-        <div class="form-group">
-            <label for="blockContent${counter}">Content</label>
-            <textarea
-                id="blockContent${counter}"
-                name="blockContent[]"
-                placeholder="Write your content here"
-            ></textarea>
-        </div>
-    `;
-}
-
-/**
- * Generate HTML for image block
- */
-function generateImageBlockHTML(counter) {
-  return `
-        <div class="form-group">
-            <label for="blockImageCaption${counter}">Image Caption</label>
-            <input
-                type="text"
-                id="blockImageCaption${counter}"
-                name="blockImageCaption[]"
-                placeholder="Enter image caption"
-            />
-        </div>
-        <div class="form-group">
-            <label for="blockImage${counter}">Image</label>
-            <input
-                type="file"
-                id="blockImage${counter}"
-                name="blockImage[]"
-                accept="image/*"
-                class="block-image-input"
-                data-block-id="${counter}"
-            />
-            <div class="image-preview" id="imagePreview${counter}"></div>
-            <input type="hidden" name="existing_block_image[]" value="">
-        </div>
-    `;
-}
-
-/**
- * Initialize functionality for a new block
- */
-function initializeNewBlock(blockElement, blockType) {
-  // Add remove button functionality
-  const removeBtn = blockElement.querySelector(".remove-block");
-  if (removeBtn) {
-    removeBtn.addEventListener("click", function () {
-      removeContentBlock(blockElement);
-    });
-  }
-
-  // Initialize rich text editors for textareas
-  blockElement.querySelectorAll("textarea").forEach((textarea) => {
-    initializeRichTextEditor(textarea);
-  });
-
-  // Add image preview functionality for image blocks
-  if (blockType === "image") {
-    const fileInput = blockElement.querySelector('input[type="file"]');
-    if (fileInput) {
-      fileInput.addEventListener("change", function () {
-        handleBlockImagePreview(this);
-      });
-    }
-  }
-
-  // Add list item management for list blocks
-  if (blockType === "list") {
-    const addListItemBtn = blockElement.querySelector(".add-list-item-btn");
-    if (addListItemBtn) {
-      addListItemBtn.addEventListener("click", function () {
-        addListItem(this);
-      });
-    }
-
-    const removeListItemBtns =
-      blockElement.querySelectorAll(".remove-list-item");
-    removeListItemBtns.forEach((btn) => {
-      btn.addEventListener("click", function () {
-        removeListItem(this);
-      });
-    });
-  }
-}
-
-/**
- * Remove a content block
- */
-function removeContentBlock(block) {
-  if (confirm("Are you sure you want to remove this content block?")) {
-    // Clean up rich text editor if it exists
-    const textareas = block.querySelectorAll("textarea");
-    textareas.forEach((textarea) => {
-      if (richTextEditors.has(textarea.id)) {
-        richTextEditors.delete(textarea.id);
-      }
-    });
-
-    block.remove();
-    updateBlockNumbers();
-    console.log("Content block removed");
-  }
-}
-
-/**
- * Update block numbers and titles after changes
- */
-function updateBlockNumbers() {
-  const blocks = document.querySelectorAll(".content-block");
-  blocks.forEach((block, index) => {
-    const blockTitle = block.querySelector(".block-title");
-    const blockType = block.getAttribute("data-block-type");
-
-    if (blockTitle && blockType) {
-      const capitalizedType = capitalizeFirst(blockType);
-      blockTitle.textContent = `${capitalizedType} Block ${index + 1}`;
-    }
-
-    // Update block order hidden input
-    const orderInput = block.querySelector('input[name="block_order[]"]');
-    if (orderInput) {
-      orderInput.value = index + 1;
-    }
-  });
-}
-
-/**
- * Handle image preview for content blocks
- */
-function handleBlockImagePreview(input) {
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    // Get the block ID from the input's data attribute or ID
-    const blockId =
-      input.getAttribute("data-block-id") || input.id.replace("blockImage", "");
-
-    // Find the specific preview container for this block
-    let previewContainer = input.parentElement.querySelector(".image-preview");
-
-    // If no preview container found, create one with unique ID
-    if (!previewContainer) {
-      previewContainer = document.createElement("div");
-      previewContainer.className = "image-preview";
-      previewContainer.id = `imagePreview${blockId}`;
-      input.parentElement.appendChild(previewContainer);
-    }
-
-    reader.onload = function (e) {
-      previewContainer.innerHTML = `<img src="${e.target.result}" alt="Preview" class="preview-image" style="max-width: 80%; height: auto; border-radius: 10px; margin-top: 10px; display: block;">`;
-      previewContainer.classList.add("has-image");
-    };
-
-    reader.readAsDataURL(file);
-  } else {
-    // Reset preview if no file selected
-    const previewContainer =
-      input.parentElement.querySelector(".image-preview");
-    if (previewContainer) {
-      previewContainer.innerHTML = "";
-      previewContainer.classList.remove("has-image");
-    }
-  }
-}
-
-// ===== GALLERY MANAGEMENT =====
-
-/**
- * Handle gallery image preview
- */
-function handleGalleryImagePreview(input) {
-  const item = input.closest(".gallery-item");
-  const preview = item.querySelector(".gallery-preview");
-  const placeholder = item.querySelector(".gallery-placeholder");
-
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      preview.src = e.target.result;
-      preview.style.display = "block";
-      placeholder.style.display = "none";
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    preview.style.display = "none";
-    placeholder.style.display = "flex";
-  }
-}
-
-/**
- * Remove gallery image
- */
-function removeGalleryImage(imageId, buttonElement) {
-  if (
-    !confirm(
-      "Are you sure you want to remove this gallery image? This action will be permanent upon saving."
-    )
-  ) {
-    return;
-  }
-
-  const item = buttonElement.closest(".gallery-item");
-  if (item) {
-    // Hide the image and remove button
-    const img = item.querySelector(".gallery-preview");
-    const removeBtn = item.querySelector(".remove-gallery-image");
-    const placeholder = item.querySelector(".gallery-placeholder");
-    const existingImageInput = item.querySelector(
-      'input[name^="existing_gallery_image"]'
-    );
-
-    if (img) img.style.display = "none";
-    if (removeBtn) removeBtn.style.display = "none";
-    if (placeholder) placeholder.style.display = "flex";
-    if (existingImageInput) existingImageInput.value = "";
-
-    // Add a hidden input to signal deletion to the backend
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "delete_gallery_images[]";
-    input.value = imageId;
-    document.getElementById("blogForm").appendChild(input);
-
-    console.log(`Gallery image ${imageId} marked for deletion`);
-  }
-}
-
-// ===== LIST ITEM MANAGEMENT =====
-
-/**
- * Initialize list item management for existing blocks
- */
-function initializeListItemManagement() {
-  // Add event listeners to existing "Add List Item" buttons
-  document.querySelectorAll(".add-list-item-btn").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      addListItem(this);
-    });
-  });
-
-  // Add event listeners to existing "Remove List Item" buttons
-  document.querySelectorAll(".remove-list-item").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      removeListItem(this);
-    });
-  });
-}
-
-/**
- * Add a new list item
- */
-function addListItem(button) {
-  const container = button.previousElementSibling;
-  const blockIndex =
-    container
-      .closest(".content-block")
-      .querySelector('input[name="block_order[]"]').value - 1;
-  const itemCount = container.querySelectorAll(".list-item").length + 1;
-
-  const newItem = document.createElement("div");
-  newItem.className = "list-item";
-  newItem.innerHTML = `
-        <div class="form-group">
-            <label>List Item ${itemCount}</label>
-            <div class="list-item-input-group">
-                <input
-                    type="text"
-                    name="listItems[${blockIndex}][]"
-                    placeholder="Enter list item"
-                />
-                <button type="button" class="remove-list-item">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    `;
-
-  container.appendChild(newItem);
-
-  // Add event listener to the new remove button
-  newItem
-    .querySelector(".remove-list-item")
-    .addEventListener("click", function () {
-      removeListItem(this);
-    });
-
-  console.log(`Added list item ${itemCount} to block ${blockIndex}`);
-}
-
-/**
- * Remove a list item
- */
-function removeListItem(button) {
-  const listItem = button.closest(".list-item");
-  const container = listItem.parentElement;
-
-  if (container.querySelectorAll(".list-item").length > 1) {
-    listItem.remove();
-    updateListItemNumbers(container);
-    console.log("List item removed");
-  } else {
-    showNotification("A list must have at least one item.", "warning");
-  }
-}
-
-/**
- * Update list item numbers after changes
- */
-function updateListItemNumbers(container) {
-  const items = container.querySelectorAll(".list-item");
-  items.forEach((item, index) => {
-    const label = item.querySelector("label");
-    if (label) {
-      label.textContent = `List Item ${index + 1}`;
-    }
-  });
-}
-
-// ===== RICH TEXT EDITOR MANAGEMENT =====
-
-/**
- * Initialize rich text editor for a textarea
- */
-function initializeRichTextEditor(textarea) {
-  if (!textarea || richTextEditors.has(textarea.id)) {
-    return; // Already initialized or invalid textarea
-  }
-
-  try {
-    // Simple rich text functionality using contenteditable
-    const wrapper = document.createElement("div");
-    wrapper.className = "rich-text-wrapper";
-
-    const toolbar = document.createElement("div");
-    toolbar.className = "rich-text-toolbar";
-    toolbar.innerHTML = `
-            <button type="button" onclick="execCommand('bold')" title="Bold">
-                <i class="fas fa-bold"></i>
-            </button>
-            <button type="button" onclick="execCommand('italic')" title="Italic">
-                <i class="fas fa-italic"></i>
-            </button>
-            <button type="button" onclick="execCommand('underline')" title="Underline">
-                <i class="fas fa-underline"></i>
-            </button>
-            <button type="button" onclick="execCommand('insertUnorderedList')" title="Bullet List">
-                <i class="fas fa-list-ul"></i>
-            </button>
-            <button type="button" onclick="execCommand('insertOrderedList')" title="Numbered List">
-                <i class="fas fa-list-ol"></i>
-            </button>
-            <span class="toolbar-divider">|</span>
-            <button type="button" onclick="insertLink()" title="Insert Link">
-                <i class="fas fa-link"></i>
-            </button>
-            <button type="button" onclick="execCommand('unlink')" title="Remove Link">
-                <i class="fas fa-unlink"></i>
-            </button>
-            <span class="toolbar-divider">|</span>
-            <button type="button" onclick="insertQuote()" title="Insert Quote">
-                <i class="fas fa-quote-left"></i>
-            </button>
-        `;
-
-    const editor = document.createElement("div");
-    editor.className = "rich-text-editor";
-    editor.contentEditable = true;
-    editor.innerHTML = textarea.value;
-
-    // Insert wrapper before textarea
-    textarea.parentNode.insertBefore(wrapper, textarea);
-    wrapper.appendChild(toolbar);
-    wrapper.appendChild(editor);
-    wrapper.appendChild(textarea);
-
-    // Hide original textarea
-    textarea.style.display = "none";
-
-    // Sync content
-    editor.addEventListener("input", function () {
-      textarea.value = editor.innerHTML;
-    });
-
-    richTextEditors.set(textarea.id, {
-      wrapper: wrapper,
-      editor: editor,
-      textarea: textarea,
-    });
-
-    console.log(`Rich text editor initialized for ${textarea.id}`);
-  } catch (error) {
-    console.error("Failed to initialize rich text editor:", error);
-  }
-}
-
-/**
- * Execute rich text command
- */
-function execCommand(command) {
-  // Note: execCommand is deprecated but still widely supported
-  // For production, consider using a modern rich text editor library
-  document.execCommand(command, false, null);
-}
-
-/**
- * Insert a link in the rich text editor
- */
-function insertLink() {
-  const selection = window.getSelection();
-
-  if (selection.rangeCount === 0) {
-    showNotification(
-      "Please place your cursor where you want to insert the link.",
-      "warning"
-    );
-    return;
-  }
-
-  const selectedText = selection.toString().trim();
-  let linkText = selectedText;
-  let linkUrl = "";
-
-  // If no text is selected, prompt for link text
-  if (!linkText) {
-    linkText = prompt("Enter the text to display for the link:");
-    if (!linkText) {
-      showNotification("Link creation cancelled.", "info");
-      return;
-    }
-  }
-
-  // Prompt for URL
-  linkUrl = prompt("Enter the URL for the link:", "https://");
-  if (!linkUrl) {
-    showNotification("Link creation cancelled.", "info");
-    return;
-  }
-
-  // Validate URL format
-  if (!isValidUrl(linkUrl)) {
-    showNotification(
-      "Please enter a valid URL (e.g., https://example.com)",
-      "error"
-    );
-    return;
-  }
-
-  // Create the link
-  if (selectedText) {
-    // Text was selected, just add the link
-    document.execCommand("createLink", false, linkUrl);
-
-    // Set target="_blank" for external links
-    const links = document.querySelectorAll('a[href="' + linkUrl + '"]');
-    links.forEach((link) => {
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-    });
-  } else {
-    // No text selected, insert new link
-    const range = selection.getRangeAt(0);
-    const link = document.createElement("a");
-    link.href = linkUrl;
-    link.textContent = linkText;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-
-    range.deleteContents();
-    range.insertNode(link);
-
-    // Move cursor after the link
-    range.setStartAfter(link);
-    range.setEndAfter(link);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  showNotification("Link inserted successfully!", "success");
-}
-
-/**
- * Validate URL format
- */
-function isValidUrl(string) {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
-
-/**
- * Insert a quote in the rich text editor
- */
-function insertQuote() {
-  const selection = window.getSelection();
-
-  if (selection.rangeCount === 0) {
-    showNotification(
-      "Please place your cursor where you want to insert the quote.",
-      "warning"
-    );
-    return;
-  }
-
-  const selectedText = selection.toString().trim();
-  let quoteText = selectedText;
-  let quoteAuthor = "";
-
-  // If no text is selected, prompt for quote text
-  if (!quoteText) {
-    quoteText = prompt("Enter the quote text:");
-    if (!quoteText) {
-      showNotification("Quote creation cancelled.", "info");
-      return;
-    }
-  }
-
-  // Prompt for author (optional)
-  quoteAuthor = prompt("Enter the quote author (optional):");
-
-  // Create the quote HTML
-  const range = selection.getRangeAt(0);
-  const quoteElement = document.createElement("blockquote");
-  quoteElement.style.cssText = `
-    border-left: 4px solid var(--primary-green, #2e7d32);
-    margin: 20px 0;
-    padding: 15px 20px;
-    background: #f8f9fa;
-    font-style: italic;
-    position: relative;
-  `;
-
-  let quoteHTML = `<p style="margin: 0; font-size: 1.1em; line-height: 1.6;">"${quoteText}"</p>`;
-
-  if (quoteAuthor) {
-    quoteHTML += `<cite style="display: block; margin-top: 10px; font-size: 0.9em; color: #666; font-style: normal;">— ${quoteAuthor}</cite>`;
-  }
-
-  quoteElement.innerHTML = quoteHTML;
-
-  if (selectedText) {
-    // Replace selected text with quote
-    range.deleteContents();
-  }
-
-  range.insertNode(quoteElement);
-
-  // Move cursor after the quote
-  range.setStartAfter(quoteElement);
-  range.setEndAfter(quoteElement);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  showNotification("Quote inserted successfully!", "success");
-}
-
-// ===== FORM VALIDATION =====
-
-/**
- * Validate the entire form
- */
-function validateForm() {
-  let isValid = true;
-  const errors = [];
-
-  // Validate required fields
-  const requiredFields = [
-    { id: "blogTitle", name: "Blog Title" },
-    { id: "author", name: "Author" },
-    { id: "readMin", name: "Read Time" },
-    { id: "category", name: "Category" },
-    { id: "bigTitle", name: "Main Headline" },
-    { id: "bigDescription", name: "Introduction" },
-  ];
-
-  requiredFields.forEach((field) => {
-    const element = document.getElementById(field.id);
-    if (element && !element.value.trim()) {
-      isValid = false;
-      errors.push(`${field.name} is required`);
-      element.style.borderColor = "#dc3545";
-    } else if (element) {
-      element.style.borderColor = "";
-    }
-  });
-
-  // Validate content blocks
-  const contentBlocks = document.querySelectorAll(".content-block");
-  contentBlocks.forEach((block, index) => {
-    const blockType = block.getAttribute("data-block-type");
-    const blockNumber = index + 1;
-
-    switch (blockType) {
-      case "text":
-        const textContent = block.querySelector(
-          'textarea[name="blockContent[]"]'
-        );
-        if (textContent && !textContent.value.trim()) {
-          isValid = false;
-          errors.push(`Text Block ${blockNumber} content is required`);
-        }
-        break;
-
-      case "quote":
-        const quoteText = block.querySelector('textarea[name="blockQuote[]"]');
-        if (quoteText && !quoteText.value.trim()) {
-          isValid = false;
-          errors.push(`Quote Block ${blockNumber} text is required`);
-        }
-        break;
-
-      case "list":
-        const listItems = block.querySelectorAll('input[name^="listItems"]');
-        let hasValidItem = false;
-        listItems.forEach((item) => {
-          if (item.value.trim()) {
-            hasValidItem = true;
-          }
-        });
-        if (!hasValidItem) {
-          isValid = false;
-          errors.push(`List Block ${blockNumber} must have at least one item`);
-        }
-        break;
-    }
-  });
-
-  // Show errors if any
-  if (!isValid) {
-    showNotification(errors.join("<br>"), "error");
-  }
-
-  return isValid;
-}
-
-// ===== UTILITY FUNCTIONS =====
-
-/**
- * Capitalize first letter of a string
- */
-function capitalizeFirst(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-/**
- * Show notification to user
- */
-function showNotification(message, type = "info") {
-  // Remove existing notifications
-  const existingNotifications = document.querySelectorAll(".notification");
-  existingNotifications.forEach((notification) => notification.remove());
-
-  const notification = document.createElement("div");
-  notification.className = `notification notification-${type}`;
-  notification.innerHTML = `
-        <div class="notification-content">
-            <i class="fas ${getNotificationIcon(type)}"></i>
-            <span>${message}</span>
-        </div>
-        <button class="notification-close" onclick="this.parentElement.remove()">
-            <i class="fas fa-times"></i>
-        </button>
-    `;
-
-  // Add styles
-  notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 500;
-        z-index: 1000;
-        max-width: 400px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        animation: slideIn 0.3s ease-out;
-    `;
-
-  // Set background color based on type
-  switch (type) {
-    case "success":
-      notification.style.backgroundColor = "#28a745";
-      break;
-    case "error":
-      notification.style.backgroundColor = "#dc3545";
-      break;
-    case "warning":
-      notification.style.backgroundColor = "#ffc107";
-      notification.style.color = "#212529";
-      break;
-    default:
-      notification.style.backgroundColor = "#17a2b8";
-  }
-
-  document.body.appendChild(notification);
-
-  // Auto-remove after 5 seconds
-  setTimeout(() => {
-    if (notification.parentElement) {
-      notification.style.animation = "slideOut 0.3s ease-in";
-      setTimeout(() => notification.remove(), 300);
-    }
-  }, 5000);
-}
-
-/**
- * Get notification icon based on type
- */
-function getNotificationIcon(type) {
-  switch (type) {
-    case "success":
-      return "fa-check-circle";
-    case "error":
-      return "fa-exclamation-circle";
-    case "warning":
-      return "fa-exclamation-triangle";
-    default:
-      return "fa-info-circle";
-  }
-}
-
-// ===== GLOBAL FUNCTIONS (for inline event handlers) =====
-
-// Make functions available globally for inline event handlers
-window.removeGalleryImage = removeGalleryImage;
-window.execCommand = execCommand;
-window.insertLink = insertLink;
-window.insertQuote = insertQuote;
-
-// Add CSS animations
-const style = document.createElement("style");
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-
-    .rich-text-toolbar {
-        border: 1px solid #ddd;
-        border-bottom: none;
-        padding: 8px;
-        background: #f8f9fa;
-        border-radius: 4px 4px 0 0;
-    }
-
-    .rich-text-toolbar button {
-        background: none;
-        border: 1px solid transparent;
-        padding: 6px 8px;
-        margin-right: 4px;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .rich-text-toolbar button:hover {
-        background: #e9ecef;
-        border-color: #adb5bd;
-    }
-
-    .toolbar-divider {
-        margin: 0 8px;
-        color: #dee2e6;
-        font-weight: normal;
-        user-select: none;
-    }
-
-    .rich-text-editor {
-        border: 1px solid #ddd;
-        border-radius: 0 0 4px 4px;
-        padding: 12px;
-        min-height: 100px;
-        background: white;
-    }
-
-    .rich-text-editor:focus {
-        outline: none;
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
-    }
-
-    .notification {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .notification-content {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .notification-close {
-        background: none;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        padding: 4px;
-        margin-left: 10px;
-    }
-`;
-document.head.appendChild(style);
-
-console.log("Edit Blog JavaScript loaded successfully");

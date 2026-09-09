@@ -1,28 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Rooms/Why reveal on scroll
-  const revealEls = [
-    { id: "roomsLabel", cls: "in" },
-    { id: "roomsHeading", cls: "in" },
-    { id: "roomsActions", cls: "in" },
-    { id: "whyHeading", cls: "in" },
-  ];
-
+  // Enhanced Luxury Scroll Reveal Observer
   const revObs = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("in")),
-    { threshold: 0.25 },
+    (entries, observer) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const delay = e.target.getAttribute("data-delay");
+          if (delay) {
+            setTimeout(() => e.target.classList.add("in"), parseInt(delay, 10));
+          } else {
+            e.target.classList.add("in");
+          }
+          observer.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
   );
-  revealEls.forEach(({ id }) => {
-    const el = document.getElementById(id);
-    if (el) revObs.observe(el);
-  });
-  document.querySelectorAll("[data-reveal]").forEach((el) => revObs.observe(el));
 
-  const roomCards = document.querySelectorAll(".room-card");
-  const roomObs = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("in")),
-    { threshold: 0.15 },
-  );
-  roomCards.forEach((c) => roomObs.observe(c));
+  document.querySelectorAll("[data-reveal], .reveal, .homestay-header, .why-pillar-card, .hs-room-card, .hs-exp-card, .hs-disc-card, .hs-musanze-card, .hs-partner-card, .hs-practical-item, .hs-split-grid, .hs-longer-box, .hs-compact-cta, .hs-invitation-box").forEach((el) => {
+    revObs.observe(el);
+  });
 
   // Metric counters in about card
   const counters = document.querySelectorAll("[data-count]");

@@ -51,6 +51,14 @@ $categories_query = "SELECT DISTINCT bc.category_slug, bc.category_name
                      WHERE bp.status = 'published' 
                      ORDER BY bc.category_name ASC";
 $categories_result = $conn->query($categories_query);
+
+function cleanBlogExcerpt($content, $length = 150) {
+    $text = stripslashes((string) $content);
+    $text = str_replace(['\\r\\n', '\\n', '\\r'], ' ', $text);
+    $text = preg_replace('/\s+n{1,3}\s+/i', ' ', $text);
+    $text = trim(preg_replace('/\s+/', ' ', strip_tags($text)));
+    return strlen($text) > $length ? substr($text, 0, $length) . '...' : $text;
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,10 +66,7 @@ $categories_result = $conn->query($categories_query);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Virunga Ecotours - Discover the Heart of Africa's Most Diverse Mountain
-      Range
-    </title>
+	    <title>Virunga Blog - Stories from the Virunga</title>
     <link
       rel="shortcut icon"
       href="../images/logos/icon.png"
@@ -73,35 +78,40 @@ $categories_result = $conn->query($categories_query);
     />
     <link rel="stylesheet" href="../css/earthy-theme.css" />
     <link rel="stylesheet" href="../css/header.css" />
-    <link rel="stylesheet" href="../css/blog.css" />
+    <link rel="stylesheet" href="../css/blog.css?v=20260902-blog-cards" />
     <script src="../js/header.js"></script>
   </head>
-  <body>
+	  <body class="blog-page">
     <?php include('includes/header.php'); ?>
     
     <section class="breadcrumbs">
       <div class="container">
         <ul class="breadcrumbs-list">
           <li><a href="../index.php">Home</a></li>
-          <li>Blogs</li>
+	          <li>Blog</li>
         </ul>
       </div>
     </section>
 
-    <section class="hero">
-      <div class="hero-image"></div>
-      <div class="hero-overlay">
-        <h1 class="hero-title">The Virunga Journal</h1>
-        <p class="hero-subtitle">
-          Stories, people and experiences from the Virunga region.
-        </p>
-        <a href="#" class="cta-btn">Plan Your Journey</a>
-      </div>
-    </section>
+	    <section class="hero blog-hero">
+	      <div class="hero-image"></div>
+	      <div class="hero-overlay">
+	        <span class="blog-kicker">Journal</span>
+	        <h1 class="hero-title">Stories from the Virunga</h1>
+	        <p class="hero-subtitle">
+	          Field notes, travel ideas and encounters from Rwanda, Uganda and DR Congo.
+	        </p>
+	        <a href="#blog-posts" class="cta-btn">Browse Stories</a>
+	      </div>
+	    </section>
 
-    <section class="blog-section">
-      <div class="container">
-        <h2 class="section-title">The Virunga Journal</h2>
+	    <section class="blog-section" id="blog-posts">
+	      <div class="container">
+	        <div class="section-heading journal-heading">
+	          <span class="section-eyebrow">Journal</span>
+	          <h2>Stories from the Virunga</h2>
+	          <p>Read notes, ideas and encounters from across the Virunga region.</p>
+	        </div>
 
         <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">ALL</button>
@@ -117,48 +127,37 @@ $categories_result = $conn->query($categories_query);
         
         <div class="blog-display"> 
             
-            <div class="blog-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; margin: 0 auto;"> 
+	            <div class="blog-grid"> 
                 <?php if (!empty($result)): ?>
                     <?php foreach ($result as $post): ?>
                         
-                        <div class="blog-item" 
-                             data-category="<?= htmlspecialchars($post['category_slug']) // Use category slug ?>"
-                             style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); overflow: hidden; border: 1px solid #d8c3a5; display: flex; flex-direction: column;"> 
+	                        <div class="blog-item" data-category="<?= htmlspecialchars($post['category_slug']) // Use category slug ?>"> 
                             <div class="blog-item-image">
                                 
                                 <img src="../admin/images/blog/covers/<?= htmlspecialchars(stripslashes($post['cover_image'])) ?>"
                                      alt="<?= htmlspecialchars(stripslashes($post['title'])) ?>"
-                                     style="width: 100%; height: 200px; object-fit: cover; display: block;">
-                            </div>
-                            
-                            <div class="blog-item-content" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;"> 
-                                
-                                <span class="blog-item-category" style="display: inline-block; background-color: #a68c69; color: #f6f4f0; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; align-self: flex-start;"><?= htmlspecialchars(strtoupper(stripslashes($post['category_name']))) ?></span> 
-                                
-                                <h3 class="blog-item-title" style="margin-top: 0; margin-bottom: 10px; font-size: 1.4em; color: #3a3026; line-height: 1.3;"><?= htmlspecialchars(stripslashes($post['title'])) ?></h3> 
-                                
-                                <p class="blog-item-description" style="font-size: 0.95em; color: #5d4e41; line-height: 1.6; margin-bottom: 15px; flex-grow: 1;"> 
-                                    <?php 
-                                        // Get the raw snippet
-                                        $intro_snippet = substr(strip_tags($post['introduction']), 0, 150);
-                                        // Apply stripslashes and htmlspecialchars ONLY when echoing
-                                        echo $intro_snippet;
-                                        // Add ellipsis if the original introduction was longer
-                                        if (strlen(strip_tags($post['introduction'])) > 150) {
-                                            echo '...'; 
-                                        }
-                                    ?>
-                                </p>
-                                
-                                <div class="blog-item-meta" style="font-size: 0.85em; color: #777; margin-bottom: 15px; margin-top: auto;"> 
-                                    <span>By <?= htmlspecialchars(stripslashes($post['author'])) ?></span> | 
-                                    <span><?= htmlspecialchars(stripslashes($post['read_minutes'])) ?> min read</span> |
-                                    <span><?= date('M d, Y', strtotime($post['published_at'] ?? $post['created_at'])) ?></span>
-                                </div>
-                                
-                                <a href="./blogopen.php?id=<?= $post['blog_id'] ?>" class="blog-item-button" style="display: inline-block; background-color: #2a4858; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold; text-align: center; margin-top: 10px; align-self: flex-start;">READ MORE</a> 
-                            </div>
-                        </div>
+                                     loading="lazy">
+	                            </div>
+	                            
+	                            <div class="blog-item-content"> 
+	                                
+	                                <span class="blog-item-category"><?= htmlspecialchars(strtoupper(stripslashes($post['category_name']))) ?></span> 
+	                                
+	                                <h3 class="blog-item-title"><?= htmlspecialchars(stripslashes($post['title'])) ?></h3> 
+	                                
+	                                <p class="blog-item-description"> 
+	                                    <?= htmlspecialchars(cleanBlogExcerpt($post['introduction'])) ?>
+	                                </p>
+	                                
+	                                <div class="blog-item-meta"> 
+	                                    <span>By <?= htmlspecialchars(stripslashes($post['author'])) ?></span>
+	                                    <span><?= htmlspecialchars(stripslashes($post['read_minutes'])) ?> min read</span>
+	                                    <span><?= date('M d, Y', strtotime($post['published_at'] ?? $post['created_at'])) ?></span>
+	                                </div>
+	                                
+	                                <a href="./blogopen.php?id=<?= $post['blog_id'] ?>" class="blog-item-button">Read More</a> 
+	                            </div>
+	                        </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     
@@ -268,10 +267,9 @@ $categories_result = $conn->query($categories_query);
                             posts.forEach(post => {
                                 // **IMPORTANT**: Create HTML for the new blog item.
                                 // This needs to exactly match the structure and escaping used in the PHP loop.
-                                const newItem = document.createElement('div');
-                                newItem.classList.add('blog-item');
-                                newItem.dataset.category = post.category_slug; // Ensure category slug is in JSON
-                                newItem.style.cssText = "background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); overflow: hidden; border: 1px solid #d8c3a5; display: flex; flex-direction: column;";
+	                                const newItem = document.createElement('div');
+	                                newItem.classList.add('blog-item');
+	                                newItem.dataset.category = post.category_slug; // Ensure category slug is in JSON
 
 
                                 // Sanitize function (basic example, consider a library for robustness)
@@ -283,27 +281,26 @@ $categories_result = $conn->query($categories_query);
                                 }
                                 
                                 // Construct inner HTML carefully
-                                newItem.innerHTML = `
-                                    <div class="blog-item-image">
-                                        <img src="../admin/images/blog/covers/${sanitizeHTML(post.cover_image)}"
-                                             alt="${sanitizeHTML(post.title)}"
-                                             style="width: 100%; height: 200px; object-fit: cover; display: block;">
-                                    </div>
-                                    <div class="blog-item-content" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;"> 
-                                        <span class="blog-item-category" style="display: inline-block; background-color: #a68c69; color: #f6f4f0; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; align-self: flex-start;">${sanitizeHTML(post.category_name.toUpperCase())}</span> 
-                                        <h3 class="blog-item-title" style="margin-top: 0; margin-bottom: 10px; font-size: 1.4em; color: #3a3026; line-height: 1.3;">${sanitizeHTML(post.title)}</h3> 
-                                        <p class="blog-item-description" style="font-size: 0.95em; color: #5d4e41; line-height: 1.6; margin-bottom: 15px; flex-grow: 1;"> 
-                                            ${post.introduction_snippet}
-                                            ${post.introduction_long ? '...' : ''}
-                                        </p>
-                                        <div class="blog-item-meta" style="font-size: 0.85em; color: #777; margin-bottom: 15px; margin-top: auto;"> 
-                                            <span>By ${sanitizeHTML(post.author)}</span> | 
-                                            <span>${sanitizeHTML(post.read_minutes)} min read</span> |
-                                            <span>${post.published_date}</span>
-                                        </div>
-                                        <a href="./blogopen.php?id=${post.blog_id}" class="blog-item-button" style="display: inline-block; background-color: #2a4858; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold; text-align: center; margin-top: 10px; align-self: flex-start;">READ MORE</a> 
-                                    </div>
-                                `;
+	                                newItem.innerHTML = `
+	                                    <div class="blog-item-image">
+	                                        <img src="../admin/images/blog/covers/${sanitizeHTML(post.cover_image)}"
+	                                             alt="${sanitizeHTML(post.title)}">
+	                                    </div>
+	                                    <div class="blog-item-content"> 
+	                                        <span class="blog-item-category">${sanitizeHTML(post.category_name.toUpperCase())}</span> 
+	                                        <h3 class="blog-item-title">${sanitizeHTML(post.title)}</h3> 
+	                                        <p class="blog-item-description"> 
+	                                            ${post.introduction_snippet}
+	                                            ${post.introduction_long ? '...' : ''}
+	                                        </p>
+	                                        <div class="blog-item-meta"> 
+	                                            <span>By ${sanitizeHTML(post.author)}</span>
+	                                            <span>${sanitizeHTML(post.read_minutes)} min read</span>
+	                                            <span>${post.published_date}</span>
+	                                        </div>
+	                                        <a href="./blogopen.php?id=${post.blog_id}" class="blog-item-button">Read More</a> 
+	                                    </div>
+	                                `;
 
                                 blogGrid.appendChild(newItem);
 

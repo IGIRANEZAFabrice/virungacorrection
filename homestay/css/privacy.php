@@ -66,8 +66,8 @@
                 <h2>Questions?</h2>
                 <p>If you'd like to update or delete your information, please reach out.</p>
                 <div class="contact-links">
-                    <a href="mailto:hello@yourhomestay.com"><i class="fas fa-envelope"></i> hello@yourhomestay.com</a>
-                    <a href="tel:+123456789"><i class="fas fa-phone"></i> +123 456 789</a>
+                    <a href="mailto:info@virungajourneys.com"><i class="fas fa-envelope"></i> info@virungajourneys.com</a>
+                    <a href="tel:+250784513435"><i class="fas fa-phone"></i> +250 784 513 435</a>
                 </div>
             </div>
         </section>
@@ -75,7 +75,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Your Homestay. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> Virunga House. All rights reserved.</p>
         </div>
     </footer>
 

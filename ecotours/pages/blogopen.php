@@ -116,6 +116,12 @@ while ($suggestion_stmt->fetch()) {
 }
 $suggestion_stmt->close();
 
+function renderBlogHtml($content) {
+    $content = stripslashes((string) $content);
+    $content = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $content);
+    return nl2br($content);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,6 +154,24 @@ $suggestion_stmt->close();
             hyphens: auto; /* Optional: adds hyphens for very long words */
         }
 
+        .content-paragraph ul,
+        .content-paragraph ol {
+            margin: 18px 0 24px;
+            padding-left: 2.4rem;
+            list-style-position: outside;
+        }
+
+        .content-paragraph li {
+            margin: 8px 0;
+            padding-left: 0.35rem;
+            line-height: 1.75;
+        }
+
+        .content-paragraph li::marker {
+            color: var(--primary, #8b7355);
+            font-weight: 700;
+        }
+
         .main-content a {
             color: #2a7a39; /* A professional green color */
             text-decoration: underline;
@@ -163,27 +187,18 @@ $suggestion_stmt->close();
 </head>
 <body>
   <?php include('./includes/header.php'); ?>
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs" style="padding: .5rem 0;">
-      <div class="container">
-        <a href="./blog.php">Blog</a>
-        <span class="breadcrumb-separator">/</span>
-        <span class="breadcrumb-current"><?= htmlspecialchars($post['title'])?></span>
-      </div>
-    </div>
 
     <!-- Article Hero Section -->
     <article class="article-container">
         <div class="article-hero">
-            <div class="article-hero-image" style="background-image: url('../admin/images/blog/covers/<?= htmlspecialchars($post['cover_image']) ?>')"></div> 
-                <?php
-                // Fallback for hero image if not set or file missing
-                $hero_image_path = '../admin/images/blog/covers/' . htmlspecialchars($post['cover_image']);
-                if (empty($post['cover_image']) || !file_exists($hero_image_path)) {
-                    $hero_image_path = '../images/logos/icon.png'; // fallback image
-                }
-                ?>
-                <div class="article-hero-image" style="background-image: url('<?= $hero_image_path ?>')"></div>
+            <?php
+            // Fallback for hero image if not set or file missing
+            $hero_image_path = '../admin/images/blog/covers/' . htmlspecialchars($post['cover_image']);
+            if (empty($post['cover_image']) || !file_exists($hero_image_path)) {
+                $hero_image_path = '../images/logos/icon.png'; // fallback image
+            }
+            ?>
+            <div class="article-hero-image" style="background-image: url('<?= $hero_image_path ?>')"></div>
             <div class="article-hero-overlay">
                 <div class="container">
                     <span class="article-category"><?= htmlspecialchars(ucfirst($post['category_name'])) ?></span> 
@@ -208,7 +223,7 @@ $suggestion_stmt->close();
                     <?= stripslashes($post['main_headline']) ?> 
                 </p>
                 <div class="content-paragraph">
-                    <?= nl2br(stripslashes($post['introduction'])) ?> 
+                    <?= renderBlogHtml($post['introduction']) ?> 
                 </div>
 
                 <?php 
@@ -254,7 +269,7 @@ $suggestion_stmt->close();
                                 <h2 class="content-subheading"><?= nl2br(htmlspecialchars(stripslashes($content_data['section_title']))) ?></h2>
                             <?php } ?>
                             <div class="content-paragraph">
-                                <?= nl2br(stripslashes($content_data['content'])); ?>
+                                <?= renderBlogHtml($content_data['content']); ?>
                         </div>
                         <?php elseif ($block_type == 'image'): ?>
                             <div class="content-image-container">

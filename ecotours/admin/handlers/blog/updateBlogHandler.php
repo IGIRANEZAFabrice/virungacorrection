@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
           || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
@@ -15,7 +17,7 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-include '../../config/connection.php'; // $conn is available from here
+require_once __DIR__ . '/../../config/connection.php'; // $conn is available from here
 
 // Function to create a slug (remains the same)
 function createSlug($string) {
@@ -95,6 +97,17 @@ function safeDecodeInput($val) {
     return $val;
 }
 
+function cleanBlogText($val) {
+    $text = (string) $val;
+    $text = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $text);
+    $text = stripslashes($text);
+    $lineBreak = '(?:<br\s*/?>|\R)';
+    $text = preg_replace('~(' . $lineBreak . '\s*)n{1,3}(\s*' . $lineBreak . ')~i', '$1$2', $text);
+    $text = preg_replace('~^\s*n{1,3}\s*' . $lineBreak . '~i', '', $text);
+    $text = preg_replace('~' . $lineBreak . '\s*n{1,3}\s*$~i', '', $text);
+    return $text;
+}
+
 // --- Main Processing Logic ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If payload was base64 encoded by JS frontend to bypass ModSecurity 403 WAF filters, decode it now
@@ -106,8 +119,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    $conn->begin_transaction();
     try {
+        if (!isset($conn) || !$conn) {
+            throw new Exception("Database connection is not available.");
+        }
+
+        $conn->begin_transaction();
+
         // --- Basic Blog Information ---
         $blog_id = isset($_POST['blog_id']) ? intval($_POST['blog_id']) : 0;
         if ($blog_id <= 0) {
@@ -127,13 +145,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
 
-        $title = $conn->real_escape_string(stripslashes($_POST['blogTitle']));
+        $title = $conn->real_escape_string(cleanBlogText($_POST['blogTitle']));
         $slug = createSlug($title); // Generate slug from title
-        $author = $conn->real_escape_string(stripslashes($_POST['author']));
+        $author = $conn->real_escape_string(cleanBlogText($_POST['author']));
         $readMin = intval($_POST['readMin']);
         $category_slug = $conn->real_escape_string($_POST['category']); // Expecting slug from form
-        $main_headline = $conn->real_escape_string(stripslashes($_POST['bigTitle']));
-        $introduction = $conn->real_escape_string(stripslashes($_POST['bigDescription']));
+        $main_headline = $conn->real_escape_string(cleanBlogText($_POST['bigTitle']));
+        $introduction = $conn->real_escape_string(cleanBlogText($_POST['bigDescription']));
         $adminId = $_SESSION['admin_id']; // Assuming admin ID is needed for tracking/logging
 
         // Get category ID from the submitted slug
@@ -151,8 +169,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // --- Handle Cover Image ---
         $coverImagePath = $old_cover_image; // Default to existing image
         $newCoverImageUploaded = false;
+        $coverRemoved = isset($_POST['existing_cover_image']) && $_POST['existing_cover_image'] === '';
         if (isset($_FILES['coverImage']) && $_FILES['coverImage']['error'] !== UPLOAD_ERR_NO_FILE && $_FILES['coverImage']['size'] > 0) {
-            $uploadResult = uploadImage($_FILES['coverImage'], '../../images/blog/covers/');
+            $uploadResult = uploadImage($_FILES['coverImage'], __DIR__ . '/../../images/blog/covers/');
             if ($uploadResult['status'] === 'success') {
                 $coverImagePath = $uploadResult['filename'];
                 $newCoverImageUploaded = true;
@@ -160,6 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Cover Image Upload Error: " . $uploadResult['message']);
             }
             // 'no_file' status is ignored here, means keep existing
+        } elseif ($coverRemoved) {
+            throw new Exception("Please upload a replacement cover image before saving.");
         }
 
         // --- Update Blog Post ---
@@ -189,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Delete old cover image if a new one was uploaded successfully
         if ($newCoverImageUploaded && !empty($old_cover_image) && $old_cover_image !== $coverImagePath) {
-            deleteImageFile('../../images/blog/covers/' . $old_cover_image);
+            deleteImageFile(__DIR__ . '/../../images/blog/covers/' . $old_cover_image);
         }
 
 
@@ -272,8 +293,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert data into the specific block type table
             switch ($block_type) {
                 case 'text':
-                    $title_val = $conn->real_escape_string(stripslashes($blockTitles[$i] ?? ''));
-                    $content_val = $conn->real_escape_string(stripslashes($blockContents[$i] ?? ''));
+                    $title_val = $conn->real_escape_string(cleanBlogText($blockTitles[$i] ?? ''));
+                    $content_val = $conn->real_escape_string(cleanBlogText($blockContents[$i] ?? ''));
                     $sql = "INSERT INTO blog_text_blocks (block_id, section_title, content) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("iss", $content_block_id, $title_val, $content_val);
@@ -282,7 +303,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'image':
-                    $caption_val = $conn->real_escape_string(stripslashes($blockImageCaptions[$i] ?? ''));
+                    $caption_val = $conn->real_escape_string(cleanBlogText($blockImageCaptions[$i] ?? ''));
                     $alignment_val = 'center'; // Default or get from form if added
                     $image_path_val = $existingBlockImages[$i] ?? null; // Existing path from hidden field
                     $old_block_image_path = $existing_blocks_data[$current_block_id]['image_path'] ?? null; // Get old path for deletion check
@@ -299,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'error' => $_FILES[$file_key]['error'][$i],
                             'size' => $_FILES[$file_key]['size'][$i]
                         ];
-                        $uploadResult = uploadImage($block_file, '../../images/blog/content/');
+                        $uploadResult = uploadImage($block_file, __DIR__ . '/../../images/blog/content/');
                         if ($uploadResult['status'] === 'success') {
                             $image_path_val = $uploadResult['filename'];
                             $newBlockImageUploaded = true;
@@ -317,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         // Delete old block image if a new one was uploaded
                         if ($newBlockImageUploaded && !empty($old_block_image_path) && $old_block_image_path !== $image_path_val) {
-                             deleteImageFile('../../images/blog/content/' . $old_block_image_path);
+                             deleteImageFile(__DIR__ . '/../../images/blog/content/' . $old_block_image_path);
                         }
                     } else {
                          error_log("Skipping image block insert for block_id $content_block_id as no image path was determined.");
@@ -325,8 +346,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'quote':
-                    $quote_val = $conn->real_escape_string(stripslashes($blockQuotes[$i] ?? ''));
-                    $author_val = $conn->real_escape_string(stripslashes($blockQuoteAuthors[$i] ?? ''));
+                    $quote_val = $conn->real_escape_string(cleanBlogText($blockQuotes[$i] ?? ''));
+                    $author_val = $conn->real_escape_string(cleanBlogText($blockQuoteAuthors[$i] ?? ''));
                     $style_val = 'standard'; // Default or get from form if added
                     $sql = "INSERT INTO blog_quote_blocks (block_id, quote_text, attribution, style) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sql);
@@ -336,7 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'list':
-                    $list_title_val = $conn->real_escape_string(stripslashes($blockListTitles[$i] ?? ''));
+                    $list_title_val = $conn->real_escape_string(cleanBlogText($blockListTitles[$i] ?? ''));
                     $list_type_val = 'bullet'; // Default or get from form if added
                     $sql = "INSERT INTO blog_list_blocks (block_id, list_title, list_type) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
@@ -351,7 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $item_order = 1;
                         foreach ($current_list_items as $item_text) {
                             if (!empty(trim($item_text))) { // Avoid inserting empty items
-                                $item_text_val = $conn->real_escape_string(stripslashes($item_text));
+                                $item_text_val = $conn->real_escape_string(cleanBlogText($item_text));
                                 $item_sql = "INSERT INTO blog_list_items (list_block_id, item_text, item_order) VALUES (?, ?, ?)";
                                 $item_stmt = $conn->prepare($item_sql);
                                 $item_stmt->bind_param("isi", $list_block_id, $item_text_val, $item_order);
@@ -372,7 +393,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Delete associated images first
             foreach($blocks_to_delete as $del_id) {
                 if ($existing_blocks_data[$del_id]['block_type'] === 'image' && !empty($existing_blocks_data[$del_id]['image_path'])) {
-                    deleteImageFile('../../images/blog/content/' . $existing_blocks_data[$del_id]['image_path']);
+                    deleteImageFile(__DIR__ . '/../../images/blog/content/' . $existing_blocks_data[$del_id]['image_path']);
                 }
                  // Add deletion for list items if needed
                 if ($existing_blocks_data[$del_id]['block_type'] === 'list') {
@@ -393,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // --- Handle Gallery Images ---
         $existing_gallery_images = [];
-        $stmt = $conn->prepare("SELECT gallery_image_id, image_path FROM blog_gallery_images WHERE blog_id = ? ORDER BY gallery_image_id ASC"); // Assuming order matters or use a specific order column
+        $stmt = $conn->prepare("SELECT gallery_image_id, image_path FROM blog_gallery_images WHERE blog_id = ? ORDER BY image_order ASC, gallery_image_id ASC");
         $stmt->bind_param("i", $blog_id);
         $stmt->execute();
         $gallery_result = $stmt->get_result();
@@ -415,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Check for new upload
             if (isset($_FILES[$file_input_name]) && $_FILES[$file_input_name]['error'] !== UPLOAD_ERR_NO_FILE && $_FILES[$file_input_name]['size'] > 0) {
-                $uploadResult = uploadImage($_FILES[$file_input_name], '../../images/blog/gallery/');
+                $uploadResult = uploadImage($_FILES[$file_input_name], __DIR__ . '/../../images/blog/gallery/');
                 if ($uploadResult['status'] === 'success') {
                     $new_path = $uploadResult['filename'];
                     $newGalleryImageUploaded = true;
@@ -428,33 +449,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // New image uploaded
                 if ($gallery_id > 0) {
                     // Update existing gallery entry
-                    $sql = "UPDATE blog_gallery_images SET image_path = ? WHERE gallery_id = ?";
+                    $sql = "UPDATE blog_gallery_images SET image_path = ?, image_order = ? WHERE gallery_image_id = ?";
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("si", $new_path, $gallery_id);
+                    $imageOrder = $i - 1;
+                    $stmt->bind_param("sii", $new_path, $imageOrder, $gallery_id);
                     $stmt->execute();
                     $stmt->close();
                     // Delete old file if it existed and is different
                     if (!empty($current_path_in_db) && $current_path_in_db !== $new_path) {
-                        deleteImageFile('../../images/blog/gallery/' . $current_path_in_db);
+                        deleteImageFile(__DIR__ . '/../../images/blog/gallery/' . $current_path_in_db);
                     }
                 } else {
                     // Insert new gallery entry
-                    $sql = "INSERT INTO blog_gallery_images (blog_id, image_path) VALUES (?, ?)"; // Add order column if needed
+                    $sql = "INSERT INTO blog_gallery_images (blog_id, image_path, image_order) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("is", $blog_id, $new_path);
+                    $imageOrder = $i - 1;
+                    $stmt->bind_param("isi", $blog_id, $new_path, $imageOrder);
                     $stmt->execute();
                     $stmt->close();
                 }
             } elseif (empty($existing_path) && $gallery_id > 0) {
                  // No new image, and existing path input is empty -> User removed the image
-                 $sql = "DELETE FROM blog_gallery_images WHERE gallery_id = ?";
+                 $sql = "DELETE FROM blog_gallery_images WHERE gallery_image_id = ?";
                  $stmt = $conn->prepare($sql);
                  $stmt->bind_param("i", $gallery_id);
                  $stmt->execute();
                  $stmt->close();
                  // Delete the file
                  if (!empty($current_path_in_db)) {
-                     deleteImageFile('../../images/blog/gallery/' . $current_path_in_db);
+                     deleteImageFile(__DIR__ . '/../../images/blog/gallery/' . $current_path_in_db);
                  }
             }
             // If no new image and existing_path is set, do nothing (keep existing)
@@ -480,7 +503,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         // --- Rollback and Error Handling ---
-        $conn->rollback();
+        if (isset($conn) && $conn instanceof mysqli) {
+            $conn->rollback();
+        }
         error_log("Blog Update Error: " . $e->getMessage() . " for blog_id: " . ($blog_id ?? 'unknown')); // Log the error
 
         if ($isAjax) {
