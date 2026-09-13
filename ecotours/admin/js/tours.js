@@ -986,29 +986,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDropzone(`highlight${i}Dropzone`, `highlight${i}`, `highlight${i}Preview`);
   }
 
-  // 11. View Switcher (Table List vs Grid Cards)
-  const lvBtn = document.getElementById('listViewBtn');
-  const cvBtn = document.getElementById('cardViewBtn');
-  const toursDisplay = document.getElementById('toursDisplay');
-
-  if (lvBtn && cvBtn && toursDisplay) {
-    const setViewMode = (mode) => {
-      toursDisplay.classList.toggle('list-view', mode === 'list');
-      toursDisplay.classList.toggle('card-view', mode === 'card');
-      lvBtn.classList.toggle('active', mode === 'list');
-      lvBtn.setAttribute('aria-pressed', mode === 'list');
-      cvBtn.classList.toggle('active', mode === 'card');
-      cvBtn.setAttribute('aria-pressed', mode === 'card');
-      localStorage.setItem('virungaTourViewMode', mode);
-    };
-
-    lvBtn.addEventListener('click', () => setViewMode('list'));
-    cvBtn.addEventListener('click', () => setViewMode('card'));
-
-    const savedMode = localStorage.getItem('virungaTourViewMode') || 'list';
-    setViewMode(savedMode);
-  }
-
   // 12. Main Tour Form Submission (AJAX)
   const tourForm = document.getElementById('tourForm');
   if (tourForm) {
@@ -1122,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (res.success) {
             const tourId = formData.get('tour_id');
             const row = document.querySelector(`tr[data-id="${tourId}"]`);
-            const card = document.querySelector(`.tour-modern-card[data-id="${tourId}"]`);
+            const card = document.querySelector(`.tour-clean-card[data-id="${tourId}"]`);
             if (row) row.remove();
             if (card) card.remove();
 

@@ -438,34 +438,42 @@ function renderTourCard(array $row): string {
     $category = htmlspecialchars($row['category']);
     $country = htmlspecialchars(ucfirst($row['country']));
     $days = (int)$row['days_count'];
-    $desc = htmlspecialchars(mb_strimwidth($row['short_description'] ?? '', 0, 95, '...'));
+    $totalDays = (int)($row['total_days'] ?? 0);
+    $totalHighlights = (int)($row['total_highlights'] ?? 0);
+    $desc = htmlspecialchars(mb_strimwidth($row['short_description'] ?? '', 0, 110, '...'));
 
     return '
     <div class="tour-clean-card" data-id="' . $tourId . '">
       <div class="card-cover-media" onclick="openPreviewModal(' . $tourId . ')">
         <img src="' . $coverImg . '" alt="' . $title . '" onerror="this.src=\'../../images/default-tour.jpg\';" />
-        <span class="card-country-pill">' . $country . '</span>
-        <span class="card-days-pill">' . $days . ' Days</span>
+        <div class="card-cover-overlay"></div>
+        <span class="card-country-badge"><i class="fas fa-location-dot"></i> ' . $country . '</span>
+        <span class="card-days-badge"><i class="fas fa-clock"></i> ' . $days . ' ' . ($days > 1 ? 'Days' : 'Day') . '</span>
       </div>
 
       <div class="card-body-inner">
-        <span class="card-cat">' . $category . '</span>
-        <h4 class="card-tour-heading" onclick="openPreviewModal(' . $tourId . ')">
+        <span class="card-category-tag">' . $category . '</span>
+        <h4 class="card-tour-title" onclick="openPreviewModal(' . $tourId . ')" title="' . $title . '">
           ' . $title . '
         </h4>
-        <p class="card-desc-snippet">
+        <p class="card-tour-desc">
           ' . $desc . '
         </p>
 
-        <div class="card-footer-btns">
-          <button type="button" class="btn btn-sm btn-outline btn-flex" onclick="openPreviewModal(' . $tourId . ')">
-            <i class="fas fa-eye"></i> View
+        <div class="card-meta-bar">
+          <span><i class="fas fa-calendar-days"></i> ' . $totalDays . ' ' . ($totalDays > 1 ? 'Days' : 'Day') . ' Plan</span>
+          <span><i class="fas fa-camera"></i> ' . $totalHighlights . ' Photos</span>
+        </div>
+
+        <div class="card-actions-modern">
+          <button type="button" class="btn-card-action btn-card-view" onclick="openPreviewModal(' . $tourId . ')" title="Preview Tour">
+            <i class="fas fa-eye"></i> <span>View</span>
           </button>
-          <button type="button" class="btn btn-sm btn-primary btn-flex" onclick="editTour(' . $tourId . ')">
-            <i class="fas fa-edit"></i> Edit
+          <button type="button" class="btn-card-action btn-card-edit" onclick="editTour(' . $tourId . ')" title="Edit Tour">
+            <i class="fas fa-pen-to-square"></i> <span>Edit</span>
           </button>
-          <button type="button" class="btn btn-sm btn-outline btn-trash" onclick="promptDeleteTour(' . $tourId . ', \'' . $titleEscaped . '\')">
-            <i class="fas fa-trash"></i>
+          <button type="button" class="btn-card-action btn-card-delete" onclick="promptDeleteTour(' . $tourId . ', \'' . $titleEscaped . '\')" title="Delete Tour">
+            <i class="fas fa-trash-can"></i>
           </button>
         </div>
       </div>
