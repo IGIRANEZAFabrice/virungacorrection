@@ -627,6 +627,77 @@ require_once './itenaryopenhandler.php';
       box-shadow: 0 10px 25px rgba(201, 162, 75, 0.5);
       background: linear-gradient(135deg, #d8b056 0%, #b89139 100%);
     }
+
+    /* Floating Bottom-Right PDF Download Button */
+    .floating-pdf-btn-container {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(25px) scale(0.92);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  visibility 0.35s ease;
+      pointer-events: none;
+    }
+
+    .floating-pdf-btn-container.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .floating-pdf-btn {
+      background: linear-gradient(135deg, #122a1f 0%, #1b3a2b 100%);
+      color: #f6f2e9;
+      border: 1.5px solid #c9a24b;
+      padding: 13px 24px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 18px rgba(201, 162, 75, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: inherit;
+      transition: all 0.25s ease;
+    }
+
+    .floating-pdf-btn:hover {
+      background: linear-gradient(135deg, #c9a24b 0%, #a37f30 100%);
+      color: #122a1f;
+      border-color: #f6f2e9;
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(201, 162, 75, 0.5);
+    }
+
+    .floating-pdf-btn .floating-pdf-icon {
+      color: #c9a24b;
+      font-size: 1.1rem;
+      transition: color 0.25s ease;
+    }
+
+    .floating-pdf-btn:hover .floating-pdf-icon {
+      color: #122a1f;
+    }
+
+    @media (max-width: 768px) {
+      .floating-pdf-btn-container {
+        bottom: 18px;
+        right: 18px;
+      }
+      .floating-pdf-btn {
+        padding: 10px 18px;
+        font-size: 0.82rem;
+        gap: 8px;
+      }
+    }
     </style>
 
     <!-- html2pdf Library for Multilingual PDF Export -->
@@ -883,18 +954,34 @@ require_once './itenaryopenhandler.php';
       </div>
     </div>
 
+    <!-- Floating Bottom-Right PDF Download Button -->
+    <div id="floatingPdfBtnContainer" class="floating-pdf-btn-container">
+      <button id="floatingPdfBtn" class="floating-pdf-btn" onclick="generateItineraryPdf();" title="Download Itinerary PDF">
+        <span class="floating-pdf-icon"><i class="fas fa-file-pdf"></i></span>
+        <span class="floating-pdf-text">Download PDF</span>
+      </button>
+    </div>
+
     <script>
     function generateItineraryPdf() {
       const btn = document.getElementById("downloadPdfBtn");
+      const floatingBtn = document.getElementById("floatingPdfBtn");
       const originalBtnHtml = btn ? btn.innerHTML : '';
+      const originalFloatingHtml = floatingBtn ? floatingBtn.innerHTML : '';
+
       if (btn) {
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+      }
+      if (floatingBtn) {
+        floatingBtn.disabled = true;
+        floatingBtn.innerHTML = '<span class="floating-pdf-icon"><i class="fas fa-spinner fa-spin"></i></span> <span class="floating-pdf-text">Generating...</span>';
       }
 
       const template = document.getElementById('pdfPrintableTemplate');
       if (!template) {
         if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+        if (floatingBtn) { floatingBtn.disabled = false; floatingBtn.innerHTML = originalFloatingHtml; }
         window.open('./itinerary_print.php?id=<?php echo $tour_id; ?>', '_blank');
         return;
       }
@@ -943,12 +1030,20 @@ require_once './itenaryopenhandler.php';
             btn.disabled = false;
             btn.innerHTML = originalBtnHtml;
           }
+          if (floatingBtn) {
+            floatingBtn.disabled = false;
+            floatingBtn.innerHTML = originalFloatingHtml;
+          }
         }).catch((err) => {
           console.error("PDF generation error:", err);
           renderContainer.remove();
           if (btn) {
             btn.disabled = false;
             btn.innerHTML = originalBtnHtml;
+          }
+          if (floatingBtn) {
+            floatingBtn.disabled = false;
+            floatingBtn.innerHTML = originalFloatingHtml;
           }
           // Fallback to print dossier
           window.open('./itinerary_print.php?id=<?php echo $tour_id; ?>', '_blank');
@@ -959,8 +1054,48 @@ require_once './itenaryopenhandler.php';
           btn.disabled = false;
           btn.innerHTML = originalBtnHtml;
         }
+        if (floatingBtn) {
+          floatingBtn.disabled = false;
+          floatingBtn.innerHTML = originalFloatingHtml;
+        }
       });
     }
+
+    // Scroll Detection: Show Floating PDF Button when scrolling past the top section
+    document.addEventListener("DOMContentLoaded", function() {
+      const mainBtn = document.getElementById("downloadPdfBtn");
+      const floatingContainer = document.getElementById("floatingPdfBtnContainer");
+
+      if (mainBtn && floatingContainer) {
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                floatingContainer.classList.remove("visible");
+              } else {
+                const rect = mainBtn.getBoundingClientRect();
+                if (rect.top < 0) {
+                  floatingContainer.classList.add("visible");
+                } else {
+                  floatingContainer.classList.remove("visible");
+                }
+              }
+            });
+          }, { threshold: 0.1 });
+
+          observer.observe(mainBtn);
+        } else {
+          window.addEventListener("scroll", function() {
+            const rect = mainBtn.getBoundingClientRect();
+            if (rect.bottom < 0) {
+              floatingContainer.classList.add("visible");
+            } else {
+              floatingContainer.classList.remove("visible");
+            }
+          });
+        }
+      }
+    });
     </script>
     <?php include('./includes/footer.php'); ?>
   </body>
