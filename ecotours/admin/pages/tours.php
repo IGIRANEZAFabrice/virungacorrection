@@ -920,22 +920,36 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
               <div class="tab-pane" id="tab-pricing">
                 <div class="pricing-card">
                   <div class="pricing-card-header">
-                    <strong>Pricing Tiers (USD / person)</strong>
-                    <button type="button" class="btn btn-sm btn-outline" id="addPricingBtn">+ Add Tier</button>
+                    <strong><i class="fas fa-tags text-primary"></i> Pricing Tiers (USD / person)</strong>
+                    <button type="button" class="btn-add-item" style="width: auto; padding: 4px 12px;" id="addPricingBtn">
+                      <i class="fas fa-plus"></i> Add Tier
+                    </button>
                   </div>
+                  <p style="font-size: 11.5px; color: #64748b; margin: 0 0 8px;">Optional for custom/bespoke journeys. Leave blank if quoted on request.</p>
                   <div class="pricing-tier-list" id="pricingTiersList">
                     <div class="pricing-tier-row">
-                      <input type="text" class="tier-group" placeholder="Group Size (e.g. 1 Person)" value="1 Person" required />
-                      <input type="number" step="0.01" class="tier-price" placeholder="Price ($)" required />
-                      <button type="button" class="btn-remove-tier"><i class="fas fa-trash"></i></button>
+                      <div class="tier-col-group">
+                        <label>Group Size</label>
+                        <input type="text" class="tier-group" placeholder="e.g. 1 Person (Solo)" value="1 Person" />
+                      </div>
+                      <div class="tier-col-price">
+                        <label>Price (USD)</label>
+                        <div class="input-dollar">
+                          <span>$</span>
+                          <input type="number" step="0.01" class="tier-price" placeholder="e.g. 1500.00" />
+                        </div>
+                      </div>
+                      <button type="button" class="btn-remove-tier" title="Remove"><i class="fas fa-trash"></i></button>
                     </div>
                   </div>
                 </div>
 
                 <div class="pricing-card" style="margin-top: 14px;">
                   <div class="pricing-card-header">
-                    <strong>Pricing Notes & Terms</strong>
-                    <button type="button" class="btn btn-sm btn-outline" id="addPricingNoteBtn">+ Add Note</button>
+                    <strong><i class="fas fa-file-contract text-primary"></i> Pricing Notes & Terms</strong>
+                    <button type="button" class="btn-add-item" style="width: auto; padding: 4px 12px;" id="addPricingNoteBtn">
+                      <i class="fas fa-plus"></i> Add Note
+                    </button>
                   </div>
                   <div class="pricing-notes-list" id="pricingNotesList">
                     <div class="pricing-note-row">
@@ -950,16 +964,16 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
 
             <!-- Modal Sticky Footer -->
             <div class="modal-footer">
-              <button type="button" class="btn btn-sm btn-outline" id="btnPrevStep" style="display: none;">
+              <button type="button" class="btn-modal btn-modal-secondary" id="btnPrevStep" style="display: none;">
                 <i class="fas fa-arrow-left"></i> Previous
               </button>
-              <div style="margin-left: auto; display: flex; gap: 8px;">
-                <button type="button" class="btn btn-sm btn-outline" onclick="closeTourModal()">Cancel</button>
-                <button type="button" class="btn btn-sm btn-primary" id="btnNextStep">
-                  Next <i class="fas fa-arrow-right"></i>
+              <div class="modal-footer-right">
+                <button type="button" class="btn-modal btn-modal-ghost" onclick="closeTourModal()">Cancel</button>
+                <button type="button" class="btn-modal btn-modal-primary" id="btnNextStep">
+                  Next Step <i class="fas fa-arrow-right"></i>
                 </button>
-                <button type="submit" class="btn btn-sm btn-primary" id="btnSubmitForm" style="display: none;">
-                  <i class="fas fa-check"></i> <span id="submitBtnLabel">Save Package</span>
+                <button type="submit" class="btn-modal btn-modal-success" id="btnSubmitForm" style="display: none;">
+                  <i class="fas fa-check-circle"></i> <span id="submitBtnLabel">Save Package</span>
                 </button>
               </div>
             </div>

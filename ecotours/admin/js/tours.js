@@ -139,21 +139,104 @@ function validateCurrentTab() {
 
   const requiredInputs = currentPane.querySelectorAll('input[required], select[required], textarea[required]');
   let isValid = true;
+  let firstInvalid = null;
 
   requiredInputs.forEach((input) => {
     if (!input.value.trim()) {
-      input.style.borderColor = 'var(--tour-accent-rose)';
+      input.classList.add('input-error');
       isValid = false;
+      if (!firstInvalid) firstInvalid = input;
     } else {
-      input.style.borderColor = '';
+      input.classList.remove('input-error');
     }
   });
 
   if (!isValid) {
-    showToast('Please fill out all required fields before continuing.', 'error');
+    if (firstInvalid) firstInvalid.focus();
+    showToast('Please fill out all required fields in this step.', 'error');
   }
 
   return isValid;
+}
+
+function validateAllTabs() {
+  // Clear any existing error highlights
+  document.querySelectorAll('#tourForm .input-error').forEach((el) => el.classList.remove('input-error'));
+  document.querySelectorAll('#formStepper .step-btn').forEach((btn) => btn.classList.remove('has-error'));
+
+  // Step 1: Basics
+  const title = document.getElementById('tourTitle');
+  const country = document.getElementById('tourCountry');
+  const category = document.getElementById('tourCategory');
+  const days = document.getElementById('tourDays');
+  const desc = document.getElementById('tourDesc');
+
+  if (!title || !title.value.trim()) {
+    switchStepTab('tab-basics');
+    title?.classList.add('input-error');
+    title?.focus();
+    showToast('Please enter the Tour Title in Basics.', 'error');
+    return false;
+  }
+  if (!country || !country.value.trim()) {
+    switchStepTab('tab-basics');
+    country?.classList.add('input-error');
+    country?.focus();
+    showToast('Please select a Destination Country in Basics.', 'error');
+    return false;
+  }
+  if (!category || !category.value.trim()) {
+    switchStepTab('tab-basics');
+    category?.classList.add('input-error');
+    category?.focus();
+    showToast('Please select or create a Category in Basics.', 'error');
+    return false;
+  }
+  if (!days || !days.value.trim() || parseInt(days.value) < 1) {
+    switchStepTab('tab-basics');
+    days?.classList.add('input-error');
+    days?.focus();
+    showToast('Please enter a valid Duration (Days) in Basics.', 'error');
+    return false;
+  }
+  if (!desc || !desc.value.trim()) {
+    switchStepTab('tab-basics');
+    desc?.classList.add('input-error');
+    desc?.focus();
+    showToast('Please provide a Short Summary in Basics.', 'error');
+    return false;
+  }
+
+  // Step 2: Itinerary activities
+  const activityItems = document.querySelectorAll('#daysContainer .day-card-item');
+  if (activityItems.length === 0) {
+    switchStepTab('tab-itinerary');
+    showToast('Please add at least one Activity to the Itinerary.', 'error');
+    return false;
+  }
+
+  for (let idx = 0; idx < activityItems.length; idx++) {
+    const item = activityItems[idx];
+    const actTitle = item.querySelector('.activity-title');
+    const actDesc = item.querySelector('.activity-desc');
+
+    if (!actTitle || !actTitle.value.trim()) {
+      switchStepTab('tab-itinerary');
+      actTitle?.classList.add('input-error');
+      actTitle?.focus();
+      showToast(`Please enter a title for Activity ${idx + 1} in Itinerary.`, 'error');
+      return false;
+    }
+    if (!actDesc || !actDesc.value.trim()) {
+      switchStepTab('tab-itinerary');
+      actDesc?.classList.add('input-error');
+      actDesc?.focus();
+      showToast(`Please enter a description for Activity ${idx + 1} in Itinerary.`, 'error');
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /* ==========================================================================
@@ -166,8 +249,12 @@ function resetFormToAddMode() {
   form.reset();
   document.getElementById('formTourId').value = '';
 
-  document.getElementById('modalFormTitle').textContent = 'Add New Tour Package';
+  document.getElementById('modalFormTitle').innerHTML = '<i class="fas fa-plus-circle text-primary"></i> Add New Tour Package';
   document.getElementById('submitBtnLabel').textContent = 'Create Tour Package';
+
+  // Clear any existing error highlights
+  document.querySelectorAll('#tourForm .input-error').forEach((el) => el.classList.remove('input-error'));
+  document.querySelectorAll('#formStepper .step-btn').forEach((btn) => btn.classList.remove('has-error'));
 
   // Reset previews
   const coverPreview = document.getElementById('coverPreview');
@@ -195,14 +282,14 @@ function resetFormToAddMode() {
       <div class="day-card-item">
         <div class="day-card-header">
           <div class="day-num-badge"><i class="fas fa-map-pin"></i> Activity 1</div>
-          <button type="button" class="btn-remove-day" title="Remove Activity"><i class="fas fa-trash-can"></i></button>
+          <button type="button" class="btn-remove-day" title="Remove Activity"><i class="fas fa-trash"></i></button>
         </div>
         <div class="form-group">
-          <label class="form-label">Activity Title</label>
+          <label class="form-label required">Activity Title</label>
           <input type="text" class="activity-title" placeholder="e.g. Arrival in Kigali & Scenic Transfer to Musanze" required />
         </div>
         <div class="form-group">
-          <label class="form-label">Activity Description</label>
+          <label class="form-label required">Activity Description</label>
           <textarea class="activity-desc" rows="3" placeholder="Describe the day's schedule, meals, and accommodations..." required></textarea>
         </div>
       </div>
@@ -221,16 +308,16 @@ function resetFormToAddMode() {
       <div class="pricing-tier-row">
         <div class="tier-col-group">
           <label>Group Size</label>
-          <input type="text" class="tier-group" placeholder="e.g. 1 Person (Solo)" value="1 Person" required />
+          <input type="text" class="tier-group" placeholder="e.g. 1 Person (Solo)" value="1 Person" />
         </div>
         <div class="tier-col-price">
           <label>Price (USD)</label>
           <div class="input-dollar">
             <span>$</span>
-            <input type="number" step="0.01" class="tier-price" placeholder="1500.00" required />
+            <input type="number" step="0.01" class="tier-price" placeholder="e.g. 1500.00" />
           </div>
         </div>
-        <button type="button" class="btn-remove-tier"><i class="fas fa-trash-can"></i></button>
+        <button type="button" class="btn-remove-tier" title="Remove"><i class="fas fa-trash"></i></button>
       </div>
     `;
   }
@@ -289,7 +376,7 @@ function editTour(tourId) {
       resetFormToAddMode();
 
       document.getElementById('formTourId').value = tour.tour_id;
-      document.getElementById('modalFormTitle').textContent = `Edit Tour: ${tour.title}`;
+      document.getElementById('modalFormTitle').innerHTML = `<i class="fas fa-pen-to-square text-primary"></i> Edit Tour: ${escapeHTML(tour.title)}`;
       document.getElementById('submitBtnLabel').textContent = 'Update Tour Package';
 
       // Step 1: Basics
@@ -324,14 +411,14 @@ function editTour(tourId) {
           item.innerHTML = `
             <div class="day-card-header">
               <div class="day-num-badge"><i class="fas fa-map-pin"></i> Activity ${idx + 1}</div>
-              <button type="button" class="btn-remove-day" title="Remove Activity"><i class="fas fa-trash-can"></i></button>
+              <button type="button" class="btn-remove-day" title="Remove Activity"><i class="fas fa-trash"></i></button>
             </div>
             <div class="form-group">
-              <label class="form-label">Activity Title</label>
+              <label class="form-label required">Activity Title</label>
               <input type="text" class="activity-title" value="${escapeHTML(d.day_title)}" required />
             </div>
             <div class="form-group">
-              <label class="form-label">Activity Description</label>
+              <label class="form-label required">Activity Description</label>
               <textarea class="activity-desc" rows="3" required>${escapeHTML(d.day_description)}</textarea>
             </div>
           `;
@@ -392,16 +479,16 @@ function editTour(tourId) {
             row.innerHTML = `
               <div class="tier-col-group">
                 <label>Group Size</label>
-                <input type="text" class="tier-group" value="${escapeHTML(t.group_size)}" required />
+                <input type="text" class="tier-group" value="${escapeHTML(t.group_size)}" />
               </div>
               <div class="tier-col-price">
                 <label>Price (USD)</label>
                 <div class="input-dollar">
                   <span>$</span>
-                  <input type="number" step="0.01" class="tier-price" value="${escapeHTML(t.price_per_person)}" required />
+                  <input type="number" step="0.01" class="tier-price" value="${escapeHTML(t.price_per_person)}" />
                 </div>
               </div>
-              <button type="button" class="btn-remove-tier"><i class="fas fa-trash-can"></i></button>
+              <button type="button" class="btn-remove-tier" title="Remove"><i class="fas fa-trash"></i></button>
             `;
             pricingList.appendChild(row);
           });
@@ -410,16 +497,16 @@ function editTour(tourId) {
             <div class="pricing-tier-row">
               <div class="tier-col-group">
                 <label>Group Size</label>
-                <input type="text" class="tier-group" placeholder="e.g. 1 Person (Solo)" value="1 Person" required />
+                <input type="text" class="tier-group" placeholder="e.g. 1 Person (Solo)" value="1 Person" />
               </div>
               <div class="tier-col-price">
                 <label>Price (USD)</label>
                 <div class="input-dollar">
                   <span>$</span>
-                  <input type="number" step="0.01" class="tier-price" placeholder="1500.00" required />
+                  <input type="number" step="0.01" class="tier-price" placeholder="e.g. 1500.00" />
                 </div>
               </div>
-              <button type="button" class="btn-remove-tier"><i class="fas fa-trash-can"></i></button>
+              <button type="button" class="btn-remove-tier" title="Remove"><i class="fas fa-trash"></i></button>
             </div>
           `;
         }
@@ -928,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tourForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      if (!validateCurrentTab()) return;
+      if (!validateAllTabs()) return;
 
       const submitBtn = document.getElementById('btnSubmitForm');
       const origBtnHtml = submitBtn.innerHTML;
@@ -957,13 +1044,13 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.set('excludedItems', JSON.stringify(getListValues('#excludedList input')));
       formData.set('toBringItems', JSON.stringify(getListValues('#bringList input')));
 
-      // Collect Pricing Tiers
+      // Collect Pricing Tiers (Only collect rows where at least one field has input)
       const pricingTiers = Array.from(document.querySelectorAll('#pricingTiersList .pricing-tier-row'))
         .map((r) => ({
           group_size: r.querySelector('.tier-group')?.value.trim() || '',
           price_per_person: r.querySelector('.tier-price')?.value.trim() || ''
         }))
-        .filter((t) => t.group_size && t.price_per_person);
+        .filter((t) => t.group_size || t.price_per_person);
       formData.set('pricingTiers', JSON.stringify(pricingTiers));
 
       // Collect Pricing Notes
@@ -995,6 +1082,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
   }
+
+  // Clear input error on user interaction
+  document.addEventListener('input', (e) => {
+    if (e.target.classList && e.target.classList.contains('input-error') && e.target.value.trim()) {
+      e.target.classList.remove('input-error');
+    }
+  });
+
+  document.addEventListener('change', (e) => {
+    if (e.target.classList && e.target.classList.contains('input-error') && e.target.value.trim()) {
+      e.target.classList.remove('input-error');
+    }
+  });
 
   // 13. Delete Form Submission (AJAX)
   const deleteForm = document.getElementById('deleteForm');
