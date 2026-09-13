@@ -251,21 +251,21 @@
   <body>
     <!-- --- NAV -------------------------------------------------- -->
     <nav id="mainNav">
-      <a href="<?php echo $baseLink('homestays'); ?>" class="logo-wrap" title="Virunga House - Locally Rooted Stay in Musanze">
+      <a href="<?php echo $baseLink('home'); ?>" class="logo-wrap" title="Virunga Collective - Main Homepage">
         <img
           src="./img/logo/logo.png"
           class="logo-full"
-          alt="Virunga House"
+          alt="Virunga Collective"
         />
         <img
           src="./img/logo/logo-small.png"
           class="logo-sm"
-          alt="Virunga House"
+          alt="Virunga Collective"
         />
       </a>
 
       <ul class="nav-links">
-        <li><a href="<?php echo $baseLink('home'); ?>"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>" title="Virunga Collective Main Home"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
         <li><a href="<?php echo $baseLink('homestays'); ?>">Stay</a></li>
         <li><a href="<?php echo $baseLink('homestays'); ?>#home-about">The House</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>

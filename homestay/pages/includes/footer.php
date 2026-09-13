@@ -138,11 +138,13 @@
       <div class="footer__inner">
         <!-- BRAND -->
         <div class="footer__col footer__brand">
-          <img
-            src="./img/logo/logo.png"
-            alt="Virunga Homestay"
-            class="footer__logo"
-          />
+          <a href="<?php echo $baseLink('home'); ?>" title="Virunga Collective - Main Homepage" style="display: inline-block;">
+            <img
+              src="./img/logo/logo.png"
+              alt="Virunga Collective"
+              class="footer__logo"
+            />
+          </a>
           <p class="footer__tagline">Where Virunga Becomes Personal.</p>
           <p class="footer__desc">
            Live the Virunga in a real home through people, stories, and shared moments that stay with you.
