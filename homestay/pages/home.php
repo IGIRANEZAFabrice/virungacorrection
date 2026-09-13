@@ -38,7 +38,9 @@
         <h1 class="hero-title"><?php echo $title; ?></h1>
         <p class="hero-desc"><?php echo $paragraph; ?></p>
         <div class="hero-actions">
-          <a href="<?php echo $baseLink('rooms'); ?>" class="btn-primary">ENQUIRE TO STAY</a>
+          <a href="https://wa.me/250784513435?text=Hello%20Virunga%20House,%20I%20would%20like%20to%20enquire%20about%20the%20rooms%20and%20availability%20to%20stay." target="_blank" rel="noopener" class="btn-primary">
+            <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> ENQUIRE TO STAY
+          </a>
         </div>
       </div>
   <?php } ?>
