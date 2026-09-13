@@ -1,5 +1,20 @@
 <?php
 require_once './itenaryopenhandler.php';
+
+if (!function_exists('virungaImgBase64')) {
+    function virungaImgBase64($relPath) {
+        if (empty($relPath)) return '';
+        $clean = ltrim(str_replace('../', '', $relPath), '/');
+        $fullPath = dirname(__DIR__) . '/' . $clean;
+        if (file_exists($fullPath)) {
+            $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+            $mime = ($ext === 'png') ? 'image/png' : (($ext === 'webp') ? 'image/webp' : 'image/jpeg');
+            $data = file_get_contents($fullPath);
+            return 'data:' . $mime . ';base64,' . base64_encode($data);
+        }
+        return '../' . $clean;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +30,9 @@ require_once './itenaryopenhandler.php';
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/header.css" />
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/new.css" />
@@ -697,6 +715,248 @@ require_once './itenaryopenhandler.php';
     }
     </style>
 
+    <!-- html2pdf Library for Direct PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- HIDDEN LUXURY PDF PRINTABLE TEMPLATE -->
+    <div id="pdfPrintableTemplate" style="display: none;">
+      <div style="font-family: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; color: #202924; background: #ffffff; width: 800px; padding: 35px 40px; box-sizing: border-box; line-height: 1.5; font-size: 13px;">
+        
+        <!-- HEADER -->
+        <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #c9a24b; padding-bottom: 15px; margin-bottom: 22px;">
+          <tr>
+            <td style="vertical-align: middle;">
+              <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 700; letter-spacing: 2px; color: #122a1f; text-transform: uppercase; line-height: 1;">VIRUNGA ECOTOURS</div>
+              <div style="font-size: 10.5px; color: #607066; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px; font-weight: 500;">Regenerative Safaris & Community Journeys in East Africa</div>
+            </td>
+            <td style="text-align: right; font-size: 11px; color: #3b4740; line-height: 1.45;">
+              <strong style="color: #8e681c; font-size: 11.5px;">www.virungajourneys.com</strong><br>
+              WhatsApp: +250 784 513 435<br>
+              info@virungajourneys.com
+            </td>
+          </tr>
+        </table>
+
+        <!-- TITLE & METRICS -->
+        <div>
+          <div style="display: inline-block; background: #f4ede0; color: #8e681c; font-weight: 700; font-size: 10px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+            <?php 
+              $countryName = ucfirst(trim($tour['country']));
+              if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== false) {
+                  $countryName = 'DR Congo';
+              }
+              echo htmlspecialchars(strtoupper($tour['category'])) . ' · ' . htmlspecialchars(strtoupper($countryName));
+            ?>
+          </div>
+          <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; color: #122a1f; font-weight: 700; line-height: 1.15; margin: 0 0 14px 0;">
+            <?php echo htmlspecialchars($tour['title']); ?>
+          </h1>
+
+          <table style="width: 100%; border-collapse: collapse; background: #fbfaf7; border: 1px solid #e6e2d8; border-radius: 6px; margin-bottom: 20px;">
+            <tr>
+              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
+                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Duration</div>
+                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo (int)$tour['days_count']; ?> Day<?php echo $tour['days_count'] > 1 ? 's' : ''; ?></div>
+              </td>
+              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
+                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Destination</div>
+                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo htmlspecialchars($countryName); ?></div>
+              </td>
+              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
+                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Category</div>
+                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo htmlspecialchars($tour['category']); ?></div>
+              </td>
+              <td style="width: 25%; padding: 10px 14px; text-align: center;">
+                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Format</div>
+                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;">Private & Guided</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- COVER PHOTO (FULL WIDTH TOP) -->
+        <div style="margin-bottom: 20px; border-radius: 6px; overflow: hidden; border: 1px solid #dcd7cc;">
+          <img src="<?php echo virungaImgBase64($tour['cover_image_path']); ?>" alt="Cover Photo" style="width: 100%; height: 260px; object-fit: cover; display: block;">
+        </div>
+
+        <!-- EXECUTIVE OVERVIEW -->
+        <div style="background: #fdfbf7; border-left: 4px solid #c9a24b; border-top: 1px solid #efeae0; border-right: 1px solid #efeae0; border-bottom: 1px solid #efeae0; border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 24px;">
+          <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: #8e681c; font-weight: 700; margin-bottom: 4px;">Executive Journey Overview</div>
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; line-height: 1.55; font-style: italic; color: #26312a;">
+            "<?php echo htmlspecialchars($tour['short_description']); ?>"
+          </div>
+        </div>
+
+        <!-- DAY-BY-DAY ITINERARY -->
+        <div style="border-bottom: 2px solid #122a1f; padding-bottom: 6px; margin: 26px 0 16px 0;">
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; color: #122a1f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Detailed Day-by-Day Itinerary</div>
+        </div>
+
+        <?php foreach ($days as $day): ?>
+          <div style="page-break-inside: avoid; break-inside: avoid; background: #ffffff; border: 1px solid #e6e2d8; border-radius: 6px; padding: 13px 16px; margin-bottom: 11px;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="width: 68px; vertical-align: top;">
+                  <span style="background: #1b3a2b; color: #f4ede0; font-weight: 700; font-size: 10px; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">DAY <?php echo sprintf('%02d', $day['day_number']); ?></span>
+                </td>
+                <td style="vertical-align: top; padding-left: 8px;">
+                  <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; color: #122a1f; font-weight: 700; margin: 0 0 6px 0;"><?php echo htmlspecialchars($day['day_title']); ?></div>
+                  <div style="font-size: 12px; line-height: 1.6; color: #3b4740;"><?php echo nl2br(htmlspecialchars($day['day_description'])); ?></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <?php endforeach; ?>
+
+        <?php if (!empty($tour['why_attend'])): ?>
+          <!-- WHY CHOOSE THIS JOURNEY -->
+          <div style="page-break-inside: avoid; break-inside: avoid; background: #f5f9f6; border: 1px solid #cfe2d5; border-radius: 6px; padding: 15px 18px; margin-bottom: 20px;">
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; font-weight: 700; color: #1b3a2b; text-transform: uppercase; margin-bottom: 6px;">✦ Why Choose This Experience</div>
+            <div style="font-size: 12px; line-height: 1.6; color: #24352b;"><?php echo nl2br(htmlspecialchars($tour['why_attend'])); ?></div>
+          </div>
+        <?php endif; ?>
+
+        <!-- INCLUSIONS & EXCLUSIONS -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">
+          <tr>
+            <td style="width: 50%; vertical-align: top; padding-right: 7px;">
+              <div style="background: #f8faf8; border: 1px solid #d3e4d7; border-radius: 6px; padding: 14px 16px;">
+                <h4 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; font-weight: 700; color: #174223; border-bottom: 1px solid #d3e4d7; padding-bottom: 5px; margin: 0 0 8px 0;">✔ What is Included</h4>
+                <ul style="padding-left: 16px; font-size: 11.5px; line-height: 1.55; margin: 0;">
+                  <?php if (!empty($included)): ?>
+                    <?php foreach ($included as $inc): ?>
+                      <li style="color: #2c3d32; margin-bottom: 4px;"><?php echo htmlspecialchars($inc['item_description']); ?></li>
+                    <?php endforeach; ?>
+                  <?php else: ?>
+                    <li style="color: #2c3d32; margin-bottom: 4px;">Dedicated safari vehicle & expert tour guide</li>
+                    <li style="color: #2c3d32; margin-bottom: 4px;">All scheduled itinerary activities</li>
+                    <li style="color: #2c3d32; margin-bottom: 4px;">Selected accommodation & breakfast</li>
+                  <?php endif; ?>
+                </ul>
+              </div>
+            </td>
+            <td style="width: 50%; vertical-align: top; padding-left: 7px;">
+              <div style="background: #fdfafb; border: 1px solid #edd5d5; border-radius: 6px; padding: 14px 16px;">
+                <h4 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; font-weight: 700; color: #782626; border-bottom: 1px solid #edd5d5; padding-bottom: 5px; margin: 0 0 8px 0;">✖ What is Not Included</h4>
+                <ul style="padding-left: 16px; font-size: 11.5px; line-height: 1.55; margin: 0;">
+                  <?php if (!empty($excluded)): ?>
+                    <?php foreach ($excluded as $exc): ?>
+                      <li style="color: #4f3333; margin-bottom: 4px;"><?php echo htmlspecialchars($exc['item_description']); ?></li>
+                    <?php endforeach; ?>
+                  <?php else: ?>
+                    <li style="color: #4f3333; margin-bottom: 4px;">International flights and entry visas</li>
+                    <li style="color: #4f3333; margin-bottom: 4px;">Personal expenses, tips & gratuities</li>
+                    <li style="color: #4f3333; margin-bottom: 4px;">Unlisted drinks and activities</li>
+                  <?php endif; ?>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <?php if (!empty($toBring)): ?>
+          <!-- WHAT TO BRING -->
+          <div style="page-break-inside: avoid; break-inside: avoid; background: #fbfaf7; border: 1px solid #e6e2d8; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; font-size: 11.5px; color: #404d45;">
+            <strong style="color: #122a1f; font-size: 12.5px; font-family: 'Cormorant Garamond', Georgia, serif;">🎒 Recommended Packing & Preparation: </strong>
+            <?php 
+            $tbList = [];
+            foreach ($toBring as $tb) {
+                $tbList[] = htmlspecialchars($tb['item_description']);
+            }
+            echo implode(' · ', $tbList);
+            ?>
+          </div>
+        <?php endif; ?>
+
+        <?php if (!empty($pricingTiers)): ?>
+          <!-- PRICING TIERS -->
+          <div style="margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">
+            <div style="border-bottom: 2px solid #122a1f; padding-bottom: 6px; margin: 15px 0 16px 0;">
+              <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; color: #122a1f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Standard Rates (<?php echo htmlspecialchars($pricingYear ?? date('Y')); ?>)</div>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #e6e2d8; font-size: 12px;">
+              <thead>
+                <tr style="background: #fbfaf7;">
+                  <th style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: left; font-weight: 700;">Group Size</th>
+                  <th style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: right; font-weight: 700;">Price per Person (USD)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($pricingTiers as $tier): ?>
+                  <tr>
+                    <td style="padding: 8px 12px; border: 1px solid #e6e2d8;"><?php echo htmlspecialchars($tier['group_size']); ?></td>
+                    <td style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: right; font-weight: 700; color: #122a1f;">$<?php echo number_format((float)$tier['price_per_person'], 2); ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+            <?php if (!empty($pricingNotes)): ?>
+              <div style="font-size: 11px; color: #607066; margin-top: 6px;">
+                <?php foreach ($pricingNotes as $n): ?>
+                  <div>• <?php echo htmlspecialchars($n['note']); ?></div>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+          </div>
+        <?php endif; ?>
+
+        <?php if (!empty($highlights)): ?>
+          <!-- JOURNEY HIGHLIGHTS GALLERY (BOTTOM - 4 PER ROW) -->
+          <div style="margin-bottom: 22px; page-break-inside: avoid; break-inside: avoid;">
+            <div style="border-bottom: 2px solid #122a1f; padding-bottom: 6px; margin: 15px 0 12px 0;">
+              <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; color: #122a1f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Journey Photo Highlights</div>
+            </div>
+            <?php 
+              $highlightRows = array_chunk($highlights, 4);
+              foreach ($highlightRows as $rIdx => $row):
+                $isLastRow = ($rIdx === count($highlightRows) - 1);
+            ?>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: <?php echo $isLastRow ? '0' : '10px'; ?>;">
+              <tr>
+                <?php for ($i = 0; $i < 4; $i++): 
+                  $shot = $row[$i] ?? null;
+                  $padRight = ($i < 3) ? '6px' : '0';
+                  $padLeft = ($i > 0) ? '6px' : '0';
+                ?>
+                <td style="width: 25%; padding-right: <?php echo $padRight; ?>; padding-left: <?php echo $padLeft; ?>; vertical-align: top;">
+                  <?php if ($shot): ?>
+                    <img src="<?php echo virungaImgBase64($shot['image_path']); ?>"
+                         style="width: 100%; height: 125px; object-fit: cover; display: block; border-radius: 4px; border: 1px solid #dcd7cc;" alt="Highlight">
+                  <?php endif; ?>
+                </td>
+                <?php endfor; ?>
+              </tr>
+            </table>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <!-- PEACE OF MIND & ETHICAL TOURISM -->
+        <div style="background: #fbfaf7; border-left: 3px solid #7d8e83; padding: 10px 14px; margin-bottom: 20px; font-size: 11px; color: #4e5e54; line-height: 1.5; page-break-inside: avoid;">
+          <strong>Guest Safety & Ethics:</strong> Standard emergency medical & evacuation coverage is included on all expeditions. We uphold ethical fair wages, local community reinvestment, and conservation stewardship on every journey.
+        </div>
+
+        <!-- BOOKING FOOTER -->
+        <div style="page-break-inside: avoid; break-inside: avoid; background: #122a1f; color: #f4ede0; border-radius: 8px; padding: 20px 24px; text-align: center; margin-top: 24px;">
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; font-weight: 700; color: #c9a24b; margin-bottom: 5px;">Ready to Plan or Customize This Journey?</div>
+          <div style="font-size: 12px; color: #dbe4dc; line-height: 1.5; margin-bottom: 12px;">
+            Our dedicated journey planners are available to adapt dates, accommodation levels, and private activities to your exact travel wishes.
+          </div>
+          <div style="font-size: 12.5px; font-weight: 600; color: #ffffff;">
+            <span>📱 WhatsApp: +250 784 513 435</span>
+            <span style="margin: 0 8px; color: #c9a24b;">·</span>
+            <span>✉ Email: info@virungajourneys.com</span>
+            <span style="margin: 0 8px; color: #c9a24b;">·</span>
+            <span>🌐 www.virungajourneys.com</span>
+          </div>
+          <div style="font-size: 10.5px; color: #9cb1a3; margin-top: 8px;">
+            Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Floating Bottom-Right PDF Download Button -->
     <div id="floatingPdfBtnContainer" class="floating-pdf-btn-container">
       <button id="floatingPdfBtn" class="floating-pdf-btn" onclick="generateItineraryPdf();" title="Download Itinerary PDF">
@@ -707,7 +967,102 @@ require_once './itenaryopenhandler.php';
 
     <script>
     function generateItineraryPdf() {
-      window.open('./itinerary_print.php?id=<?php echo $tour_id; ?>&autoprint=1', '_blank');
+      const btn = document.getElementById("downloadPdfBtn");
+      const floatingBtn = document.getElementById("floatingPdfBtn");
+      const originalBtnHtml = btn ? btn.innerHTML : '';
+      const originalFloatingHtml = floatingBtn ? floatingBtn.innerHTML : '';
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+      }
+      if (floatingBtn) {
+        floatingBtn.disabled = true;
+        floatingBtn.innerHTML = '<span class="floating-pdf-icon"><i class="fas fa-spinner fa-spin"></i></span> <span class="floating-pdf-text">Generating...</span>';
+      }
+
+      // Create or show luxury loading overlay
+      let overlay = document.getElementById('pdfLoadingOverlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'pdfLoadingOverlay';
+        overlay.style.position = 'fixed';
+        overlay.style.inset = '0';
+        overlay.style.background = 'rgba(18, 42, 31, 0.9)';
+        overlay.style.backdropFilter = 'blur(6px)';
+        overlay.style.zIndex = '999999';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.color = '#ffffff';
+        overlay.style.fontFamily = "'Jost', -apple-system, BlinkMacSystemFont, sans-serif";
+        overlay.innerHTML = `
+          <div style="width: 52px; height: 52px; border: 3.5px solid rgba(201, 162, 75, 0.25); border-top-color: #c9a24b; border-radius: 50%; animation: spinPdf 0.85s linear infinite; margin-bottom: 20px;"></div>
+          <div style="font-size: 20px; font-weight: 700; letter-spacing: 0.5px; color: #ffffff;">Preparing Your Itinerary PDF</div>
+          <div style="font-size: 13px; color: #c9a24b; margin-top: 8px; font-weight: 500;">Compiling highlights, itinerary timeline & rates...</div>
+          <style>@keyframes spinPdf { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+        `;
+        document.body.appendChild(overlay);
+      } else {
+        overlay.style.display = 'flex';
+      }
+
+      const template = document.getElementById('pdfPrintableTemplate');
+      if (!template) {
+        finishLoading();
+        return;
+      }
+
+      // Render container: placed in DOM at 0,0 underneath the overlay
+      const renderContainer = document.createElement('div');
+      renderContainer.id = 'activePdfRenderContainer';
+      renderContainer.style.position = 'fixed';
+      renderContainer.style.left = '0';
+      renderContainer.style.top = '0';
+      renderContainer.style.width = '800px';
+      renderContainer.style.background = '#ffffff';
+      renderContainer.style.zIndex = '999998';
+      renderContainer.style.opacity = '1';
+      renderContainer.style.pointerEvents = 'none';
+      renderContainer.innerHTML = template.innerHTML;
+      document.body.appendChild(renderContainer);
+
+      function finishLoading() {
+        if (renderContainer && renderContainer.parentNode) {
+          renderContainer.remove();
+        }
+        if (overlay) {
+          overlay.style.display = 'none';
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalBtnHtml;
+        }
+        if (floatingBtn) {
+          floatingBtn.disabled = false;
+          floatingBtn.innerHTML = originalFloatingHtml;
+        }
+      }
+
+      setTimeout(() => {
+        const tourTitle = <?php echo json_encode($tour['title']); ?>;
+        const opt = {
+          margin:       [8, 8, 10, 8],
+          filename:     'Virunga_Itinerary_' + (tourTitle.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0, scrollX: 0, windowWidth: 800 },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak:    { mode: ['css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(renderContainer).save().then(() => {
+          finishLoading();
+        }).catch((err) => {
+          console.error("PDF generation error:", err);
+          finishLoading();
+        });
+      }, 350);
     }
 
     // Scroll Detection: Show Floating PDF Button when scrolling past the top section
