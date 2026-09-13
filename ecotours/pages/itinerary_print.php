@@ -512,21 +512,10 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
       </table>
     </div>
 
-    <!-- CURATED PHOTOS (2 TOP HIGHLIGHTS) -->
-    <table class="photo-grid-table">
-      <tr>
-        <td style="padding-right: 7px;">
-          <img src="../<?php echo htmlspecialchars($tour['cover_image_path']); ?>" alt="Cover Photo">
-        </td>
-        <td style="padding-left: 7px;">
-          <?php if (!empty($highlights)): ?>
-            <img src="../<?php echo htmlspecialchars($highlights[0]['image_path']); ?>" alt="Highlight Photo">
-          <?php else: ?>
-            <img src="../images/hero/gorille.jpg" alt="Highlight Photo">
-          <?php endif; ?>
-        </td>
-      </tr>
-    </table>
+    <!-- COVER PHOTO (FULL WIDTH TOP) -->
+    <div style="margin-bottom: 20px; border-radius: 6px; overflow: hidden; border: 1px solid #dcd7cc;">
+      <img src="../<?php echo htmlspecialchars($tour['cover_image_path']); ?>" alt="Cover Photo" style="width: 100%; height: 260px; object-fit: cover; display: block;">
+    </div>
 
     <!-- EXECUTIVE OVERVIEW -->
     <div class="overview-box">
@@ -647,6 +636,37 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
       </div>
     <?php endif; ?>
 
+    <?php if (!empty($highlights)): ?>
+      <!-- JOURNEY HIGHLIGHTS GALLERY (BOTTOM - 4 PER ROW) -->
+      <div style="margin-bottom: 22px; page-break-inside: avoid; break-inside: avoid;">
+        <div class="section-title-bar" style="margin-bottom: 12px;">
+          <div class="section-title-text">Journey Photo Highlights</div>
+        </div>
+        <?php 
+          $highlightRows = array_chunk($highlights, 4);
+          foreach ($highlightRows as $rIdx => $row):
+            $isLastRow = ($rIdx === count($highlightRows) - 1);
+        ?>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: <?php echo $isLastRow ? '0' : '10px'; ?>;">
+          <tr>
+            <?php for ($i = 0; $i < 4; $i++): 
+              $shot = $row[$i] ?? null;
+              $padRight = ($i < 3) ? '6px' : '0';
+              $padLeft = ($i > 0) ? '6px' : '0';
+            ?>
+            <td style="width: 25%; padding-right: <?php echo $padRight; ?>; padding-left: <?php echo $padLeft; ?>; vertical-align: top;">
+              <?php if ($shot): ?>
+                <img src="../<?php echo htmlspecialchars($shot['image_path']); ?>"
+                     style="width: 100%; height: 125px; object-fit: cover; display: block; border-radius: 4px; border: 1px solid #dcd7cc;" alt="Highlight">
+              <?php endif; ?>
+            </td>
+            <?php endfor; ?>
+          </tr>
+        </table>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
     <!-- PEACE OF MIND & ETHICAL TOURISM -->
     <div style="background: var(--pdf-bg-warm); border-left: 3px solid #7d8e83; padding: 10px 14px; margin-bottom: 20px; font-size: 11px; color: #4e5e54; line-height: 1.5; page-break-inside: avoid;">
       <strong>Guest Safety & Ethics:</strong> Standard emergency medical & evacuation coverage is included on all expeditions. We uphold ethical fair wages, local community reinvestment, and conservation stewardship on every journey.
@@ -669,8 +689,17 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
         Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
       </div>
     </div>
-
   </div>
 
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('autoprint') === '1') {
+        setTimeout(() => {
+          window.print();
+        }, 600);
+      }
+    });
+  </script>
 </body>
 </html>
