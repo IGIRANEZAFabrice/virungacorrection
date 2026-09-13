@@ -251,40 +251,41 @@
   <body>
     <!-- --- NAV -------------------------------------------------- -->
     <nav id="mainNav">
-      <a href="<?php echo $baseLink('home'); ?>" class="logo-wrap" title="Virunga Collective - Main Homepage">
+      <a href="<?php echo $baseLink('home'); ?>" class="logo-wrap" title="Virunga House - Locally Rooted Stay in Musanze">
         <img
           src="./img/logo/logo.png"
           class="logo-full"
-          alt="Virunga Collective"
+          alt="Virunga House"
         />
         <img
           src="./img/logo/logo-small.png"
           class="logo-sm"
-          alt="Virunga Collective"
+          alt="Virunga House"
         />
       </a>
 
       <ul class="nav-links">
-        <li><a href="<?php echo $baseLink('home'); ?>"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
-        <li><a href="<?php echo $baseLink('homestays'); ?>">Home</a></li>
-        <li><a href="<?php echo $baseLink('rooms'); ?>">Our Rooms</a></li>
+        <li><a href="<?php echo $baseLink('rooms'); ?>">Stay</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>#home-about">The House</a></li>
+        <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>#dining">Food</a></li>
         <li><a href="<?php echo $baseLink('activity'); ?>">Experiences</a></li>
-        <li><a href="<?php echo $baseLink('impact'); ?>">Impact</a></li>
-        <!-- -- Services dropdown -- -->
+        <li><a href="<?php echo $baseLink('home'); ?>#who-its-for">Location</a></li>
+        <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
+        <!-- -- More dropdown -- -->
         <li class="has-dropdown">
           <a href="" tabindex="0">
-            Services
+            More
             <span class="chevron" aria-hidden="true"></span>
           </a>
           <div class="dropdown" role="menu">
-            <a href="<?php echo $baseLink('shop'); ?>" class="dropdown-item" role="menuitem"> Shop </a>
-            <a href="<?php echo $baseLink('carrent'); ?>" class="dropdown-item" role="menuitem">
-              Car Rent
-            </a>
+            <a href="<?php echo $baseLink('impact'); ?>" class="dropdown-item" role="menuitem">Impact</a>
+            <a href="<?php echo $baseLink('shop'); ?>" class="dropdown-item" role="menuitem">Shop</a>
+            <a href="<?php echo $baseLink('carrent'); ?>" class="dropdown-item" role="menuitem">Car Rent</a>
+            <a href="<?php echo $baseLink('safety'); ?>" class="dropdown-item" role="menuitem">Safety &amp; Rules</a>
+            <a href="<?php echo $baseLink('contact'); ?>" class="dropdown-item" role="menuitem">Contact Us</a>
           </div>
         </li>
-        <li><a href="<?php echo $baseLink('about-us'); ?>">Story</a></li>
-        <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
         <li class="lang-dropdown notranslate" translate="no">
           <button class="lang-btn" id="langBtn" aria-label="Select Language">
             <span class="flag-icon" id="currentFlag">🇬🇧</span> <span id="currentLangText" style="font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">EN</span> <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
@@ -319,7 +320,7 @@
             <li><a href="#" onclick="changeLanguage('uk'); return false;"><span class="flag-icon">🇺🇦</span> Українська (UK)</a></li>
           </ul>
         </li>
-        <li class="cta-link"><a href="<?php echo $baseLink('contact'); ?>">Book Stay</a></li>
+        <li class="cta-link"><a href="<?php echo $baseLink('rooms'); ?>">Check Availability</a></li>
       </ul>
 
       <button
@@ -353,11 +354,13 @@
     <!-- -- mobile drawer -- -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <ul>
-        <li><a href="<?php echo $baseLink('homestays'); ?>">Home</a></li>
-        <li><a href="<?php echo $baseLink('impact'); ?>">Impact</a></li>
-        <li><a href="<?php echo $baseLink('about-us'); ?>">Story</a></li>
+        <li><a href="<?php echo $baseLink('rooms'); ?>">Stay</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>#home-about">The House</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>
-        <li><a href="<?php echo $baseLink('safety'); ?>">Safety</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>#dining">Food</a></li>
+        <li><a href="<?php echo $baseLink('activity'); ?>">Experiences</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>#who-its-for">Location</a></li>
+        <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
 
         <!-- Services accordion -->
         <li style="border-bottom: 1px solid var(--color-border-dark)">
@@ -366,19 +369,23 @@
             id="mobServicesBtn"
             aria-expanded="false"
           >
-            Services
+            More
             <span class="mob-chevron" aria-hidden="true"></span>
           </button>
           <div class="mob-services-panel" id="mobServicesPanel">
+            <a href="<?php echo $baseLink('impact'); ?>">Impact</a>
             <a href="<?php echo $baseLink('shop'); ?>">Shop</a>
             <a href="<?php echo $baseLink('carrent'); ?>">Car Rent</a>
-            <a href="<?php echo $baseLink('activity'); ?>">Community Activities</a>
+            <a href="<?php echo $baseLink('safety'); ?>">Safety &amp; Rules</a>
+            <a href="<?php echo $baseLink('contact'); ?>">Contact Us</a>
           </div>
         </li>
 
-        <li><a href="<?php echo $baseLink('blog'); ?>">Blogs</a></li>
-        <li><a href="<?php echo $baseLink('rules'); ?>">House Rules</a></li>
-        <li><a href="<?php echo $baseLink('contact'); ?>">Contact Us</a></li>
+        <li style="padding: 16px 0;">
+          <a href="<?php echo $baseLink('rooms'); ?>" class="btn-primary" style="text-align: center; display: block; color: white;">
+            Check Availability
+          </a>
+        </li>
       </ul>
     </div>
 
