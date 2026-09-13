@@ -283,10 +283,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST['save_tour']) || isse
 }
 
 // -------------------------------------------------------------
-// Read & Pagination Parameters
+// Read & Infinite Scroll Parameters
 // -------------------------------------------------------------
 $page = max(1, isset($_GET['page']) ? (int)$_GET['page'] : 1);
-$per_page = isset($_GET['per_page']) ? min(60, max(4, (int)$_GET['per_page'])) : 8; // Default 8 per page
+$per_page = isset($_GET['per_page']) ? min(100, max(4, (int)$_GET['per_page'])) : 12; // Default 12 per batch for smooth infinite scrolling
 $search = trim($_GET['search'] ?? '');
 $category_filter = trim($_GET['category'] ?? '');
 $country_filter = trim($_GET['country'] ?? '');
@@ -305,7 +305,7 @@ $stats = [
     'total_activities' => (int)$pdo->query("SELECT COUNT(*) FROM tour_days")->fetchColumn()
 ];
 
-// Build Where Clause for paginated list
+// Build Where Clause for query
 $whereClauses = [];
 $queryParams = [];
 
@@ -371,15 +371,128 @@ $toursStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $toursStmt->execute();
 $tours = $toursStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Helper for Pagination URL generation
-function buildPageUrl(int $pageNum, array $extraParams = []): string {
-    $params = $_GET;
-    $params['page'] = $pageNum;
-    foreach ($extraParams as $k => $v) {
-        if ($v === null) unset($params[$k]);
-        else $params[$k] = $v;
+/**
+ * Render single tour Table Row (List View)
+ */
+function renderTourRow(array $row): string {
+    $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
+    $tourId = (int)$row['tour_id'];
+    $title = htmlspecialchars($row['title']);
+    $titleEscaped = addslashes($title);
+    $category = htmlspecialchars($row['category']);
+    $country = htmlspecialchars(ucfirst($row['country']));
+    $days = (int)$row['days_count'];
+    $totalDays = (int)($row['total_days'] ?? 0);
+    $totalHighlights = (int)($row['total_highlights'] ?? 0);
+
+    return '
+    <tr class="tour-row" data-id="' . $tourId . '">
+      <td>
+        <div class="thumb-cell" onclick="openPreviewModal(' . $tourId . ')">
+          <img src="' . $coverImg . '" alt="' . $title . '" onerror="this.src=\'../../images/default-tour.jpg\';" />
+        </div>
+      </td>
+      <td>
+        <div class="tour-text-cell">
+          <strong class="tour-title-link" onclick="openPreviewModal(' . $tourId . ')">
+            ' . $title . '
+          </strong>
+          <span class="category-tag">' . $category . '</span>
+        </div>
+      </td>
+      <td>
+        <span class="country-badge-clean">
+          ' . $country . '
+        </span>
+      </td>
+      <td>
+        <span class="duration-text"><i class="fas fa-clock"></i> ' . $days . ' Days</span>
+      </td>
+      <td>
+        <span class="meta-count">' . $totalDays . ' Acts • ' . $totalHighlights . ' Photos</span>
+      </td>
+      <td style="text-align: right;">
+        <div class="action-btn-row">
+          <button type="button" class="action-icon-btn btn-view" onclick="openPreviewModal(' . $tourId . ')" title="View Details">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button type="button" class="action-icon-btn btn-edit" onclick="editTour(' . $tourId . ')" title="Edit Tour">
+            <i class="fas fa-pen"></i>
+          </button>
+          <button type="button" class="action-icon-btn btn-delete" onclick="promptDeleteTour(' . $tourId . ', \'' . $titleEscaped . '\')" title="Delete Tour">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>';
+}
+
+/**
+ * Render single tour Card (Grid View)
+ */
+function renderTourCard(array $row): string {
+    $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
+    $tourId = (int)$row['tour_id'];
+    $title = htmlspecialchars($row['title']);
+    $titleEscaped = addslashes($title);
+    $category = htmlspecialchars($row['category']);
+    $country = htmlspecialchars(ucfirst($row['country']));
+    $days = (int)$row['days_count'];
+    $desc = htmlspecialchars(mb_strimwidth($row['short_description'] ?? '', 0, 95, '...'));
+
+    return '
+    <div class="tour-clean-card" data-id="' . $tourId . '">
+      <div class="card-cover-media" onclick="openPreviewModal(' . $tourId . ')">
+        <img src="' . $coverImg . '" alt="' . $title . '" onerror="this.src=\'../../images/default-tour.jpg\';" />
+        <span class="card-country-pill">' . $country . '</span>
+        <span class="card-days-pill">' . $days . ' Days</span>
+      </div>
+
+      <div class="card-body-inner">
+        <span class="card-cat">' . $category . '</span>
+        <h4 class="card-tour-heading" onclick="openPreviewModal(' . $tourId . ')">
+          ' . $title . '
+        </h4>
+        <p class="card-desc-snippet">
+          ' . $desc . '
+        </p>
+
+        <div class="card-footer-btns">
+          <button type="button" class="btn btn-sm btn-outline btn-flex" onclick="openPreviewModal(' . $tourId . ')">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button type="button" class="btn btn-sm btn-primary btn-flex" onclick="editTour(' . $tourId . ')">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button type="button" class="btn btn-sm btn-outline btn-trash" onclick="promptDeleteTour(' . $tourId . ', \'' . $titleEscaped . '\')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>';
+}
+
+// Handle AJAX Infinite Scroll Request
+if (isset($_GET['ajax_tours'])) {
+    header('Content-Type: application/json');
+    $rows_html = '';
+    $cards_html = '';
+    foreach ($tours as $row) {
+        $rows_html .= renderTourRow($row);
+        $cards_html .= renderTourCard($row);
     }
-    return '?' . http_build_query($params);
+    echo json_encode([
+        'success' => true,
+        'page' => $page,
+        'per_page' => $per_page,
+        'total_records' => $total_records,
+        'total_pages' => $total_pages,
+        'has_more' => ($page < $total_pages),
+        'count' => count($tours),
+        'rows_html' => $rows_html,
+        'cards_html' => $cards_html
+    ]);
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -417,11 +530,11 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
             
             <div class="header-actions-group">
               <div class="view-switch-pills">
-                <button type="button" class="btn-pill-view active" id="listViewBtn" title="List View">
-                  <i class="fas fa-table-list"></i>
+                <button type="button" class="btn-pill-view active" id="cardViewBtn" title="Grid View">
+                  <i class="fas fa-grip"></i> Grid
                 </button>
-                <button type="button" class="btn-pill-view" id="cardViewBtn" title="Card View">
-                  <i class="fas fa-grip"></i>
+                <button type="button" class="btn-pill-view" id="listViewBtn" title="List View">
+                  <i class="fas fa-table-list"></i> List
                 </button>
               </div>
 
@@ -469,8 +582,6 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
           <!-- Clean Filter Toolbar -->
           <div class="tours-filter-bar">
             <form method="GET" action="tours.php" class="filter-controls-row" id="filterForm">
-              <input type="hidden" name="per_page" value="<?php echo htmlspecialchars($per_page); ?>" />
-              
               <div class="filter-search-input">
                 <i class="fas fa-search"></i>
                 <input 
@@ -482,7 +593,7 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
                   autocomplete="off"
                 />
                 <?php if (!empty($search)): ?>
-                  <a href="<?php echo buildPageUrl(1, ['search' => null]); ?>" class="clear-search" title="Clear"><i class="fas fa-times"></i></a>
+                  <a href="tours.php" class="clear-search" title="Clear"><i class="fas fa-times"></i></a>
                 <?php endif; ?>
               </div>
 
@@ -536,9 +647,9 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
               </div>
             <?php else: ?>
               
-              <div class="tours-display list-view" id="toursDisplay">
+              <div class="tours-display card-view" id="toursDisplay">
                 
-                <!-- Table View -->
+                <!-- Table View (List) -->
                 <div class="table-container">
                   <table class="tabler-data-table">
                     <thead>
@@ -552,144 +663,25 @@ function buildPageUrl(int $pageNum, array $extraParams = []): string {
                       </tr>
                     </thead>
                     <tbody id="toursTableBody">
-                      <?php foreach ($tours as $row): 
-                        $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
-                        $tourId = (int)$row['tour_id'];
-                      ?>
-                        <tr class="tour-row" data-id="<?php echo $tourId; ?>">
-                          <td>
-                            <div class="thumb-cell" onclick="openPreviewModal(<?php echo $tourId; ?>)">
-                              <img src="<?php echo $coverImg; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" onerror="this.src='../../images/default-tour.jpg';" />
-                            </div>
-                          </td>
-                          <td>
-                            <div class="tour-text-cell">
-                              <strong class="tour-title-link" onclick="openPreviewModal(<?php echo $tourId; ?>)">
-                                <?php echo htmlspecialchars($row['title']); ?>
-                              </strong>
-                              <span class="category-tag"><?php echo htmlspecialchars($row['category']); ?></span>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="country-badge-clean">
-                              <?php echo htmlspecialchars(ucfirst($row['country'])); ?>
-                            </span>
-                          </td>
-                          <td>
-                            <span class="duration-text"><i class="fas fa-clock"></i> <?php echo (int)$row['days_count']; ?> Days</span>
-                          </td>
-                          <td>
-                            <span class="meta-count"><?php echo (int)$row['total_days']; ?> Acts • <?php echo (int)$row['total_highlights']; ?> Photos</span>
-                          </td>
-                          <td style="text-align: right;">
-                            <div class="action-btn-row">
-                              <button type="button" class="action-icon-btn btn-view" onclick="openPreviewModal(<?php echo $tourId; ?>)" title="View Details">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                              <button type="button" class="action-icon-btn btn-edit" onclick="editTour(<?php echo $tourId; ?>)" title="Edit Tour">
-                                <i class="fas fa-pen"></i>
-                              </button>
-                              <button type="button" class="action-icon-btn btn-delete" onclick="promptDeleteTour(<?php echo $tourId; ?>, '<?php echo addslashes(htmlspecialchars($row['title'])); ?>')" title="Delete Tour">
-                                <i class="fas fa-trash"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      <?php endforeach; ?>
+                      <?php foreach ($tours as $row) { echo renderTourRow($row); } ?>
                     </tbody>
                   </table>
                 </div>
 
-                <!-- Grid Card View -->
+                <!-- Grid View (Cards) -->
                 <div class="cards-container" id="toursCardsContainer">
-                  <?php foreach ($tours as $row): 
-                    $coverImg = !empty($row['cover_image_path']) ? '../../' . htmlspecialchars($row['cover_image_path']) : '../../images/default-tour.jpg';
-                    $tourId = (int)$row['tour_id'];
-                  ?>
-                    <div class="tour-clean-card" data-id="<?php echo $tourId; ?>">
-                      <div class="card-cover-media" onclick="openPreviewModal(<?php echo $tourId; ?>)">
-                        <img src="<?php echo $coverImg; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" onerror="this.src='../../images/default-tour.jpg';" />
-                        <span class="card-country-pill"><?php echo htmlspecialchars(ucfirst($row['country'])); ?></span>
-                        <span class="card-days-pill"><?php echo (int)$row['days_count']; ?> Days</span>
-                      </div>
-
-                      <div class="card-body-inner">
-                        <span class="card-cat"><?php echo htmlspecialchars($row['category']); ?></span>
-                        <h4 class="card-tour-heading" onclick="openPreviewModal(<?php echo $tourId; ?>)">
-                          <?php echo htmlspecialchars($row['title']); ?>
-                        </h4>
-                        <p class="card-desc-snippet">
-                          <?php echo htmlspecialchars(mb_strimwidth($row['short_description'], 0, 95, '...')); ?>
-                        </p>
-
-                        <div class="card-footer-btns">
-                          <button type="button" class="btn btn-sm btn-outline btn-flex" onclick="openPreviewModal(<?php echo $tourId; ?>)">
-                            <i class="fas fa-eye"></i> View
-                          </button>
-                          <button type="button" class="btn btn-sm btn-primary btn-flex" onclick="editTour(<?php echo $tourId; ?>)">
-                            <i class="fas fa-edit"></i> Edit
-                          </button>
-                          <button type="button" class="btn btn-sm btn-outline btn-trash" onclick="promptDeleteTour(<?php echo $tourId; ?>, '<?php echo addslashes(htmlspecialchars($row['title'])); ?>')">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  <?php endforeach; ?>
+                  <?php foreach ($tours as $row) { echo renderTourCard($row); } ?>
                 </div>
 
               </div>
 
-              <!-- Clean Pagination Footer -->
-              <div class="tabler-pagination-bar">
-                <span class="pagination-info">
-                  Showing <strong><?php echo min($total_records, $offset + 1); ?></strong> to <strong><?php echo min($total_records, $offset + count($tours)); ?></strong> of <strong><?php echo $total_records; ?></strong> packages
-                </span>
-
-                <?php if ($total_pages > 1): ?>
-                  <ul class="clean-pagination-nav">
-                    <!-- Prev -->
-                    <li class="page-node <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                      <a href="<?php echo buildPageUrl(max(1, $page - 1)); ?>" title="Previous"><i class="fas fa-chevron-left"></i></a>
-                    </li>
-
-                    <!-- Pages -->
-                    <?php
-                      $range = 2;
-                      $startPage = max(1, $page - $range);
-                      $endPage = min($total_pages, $page + $range);
-
-                      if ($startPage > 1) {
-                          echo '<li class="page-node"><a href="' . buildPageUrl(1) . '">1</a></li>';
-                          if ($startPage > 2) echo '<li class="page-node disabled"><span>...</span></li>';
-                      }
-
-                      for ($i = $startPage; $i <= $endPage; $i++) {
-                          $active = ($i === $page) ? 'active' : '';
-                          echo '<li class="page-node ' . $active . '"><a href="' . buildPageUrl($i) . '">' . $i . '</a></li>';
-                      }
-
-                      if ($endPage < $total_pages) {
-                          if ($endPage < $total_pages - 1) echo '<li class="page-node disabled"><span>...</span></li>';
-                          echo '<li class="page-node"><a href="' . buildPageUrl($total_pages) . '">' . $total_pages . '</a></li>';
-                      }
-                    ?>
-
-                    <!-- Next -->
-                    <li class="page-node <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
-                      <a href="<?php echo buildPageUrl(min($total_pages, $page + 1)); ?>" title="Next"><i class="fas fa-chevron-right"></i></a>
-                    </li>
-                  </ul>
-                <?php endif; ?>
-
-                <div class="per-page-wrap">
-                  <label>Per page:</label>
-                  <select onchange="location.href='<?php echo buildPageUrl(1); ?>&per_page=' + this.value" class="per-page-select">
-                    <option value="6" <?php echo $per_page == 6 ? 'selected' : ''; ?>>6</option>
-                    <option value="8" <?php echo $per_page == 8 ? 'selected' : ''; ?>>8</option>
-                    <option value="12" <?php echo $per_page == 12 ? 'selected' : ''; ?>>12</option>
-                    <option value="24" <?php echo $per_page == 24 ? 'selected' : ''; ?>>24</option>
-                  </select>
+              <!-- Infinite Scroll Sentinel & Status Loader -->
+              <div id="infiniteScrollSentinel" class="infinite-scroll-sentinel" data-page="1" data-total-pages="<?php echo $total_pages; ?>" data-total-records="<?php echo $total_records; ?>" data-has-more="<?php echo ($total_pages > 1) ? '1' : '0'; ?>">
+                <div id="infiniteScrollLoader" class="infinite-loader" style="display: none;">
+                  <i class="fas fa-circle-notch fa-spin"></i> Loading more tour packages...
+                </div>
+                <div id="infiniteScrollEnd" class="infinite-end-msg" style="<?php echo ($total_pages <= 1 && !empty($tours)) ? 'display: flex;' : 'display: none;'; ?>">
+                  <span id="infiniteScrollEndText">All <?php echo $total_records; ?> tour packages loaded</span>
                 </div>
               </div>
 

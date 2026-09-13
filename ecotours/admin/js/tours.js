@@ -1165,4 +1165,133 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  /* ==========================================================================
+     15. View Switcher (Grid & List View)
+     ========================================================================== */
+  const listViewBtn = document.getElementById('listViewBtn');
+  const cardViewBtn = document.getElementById('cardViewBtn');
+  const toursDisplay = document.getElementById('toursDisplay');
+
+  function setViewMode(mode) {
+    if (!toursDisplay) return;
+    if (mode === 'list') {
+      toursDisplay.classList.remove('card-view');
+      toursDisplay.classList.add('list-view');
+      if (listViewBtn) listViewBtn.classList.add('active');
+      if (cardViewBtn) cardViewBtn.classList.remove('active');
+    } else {
+      // Default to Grid / Card view
+      toursDisplay.classList.remove('list-view');
+      toursDisplay.classList.add('card-view');
+      if (cardViewBtn) cardViewBtn.classList.add('active');
+      if (listViewBtn) listViewBtn.classList.remove('active');
+    }
+    try {
+      localStorage.setItem('tours_admin_view_mode', mode);
+    } catch (e) {}
+  }
+
+  if (listViewBtn) {
+    listViewBtn.addEventListener('click', () => setViewMode('list'));
+  }
+  if (cardViewBtn) {
+    cardViewBtn.addEventListener('click', () => setViewMode('card'));
+  }
+
+  // Set initial view mode - defaults to 'card' (Grid view)
+  const savedViewMode = localStorage.getItem('tours_admin_view_mode') || 'card';
+  setViewMode(savedViewMode);
+
+  /* ==========================================================================
+     16. Infinite Scrolling System
+     ========================================================================== */
+  const sentinel = document.getElementById('infiniteScrollSentinel');
+  const loader = document.getElementById('infiniteScrollLoader');
+  const endMsg = document.getElementById('infiniteScrollEnd');
+  const tableBody = document.getElementById('toursTableBody');
+  const cardsContainer = document.getElementById('toursCardsContainer');
+
+  if (sentinel && (tableBody || cardsContainer)) {
+    let currentPage = parseInt(sentinel.getAttribute('data-page') || '1', 10);
+    let totalPages = parseInt(sentinel.getAttribute('data-total-pages') || '1', 10);
+    let totalRecords = parseInt(sentinel.getAttribute('data-total-records') || '0', 10);
+    let hasMore = sentinel.getAttribute('data-has-more') === '1' && currentPage < totalPages;
+    let isLoadingMore = false;
+
+    function loadMoreTours() {
+      if (isLoadingMore || !hasMore) return;
+      isLoadingMore = true;
+
+      if (loader) loader.style.display = 'inline-flex';
+
+      const currentParams = new URLSearchParams(window.location.search);
+      currentParams.set('ajax_tours', '1');
+      currentParams.set('page', (currentPage + 1).toString());
+
+      fetch(`tours.php?${currentParams.toString()}`)
+        .then((r) => r.json())
+        .then((res) => {
+          if (res && res.success) {
+            currentPage = res.page;
+            totalPages = res.total_pages;
+            hasMore = res.has_more;
+
+            if (tableBody && res.rows_html) {
+              tableBody.insertAdjacentHTML('beforeend', res.rows_html);
+            }
+            if (cardsContainer && res.cards_html) {
+              cardsContainer.insertAdjacentHTML('beforeend', res.cards_html);
+            }
+
+            if (!hasMore) {
+              if (loader) loader.style.display = 'none';
+              if (endMsg) {
+                endMsg.style.display = 'flex';
+                const endText = document.getElementById('infiniteScrollEndText');
+                if (endText) endText.textContent = `All ${res.total_records} tour packages loaded`;
+              }
+            } else {
+              if (loader) loader.style.display = 'none';
+            }
+          } else {
+            hasMore = false;
+            if (loader) loader.style.display = 'none';
+          }
+          isLoadingMore = false;
+        })
+        .catch((err) => {
+          console.error('Infinite scroll error:', err);
+          if (loader) loader.style.display = 'none';
+          isLoadingMore = false;
+        });
+    }
+
+    // Use IntersectionObserver with 250px bottom margin trigger
+    if ('IntersectionObserver' in window) {
+      const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isLoadingMore && hasMore) {
+            loadMoreTours();
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '250px',
+        threshold: 0.1
+      });
+
+      scrollObserver.observe(sentinel);
+    } else {
+      // Fallback window scroll listener
+      window.addEventListener('scroll', () => {
+        if (!isLoadingMore && hasMore) {
+          const rect = sentinel.getBoundingClientRect();
+          if (rect.top <= window.innerHeight + 300) {
+            loadMoreTours();
+          }
+        }
+      }, { passive: true });
+    }
+  }
 });
