@@ -84,9 +84,6 @@ require_once './itenaryopenhandler.php';
         <button id="downloadPdfBtn" class="download-pdf-btn" onclick="generateItineraryPdf();">
           <i class="fas fa-file-pdf"></i> Download Itinerary PDF
         </button>
-        <a href="./itinerary_print.php?id=<?php echo $tour_id; ?>" target="_blank" class="print-itinerary-link" style="display: inline-flex; align-items: center; gap: 8px; color: #1b3a2b; font-weight: 600; font-size: 0.92rem; text-decoration: none; padding: 11px 20px; border: 1px solid #c9a24b; border-radius: 50px; background: #ffffff; transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
-          <i class="fas fa-print"></i> Print Dossier
-        </a>
       </div>
     </section>
 
