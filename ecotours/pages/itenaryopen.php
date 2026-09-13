@@ -714,9 +714,9 @@ if (!function_exists('virungaImgBase64')) {
       }
     }
     </style>
-
-    <!-- html2pdf Library for Direct PDF Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Direct High-Resolution PDF Export Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- HIDDEN LUXURY PDF PRINTABLE TEMPLATE -->
     <div id="pdfPrintableTemplate" style="display: none;">
@@ -988,7 +988,7 @@ if (!function_exists('virungaImgBase64')) {
         overlay.id = 'pdfLoadingOverlay';
         overlay.style.position = 'fixed';
         overlay.style.inset = '0';
-        overlay.style.background = 'rgba(18, 42, 31, 0.9)';
+        overlay.style.background = 'rgba(18, 42, 31, 0.92)';
         overlay.style.backdropFilter = 'blur(6px)';
         overlay.style.zIndex = '999999';
         overlay.style.display = 'flex';
@@ -1017,14 +1017,13 @@ if (!function_exists('virungaImgBase64')) {
       // Render container: placed in DOM at 0,0 underneath the overlay
       const renderContainer = document.createElement('div');
       renderContainer.id = 'activePdfRenderContainer';
-      renderContainer.style.position = 'fixed';
-      renderContainer.style.left = '0';
-      renderContainer.style.top = '0';
+      renderContainer.style.position = 'absolute';
+      renderContainer.style.left = '0px';
+      renderContainer.style.top = '0px';
       renderContainer.style.width = '800px';
       renderContainer.style.background = '#ffffff';
       renderContainer.style.zIndex = '999998';
-      renderContainer.style.opacity = '1';
-      renderContainer.style.pointerEvents = 'none';
+      renderContainer.style.display = 'block';
       renderContainer.innerHTML = template.innerHTML;
       document.body.appendChild(renderContainer);
 
@@ -1046,23 +1045,53 @@ if (!function_exists('virungaImgBase64')) {
       }
 
       setTimeout(() => {
-        const tourTitle = <?php echo json_encode($tour['title']); ?>;
-        const opt = {
-          margin:       [8, 8, 10, 8],
-          filename:     'Virunga_Itinerary_' + (tourTitle.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0, scrollX: 0, windowWidth: 800 },
-          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak:    { mode: ['css', 'legacy'] }
-        };
+        html2canvas(renderContainer, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          scrollY: 0,
+          scrollX: 0,
+          windowWidth: 800
+        }).then(canvas => {
+          if (!canvas || canvas.width === 0 || canvas.height === 0) {
+            console.error("Canvas capture produced empty output");
+            finishLoading();
+            return;
+          }
 
-        html2pdf().set(opt).from(renderContainer).save().then(() => {
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const pageWidth = 210;
+          const pageHeight = 297;
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          const imgWidth = pageWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          let heightLeft = imgHeight;
+          let position = 0;
+
+          // First page
+          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'FAST');
+          heightLeft -= pageHeight;
+
+          // Multi-page slicing
+          while (heightLeft > 0) {
+            position -= pageHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'FAST');
+            heightLeft -= pageHeight;
+          }
+
+          const tourTitle = <?php echo json_encode($tour['title']); ?>;
+          const safeName = 'Virunga_Itinerary_' + (tourTitle.replace(/[^a-zA-Z0-9]/g, '_')) + '.pdf';
+          pdf.save(safeName);
           finishLoading();
-        }).catch((err) => {
+        }).catch(err => {
           console.error("PDF generation error:", err);
           finishLoading();
         });
-      }, 350);
+      }, 400);
     }
 
     // Scroll Detection: Show Floating PDF Button when scrolling past the top section
