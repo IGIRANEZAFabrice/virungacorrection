@@ -251,7 +251,7 @@
   <body>
     <!-- --- NAV -------------------------------------------------- -->
     <nav id="mainNav">
-      <a href="<?php echo $baseLink('home'); ?>" class="logo-wrap" title="Virunga House - Locally Rooted Stay in Musanze">
+      <a href="<?php echo $baseLink('homestays'); ?>" class="logo-wrap" title="Virunga House - Locally Rooted Stay in Musanze">
         <img
           src="./img/logo/logo.png"
           class="logo-full"
@@ -265,12 +265,13 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="<?php echo $baseLink('rooms'); ?>">Stay</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#home-about">The House</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>">Stay</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#home-about">The House</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#dining">Food</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#dining">Food</a></li>
         <li><a href="<?php echo $baseLink('activity'); ?>">Experiences</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#who-its-for">Location</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#who-its-for">Location</a></li>
         <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
         <!-- -- More dropdown -- -->
         <li class="has-dropdown">
@@ -354,12 +355,13 @@
     <!-- -- mobile drawer -- -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <ul>
-        <li><a href="<?php echo $baseLink('rooms'); ?>">Stay</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#home-about">The House</a></li>
+        <li><a href="<?php echo $baseLink('home'); ?>"><i class="fas fa-globe" style="font-size: 0.8rem; margin-right: 4px; color: var(--color-primary);"></i> Collective Home</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>">Stay</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#home-about">The House</a></li>
         <li><a href="<?php echo $baseLink('rooms'); ?>">Rooms</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#dining">Food</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#dining">Food</a></li>
         <li><a href="<?php echo $baseLink('activity'); ?>">Experiences</a></li>
-        <li><a href="<?php echo $baseLink('home'); ?>#who-its-for">Location</a></li>
+        <li><a href="<?php echo $baseLink('homestays'); ?>#who-its-for">Location</a></li>
         <li><a href="<?php echo $baseLink('about-us'); ?>">Our Story</a></li>
 
         <!-- Services accordion -->
