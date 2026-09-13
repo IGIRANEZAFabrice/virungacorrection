@@ -593,7 +593,7 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
     <?php if (!empty($toBring)): ?>
       <!-- WHAT TO BRING -->
       <div class="packing-box">
-        <strong>🎒 Recommended Packing & Preparation:</strong> 
+        <strong>Recommended Packing & Preparation:</strong> 
         <?php 
         $tbList = [];
         foreach ($toBring as $tb) {
@@ -679,11 +679,11 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
         Our dedicated journey planners are available to adapt dates, accommodation levels, and private activities to your exact travel wishes.
       </div>
       <div class="footer-contacts-line">
-        <span>📱 WhatsApp: +250 784 513 435</span>
+        <span>WhatsApp: +250 784 513 435</span>
         <span style="margin: 0 8px; color: var(--pdf-gold);">·</span>
-        <span>✉ Email: info@virungajourneys.com</span>
+        <span>Email: info@virungajourneys.com</span>
         <span style="margin: 0 8px; color: var(--pdf-gold);">·</span>
-        <span>🌐 www.virungajourneys.com</span>
+        <span>www.virungajourneys.com</span>
       </div>
       <div class="footer-subtext">
         Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa

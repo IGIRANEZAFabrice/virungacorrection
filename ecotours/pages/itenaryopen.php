@@ -863,7 +863,7 @@ if (!function_exists('virungaImgBase64')) {
         <?php if (!empty($toBring)): ?>
           <!-- BLOCK: PACKING -->
           <div class="pdf-block" style="background: #fbfaf7; border: 1px solid #e6e2d8; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 11px; color: #404d45;">
-            <strong style="color: #122a1f; font-size: 11.5px; font-family: 'Cormorant Garamond', Georgia, serif;">🎒 Recommended Packing & Preparation: </strong>
+            <strong style="color: #122a1f; font-size: 11.5px; font-family: 'Cormorant Garamond', Georgia, serif;">Recommended Packing & Preparation: </strong>
             <?php 
             $tbList = [];
             foreach ($toBring as $tb) {
@@ -949,11 +949,11 @@ if (!function_exists('virungaImgBase64')) {
             Our dedicated journey planners are available to adapt dates, accommodation levels, and private activities to your exact travel wishes.
           </div>
           <div style="font-size: 11.5px; font-weight: 600; color: #ffffff;">
-            <span>📱 WhatsApp: +250 784 513 435</span>
+            <span>WhatsApp: +250 784 513 435</span>
             <span style="margin: 0 8px; color: #c9a24b;">·</span>
-            <span>✉ Email: info@virungajourneys.com</span>
+            <span>Email: info@virungajourneys.com</span>
             <span style="margin: 0 8px; color: #c9a24b;">·</span>
-            <span>🌐 www.virungajourneys.com</span>
+            <span>www.virungajourneys.com</span>
           </div>
           <div style="font-size: 9.5px; color: #9cb1a3; margin-top: 6px;">
             Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
@@ -1150,9 +1150,9 @@ if (!function_exists('virungaImgBase64')) {
           footerEl.innerHTML = `
             <div>
               <span style="color: #122a1f; font-weight: 700;">Virunga Ecotours</span> &nbsp;·&nbsp;
-              ✉ info@virungajourneys.com &nbsp;·&nbsp;
-              📱 +250 784 513 435 &nbsp;·&nbsp;
-              🌐 www.virungajourneys.com
+              info@virungajourneys.com &nbsp;·&nbsp;
+              +250 784 513 435 &nbsp;·&nbsp;
+              www.virungajourneys.com
             </div>
             <div style="font-weight: 700; color: #122a1f;">Page ${pageNum} of ${totalPages}</div>
           `;
