@@ -24,6 +24,18 @@
     }
   }
 
+  if (!function_exists('limit_words')) {
+    function limit_words($text, $limit = 25, $end = '...') {
+      $clean = trim(strip_tags((string)$text));
+      if ($clean === '') return '';
+      $words = preg_split('/\s+/u', $clean);
+      if (count($words) <= $limit) {
+        return $clean;
+      }
+      return implode(' ', array_slice($words, 0, $limit)) . $end;
+    }
+  }
+
   try {
     if (file_exists(__DIR__ . '/../ecotours/admin/config/connection.php')) {
       require_once __DIR__ . '/../ecotours/admin/config/connection.php';
@@ -927,6 +939,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 28px;
+        align-items: stretch;
       }
       .sig-card {
         background: var(--cream);
@@ -935,6 +948,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        height: 100%;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
       }
       .sig-card:hover {
@@ -942,6 +956,8 @@
       }
       .sig-media {
         height: 220px;
+        min-height: 220px;
+        max-height: 220px;
         position: relative;
         overflow: hidden;
       }
@@ -984,7 +1000,7 @@
         padding: 26px 22px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        flex: 1 1 auto;
         justify-content: space-between;
       }
       .sig-title {
@@ -994,6 +1010,11 @@
         color: var(--forest);
         margin-bottom: 10px;
         line-height: 1.25;
+        min-height: 2.5em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .sig-desc {
         font-size: 0.9rem;
@@ -1001,6 +1022,13 @@
         line-height: 1.6;
         margin-bottom: 18px;
         opacity: 0.86;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 6.4em;
+        max-height: 6.4em;
       }
 
       /* ---------- 04: AFTER THE GORILLAS (Distinct Background Image & Glass Cards) ---------- */
@@ -1078,6 +1106,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
+        align-items: stretch;
       }
       .discovery-card {
         background: #ffffff;
@@ -1086,6 +1115,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        height: 100%;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
       }
       .discovery-card:hover {
@@ -1093,6 +1123,8 @@
       }
       .discovery-media {
         height: 200px;
+        min-height: 200px;
+        max-height: 200px;
         position: relative;
         overflow: hidden;
       }
@@ -1109,7 +1141,7 @@
         padding: 24px 20px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        flex: 1 1 auto;
         justify-content: space-between;
       }
       .discovery-num {
@@ -1126,6 +1158,12 @@
         font-weight: 600;
         color: var(--forest);
         margin-bottom: 8px;
+        line-height: 1.25;
+        min-height: 2.5em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .discovery-tags {
         font-size: 0.74rem;
@@ -1141,6 +1179,13 @@
         line-height: 1.55;
         margin-bottom: 16px;
         opacity: 0.88;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 6.2em;
+        max-height: 6.2em;
       }
 
       /* ---------- 06: EXPERIENCE RWANDA ---------- */
@@ -1479,6 +1524,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
+        align-items: stretch;
       }
       .journal-card {
         background: var(--cream);
@@ -1487,6 +1533,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        height: 100%;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
       }
       .journal-card:hover {
@@ -1494,6 +1541,8 @@
       }
       .journal-card-image {
         height: 190px;
+        min-height: 190px;
+        max-height: 190px;
         overflow: hidden;
       }
       .journal-card-image img {
@@ -1509,7 +1558,7 @@
         padding: 22px 18px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        flex: 1 1 auto;
         justify-content: space-between;
       }
       .journal-tag {
@@ -1527,6 +1576,11 @@
         color: var(--forest);
         line-height: 1.3;
         margin-bottom: 10px;
+        min-height: 2.6em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .journal-desc {
         font-size: 0.88rem;
@@ -1534,6 +1588,13 @@
         line-height: 1.55;
         margin-bottom: 16px;
         opacity: 0.86;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 4.65em;
+        max-height: 4.65em;
       }
 
       /* ---------- 12: FINAL CTA ---------- */
@@ -1842,7 +1903,7 @@
               $sig_idx++;
               $sig_img = get_tour_image_url($sig['cover_image_path'] ?? '', 'homestay/img/hero/1776268009_Mgahinga.jpg', $baseLink);
               $sig_open_url = $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$sig['tour_id']);
-              $sig_desc = !empty($sig['short_description']) ? $sig['short_description'] : '';
+              $sig_desc = !empty($sig['short_description']) ? limit_words($sig['short_description'], 25) : '';
           ?>
           <div class="sig-card reveal-card" style="--reveal-delay: <?php echo $sig_delay; ?>s;">
             <div class="sig-media">
@@ -1993,7 +2054,7 @@
               $disc_idx++;
               $disc_img = get_tour_image_url($disc['cover_image_path'] ?? '', 'homestay/img/activities/1778346998_coffee.jpeg', $baseLink);
               $disc_open_url = $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$disc['tour_id']);
-              $disc_desc = !empty($disc['short_description']) ? $disc['short_description'] : '';
+              $disc_desc = !empty($disc['short_description']) ? limit_words($disc['short_description'], 25) : '';
           ?>
           <div class="discovery-card reveal-card" style="--reveal-delay: <?php echo $disc_delay; ?>s;">
             <div class="discovery-media">
