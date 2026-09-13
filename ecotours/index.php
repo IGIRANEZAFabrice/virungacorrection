@@ -439,7 +439,7 @@ It is never simply about where you go it is about how the experience stays with 
           </div>
 
           <div class="view-all-blogs" style="text-align: center; margin-top: 40px;">
-            <a href="./pages/blog.php" class="btn btn-secondary" style="padding: 12px 25px; background-color: #555; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background-color 0.3s ease;">View All Tours</a>
+            <a href="./pages/itenary.php" class="btn btn-secondary" style="padding: 12px 25px; background-color: #555; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background-color 0.3s ease;">View All Tours</a>
           </div>
         </div>
       </section>

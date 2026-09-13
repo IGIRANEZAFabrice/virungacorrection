@@ -100,8 +100,8 @@ if ($conn) {
         $attractions_stmt->close();
     }
 
-    // Fetch community tours
-    $tours_stmt = $conn->prepare("SELECT tour_id, title, category, days_count, cover_image_path, short_description FROM tours WHERE category = 'adventure' ORDER BY created_at DESC LIMIT 3");
+    // Fetch flagship signature journeys for homepage
+    $tours_stmt = $conn->prepare("SELECT tour_id, title, category, days_count, cover_image_path, short_description FROM tours WHERE LOWER(country) = 'rwanda' ORDER BY tour_id ASC LIMIT 6");
     if ($tours_stmt && $tours_stmt->execute()) {
         $tours_stmt->store_result();
         $tours_stmt->bind_result($tour_id, $title, $category, $days_count, $cover_image_path, $short_description);
@@ -118,7 +118,7 @@ if ($conn) {
         $tours_stmt->close();
     }
 
-    // Modified fetch for random tours - fetch ALL tours except adventure category
+    // Fetch featured journeys for the secondary showcase section
     $random_tours_stmt = $conn->prepare("
         SELECT 
             t.tour_id,
@@ -128,8 +128,8 @@ if ($conn) {
             t.short_description,
             t.category 
         FROM tours t 
-        WHERE LOWER(t.category) != 'adventure'
-        ORDER BY t.created_at DESC LIMIT 3
+        ORDER BY t.days_count DESC, t.tour_id ASC 
+        LIMIT 6
     ");
 
     if ($random_tours_stmt && $random_tours_stmt->execute()) {
