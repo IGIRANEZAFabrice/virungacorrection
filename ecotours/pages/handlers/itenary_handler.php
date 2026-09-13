@@ -65,9 +65,16 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
         $stmt->execute($params);
         $data['tours'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Also fetch all distinct categories for the filter buttons
-        $categoryQuery = "SELECT DISTINCT category FROM tours WHERE category IS NOT NULL ORDER BY category";
-        $categoryStmt = $pdo->query($categoryQuery);
+        // Also fetch distinct categories ONLY for the tours matching this country and type
+        $categoryQuery = "SELECT DISTINCT category FROM tours WHERE country = :country AND category IS NOT NULL AND TRIM(category) != '' ";
+        if ($type === 'day') {
+            $categoryQuery .= "AND days_count = 1 ";
+        } elseif ($type === 'multi') {
+            $categoryQuery .= "AND days_count > 1 ";
+        }
+        $categoryQuery .= "ORDER BY category";
+        $categoryStmt = $pdo->prepare($categoryQuery);
+        $categoryStmt->execute(['country' => $country]);
         $data['categories'] = $categoryStmt->fetchAll(PDO::FETCH_COLUMN);
         
         // Debug information

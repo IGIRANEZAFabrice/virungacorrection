@@ -175,6 +175,7 @@ $debug_info = $data['debug_info'] ?? '';
     <!-- tab-navigation -->
     <section class="popular-tours-section">
       <div class="container">
+        <?php if (!empty($tours) && !empty($categories) && count($categories) > 0): ?>
         <div class="filter-container">
           <div class="filter-categories">
             <button type="button" 
@@ -191,10 +192,11 @@ $debug_info = $data['debug_info'] ?? '';
             <?php endforeach; ?>
           </div>
         </div>
+        <?php endif; ?>
 
         <div class="tours-cards" id="toursContainer">
           <?php if (empty($tours)): ?>
-            <p class="no-tours">No tours available for <?php echo ucfirst($country); ?> at the moment.</p>
+            <p class="no-tours">No <?php echo $type ? ($type === 'multi' ? 'multi-day' : ($type === 'day' ? 'single-day' : htmlspecialchars($type))) . ' ' : ''; ?>tours available for <?php echo ucfirst($country); ?> at the moment.</p>
           <?php else: ?>
             <?php foreach ($tours as $tour): ?>
               <div class="tour-card">
@@ -219,9 +221,12 @@ $debug_info = $data['debug_info'] ?? '';
           <?php endif; ?>
         </div>
 
+        <?php if (!empty($tours)): ?>
         <div class="view-more-container">
           <button id="viewMoreBtn" class="view-more-btn">View More</button>
         </div>
+        <?php endif; ?>
+      </div>
     </section>
     <?php 
     // Use the same conditional approach for including the footer

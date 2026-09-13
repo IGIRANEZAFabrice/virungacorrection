@@ -65,10 +65,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             )
         );
 
-        // --- 1. SEND NOTIFICATION TO ADMIN ---
+        // --- 1. SEND NOTIFICATION TO ADMINS ---
         $mail->setFrom(SMTP_EMAIL, BUSINESS_NAME . ' Website');
-        $mail->addAddress(ADMIN_EMAIL); 
+        $mail->addAddress(ADMIN_EMAIL, 'Virunga Homestay Operations');
+        $mail->addAddress('info@virungajourneys.com', 'Virunga Journeys Concierge');
         $mail->addReplyTo($email, $name);
+
+        // --- 1B. SAVE TO DATABASE ---
+        try {
+            require_once __DIR__ . '/../config/db.php';
+            if (isset($conn) && !$conn->connect_error) {
+                $dbStmt = $conn->prepare("INSERT INTO contact_messages (name, email, subject, message, status, created_at) VALUES (?, ?, ?, ?, 'unread', NOW())");
+                if ($dbStmt) {
+                    $combinedSubject = $subject . ($phone !== 'Not provided' ? " | Tel: $phone" : "") . " | " . $source;
+                    $dbStmt->bind_param("ssss", $name, $email, $combinedSubject, $message);
+                    $dbStmt->execute();
+                    $dbStmt->close();
+                }
+            }
+        } catch (\Throwable $dbe) {
+            error_log("Database save failed in homestay send_mail.php: " . $dbe->getMessage());
+        }
 
         $mail->isHTML(true);
         $mail->Subject = "New Website Inquiry: " . $subject;

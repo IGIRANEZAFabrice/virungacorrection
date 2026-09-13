@@ -34,13 +34,15 @@ if (!empty($_POST)) {
     }
 }
 
-// Validate reCAPTCHA if provided
+// Validate reCAPTCHA
 $recaptchaResponse = $inputData['g-recaptcha-response'] ?? '';
-if (!empty($recaptchaResponse)) {
-    if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
-        echo json_encode(['status' => 'error', 'success' => false, 'message' => 'reCAPTCHA verification failed']);
-        exit;
-    }
+if (empty($recaptchaResponse)) {
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'Please complete the reCAPTCHA verification.']);
+    exit;
+}
+if (!verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? '')) {
+    echo json_encode(['status' => 'error', 'success' => false, 'message' => 'reCAPTCHA verification failed. Please try again.']);
+    exit;
 }
 
 // Get form data
@@ -126,6 +128,25 @@ try {
     $mail->AltBody = "New Journey Request\n\nName: $name\nEmail: $email" . (!empty($phone) ? "\nPhone: $phone" : "") . "\nSubject: $subject\n\nMessage:\n$message";
 
     $mail->send();
+
+    // Persist submission in database
+    try {
+        require_once __DIR__ . '/../ecotours/admin/config/database.php';
+        if (isset($pdo)) {
+            $dbStmt = $pdo->prepare("INSERT INTO contact_submissions (first_name, last_name, email, phone, subject, message, ip_address, emailed) VALUES (:fname, :lname, :email, :phone, :subject, :message, :ip, 1)");
+            $dbStmt->execute([
+                ':fname' => $fname,
+                ':lname' => $lname,
+                ':email' => $email,
+                ':phone' => $phone,
+                ':subject' => $subject,
+                ':message' => $message,
+                ':ip' => $_SERVER['REMOTE_ADDR'] ?? ''
+            ]);
+        }
+    } catch (\Throwable $dbe) {
+        error_log("Database save failed in send-contact.php: " . $dbe->getMessage());
+    }
 
     // Require localization helper for multilingual email receipt
     if (file_exists(__DIR__ . '/../config/localization.php')) {

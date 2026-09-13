@@ -157,6 +157,25 @@ try {
 
     $mail->send();
 
+    // Persist training inquiry in database
+    try {
+        require_once $rootDir . '/admin/config/database.php';
+        if (isset($pdo)) {
+            $dbStmt = $pdo->prepare("INSERT INTO contact_submissions (first_name, last_name, email, phone, subject, message, ip_address, emailed) VALUES (:fname, :lname, :email, :phone, :subject, :message, :ip, 1)");
+            $dbStmt->execute([
+                ':fname' => $fname,
+                ':lname' => $lname,
+                ':email' => $email,
+                ':phone' => $phone,
+                ':subject' => 'VETI Training: ' . $program,
+                ':message' => $message,
+                ':ip' => $_SERVER['REMOTE_ADDR'] ?? ''
+            ]);
+        }
+    } catch (\Throwable $dbe) {
+        error_log("Database save failed in send-training-contact.php: " . $dbe->getMessage());
+    }
+
     // Send confirmation to user
     $mail->clearAddresses();
     $mail->clearReplyTos();

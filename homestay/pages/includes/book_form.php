@@ -67,8 +67,8 @@ function submitBooking(e) {
     submitBtn.disabled = true;
     submitBtn.classList.add('btn-loading');
     
-    // Auto-resolve API path (assuming /homestayV2/ is base)
-    const apiPath = window.location.pathname.includes('/homestayV2/') ? '/homestayV2/api/send_mail.php' : '/api/send_mail.php';
+    // Auto-resolve API path
+    const apiPath = './api/send_mail.php';
 
     fetch(apiPath, {
         method: 'POST',

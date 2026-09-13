@@ -115,6 +115,25 @@ if ($mailLoaded) {
         $mail->send();
         $mailSent = true;
 
+        // Persist application in database
+        try {
+            require_once __DIR__ . '/../ecotours/admin/config/database.php';
+            if (isset($pdo)) {
+                $dbStmt = $pdo->prepare("INSERT INTO membership_applications (first_name, last_name, email, phone, interest_tier, country, ip_address, status, emailed) VALUES (:fname, :lname, :email, :phone, :interest, :country, :ip, 'pending', 1)");
+                $dbStmt->execute([
+                    ':fname' => $firstName,
+                    ':lname' => $lastName,
+                    ':email' => $email,
+                    ':phone' => $phone,
+                    ':interest' => $interest,
+                    ':country' => $country,
+                    ':ip' => $_SERVER['REMOTE_ADDR'] ?? ''
+                ]);
+            }
+        } catch (\Throwable $dbe) {
+            error_log("Database save failed in join-membership.php: " . $dbe->getMessage());
+        }
+
         // Send multilingual confirmation email to applicant
         if (file_exists(__DIR__ . '/../config/localization.php')) {
             require_once __DIR__ . '/../config/localization.php';
