@@ -6,10 +6,17 @@ if (!function_exists('virungaImgBase64')) {
         if (empty($relPath)) return '';
         $clean = ltrim(str_replace('../', '', $relPath), '/');
         $fullPath = dirname(__DIR__) . '/' . $clean;
-        if (file_exists($fullPath)) {
+        if (file_exists($fullPath) && !is_dir($fullPath)) {
             $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-            $mime = ($ext === 'png') ? 'image/png' : (($ext === 'webp') ? 'image/webp' : 'image/jpeg');
+            $mime = ($ext === 'png') ? 'image/png' : (($ext === 'webp') ? 'image/webp' : (($ext === 'svg') ? 'image/svg+xml' : 'image/jpeg'));
             $data = file_get_contents($fullPath);
+            return 'data:' . $mime . ';base64,' . base64_encode($data);
+        }
+        $rootPath = dirname(dirname(__DIR__)) . '/' . $clean;
+        if (file_exists($rootPath) && !is_dir($rootPath)) {
+            $ext = strtolower(pathinfo($rootPath, PATHINFO_EXTENSION));
+            $mime = ($ext === 'png') ? 'image/png' : (($ext === 'webp') ? 'image/webp' : (($ext === 'svg') ? 'image/svg+xml' : 'image/jpeg'));
+            $data = file_get_contents($rootPath);
             return 'data:' . $mime . ';base64,' . base64_encode($data);
         }
         return '../' . $clean;
@@ -728,10 +735,9 @@ if (!function_exists('virungaImgBase64')) {
           <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #c9a24b; padding-bottom: 10px; margin-bottom: 14px;">
             <tr>
               <td style="vertical-align: middle;">
-                <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: #122a1f; text-transform: uppercase; line-height: 1;">VIRUNGA ECOTOURS</div>
-                <div style="font-size: 10px; color: #607066; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; font-weight: 500;">Regenerative Safaris & Community Journeys in East Africa</div>
+                <img src="<?php echo virungaImgBase64('img/logo.png'); ?>" alt="Virunga Journeys" style="height: 48px; width: auto; max-width: 220px; object-fit: contain; display: block;">
               </td>
-              <td style="text-align: right; font-size: 10.5px; color: #3b4740; line-height: 1.4;">
+              <td style="text-align: right; font-size: 10.5px; color: #3b4740; line-height: 1.4; vertical-align: middle;">
                 <strong style="color: #8e681c; font-size: 11px;">www.virungajourneys.com</strong><br>
                 WhatsApp: +250 784 513 435<br>
                 info@virungajourneys.com
@@ -956,7 +962,7 @@ if (!function_exists('virungaImgBase64')) {
             <span>www.virungajourneys.com</span>
           </div>
           <div style="font-size: 9.5px; color: #9cb1a3; margin-top: 6px;">
-            Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
+            Virunga Journeys · Musanze, Northern Province, Rwanda · East Africa
           </div>
         </div>
 
@@ -1127,7 +1133,7 @@ if (!function_exists('virungaImgBase64')) {
             runningHeader.style.textTransform = 'uppercase';
             runningHeader.style.letterSpacing = '1px';
             runningHeader.innerHTML = `
-              <div><strong>VIRUNGA ECOTOURS</strong> &nbsp;·&nbsp; <?php echo htmlspecialchars($tour['title']); ?></div>
+              <div><strong>VIRUNGA JOURNEYS</strong> &nbsp;·&nbsp; <?php echo htmlspecialchars($tour['title']); ?></div>
               <div>www.virungajourneys.com</div>
             `;
             contentWrap.appendChild(runningHeader);
@@ -1149,7 +1155,7 @@ if (!function_exists('virungaImgBase64')) {
           footerEl.style.color = '#607066';
           footerEl.innerHTML = `
             <div>
-              <span style="color: #122a1f; font-weight: 700;">Virunga Ecotours</span> &nbsp;·&nbsp;
+              <span style="color: #122a1f; font-weight: 700;">Virunga Journeys</span> &nbsp;·&nbsp;
               info@virungajourneys.com &nbsp;·&nbsp;
               +250 784 513 435 &nbsp;·&nbsp;
               www.virungajourneys.com

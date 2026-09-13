@@ -472,8 +472,7 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
     <table class="header-table">
       <tr>
         <td style="vertical-align: middle;">
-          <div class="brand-title">VIRUNGA ECOTOURS</div>
-          <div class="brand-subtitle">Regenerative Safaris & Community Journeys in East Africa</div>
+          <img src="../../img/logo.png" alt="Virunga Journeys" style="height: 48px; width: auto; max-width: 220px; object-fit: contain; display: block;">
         </td>
         <td class="header-contacts">
           <strong>www.virungajourneys.com</strong><br>
@@ -686,7 +685,7 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
         <span>www.virungajourneys.com</span>
       </div>
       <div class="footer-subtext">
-        Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
+        Virunga Journeys · Musanze, Northern Province, Rwanda · East Africa
       </div>
     </div>
   </div>
