@@ -1811,7 +1811,7 @@
               “It is a landscape of people, stories, creativity, conservation and living traditions.”
             </div>
             <p class="idea-desc">
-              Virunga Collective creates intimate experiences that invite travellers to do more than observe—to participate, connect and leave with something of the place.
+              Virunga Collective creates intimate experiences that invite travellers to do more than observe to participate, connect and leave with something of the place.
             </p>
             <a href="<?php echo htmlspecialchars($baseLink('about')); ?>" class="link-arrow">
               Discover Our Story <i class="fas fa-arrow-right"></i>
