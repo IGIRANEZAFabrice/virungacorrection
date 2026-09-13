@@ -465,13 +465,13 @@
 </section>
 
 <!-- ====================================================
-     01 — THE HOUSE
+     THE HOUSE
 ==================================================== -->
 <section id="home-about" class="vh-sec vh-sec--light reveal" data-reveal>
   <div class="vh-wrap">
     <div class="about-grid">
       <div class="about-copy" data-reveal>
-        <span class="vh-eyebrow">1. THE HOUSE</span>
+        <span class="vh-eyebrow">THE HOUSE</span>
         <h2 class="vh-title" style="text-align: left;">Stay closer to the Virunga.</h2>
         <p class="about-body">
           Virunga House is a locally rooted stay in Musanze for travellers looking for a comfortable, personal place to stay while exploring northern Rwanda.
@@ -516,12 +516,12 @@
 </section>
 
 <!-- ====================================================
-     02 — THE ROOMS
+     THE ROOMS
 ==================================================== -->
 <section class="vh-sec vh-sec--warm" id="rooms">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">2. THE ROOMS</span>
+      <span class="vh-eyebrow">THE ROOMS</span>
       <h2 class="vh-title">YOUR ROOM AT VIRUNGA HOUSE</h2>
       <p class="vh-lead">
         Our six rooms provide a comfortable, welcoming base for discovering Musanze and the Virunga.<br>
@@ -642,12 +642,12 @@
 </section>
 
 <!-- ====================================================
-     04 — FOOD AT VIRUNGA HOUSE (THE HOUSE TABLE)
+     FOOD AT VIRUNGA HOUSE (THE HOUSE TABLE)
 ==================================================== -->
 <section class="vh-sec vh-sec--light" id="dining">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">4. FOOD AT VIRUNGA HOUSE</span>
+      <span class="vh-eyebrow">FOOD AT VIRUNGA HOUSE</span>
       <h2 class="vh-title">THE HOUSE TABLE</h2>
       <p class="vh-lead">
         Food is part of the hospitality at Virunga House.<br>
@@ -698,10 +698,10 @@
       </div>
     </div>
 
-    <!-- 05 — FOOD DISTINCTION -->
+    <!-- FOOD DISTINCTION -->
     <div class="vh-distinction-box" data-reveal>
       <div class="vh-header center" style="margin-bottom: 24px;">
-        <span class="vh-eyebrow">5. FOOD & VIRUNGA JOURNEYS</span>
+        <span class="vh-eyebrow">FOOD &amp; VIRUNGA JOURNEYS</span>
         <h3 class="vh-title" style="font-size: 1.85rem;">Two Different Experiences</h3>
         <p class="vh-lead" style="font-size: 0.95rem;">
           We maintain a clear, purposeful distinction between our in-house guest dining and our hosted cultural food journeys.
@@ -729,13 +729,13 @@
 </section>
 
 <!-- ====================================================
-     06 & 07 — THE SETTING & THE HOUSE EXPERIENCE
+     THE SETTING & THE HOUSE EXPERIENCE
 ==================================================== -->
 <section class="vh-sec vh-sec--cream" id="evenings">
   <div class="vh-wrap">
     <div class="hs-split-grid hs-split-grid--reverse" data-reveal>
       <div class="hs-split-content">
-        <span class="vh-eyebrow">6 & 7. THE SETTING & EXPERIENCE</span>
+        <span class="vh-eyebrow">THE SETTING &amp; EXPERIENCE</span>
         <h2 class="vh-title" style="text-align: left;">Beneath the Volcanoes.<br>More Than a Room.</h2>
         <p class="hs-lead" style="margin-bottom: 14px;">
           Virunga House offers a peaceful, scenic base to slow down and experience northern Rwanda.
@@ -762,12 +762,12 @@
 </section>
 
 <!-- ====================================================
-     08 — STAY + JOURNEY
+     STAY + JOURNEY
 ==================================================== -->
 <section class="vh-sec vh-sec--light" id="stay-journey">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">8. STAY + JOURNEY</span>
+      <span class="vh-eyebrow">STAY + JOURNEY</span>
       <h2 class="vh-title">Stay at Virunga House. Explore with Virunga Journeys.</h2>
       <p class="vh-lead">
         Combine your boutique stay in Musanze with expertly coordinated private journeys across Rwanda, Uganda, and the DRC.
@@ -807,12 +807,12 @@
 </section>
 
 <!-- ====================================================
-     09 & 10 — LOCATION & WHO VIRUNGA HOUSE IS FOR
+     LOCATION & WHO VIRUNGA HOUSE IS FOR
 ==================================================== -->
 <section class="vh-sec vh-sec--warm" id="who-its-for">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">9 & 10. LOCATION & SUITABILITY</span>
+      <span class="vh-eyebrow">LOCATION &amp; SUITABILITY</span>
       <h2 class="vh-title">In Musanze, Beneath the Volcanoes</h2>
       <p class="vh-lead">
         Located in quiet Musanze town, just 15 minutes from Volcanoes National Park Headquarters in Kinigi and 2 hours from Kigali International Airport.
@@ -855,12 +855,12 @@
 </section>
 
 <!-- ====================================================
-     13 — PRACTICAL INFORMATION ("GOOD TO KNOW")
+     PRACTICAL INFORMATION ("GOOD TO KNOW")
 ==================================================== -->
 <section class="vh-sec vh-sec--light" id="good-to-know">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">13. PRACTICAL INFORMATION</span>
+      <span class="vh-eyebrow">PRACTICAL INFORMATION</span>
       <h2 class="vh-title">GOOD TO KNOW BEFORE YOU STAY</h2>
       <p class="vh-lead">
         Transparent, factual details to help you prepare for your stay in Musanze.
@@ -933,12 +933,12 @@
 </section>
 
 <!-- ====================================================
-     16 — BOOKING PROCESS ROADMAP
+     BOOKING PROCESS ROADMAP
 ==================================================== -->
 <section class="vh-sec vh-sec--warm" id="booking-process">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">16. SIMPLE BOOKING PROCESS</span>
+      <span class="vh-eyebrow">SIMPLE BOOKING PROCESS</span>
       <h2 class="vh-title">How It Works</h2>
       <p class="vh-lead">
         Six straightforward steps from checking availability to arriving at your mountain basecamp.
@@ -981,12 +981,12 @@
 </section>
 
 <!-- ====================================================
-     17 — FREQUENTLY ASKED QUESTIONS (FAQ)
+     FREQUENTLY ASKED QUESTIONS (FAQ)
 ==================================================== -->
 <section class="vh-sec vh-sec--light" id="hospitality-faq">
   <div class="vh-wrap">
     <div class="vh-header center" data-reveal>
-      <span class="vh-eyebrow">17. QUESTIONS & ANSWERS</span>
+      <span class="vh-eyebrow">QUESTIONS &amp; ANSWERS</span>
       <h2 class="vh-title">Frequently Asked Questions</h2>
       <p class="vh-lead">
         Clear answers regarding stays, dining arrangements, and journey planning.
@@ -1075,12 +1075,12 @@
 </section>
 
 <!-- ====================================================
-     18 — FINAL CTA (INVITATION)
+     FINAL CTA (INVITATION)
 ==================================================== -->
 <section class="vh-sec vh-sec--dark" id="invitation" style="background-image: linear-gradient(rgba(12, 28, 20, 0.88), rgba(12, 28, 20, 0.92)), url('./img/day/7.jpeg'); background-size: cover; background-position: center; text-align: center;">
   <div class="vh-wrap">
     <div class="hs-invitation-box" data-reveal>
-      <span class="vh-eyebrow" style="color: var(--vh-gold-light);">18. STAY IN THE VIRUNGA</span>
+      <span class="vh-eyebrow" style="color: var(--vh-gold-light);">STAY IN THE VIRUNGA</span>
       <h2 class="vh-title" style="color: #ffffff; margin-bottom: 18px;">A locally rooted base for discovering northern Rwanda.</h2>
       <p class="vh-lead" style="color: rgba(246, 242, 233, 0.9); max-width: 740px; margin: 0 auto 36px;">
         <em>Stay. Eat. Rest. Discover.</em><br>
