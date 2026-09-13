@@ -705,249 +705,225 @@ require_once './itenaryopenhandler.php';
 
     <!-- HIDDEN LUXURY PDF PRINTABLE TEMPLATE (Pre-rendered for html2pdf.js export) -->
     <div id="pdfPrintableTemplate" style="display: none;">
-      <div class="pdf-document-body" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #202924; background: #ffffff; padding: 25px 30px; line-height: 1.5; font-size: 13px; width: 794px; box-sizing: border-box;">
-        
-        <!-- HEADER -->
-        <div style="border-bottom: 2px solid #c9a24b; padding-bottom: 14px; margin-bottom: 20px;">
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="vertical-align: middle;">
-                <div style="font-family: Georgia, serif; font-size: 25px; font-weight: bold; letter-spacing: 2px; color: #122a1f; text-transform: uppercase;">
-                  VIRUNGA ECOTOURS
-                </div>
-                <div style="font-size: 10.5px; color: #607066; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; font-weight: 600;">
-                  Regenerative Safaris & Community Journeys in East Africa
-                </div>
-              </td>
-              <td style="text-align: right; vertical-align: middle; font-size: 11px; color: #3b4740; line-height: 1.45;">
-                <div style="font-weight: 700; color: #8e681c; font-size: 11.5px;">www.virungajourneys.com</div>
-                <div>WhatsApp: +250 784 513 435</div>
-                <div>info@virungajourneys.com</div>
-              </td>
-            </tr>
-          </table>
-        </div>
+      <div class="pdf-document-body" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1c211d; background: #ffffff; width: 794px; box-sizing: border-box; line-height: 1.55;">
 
-        <!-- TITLE & METRICS -->
-        <div style="margin-bottom: 18px;">
-          <div style="display: inline-block; background: #f4ede0; color: #8e681c; font-weight: 700; font-size: 10px; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
-            <?php 
-              $countryName = ucfirst(trim($tour['country']));
-              if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== false) {
-                  $countryName = 'DR Congo';
-              }
-              echo htmlspecialchars(strtoupper($tour['category'])); 
-            ?> · <?php echo htmlspecialchars(strtoupper($countryName)); ?>
+        <!-- ============ COVER ============ -->
+        <div style="position: relative; width: 100%; height: 460px; overflow: hidden;">
+          <img src="../<?php echo htmlspecialchars($tour['cover_image_path']); ?>"
+               style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Cover">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,15,12,0.05) 0%, rgba(10,15,12,0.15) 45%, rgba(10,15,12,0.88) 100%);"></div>
+
+          <div style="position: absolute; top: 28px; left: 34px; color: #f6f2e9; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">
+            Virunga Ecotours
           </div>
-          <h1 style="font-family: Georgia, serif; font-size: 26px; color: #122a1f; margin: 0 0 12px 0; font-weight: 700; line-height: 1.2;">
-            <?php echo htmlspecialchars($tour['title']); ?>
-          </h1>
+          <div style="position: absolute; top: 28px; right: 34px; color: rgba(246,242,233,0.85); font-size: 10px; letter-spacing: 1px;">
+            www.virungajourneys.com
+          </div>
 
-          <table style="width: 100%; border-collapse: collapse; background: #fbfaf7; border: 1px solid #e6e2d8; border-radius: 6px; margin-bottom: 18px;">
-            <tr>
-              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
-                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Duration</div>
-                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo (int)$tour['days_count']; ?> Day<?php echo $tour['days_count'] > 1 ? 's' : ''; ?></div>
-              </td>
-              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
-                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Destination</div>
-                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo htmlspecialchars($countryName); ?></div>
-              </td>
-              <td style="width: 25%; padding: 10px 14px; border-right: 1px solid #e6e2d8; text-align: center;">
-                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Category</div>
-                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;"><?php echo htmlspecialchars($tour['category']); ?></div>
-              </td>
-              <td style="width: 25%; padding: 10px 14px; text-align: center;">
-                <div style="font-size: 9.5px; text-transform: uppercase; color: #607066; letter-spacing: 0.5px; font-weight: 600;">Format</div>
-                <div style="font-size: 14px; font-weight: 700; color: #122a1f; margin-top: 2px;">Private & Guided</div>
-              </td>
-            </tr>
-          </table>
+          <div style="position: absolute; left: 34px; right: 34px; bottom: 28px;">
+            <div style="display: inline-block; color: #c9a24b; font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
+              <?php
+                $countryName = ucfirst(trim($tour['country']));
+                if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== false) {
+                    $countryName = 'DR Congo';
+                }
+                echo htmlspecialchars(strtoupper($tour['category'])) . ' &nbsp;·&nbsp; ' . htmlspecialchars(strtoupper($countryName));
+              ?>
+            </div>
+            <h1 style="margin: 0; color: #ffffff; font-size: 34px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.15; max-width: 620px;">
+              <?php echo htmlspecialchars($tour['title']); ?>
+            </h1>
+          </div>
         </div>
 
-        <!-- CURATED PHOTOS -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px;">
+        <!-- ============ QUICK FACTS STRIP ============ -->
+        <table style="width: 100%; border-collapse: collapse; border-bottom: 1px solid #e9e5db;">
           <tr>
-            <td style="width: 50%; padding-right: 6px;">
-              <img src="../<?php echo htmlspecialchars($tour['cover_image_path']); ?>" style="width: 100%; height: 175px; object-fit: cover; border-radius: 6px; display: block; border: 1px solid #dcd7cc;" alt="Cover">
+            <?php
+              $facts = [
+                'Duration' => (int)$tour['days_count'] . ' Day' . ($tour['days_count'] > 1 ? 's' : ''),
+                'Destination' => $countryName,
+                'Category' => $tour['category'],
+                'Format' => 'Private & Guided',
+              ];
+              $i = 0; $count = count($facts);
+              foreach ($facts as $label => $value):
+                $i++;
+                $borderRight = $i < $count ? 'border-right: 1px solid #e9e5db;' : '';
+            ?>
+            <td style="width: 25%; padding: 16px 10px; text-align: center; <?php echo $borderRight; ?>">
+              <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #8a9089; margin-bottom: 4px;">
+                <?php echo htmlspecialchars($label); ?>
+              </div>
+              <div style="font-size: 14px; font-weight: 700; color: #1c211d;">
+                <?php echo htmlspecialchars($value); ?>
+              </div>
             </td>
-            <td style="width: 50%; padding-left: 6px;">
-              <?php if (!empty($highlights)): ?>
-                <img src="../<?php echo htmlspecialchars($highlights[0]['image_path']); ?>" style="width: 100%; height: 175px; object-fit: cover; border-radius: 6px; display: block; border: 1px solid #dcd7cc;" alt="Highlight">
-              <?php else: ?>
-                <img src="../images/hero/gorille.jpg" style="width: 100%; height: 175px; object-fit: cover; border-radius: 6px; display: block; border: 1px solid #dcd7cc;" alt="Highlight">
-              <?php endif; ?>
-            </td>
+            <?php endforeach; ?>
           </tr>
         </table>
 
-        <!-- EXECUTIVE OVERVIEW CALLOUT -->
-        <div style="background: #fdfbf7; border-left: 4px solid #c9a24b; border-top: 1px solid #efeae0; border-right: 1px solid #efeae0; border-bottom: 1px solid #efeae0; border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 24px;">
-          <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: #8e681c; font-weight: 700; margin-bottom: 4px;">
-            Executive Journey Overview
-          </div>
-          <p style="margin: 0; font-family: Georgia, serif; font-size: 14px; line-height: 1.6; font-style: italic; color: #26312a;">
-            "<?php echo htmlspecialchars($tour['short_description']); ?>"
+        <!-- ============ OVERVIEW ============ -->
+        <div style="padding: 26px 34px 6px;">
+          <p style="margin: 0; font-size: 16px; line-height: 1.75; color: #333d35; font-weight: 300;">
+            <?php echo htmlspecialchars($tour['short_description']); ?>
           </p>
         </div>
 
-        <!-- DAY-BY-DAY ITINERARY -->
-        <div style="margin-bottom: 24px;">
-          <div style="border-bottom: 2px solid #122a1f; padding-bottom: 6px; margin-bottom: 14px;">
-            <h2 style="font-family: Georgia, serif; font-size: 18px; color: #122a1f; margin: 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-              Detailed Day-by-Day Itinerary
-            </h2>
+        <!-- ============ ITINERARY TIMELINE ============ -->
+        <div style="padding: 30px 34px 10px;">
+          <div style="font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c9a24b; font-weight: 700; margin-bottom: 18px;">
+            Day-by-Day Itinerary
           </div>
 
-          <?php foreach ($days as $day): ?>
-            <div style="page-break-inside: avoid; break-inside: avoid; background: #ffffff; border: 1px solid #e6e2d8; border-radius: 6px; padding: 13px 16px; margin-bottom: 10px;">
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <td style="width: 68px; vertical-align: top;">
-                    <span style="background: #1b3a2b; color: #f4ede0; font-weight: 700; font-size: 10px; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">
-                      DAY <?php echo sprintf('%02d', $day['day_number']); ?>
-                    </span>
-                  </td>
-                  <td style="vertical-align: top; padding-left: 8px;">
-                    <div style="font-family: Georgia, serif; font-size: 15px; color: #122a1f; font-weight: 700; margin-bottom: 5px;">
-                      <?php echo htmlspecialchars($day['day_title']); ?>
-                    </div>
-                    <div style="font-size: 12px; line-height: 1.6; color: #3b4740;">
-                      <?php echo nl2br(htmlspecialchars($day['day_description'])); ?>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+          <?php $dayCount = count($days); foreach ($days as $idx => $day): $isLast = ($idx === $dayCount - 1); ?>
+            <div style="page-break-inside: avoid; break-inside: avoid; position: relative; padding-left: 44px; padding-bottom: <?php echo $isLast ? '4px' : '22px'; ?>;">
+
+              <?php if (!$isLast): ?>
+              <div style="position: absolute; left: 13px; top: 28px; bottom: 0; width: 1px; background: #e2ded2;"></div>
+              <?php endif; ?>
+
+              <div style="position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #122a1f; color: #122a1f; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; background: #ffffff;">
+                <?php echo sprintf('%02d', $day['day_number']); ?>
+              </div>
+
+              <div style="font-size: 15px; font-weight: 700; color: #122a1f; margin-bottom: 5px; padding-top: 4px;">
+                <?php echo htmlspecialchars($day['day_title']); ?>
+              </div>
+              <div style="font-size: 12.5px; color: #4a544c; line-height: 1.65;">
+                <?php echo nl2br(htmlspecialchars($day['day_description'])); ?>
+              </div>
             </div>
           <?php endforeach; ?>
         </div>
 
         <?php if (!empty($tour['why_attend'])): ?>
-          <!-- WHY CHOOSE THIS JOURNEY -->
-          <div style="page-break-inside: avoid; break-inside: avoid; background: #f5f9f6; border: 1px solid #cfe2d5; border-radius: 6px; padding: 14px 18px; margin-bottom: 20px;">
-            <div style="font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: #1b3a2b; text-transform: uppercase; margin-bottom: 6px;">
-              ✦ Why Choose This Experience
-            </div>
-            <div style="font-size: 12px; line-height: 1.6; color: #24352b;">
-              <?php echo nl2br(htmlspecialchars($tour['why_attend'])); ?>
-            </div>
+        <!-- ============ WHY THIS JOURNEY ============ -->
+        <div style="page-break-inside: avoid; break-inside: avoid; padding: 22px 34px; margin-top: 6px; border-top: 1px solid #e9e5db; border-bottom: 1px solid #e9e5db;">
+          <div style="font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c9a24b; font-weight: 700; margin-bottom: 10px;">
+            Why This Journey
           </div>
+          <div style="font-size: 12.5px; line-height: 1.7; color: #333d35;">
+            <?php echo nl2br(htmlspecialchars($tour['why_attend'])); ?>
+          </div>
+        </div>
         <?php endif; ?>
 
-        <!-- INCLUSIONS & EXCLUSIONS -->
-        <div style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 20px;">
+        <!-- ============ INCLUSIONS / EXCLUSIONS ============ -->
+        <div style="page-break-inside: avoid; break-inside: avoid; padding: 26px 34px 6px;">
           <table style="width: 100%; border-collapse: collapse;">
             <tr>
-              <td style="width: 50%; vertical-align: top; padding-right: 7px;">
-                <div style="background: #f8faf8; border: 1px solid #d3e4d7; border-radius: 6px; padding: 14px 16px; height: 100%;">
-                  <div style="font-family: Georgia, serif; font-size: 14px; font-weight: 700; color: #174223; border-bottom: 1px solid #d3e4d7; padding-bottom: 5px; margin-bottom: 8px;">
-                    ✔ What is Included
-                  </div>
-                  <ul style="margin: 0; padding-left: 16px; font-size: 11.5px; line-height: 1.55; color: #2c3d32;">
-                    <?php if (!empty($included)): ?>
-                      <?php foreach ($included as $inc): ?>
-                        <li style="margin-bottom: 4px;"><?php echo htmlspecialchars($inc['item_description']); ?></li>
-                      <?php endforeach; ?>
-                    <?php else: ?>
-                      <li>Dedicated safari vehicle & expert tour guide</li>
-                      <li>All scheduled itinerary activities</li>
-                      <li>Selected accommodation & breakfast</li>
-                    <?php endif; ?>
-                  </ul>
+              <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+                <div style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #122a1f; font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid #122a1f; padding-bottom: 6px;">
+                  Included
                 </div>
+                <?php if (!empty($included)): foreach ($included as $inc): ?>
+                  <div style="font-size: 11.5px; color: #333d35; margin-bottom: 6px; padding-left: 14px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #122a1f; font-weight: 700;">–</span>
+                    <?php echo htmlspecialchars($inc['item_description']); ?>
+                  </div>
+                <?php endforeach; else: ?>
+                  <div style="font-size: 11.5px; color: #333d35;">Dedicated vehicle, expert guide, accommodation & breakfast.</div>
+                <?php endif; ?>
               </td>
-              <td style="width: 50%; vertical-align: top; padding-left: 7px;">
-                <div style="background: #fdfafb; border: 1px solid #edd5d5; border-radius: 6px; padding: 14px 16px; height: 100%;">
-                  <div style="font-family: Georgia, serif; font-size: 14px; font-weight: 700; color: #782626; border-bottom: 1px solid #edd5d5; padding-bottom: 5px; margin-bottom: 8px;">
-                    ✖ What is Not Included
-                  </div>
-                  <ul style="margin: 0; padding-left: 16px; font-size: 11.5px; line-height: 1.55; color: #4f3333;">
-                    <?php if (!empty($excluded)): ?>
-                      <?php foreach ($excluded as $exc): ?>
-                        <li style="margin-bottom: 4px;"><?php echo htmlspecialchars($exc['item_description']); ?></li>
-                      <?php endforeach; ?>
-                    <?php else: ?>
-                      <li>International flights and entry visas</li>
-                      <li>Personal expenses, tips & gratuities</li>
-                      <li>Unlisted drinks and activities</li>
-                    <?php endif; ?>
-                  </ul>
+              <td style="width: 50%; vertical-align: top; padding-left: 20px; border-left: 1px solid #e9e5db;">
+                <div style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #8a5a3a; font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid #8a5a3a; padding-bottom: 6px;">
+                  Not Included
                 </div>
+                <?php if (!empty($excluded)): foreach ($excluded as $exc): ?>
+                  <div style="font-size: 11.5px; color: #4f4237; margin-bottom: 6px; padding-left: 14px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #8a5a3a; font-weight: 700;">–</span>
+                    <?php echo htmlspecialchars($exc['item_description']); ?>
+                  </div>
+                <?php endforeach; else: ?>
+                  <div style="font-size: 11.5px; color: #4f4237;">International flights, visas, tips, personal expenses.</div>
+                <?php endif; ?>
               </td>
             </tr>
           </table>
         </div>
 
         <?php if (!empty($toBring)): ?>
-          <!-- WHAT TO BRING -->
-          <div style="page-break-inside: avoid; break-inside: avoid; background: #fbfaf7; border: 1px solid #e6e2d8; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; font-size: 11.5px; color: #404d45;">
-            <strong style="color: #122a1f; font-size: 12.5px; font-family: Georgia, serif;">🎒 Recommended Packing & Preparation:</strong> 
-            <?php 
+        <!-- ============ WHAT TO BRING ============ -->
+        <div style="page-break-inside: avoid; break-inside: avoid; padding: 10px 34px 6px; font-size: 11.5px; color: #4a544c;">
+          <span style="text-transform: uppercase; letter-spacing: 1.5px; font-size: 10px; font-weight: 700; color: #122a1f;">Packing &amp; Preparation&nbsp;&nbsp;</span>
+          <?php
             $tbList = [];
-            foreach ($toBring as $tb) {
-                $tbList[] = htmlspecialchars($tb['item_description']);
-            }
-            echo implode(' · ', $tbList);
-            ?>
-          </div>
+            foreach ($toBring as $tb) { $tbList[] = htmlspecialchars($tb['item_description']); }
+            echo implode(' &nbsp;·&nbsp; ', $tbList);
+          ?>
+        </div>
         <?php endif; ?>
 
         <?php if (!empty($pricingTiers)): ?>
-          <!-- PRICING TIERS -->
-          <div style="margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">
-            <div style="border-bottom: 2px solid #122a1f; padding-bottom: 6px; margin: 15px 0 12px 0;">
-              <div style="font-family: Georgia, serif; font-size: 16px; color: #122a1f; font-weight: 700; text-transform: uppercase;">
-                Standard Rates (<?php echo htmlspecialchars($pricingYear ?? date('Y')); ?>)
-              </div>
-            </div>
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #e6e2d8; font-size: 12px;">
-              <thead>
-                <tr style="background: #fbfaf7;">
-                  <th style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: left;">Group Size</th>
-                  <th style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: right;">Price per Person (USD)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($pricingTiers as $tier): ?>
-                  <tr>
-                    <td style="padding: 8px 12px; border: 1px solid #e6e2d8;"><?php echo htmlspecialchars($tier['group_size']); ?></td>
-                    <td style="padding: 8px 12px; border: 1px solid #e6e2d8; text-align: right; font-weight: 700; color: #122a1f;">$<?php echo number_format((float)$tier['price_per_person'], 2); ?></td>
-                  </tr>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
-            <?php if (!empty($pricingNotes)): ?>
-              <div style="font-size: 11px; color: #607066; margin-top: 6px;">
-                <?php foreach ($pricingNotes as $n): ?>
-                  <div>• <?php echo htmlspecialchars($n['note']); ?></div>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
+        <!-- ============ RATES ============ -->
+        <div style="page-break-inside: avoid; break-inside: avoid; padding: 26px 34px 6px;">
+          <div style="font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c9a24b; font-weight: 700; margin-bottom: 14px;">
+            Rates (<?php echo htmlspecialchars($pricingYear ?? date('Y')); ?>)
           </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <thead>
+              <tr style="border-bottom: 1.5px solid #122a1f;">
+                <th style="text-align: left; padding: 6px 4px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #122a1f;">Group Size</th>
+                <th style="text-align: right; padding: 6px 4px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #122a1f;">Per Person (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($pricingTiers as $tier): ?>
+                <tr style="border-bottom: 1px solid #efece3;">
+                  <td style="padding: 8px 4px; color: #333d35;"><?php echo htmlspecialchars($tier['group_size']); ?></td>
+                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #122a1f;">
+                    $<?php echo number_format((float)$tier['price_per_person'], 2); ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+          <?php if (!empty($pricingNotes)): ?>
+            <div style="font-size: 10.5px; color: #8a9089; margin-top: 8px; line-height: 1.6;">
+              <?php foreach ($pricingNotes as $n): ?>
+                <div>· <?php echo htmlspecialchars($n['note']); ?></div>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+        </div>
         <?php endif; ?>
 
-        <!-- ETHICAL TRAVEL -->
-        <div style="background: #fbfaf7; border-left: 3px solid #7d8e83; padding: 10px 14px; margin-bottom: 20px; font-size: 11px; color: #4e5e54; line-height: 1.5; page-break-inside: avoid;">
-          <strong>Guest Safety & Ethics:</strong> Standard emergency medical & evacuation coverage is included on all expeditions. We uphold ethical fair wages, local community reinvestment, and conservation stewardship on every journey.
+        <!-- ============ HIGHLIGHT GALLERY (bottom) ============ -->
+        <?php if (!empty($highlights)): ?>
+        <div style="page-break-inside: avoid; break-inside: avoid; padding: 30px 34px 6px;">
+          <div style="font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #c9a24b; font-weight: 700; margin-bottom: 14px;">
+            Journey Highlights
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <?php
+                $galleryShots = array_slice($highlights, 0, 4);
+                $shotCount = count($galleryShots);
+                foreach ($galleryShots as $gIdx => $shot):
+                  $padRight = ($gIdx < $shotCount - 1) ? '6px' : '0';
+                  $padLeft  = ($gIdx > 0) ? '6px' : '0';
+              ?>
+              <td style="width: <?php echo (100 / $shotCount); ?>%; padding-right: <?php echo $padRight; ?>; padding-left: <?php echo $padLeft; ?>;">
+                <img src="../<?php echo htmlspecialchars($shot['image_path']); ?>"
+                     style="width: 100%; height: 130px; object-fit: cover; display: block; border-radius: 3px;" alt="">
+              </td>
+              <?php endforeach; ?>
+            </tr>
+          </table>
         </div>
+        <?php endif; ?>
 
-        <!-- BOOKING FOOTER BOX -->
-        <div style="page-break-inside: avoid; break-inside: avoid; background: #122a1f; color: #f4ede0; border-radius: 8px; padding: 20px 24px; text-align: center; margin-top: 24px;">
-          <div style="font-family: Georgia, serif; font-size: 18px; font-weight: 700; color: #c9a24b; margin-bottom: 5px;">
-            Ready to Plan or Customize This Journey?
+        <!-- ============ FOOTER ============ -->
+        <div style="page-break-inside: avoid; break-inside: avoid; margin-top: 24px; padding: 22px 34px; border-top: 1px solid #e9e5db; text-align: center;">
+          <div style="font-size: 13px; font-weight: 700; color: #122a1f; letter-spacing: 0.3px; margin-bottom: 4px;">
+            Ready to plan or customize this journey?
           </div>
-          <div style="font-size: 12px; color: #dbe4dc; line-height: 1.5; margin-bottom: 12px;">
-            Our dedicated journey planners are available to adapt dates, accommodation levels, and private activities to your exact travel wishes.
+          <div style="font-size: 11px; color: #6b756e;">
+            WhatsApp +250 784 513 435 &nbsp;·&nbsp; info@virungajourneys.com &nbsp;·&nbsp; www.virungajourneys.com
           </div>
-          <div style="font-size: 12.5px; font-weight: 600; color: #ffffff;">
-            <span>📱 WhatsApp: +250 784 513 435</span>
-            <span style="margin: 0 8px; color: #c9a24b;">·</span>
-            <span>✉ Email: info@virungajourneys.com</span>
-            <span style="margin: 0 8px; color: #c9a24b;">·</span>
-            <span>🌐 www.virungajourneys.com</span>
-          </div>
-          <div style="font-size: 10.5px; color: #9cb1a3; margin-top: 8px;">
-            Virunga Ecotours · Musanze, Northern Province, Rwanda · East Africa
+          <div style="font-size: 9.5px; color: #a3ab9f; margin-top: 6px; letter-spacing: 0.5px;">
+            VIRUNGA ECOTOURS &nbsp;·&nbsp; MUSANZE, NORTHERN PROVINCE, RWANDA
           </div>
         </div>
 
