@@ -1,21 +1,10 @@
 <?php
-// Check if we're on the production server or local environment
-$base_path = __DIR__;
-
-
-// If we're on the production server, adjust the path
-if (strpos(__FILE__, '/home2/dmxewbmy/public_html/website_58827336/') !== false) {
-    // Create a path that works on the production server
-    require_once '/home2/dmxewbmy/public_html/website_58827336/pages/handlers/itenary_handler.php';
-} else {
-    // Use the local path
-    require_once $base_path . '/handlers/itenary_handler.php';
-}
+require_once __DIR__ . '/handlers/itenary_handler.php';
 
 // Get parameters
-$country = isset($_GET['country']) ? strtolower($_GET['country']) : 'rwanda';
-$type = isset($_GET['type']) ? $_GET['type'] : null;
-$category = isset($_GET['category']) ? strtolower($_GET['category']) : null;
+$country = isset($_GET['country']) ? strtolower(trim($_GET['country'])) : 'rwanda';
+$type = isset($_GET['type']) ? strtolower(trim($_GET['type'])) : null;
+$category = isset($_GET['category']) ? strtolower(trim($_GET['category'])) : null;
 
 // Get data from handler
 $data = getItenaryData($country, $type, $category);
@@ -25,7 +14,6 @@ $tours = $data['tours'] ?? [];
 $categories = $data['categories'] ?? [];
 $debug_total = $data['debug_total'] ?? '';
 $debug_info = $data['debug_info'] ?? '';
-
 ?>
 
 <!DOCTYPE html>
@@ -87,12 +75,7 @@ $debug_info = $data['debug_info'] ?? '';
   </head>
   <body>
    <?php 
-   // Use the same conditional approach for including the header
-   if (strpos(__FILE__, '/home2/dmxewbmy/public_html/website_58827336/') !== false) {
-       include('/home2/dmxewbmy/public_html/website_58827336/pages/includes/header.php');
-   } else {
-       include($base_path . '/includes/header.php');
-   }
+   include __DIR__ . '/includes/header.php';
    ?>
 
     <!-- Output debug info -->
@@ -196,7 +179,21 @@ $debug_info = $data['debug_info'] ?? '';
 
         <div class="tours-cards" id="toursContainer">
           <?php if (empty($tours)): ?>
-            <p class="no-tours">No <?php echo $type ? ($type === 'multi' ? 'multi-day' : ($type === 'day' ? 'single-day' : htmlspecialchars($type))) . ' ' : ''; ?>tours available for <?php echo ucfirst($country); ?> at the moment.</p>
+            <div class="no-tours-message">
+              <div class="no-tours-icon">
+                <i class="fas fa-compass"></i>
+              </div>
+              <h3>No <?php echo $type ? ($type === 'multi' ? 'Multi-Day' : ($type === 'day' ? 'Single-Day' : htmlspecialchars(ucfirst($type)))) . ' ' : ''; ?>Tours Available</h3>
+              <p>We are currently curating and updating our <?php echo $type ? ($type === 'multi' ? 'multi-day' : ($type === 'day' ? 'single-day' : htmlspecialchars($type))) . ' ' : ''; ?>experiences for <?php echo ucfirst($country); ?>. You can explore all available tours or contact our travel specialists to customize a tailor-made journey.</p>
+              <div class="no-tours-actions">
+                <a href="itenary.php?country=<?php echo urlencode($country); ?>" class="empty-btn-primary">
+                  <i class="fas fa-compass"></i> View All <?php echo ucfirst($country); ?> Tours
+                </a>
+                <a href="https://wa.me/250784513435?text=Hello%20Virunga%20Ecotours,%20I%20would%20like%20to%20inquire%20about%20custom%20tours%20in%20<?php echo urlencode(ucfirst($country)); ?>" target="_blank" class="empty-btn-whatsapp">
+                  <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+              </div>
+            </div>
           <?php else: ?>
             <?php foreach ($tours as $tour): ?>
               <div class="tour-card">
@@ -229,12 +226,7 @@ $debug_info = $data['debug_info'] ?? '';
       </div>
     </section>
     <?php 
-    // Use the same conditional approach for including the footer
-    if (strpos(__FILE__, '/home2/dmxewbmy/public_html/website_58827336/') !== false) {
-        include('/home2/dmxewbmy/public_html/website_58827336/pages/includes/footer.php');
-    } else {
-        include($base_path . '/includes/footer.php');
-    }
+    include __DIR__ . '/includes/footer.php';
     ?>
     <script src="../js/header.js" defer></script>
     <script src="../js/itenary.js" defer></script>

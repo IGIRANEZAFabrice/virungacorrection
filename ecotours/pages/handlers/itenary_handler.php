@@ -1,45 +1,34 @@
 <?php
-// Check if we're on the production server or local environment
-$handler_base_path = __DIR__;
-
-// If we're on the production server, adjust the path
-if (strpos(__FILE__, '/home2/dmxewbmy/public_html/website_58827336/') !== false) {
-    // Create a path that works on the production server
-    require_once '/home2/dmxewbmy/public_html/website_58827336/admin/config/database.php';
+// Resolve path to database configuration
+$db_file = dirname(__DIR__, 2) . '/admin/config/database.php';
+if (file_exists($db_file)) {
+    require_once $db_file;
 } else {
-    // Use the local path
-    require_once dirname(dirname(__FILE__)) . '/../admin/config/database.php';
+    // Fallback relative path
+    require_once __DIR__ . '/../../admin/config/database.php';
 }
 
 function getItenaryData($country = 'rwanda', $type = null, $category = null) {
     global $pdo;
     $data = [];
     
+    if (!$pdo) {
+        return ['tours' => [], 'categories' => []];
+    }
+
     // Enable PDO error display for debugging
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Sanitize inputs
-    $country = strtolower($country);
-    $category = $category ? strtolower($category) : null;
-    
-    // Test query to verify database connection
-    try {
-        $testQuery = "SELECT COUNT(*) FROM tours";
-        $testStmt = $pdo->prepare($testQuery);
-        $testStmt->execute();
-        $testCount = $testStmt->fetchColumn();
-        $data['debug_total'] = "<!-- Debug: Total tours in database: $testCount -->";
-    } catch(PDOException $e) {
-        $data['debug_total'] = "<!-- Database Test Error: " . htmlspecialchars($e->getMessage()) . " -->";
-        error_log("Database Test Error: " . $e->getMessage());
-    }
+    $country = strtolower(trim($country));
+    $category = $category ? strtolower(trim($category)) : null;
     
     // Build query based on tour type
     $query = "SELECT t.*, 
               COUNT(DISTINCT th.highlight_id) as total_highlights 
               FROM tours t 
               LEFT JOIN tour_highlights th ON t.tour_id = th.tour_id 
-              WHERE t.country = :country ";
+              WHERE LOWER(TRIM(t.country)) = :country ";
     
     // Only filter by days_count if type is specified
     if ($type === 'day') {
@@ -47,11 +36,10 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
     } elseif ($type === 'multi') {
         $query .= "AND t.days_count > 1 ";
     }
-    // If type is not specified, show all tours for the country
     
     // Add category filter if specified
     if ($category) {
-        $query .= "AND LOWER(t.category) = :category ";
+        $query .= "AND LOWER(TRIM(t.category)) = :category ";
     }
     
     $query .= "GROUP BY t.tour_id ORDER BY t.created_at DESC";
@@ -65,8 +53,8 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
         $stmt->execute($params);
         $data['tours'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Also fetch distinct categories ONLY for the tours matching this country and type
-        $categoryQuery = "SELECT DISTINCT category FROM tours WHERE country = :country AND category IS NOT NULL AND TRIM(category) != '' ";
+        // Fetch distinct categories ONLY for the tours that exist for this country and type
+        $categoryQuery = "SELECT DISTINCT category FROM tours WHERE LOWER(TRIM(country)) = :country AND category IS NOT NULL AND TRIM(category) != '' ";
         if ($type === 'day') {
             $categoryQuery .= "AND days_count = 1 ";
         } elseif ($type === 'multi') {
@@ -75,25 +63,21 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
         $categoryQuery .= "ORDER BY category";
         $categoryStmt = $pdo->prepare($categoryQuery);
         $categoryStmt->execute(['country' => $country]);
-        $data['categories'] = $categoryStmt->fetchAll(PDO::FETCH_COLUMN);
+        $allCategoriesForType = $categoryStmt->fetchAll(PDO::FETCH_COLUMN);
+
+        // If there are no tours for this country and type combination at all, categories MUST be empty
+        if (empty($allCategoriesForType)) {
+            $data['categories'] = [];
+        } else {
+            $data['categories'] = $allCategoriesForType;
+        }
         
         // Debug information
         $data['debug_info'] = "<!-- Debug: Found " . count($data['tours']) . " tours -->";
-        
-        if (count($data['tours']) == 0) {
-            // Check if the query actually returns data
-            $checkQuery = "SELECT COUNT(*) FROM tours WHERE country = :country";
-            $checkStmt = $pdo->prepare($checkQuery);
-            $checkStmt->execute(['country' => $country]);
-            $tourCount = $checkStmt->fetchColumn();
-            $data['debug_info'] .= "<!-- Debug: Total tours in database for this country: $tourCount -->";
-        }
     } catch(PDOException $e) {
-        // Improved error handling
-        $data['debug_info'] = "<!-- Database Error: " . htmlspecialchars($e->getMessage()) . " -->";
-        // Log to a file instead of dying
         error_log("Database Error in tours page: " . $e->getMessage());
-        $data['tours'] = []; // Set empty array so the page doesn't crash
+        $data['tours'] = [];
+        $data['categories'] = [];
         $data['error'] = $e->getMessage();
     }
     

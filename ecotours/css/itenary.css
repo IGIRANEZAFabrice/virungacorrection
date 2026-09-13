@@ -722,3 +722,104 @@
 .view-more-btn:hover {
   background-color: var(--accent-sage);
 }
+
+/* Empty State Modern Styling */
+.no-tours-message {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  grid-column: 1 / -1;
+  max-width: 720px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.no-tours-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.no-tours-message h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.no-tours-message p {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.no-tours-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.empty-btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.empty-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.empty-btn-whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.empty-btn-whatsapp:hover {
+  background: #128c7e;
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+p.no-tours {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  font-size: 1rem;
+  color: #64748b;
+  grid-column: 1 / -1;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
