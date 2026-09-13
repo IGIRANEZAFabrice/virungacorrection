@@ -9,9 +9,9 @@ $pageHeroConfig = [
   ],
   'about-us' => [
     'tag' => 'Our Story',
-    'title' => 'Discover <em>Virunga Homestay</em>',
+    'title' => 'A House Rooted in the <em>Virunga</em>',
     'bg' => './img/hero/2.jpg',
-    'crumb' => 'About'
+    'crumb' => 'Our Story'
   ],
   'rooms' => [
     'tag' => 'Stay With Us',

@@ -1,471 +1,648 @@
 <?php
-  $pageTitle = 'About Virunga Homestay - Our Story and Philosophy';
-  $pageDescription = 'Discover the story behind Virunga Homestay. Learn about our philosophy of making every guest feel at home in the heart of Rwanda.';
-  $pageKeywords = 'about Virunga Homestay, Rwanda homestay story, hospitality philosophy, Amara Nkosi';
-  $pageCss = ['page-hero.css','about.css'];
+  $pageTitle = 'Our Story | Virunga House - Locally Rooted Stay in Musanze';
+  $pageDescription = 'Discover the story of Virunga House — from a family home in 2020 to an intimate boutique stay beneath the Virunga volcanoes in Musanze, Rwanda.';
+  $pageKeywords = 'Virunga House story, Virunga Homestay history, Francisco and Aline, Musanze homestay, Virunga Collective, Rwanda boutique stay';
+  $pageCss = ['page-hero.css', 'about.css'];
   $pageHeroKey = 'about-us';
   $pageScripts = ['about.js'];
   include 'includes/header.php';
 ?>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* Base & Typography Variables */
+  :root {
+    --vh-forest: #122a1f;
+    --vh-forest-deep: #0b1d15;
+    --vh-green-mid: #1b3a2b;
+    --vh-gold: #c9a24b;
+    --vh-gold-light: #e8d7a5;
+    --vh-gold-dark: #8e681c;
+    --vh-cream: #fbfaf7;
+    --vh-warm-bg: #f5f1ea;
+    --vh-border: #e6e0d2;
+    --vh-text-dark: #202924;
+    --vh-text-muted: #5e6d64;
+    --vh-font-display: 'Cormorant Garamond', Georgia, serif;
+    --vh-font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .vh-story-wrap {
+    font-family: var(--vh-font-body);
+    color: var(--vh-text-dark);
+    background: var(--vh-cream);
+  }
+
+  /* Shared Section Utility */
+  .vh-sec {
+    padding: 90px 0;
+    position: relative;
+  }
+  .vh-sec--light {
+    background: #ffffff;
+  }
+  .vh-sec--warm {
+    background: var(--vh-warm-bg);
+  }
+  .vh-sec--cream {
+    background: var(--vh-cream);
+  }
+  .vh-sec--dark {
+    background: var(--vh-forest);
+    color: #ffffff;
+  }
+  .vh-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Editorial Headers */
+  .vh-eyebrow {
+    display: inline-block;
+    font-family: var(--vh-font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--vh-gold-dark);
+    margin-bottom: 12px;
+  }
+  .vh-sec--dark .vh-eyebrow {
+    color: var(--vh-gold-light);
+  }
+  .vh-title {
+    font-family: var(--vh-font-display);
+    font-size: clamp(2.1rem, 3.8vw, 3rem);
+    font-weight: 600;
+    line-height: 1.18;
+    color: var(--vh-forest);
+    margin: 0 0 18px 0;
+  }
+  .vh-sec--dark .vh-title {
+    color: #ffffff;
+  }
+  .vh-lead {
+    font-size: 1.12rem;
+    line-height: 1.75;
+    color: var(--vh-text-muted);
+  }
+  .vh-sec--dark .vh-lead {
+    color: rgba(246, 242, 233, 0.9);
+  }
+
+  /* Buttons */
+  .btn-hs-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--vh-forest);
+    color: #ffffff;
+    padding: 14px 28px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .btn-hs-primary:hover {
+    background: var(--vh-green-mid);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .btn-hs-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--vh-gold);
+    color: var(--vh-forest-deep);
+    padding: 14px 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .btn-hs-gold:hover {
+    background: var(--vh-gold-light);
+    color: var(--vh-forest-deep);
+    transform: translateY(-2px);
+  }
+  .btn-hs-outline-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 14px 28px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .btn-hs-outline-light:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  /* ── SECTION 1: MANIFESTO / INTRO ── */
+  .story-intro-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .story-intro-quote {
+    font-family: var(--vh-font-display);
+    font-size: 1.55rem;
+    line-height: 1.45;
+    color: var(--vh-forest);
+    font-style: italic;
+    border-left: 3px solid var(--vh-gold);
+    padding-left: 24px;
+    margin: 28px 0;
+  }
+  .story-intro-image-frame {
+    position: relative;
+  }
+  .story-intro-image {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 16px 40px rgba(18,42,31,0.12);
+  }
+  .story-intro-badge {
+    position: absolute;
+    bottom: -16px;
+    left: -16px;
+    background: var(--vh-forest);
+    color: var(--vh-gold-light);
+    padding: 14px 20px;
+    border-radius: 4px;
+    font-family: var(--vh-font-display);
+    font-size: 1.1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  /* ── SECTION 2: TIMELINE MILESTONES ── */
+  .story-timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .story-milestone-card {
+    background: #ffffff;
+    border: 1px solid var(--vh-border);
+    border-radius: 6px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .story-milestone-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(18,42,31,0.06);
+  }
+  .milestone-date {
+    font-family: var(--vh-font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--vh-gold-dark);
+    margin-bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .milestone-title {
+    font-family: var(--vh-font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--vh-forest);
+    margin: 0 0 10px 0;
+  }
+  .milestone-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--vh-text-muted);
+  }
+
+  /* ── SECTION 3: SPLIT CHAPTER ── */
+  .story-split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .story-split-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 16px 36px rgba(18,42,31,0.08);
+  }
+  .story-callout-box {
+    background: #ffffff;
+    border-left: 3px solid var(--vh-gold);
+    padding: 18px 22px;
+    margin: 22px 0;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--vh-forest);
+  }
+
+  /* ── SECTION 4: PILLARS CARDS ── */
+  .story-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 44px;
+  }
+  .story-pillar-card {
+    background: #ffffff;
+    border: 1px solid var(--vh-border);
+    border-radius: 6px;
+    padding: 34px 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .story-pillar-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--vh-warm-bg);
+    color: var(--vh-gold-dark);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  .story-pillar-title {
+    font-family: var(--vh-font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--vh-forest);
+    margin: 0 0 12px 0;
+  }
+  .story-pillar-desc {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--vh-text-muted);
+  }
+
+  /* ── SECTION 5: VIRUNGA COLLECTIVE ECOSYSTEM ── */
+  .collective-eco-box {
+    background: #ffffff;
+    border: 1px solid var(--vh-border);
+    border-radius: 8px;
+    padding: 44px;
+    margin-top: 36px;
+    box-shadow: 0 12px 36px rgba(18,42,31,0.04);
+  }
+  .collective-eco-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+  .collective-eco-col {
+    padding: 26px 24px;
+    border-radius: 6px;
+    background: var(--vh-cream);
+    border: 1px solid var(--vh-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .collective-eco-col--active {
+    background: var(--vh-forest);
+    color: #ffffff;
+    border-color: var(--vh-green-mid);
+  }
+  .eco-brand-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--vh-gold-dark);
+    margin-bottom: 8px;
+  }
+  .collective-eco-col--active .eco-brand-eyebrow {
+    color: var(--vh-gold-light);
+  }
+  .eco-brand-title {
+    font-family: var(--vh-font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--vh-forest);
+    margin: 0 0 10px 0;
+  }
+  .collective-eco-col--active .eco-brand-title {
+    color: #ffffff;
+  }
+  .eco-brand-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--vh-text-muted);
+  }
+  .collective-eco-col--active .eco-brand-desc {
+    color: rgba(246, 242, 233, 0.9);
+  }
+  .collective-summary-text {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto;
+    font-family: var(--vh-font-display);
+    font-size: 1.35rem;
+    line-height: 1.55;
+    color: var(--vh-forest);
+    font-weight: 500;
+    padding-top: 24px;
+    border-top: 1px solid var(--vh-border);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 960px) {
+    .story-intro-grid,
+    .story-split-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .story-timeline-grid,
+    .story-pillars-grid,
+    .collective-eco-grid {
+      grid-template-columns: 1fr;
+    }
+    .collective-eco-box {
+      padding: 24px;
+    }
+    .story-intro-badge {
+      position: static;
+      margin-top: 12px;
+      display: inline-block;
+    }
+  }
+</style>
+
 <?php include 'page-hero.php'; ?>
-<div id="about-page">
-      <!-- ── SECTION 1: MANIFESTO ─────────────────────────────────── -->
-      <section class="s-manifesto">
-        <div class="container">
-          <!-- Quote Header -->
-          <div class="manifesto-header" style="text-align: center; margin-bottom: var(--space-8);">
-            <blockquote
-              class="philosophy-quote"
-              style="
-                font-size: clamp(1.1rem, 2.2vw, 1.6rem);
-                margin-bottom: var(--space-4);
-                max-width: 52ch;
-                margin-left: auto;
-                margin-right: auto;
-              "
-            >
-              The best memories aren't made in hotels they're made in homes
-              where someone was genuinely glad you came.
-            </blockquote>
-            <div class="philosophy-author">
-              Bodain Nshizirungu, Founder
-            </div>
-          </div>
 
-          <div class="manifesto-inner">
-            <div class="manifesto-visual">
-              <div class="card-stack">
-                <div class="card card-1"></div>
-                <div class="card card-2"></div>
-              </div>
-            </div>
-            <div class="manifesto-text">
-              <div class="section-label">
-                <i class="fa-solid fa-house-chimney"></i> Our Story
-              </div>
-              <h1 class="manifesto-headline">
-                Experience Rwanda from <em>within</em>.
-              </h1>
-              <p class="manifesto-body">
-                Before the sun rises above the Virunga Mountains, village paths begin to stir. Women carry baskets toward the fields. Farmers walk terraced hillsides. The scent of wood smoke drifts through the cool morning air.
-              </p>
-              <p class="manifesto-body">
-                For generations, families have lived among these landscapes, shaping traditions that continue to define life in northern Rwanda. At Virunga Homestay, we invite you to experience this world not from a distance, but from within it.
-              </p>
-              <p class="manifesto-body">
-                Stay with a local family. Share stories around the table. Explore the landscapes that surround Volcanoes National Park. Discover a side of Rwanda that guidebooks rarely reveal.
-              </p>
-              <p class="manifesto-body" style="font-weight: 600; color: var(--color-dark);">
-                This is not simply accommodation. This is an invitation into the heart of the Virunga region.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+<div class="vh-story-wrap" id="about-page">
 
-      <!-- ── SECTION: FOUNDER STORY ──────────────────────────────── -->
-      <section class="s-founder-story">
-        <div class="container">
-          <div class="founder-story-grid">
-            <div class="founder-story-content-side">
-              <div class="section-label">Our Story</div>
-              <h2 class="founder-story-title">The heart of our home</h2>
-              <div class="founder-story-content" style="text-align: left; margin-top: var(--space-6);">
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  The story of Virunga Homestay begins with family. Growing up beneath the Virunga volcanoes, we witnessed travelers arrive from every corner of the world in search of mountain gorillas and unforgettable landscapes.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  Yet many visitors left without ever experiencing the people whose lives are woven into these hills.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-2); font-style: normal; font-size: 1.15rem;">
-                  They saw Rwanda.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  But they did not always meet Rwanda.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  We believed travel could be more meaningful. We imagined a place where guests could sit around a family table, learn local traditions, share stories, and experience daily life through genuine human connection.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  What started as a simple family initiative became Virunga Homestay. Today, we continue to welcome travelers not as customers, but as guests.
-                </p>
-                <p class="founder-story-text" style="margin-bottom: var(--space-4); font-style: normal; font-size: 1.15rem;">
-                  Every meal shared, every conversation exchanged, and every experience enjoyed contributes to a deeper understanding of the Virunga region and the people who call it home.
-                </p>
-                <p class="founder-story-text" style="margin-top: var(--space-6); font-weight: 600; color: var(--color-primary); font-style: italic; font-size: 1.2rem;">
-                  Our greatest hope is that visitors leave with more than photographs. We hope they leave with memories, friendships, and a lasting connection to Rwanda.
-                </p>
-              </div>
-            </div>
-            <div class="founder-story-image-side">
-              <div class="founder-image-wrapper">
-                <img src="./img/ourstory.JPG" alt="The heart of our home" class="founder-story-img">
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION 3: TIMELINE ──────────────────────────────────── -->
-      <!-- REFINED ABOUT CONTENT -->
-      <section class="s-about-refined">
-        <div class="container">
-          <div class="about-refined-head reveal">
-            <div class="section-label">
-              About Virunga Homestay
-            </div>
-            <h2>Live the Virunga Experience</h2>
-          </div>
-
-          <div class="about-refined-grid reveal">
-            <article class="about-refined-card about-refined-card--primary reveal">
-              <h3>Vision</h3>
-              <p>
-                To become a trusted gateway for authentic Rwanda experiences.
-              </p>
-            </article>
-
-            <article class="about-refined-card reveal">
-              <h3>Mission</h3>
-              <p>
-                To connect travelers with Rwanda’s people, culture, conservation stories, and landscapes through immersive and responsible travel experiences.
-              </p>
-            </article>
-
-            <article class="about-refined-card reveal">
-              <h3>Who We Are</h3>
-              <p>
-                Virunga Homestay is an authentic home experience located in Musanze, at the gateway to the Virunga volcanoes in northern Rwanda. We open our doors to travelers who wish to experience Rwanda not as visitors, but through real daily life in a welcoming local home.
-              </p>
-              <p>
-                We are a home experience - rooted in culture, connection, and genuine hospitality.
-              </p>
-            </article>
-
-            <article class="about-refined-card about-refined-card--primary reveal">
-              <h3>What We Offer</h3>
-              <p>
-                We provide carefully designed home experiences that include:
-              </p>
-              <ul>
-                <li>A comfortable stay in a real local home</li>
-                <li>Shared home-cooked meals with your host</li>
-                <li>Cultural exchange and storytelling moments</li>
-                <li>Guided local experiences in Musanze and the Virunga region</li>
-              </ul>
-              <p>Each stay is simple, authentic, and personally hosted.</p>
-            </article>
-
-            <article class="about-refined-card about-refined-card--primary reveal">
-              <h3>Trust & Hospitality</h3>
-              <p>
-                We are committed to providing a safe, well organized, and welcoming environment for every guest. Our hospitality is personal, attentive, and rooted in respect, ensuring comfort and peace of mind throughout your stay.
-              </p>
-            </article>
-
-            <article class="about-refined-card reveal">
-              <h3>Community & Sustainability</h3>
-              <p>
-                We are deeply committed to the well being of our local community in Musanze. By choosing to stay with us, you directly support local livelihoods and contribute to community-led initiatives.
-              </p>
-              <p>
-                We prioritize sustainable practices and promote cultural preservation, ensuring that your journey leaves a positive footprint on both the environment and the people of the Virunga.
-              </p>
-            </article>
-
-            <article class="about-refined-card about-refined-card--closing reveal">
-              <p>
-                Don't just visit Rwanda live it through real people, real stories, and real home experiences.
-              </p>
-              <p><strong>Welcome to your home in the Virunga.</strong></p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-            <!-- ── SECTION: WHY CHOOSE US ────────────────────────────────── -->
-      <section id="why" class="s-why">
-        <div class="container">
-          <h2 class="section-heading reveal" style="text-align: center; margin-bottom: var(--space-8);">
-            Why choose Virunga Homestay as your experience
-          </h2>
-          <div class="experience-intro reveal">
-            <p class="experience-intro__kicker">Virunga Homestay - Live the Virunga Experience</p>
-            <p class="experience-intro__point is-active">
-              Choose Virunga Homestay because it is more than a place to stay - it is a real home experience in Musanze where you are welcomed like family and immersed in daily local life.
-            </p>
-            <p class="experience-intro__point">
-              You don't just visit the Virunga region; you live it. From shared meals and authentic conversations to cultural moments with your host, every stay is designed to feel personal, warm, and meaningful.
-            </p>
-            <p class="experience-intro__point">
-              This is the difference: instead of a standard accommodation, you get a guided way of experiencing the Virunga through people, stories, and connection.
-            </p>
-          </div>
-          <div class="why-grid" id="whyGrid">
-            <?php
-            require_once __DIR__ . '/../config/db.php';
-            $sqlWhy = "SELECT * FROM home_why WHERE status = 'active' ORDER BY display_order ASC";
-            $resWhy = $conn->query($sqlWhy);
-            
-            if ($resWhy && $resWhy->num_rows > 0) {
-                while ($rowWhy = $resWhy->fetch_assoc()) {
-                    $icon = htmlspecialchars($rowWhy['icon']);
-                    $title = htmlspecialchars($rowWhy['title']);
-                    $bodyText = htmlspecialchars($rowWhy['body']);
-                    
-                    echo '
-                    <div class="why-card reveal">
-                      <div class="why-icon"><i class="' . $icon . '"></i></div>
-                      <h3 class="why-title">' . $title . '</h3>
-                      <p class="why-body">' . $bodyText . '</p>
-                    </div>';
-                }
-            }
-            ?>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION: SCROLL VIDEO ────────────────────────────────── -->
-      <!-- s-video-scroll is 400vh tall — the sticky child sticks inside it -->
-      <section class="s-video-scroll" id="videoSection">
-        <div class="video-sticky-wrap" id="videoSticky">
-          <canvas id="scrollCanvas" class="video-bg"></canvas>
-          <div class="video-fallback"></div>
-          <div class="video-overlay"></div>
-
-          <!-- Words that appear at different scroll positions -->
-          <div class="video-words">
-            <div class="video-word" data-word="0">
-              <em>Feel</em> the warmth<br />of a real home
-            </div>
-            <div class="video-word" data-word="1">
-              Every corner<br />holds a <em>memory</em>
-            </div>
-            <div class="video-word" data-word="2">
-              <em>Stories</em> begin<br />at our table
-            </div>
-            <div class="video-word" data-word="3">
-              This is<br />where you <em>belong</em>
-            </div>
-          </div>
-
-          <!-- Progress dots -->
-          <div class="video-progress">
-            <div class="vp-dot active"></div>
-            <div class="vp-dot"></div>
-            <div class="vp-dot"></div>
-            <div class="vp-dot"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION 4: VALUES BENTO ──────────────────────────────── -->
-      <section class="s-values">
-        <div class="container">
-          <div class="values-header">
-            <div class="section-label reveal" style="justify-content: center">
-              <i class="fa-solid fa-compass"></i> What we stand for
-            </div>
-            <h2 class="values-title reveal">
-              Principles that guide <em>every single stay</em>
-            </h2>
-          </div>
-
-          <div class="bento-grid">
-            <div class="bento-card bc-1 accent reveal">
-              <div class="bento-inner">
-                <div>
-                  <div class="bento-icon">
-                    <i class="fa-solid fa-heart"></i>
-                  </div>
-                  <div class="bento-label">Core Value</div>
-                  <div class="bento-title">
-                    Hospitality is not a service it's a feeling we create together
-                  </div>
-                </div>
-                <div>
-                  <p class="bento-text">
-                    We train every host not just in comfort, but in empathy. The
-                    warmth you feel when you walk through our doors isn't an
-                    accident. It's a deeply intentional choice made every single
-                    day by people who genuinely care about you.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bento-card bc-2 dark reveal">
-              <div class="bento-icon"><i class="fa-solid fa-leaf"></i></div>
-              <div class="bento-label">Sustainability</div>
-              <div class="bento-title">Rooted in responsibility</div>
-              <p class="bento-text">
-                Local ingredients. Minimal waste. Spaces that give back to the
-                communities they belong to.
-              </p>
-              <div class="bento-number">01</div>
-            </div>
-
-            <div class="bento-card bc-3 reveal">
-              <div class="bento-icon">
-                <i class="fa-solid fa-lock-open"></i>
-              </div>
-              <div class="bento-label">Authenticity</div>
-              <div class="bento-title">Real homes, real people</div>
-              <p class="bento-text">
-                No staged decor, no rehearsed welcome speeches just genuine
-                homes and genuine hosts.
-              </p>
-              <div class="bento-number">02</div>
-            </div>
-
-            <div class="bento-card bc-4 reveal">
-              <div class="bento-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-              <div class="bento-label">Safety</div>
-              <div class="bento-title">Peace of mind, always</div>
-              <p class="bento-text">
-                Every host is vetted. Every stay is insured. Your comfort and
-                security are never negotiable.
-              </p>
-              <div class="bento-number">03</div>
-            </div>
-
-            <div class="bento-card bc-5 reveal">
-              <div class="bento-icon">
-                <i class="fa-solid fa-earth-africa"></i>
-              </div>
-              <div class="bento-label">Culture</div>
-              <div class="bento-title">Travel that transforms</div>
-              <p class="bento-text">
-                We believe the deepest travel experiences happen around a family
-                table, not a hotel lobby.
-              </p>
-              <div class="bento-number">04</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ── SECTION 5: STATS MARQUEE ─────────────────────────────── -->
-      <section class="s-stats">
-        <div class="stats-marquee-wrap">
-          <div class="stats-marquee" id="marquee1">
-            <div class="stat-item">
-              <div class="stat-number">600+</div>
-              <div class="stat-info">
-                <span class="stat-label">Families</span>
-                <span class="stat-desc">hosted with love</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">4.9★</div>
-              <div class="stat-info">
-                <span class="stat-label">Rating</span>
-                <span class="stat-desc">average guest score</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">48</div>
-              <div class="stat-info">
-                <span class="stat-label">Hosts</span>
-                <span class="stat-desc">across the country</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number"><?php echo date('Y') - 2020; ?></div>
-              <div class="stat-info">
-                <span class="stat-label">Years</span>
-                <span class="stat-desc">of real hospitality</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">98%</div>
-              <div class="stat-info">
-                <span class="stat-label">Return Rate</span>
-                <span class="stat-desc">guests come back</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <!-- Duplicate for seamless loop -->
-            <div class="stat-item">
-              <div class="stat-number">840+</div>
-              <div class="stat-info">
-                <span class="stat-label">Families</span>
-                <span class="stat-desc">hosted with love</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">4.7★</div>
-              <div class="stat-info">
-                <span class="stat-label">Rating</span>
-                <span class="stat-desc">average guest score</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">20</div>
-              <div class="stat-info">
-                <span class="stat-label">Hosts</span>
-                <span class="stat-desc">across the country</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number"><?php echo date('Y') - 2020; ?></div>
-              <div class="stat-info">
-                <span class="stat-label">Years</span>
-                <span class="stat-desc">of real hospitality</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-number">98%</div>
-              <div class="stat-info">
-                <span class="stat-label">Return Rate</span>
-                <span class="stat-desc">guests come back</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION: PARALLAX CUISINE ─────────────────────────────── -->
-      <section class="parallax-section parallax-food">
-        <div class="parallax-overlay">
-          <div class="parallax-content">
-            <div>
-              <h2 class="parallax-title reveal">A Taste of Rwanda, Shared at Home</h2>
-              <p class="parallax-text reveal">
-                Enjoy traditional Rwandan dishes prepared with fresh local ingredients and served in the warmth of our family home.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION 6: CTA ────────────────────────────────────────── -->
-      <section class="s-cta">
-        <div class="container">
-          <h2 class="cta-title reveal">Ready to feel<br /><em>at home?</em></h2>
-          <p class="cta-subtitle reveal">
-            Whether you're a traveller looking for a real local experience, or a
-            host ready to open your door we'd love to welcome you.
+  <!-- ====================================================
+       CHAPTER 1: THE ORIGIN (OUR STORY)
+  ==================================================== -->
+  <section class="vh-sec vh-sec--cream" id="story-origin">
+    <div class="vh-container">
+      <div class="story-intro-grid" data-reveal>
+        <div class="story-intro-copy">
+          <span class="vh-eyebrow">OUR STORY</span>
+          <h2 class="vh-title">A house rooted in the Virunga.</h2>
+          <p class="vh-lead">
+            Before it welcomed travellers, Virunga House was simply a family home.
           </p>
-          <div class="cta-buttons reveal">
-            <a href="#" class="btn-primary"> Book A Stay </a>
+          <p class="about-body" style="font-size: 1.02rem; line-height: 1.75; color: var(--vh-text-dark); margin-top: 14px;">
+            In Musanze, beneath the Virunga volcanoes, it was a place of everyday family life. In 2020, that home opened its doors to travellers with a simple idea: to promote the homestay concept and create a genuine connection between visitors and local people.
+          </p>
+          <div class="story-intro-quote">
+            "The purpose was never simply to provide a room. It was to help visitors connect more naturally with the Virunga and the people who call it home."
           </div>
         </div>
-      </section>
+        <div class="story-intro-image-frame">
+          <img src="./img/ourstory.JPG" alt="Virunga House Family Home in Musanze" class="story-intro-image" loading="lazy">
+          <div class="story-intro-badge">
+            <span>Rooted in Musanze since 2020</span>
+          </div>
+        </div>
+      </div>
     </div>
-    
-<?php include 'includes/footer.php'; ?>
+  </section>
 
+  <!-- ====================================================
+       CHAPTER 2: FROM HOME TO HOMESTAY (THE TIMELINE)
+  ==================================================== -->
+  <section class="vh-sec vh-sec--light" id="from-home-to-homestay">
+    <div class="vh-container">
+      <div class="vh-header center" data-reveal>
+        <span class="vh-eyebrow">THE BEGINNING</span>
+        <h2 class="vh-title">From Home to Homestay</h2>
+        <p class="vh-lead" style="max-width: 820px; margin: 0 auto;">
+          On 1 March 2020, Francisco, Aline and other members of the family welcomed their first guests and began the story of Virunga Homestay.
+        </p>
+      </div>
+
+      <div class="story-timeline-grid" data-reveal>
+        <!-- Milestone 1 -->
+        <div class="story-milestone-card">
+          <span class="milestone-date"><i class="fas fa-calendar-check"></i> 1 MARCH 2020</span>
+          <h3 class="milestone-title">First Guests Welcome</h3>
+          <p class="milestone-desc">
+            The House started with just two rooms. Among its earliest guests were four travellers from France, whose stay marked the beginning of a new chapter for the family home.
+          </p>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="story-milestone-card">
+          <span class="milestone-date"><i class="fas fa-utensils"></i> 16 MARCH 2020</span>
+          <h3 class="milestone-title">The House Table Begins</h3>
+          <p class="milestone-desc">
+            What began with a place to sleep soon became something more. The Homestay began serving meals, including dinner, giving guests a place not only to stay but also to share food and time with their hosts.
+          </p>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="story-milestone-card">
+          <span class="milestone-date"><i class="fas fa-compass"></i> 17 MARCH 2020</span>
+          <h3 class="milestone-title">Helping Guests Discover</h3>
+          <p class="milestone-desc">
+            The family began helping guests with gorilla trekking, transport and other local experiences. Helping visitors connect more naturally with the Virunga landscapes and community.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       CHAPTER 3: GROWING WITH THE PLACE
+  ==================================================== -->
+  <section class="vh-sec vh-sec--warm" id="growing-with-the-place">
+    <div class="vh-container">
+      <div class="story-split-grid" data-reveal>
+        <div class="story-split-media">
+          <img src="./img/about.jpeg" alt="Sanctuary and Gardens at Virunga House" class="story-split-img" loading="lazy">
+        </div>
+        <div class="story-split-content">
+          <span class="vh-eyebrow">THE EVOLUTION</span>
+          <h2 class="vh-title" style="text-align: left;">Growing with the Place</h2>
+          <p class="about-body" style="font-size: 1.02rem; line-height: 1.75; color: var(--vh-text-dark);">
+            Over time, Virunga Homestay evolved. The House became more established, the hospitality grew, and the relationship between staying, discovering and connecting with the Virunga became increasingly important.
+          </p>
+          <div class="story-callout-box">
+            <strong>28 August 2026:</strong> The name evolved from <em>Virunga Homestay</em> to <strong>Virunga House</strong>.
+          </div>
+          <p class="about-body" style="font-size: 0.98rem; line-height: 1.7; color: var(--vh-text-muted);">
+            The new name reflects that journey. Virunga House is still rooted in the same spirit that shaped it from the beginning: warmth, personal hospitality and a genuine connection to place. But it now represents a more established and distinct place to stay in the Virunga.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       CHAPTER 4: A DIFFERENT KIND OF STAY
+  ==================================================== -->
+  <section class="vh-sec vh-sec--light" id="a-different-kind-of-stay">
+    <div class="vh-container">
+      <div class="vh-header center" data-reveal>
+        <span class="vh-eyebrow">HOSPITALITY &amp; CHARACTER</span>
+        <h2 class="vh-title">A Different Kind of Stay</h2>
+        <p class="vh-lead" style="max-width: 840px; margin: 0 auto;">
+          Today, Virunga House is a locally rooted stay in Musanze, beneath the volcanoes.
+        </p>
+        <p style="max-width: 840px; margin: 16px auto 0; font-size: 1rem; line-height: 1.7; color: var(--vh-text-dark);">
+          It is a place to settle in after a day in the mountains, wake to the surrounding landscape, share breakfast around the table, enjoy dinner by arrangement, sit by the fire and take time to experience the Virunga at a slower pace.
+        </p>
+      </div>
+
+      <div class="story-pillars-grid" data-reveal>
+        <div class="story-pillar-card">
+          <div class="story-pillar-icon"><i class="fas fa-bed"></i></div>
+          <h3 class="story-pillar-title">Intentionally Personal</h3>
+          <p class="story-pillar-desc">
+            With only six rooms, the House is never crowded. It is not positioned as a conventional hotel or a restaurant, but as an intimate sanctuary shaped by real warmth and personal care.
+          </p>
+        </div>
+
+        <div class="story-pillar-card">
+          <div class="story-pillar-icon"><i class="fas fa-utensils"></i></div>
+          <h3 class="story-pillar-title">The House Table</h3>
+          <p class="story-pillar-desc">
+            Breakfast is freshly prepared and included with your stay. In the evening, guests can enjoy an intimate home-cooked dinner by advance arrangement.
+          </p>
+        </div>
+
+        <div class="story-pillar-card">
+          <div class="story-pillar-icon"><i class="fas fa-mountain"></i></div>
+          <h3 class="story-pillar-title">Volcanic Sanctuary</h3>
+          <p class="story-pillar-desc">
+            Located just 15 minutes from Volcanoes National Park HQ, offering panoramic views, quiet reading nooks, evening campfires, and fresh mountain air.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       CHAPTER 5: PART OF A WIDER VISION (VIRUNGA COLLECTIVE)
+  ==================================================== -->
+  <section class="vh-sec vh-sec--warm" id="wider-vision">
+    <div class="vh-container">
+      <div class="vh-header center" data-reveal>
+        <span class="vh-eyebrow">THE WIDER VISION</span>
+        <h2 class="vh-title">Part of a Wider Vision</h2>
+        <p class="vh-lead" style="max-width: 820px; margin: 0 auto;">
+          As the vision grew beyond accommodation, so did the wider idea behind it. <strong>Virunga Collective</strong> emerged as the master brand connecting distinct expressions of the Virunga experience.
+        </p>
+      </div>
+
+      <div class="collective-eco-box" data-reveal>
+        <div class="collective-eco-grid">
+          <!-- Virunga House -->
+          <div class="collective-eco-col collective-eco-col--active">
+            <div>
+              <span class="eco-brand-eyebrow">ACCOMMODATION</span>
+              <h3 class="eco-brand-title">VIRUNGA HOUSE</h3>
+              <p class="eco-brand-desc">
+                <strong>The place to stay.</strong> Locally rooted boutique accommodation in Musanze, personal hospitality, daily breakfast, and home-cooked dinners by arrangement.
+              </p>
+            </div>
+            <div style="margin-top: 20px;">
+              <a href="<?php echo $baseLink('rooms'); ?>" class="btn-hs-gold" style="font-size: 0.75rem; padding: 10px 18px;">
+                Explore Rooms &rarr;
+              </a>
+            </div>
+          </div>
+
+          <!-- Virunga Journeys -->
+          <div class="collective-eco-col">
+            <div>
+              <span class="eco-brand-eyebrow">JOURNEYS &amp; EXPEDITIONS</span>
+              <h3 class="eco-brand-title">VIRUNGA JOURNEYS</h3>
+              <p class="eco-brand-desc">
+                <strong>The journeys and experiences.</strong> Guided gorilla trekking, volcano climbs, cultural encounters, private 4x4 safaris, and seamless regional logistics.
+              </p>
+            </div>
+            <div style="margin-top: 20px;">
+              <a href="<?php echo $baseLink('activity'); ?>" class="btn-hs-primary" style="font-size: 0.75rem; padding: 10px 18px;">
+                Explore Journeys &rarr;
+              </a>
+            </div>
+          </div>
+
+          <!-- Virunga Collective -->
+          <div class="collective-eco-col">
+            <div>
+              <span class="eco-brand-eyebrow">MASTER BRAND</span>
+              <h3 class="eco-brand-title">VIRUNGA COLLECTIVE</h3>
+              <p class="eco-brand-desc">
+                <strong>The wider connection between them.</strong> Connecting stays, transformative journeys, conservation storytelling, and community empowerment.
+              </p>
+            </div>
+            <div style="margin-top: 20px;">
+              <a href="<?php echo $baseLink('home'); ?>" class="btn-hs-primary" style="font-size: 0.75rem; padding: 10px 18px;">
+                Collective Home &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="collective-summary-text">
+          "The House therefore remains what it has always been at its heart: a place to arrive, stay, connect and return to.<br>
+          From a family home, to a two-room homestay, to Virunga House today, the journey has continued without losing its beginning."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       CHAPTER 6: INVITATION / CTA
+  ==================================================== -->
+  <section class="vh-sec vh-sec--dark" id="invitation" style="background-image: linear-gradient(rgba(12, 28, 20, 0.88), rgba(12, 28, 20, 0.92)), url('./img/day/7.jpeg'); background-size: cover; background-position: center; text-align: center;">
+    <div class="vh-container">
+      <div class="hs-invitation-box" data-reveal>
+        <span class="vh-eyebrow" style="color: var(--vh-gold-light);">STAY IN THE VIRUNGA</span>
+        <h2 class="vh-title" style="color: #ffffff; margin-bottom: 18px;">Stay closer to the Virunga.</h2>
+        <p class="vh-lead" style="color: rgba(246, 242, 233, 0.9); max-width: 740px; margin: 0 auto 36px;">
+          <em>Stay. Eat. Rest. Discover.</em><br>
+          Whether resting between gorilla treks or sitting by the evening campfire, we invite you to experience northern Rwanda from within.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="<?php echo $baseLink('rooms'); ?>" class="btn-hs-gold">
+            CHECK AVAILABILITY <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="<?php echo $baseLink('activity'); ?>" class="btn-hs-outline-light">
+            PLAN YOUR VIRUNGA <i class="fas fa-compass"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<?php include 'includes/footer.php'; ?>
