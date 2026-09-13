@@ -24,25 +24,21 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
     $category = $category ? strtolower(trim($category)) : null;
     
     // Build query based on tour type
-    $query = "SELECT t.*, 
-              COUNT(DISTINCT th.highlight_id) as total_highlights 
-              FROM tours t 
-              LEFT JOIN tour_highlights th ON t.tour_id = th.tour_id 
-              WHERE LOWER(TRIM(t.country)) = :country ";
+    $query = "SELECT * FROM tours WHERE LOWER(TRIM(country)) = :country ";
     
     // Only filter by days_count if type is specified
     if ($type === 'day') {
-        $query .= "AND t.days_count = 1 ";
+        $query .= "AND days_count = 1 ";
     } elseif ($type === 'multi') {
-        $query .= "AND t.days_count > 1 ";
+        $query .= "AND days_count > 1 ";
     }
     
     // Add category filter if specified
     if ($category) {
-        $query .= "AND LOWER(TRIM(t.category)) = :category ";
+        $query .= "AND LOWER(TRIM(category)) = :category ";
     }
     
-    $query .= "GROUP BY t.tour_id ORDER BY t.created_at DESC";
+    $query .= "ORDER BY tour_id ASC";
     
     try {
         $stmt = $pdo->prepare($query);
@@ -60,7 +56,7 @@ function getItenaryData($country = 'rwanda', $type = null, $category = null) {
         } elseif ($type === 'multi') {
             $categoryQuery .= "AND days_count > 1 ";
         }
-        $categoryQuery .= "ORDER BY category";
+        $categoryQuery .= "ORDER BY category ASC";
         $categoryStmt = $pdo->prepare($categoryQuery);
         $categoryStmt->execute(['country' => $country]);
         $allCategoriesForType = $categoryStmt->fetchAll(PDO::FETCH_COLUMN);

@@ -196,8 +196,7 @@ $debug_info = $data['debug_info'] ?? '';
             </div>
           <?php else: ?>
             <?php foreach ($tours as $tour): ?>
-              <div class="tour-card">
-                <!-- Removed initial visible class - will be handled by JS -->
+              <div class="tour-card visible">
                 <div class="tour-card-image">
                   <img
                     src="../<?php echo htmlspecialchars($tour['cover_image_path']); ?>"
