@@ -419,6 +419,12 @@ body {
   font-weight: bold;
 }
 
+/* Keep the recommended experiences clear of the viewport edges. */
+.also-like {
+  padding-left: clamp(20px, 3vw, 60px);
+  padding-right: clamp(20px, 3vw, 60px);
+}
+
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
