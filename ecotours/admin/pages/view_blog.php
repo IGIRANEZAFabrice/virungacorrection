@@ -1,262 +1,353 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-  header('Location: login.html');
-  exit();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-require_once('../config/connection.php');
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.html');
+    exit();
+}
+
+require_once __DIR__ . '/../config/connection.php';
 
 // Get blog post ID from URL
-$blog_id = isset($_GET['id']) ? intval($_GET['id']) : 0; // Changed variable name post_id to blog_id
+$blog_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($blog_id <= 0) {
+    header('Location: blogs.php?error=invalid_id');
+    exit();
+}
 
 // Fetch blog post details along with category name
 $post_sql = "SELECT bp.*, bc.category_name
              FROM blog_posts bp
-             JOIN blog_categories bc ON bp.category_id = bc.category_id
-             WHERE bp.blog_id = ?"; // Changed post_id to blog_id
+             LEFT JOIN blog_categories bc ON bp.category_id = bc.category_id
+             WHERE bp.blog_id = ?";
 $post_stmt = $conn->prepare($post_sql);
-$post_stmt->bind_param("i", $blog_id); // Use blog_id
+$post_stmt->bind_param("i", $blog_id);
 $post_stmt->execute();
-$post_stmt->bind_result($f_blog_id, $f_title, $f_slug, $f_author, $f_read_minutes, $f_category_id, $f_cover_image, $f_main_headline, $f_introduction, $f_status, $f_views, $f_created_by, $f_created_at, $f_updated_at, $f_published_at, $f_category_name);
+$post_result = $post_stmt->get_result();
 
-if (!$post_stmt->fetch()) {
-  // Blog post not found
-  header('Location: blogs.php'); // Consider adding an error message
-  exit();
+if (!$post_result || $post_result->num_rows === 0) {
+    $post_stmt->close();
+    header('Location: blogs.php?error=not_found');
+    exit();
 }
 
-$post = [
-  'blog_id' => $f_blog_id,
-  'title' => $f_title,
-  'slug' => $f_slug,
-  'author' => $f_author,
-  'read_minutes' => $f_read_minutes,
-  'category_id' => $f_category_id,
-  'cover_image' => $f_cover_image,
-  'main_headline' => $f_main_headline,
-  'introduction' => $f_introduction,
-  'status' => $f_status,
-  'views' => $f_views,
-  'created_by' => $f_created_by,
-  'created_at' => $f_created_at,
-  'updated_at' => $f_updated_at,
-  'published_at' => $f_published_at,
-  'category_name' => $f_category_name
-];
-$post_stmt->close(); // Close statement after fetching
+$post = $post_result->fetch_assoc();
+$post_stmt->close();
 
-// Fetch content block IDs and types first
-$blocks_sql = "SELECT block_id, block_type FROM blog_content_blocks WHERE blog_id = ? ORDER BY block_order ASC"; // Changed post_id to blog_id
+// Fetch content blocks using buffered get_result() to prevent "Commands out of sync"
+$blocks_sql = "SELECT block_id, block_type FROM blog_content_blocks WHERE blog_id = ? ORDER BY block_order ASC";
 $blocks_stmt = $conn->prepare($blocks_sql);
-$blocks_stmt->bind_param("i", $blog_id); // Use blog_id
+$blocks_stmt->bind_param("i", $blog_id);
 $blocks_stmt->execute();
-$blocks_stmt->bind_result($block_id, $block_type);
+$blocks_result = $blocks_stmt->get_result();
 
 $content_blocks_data = [];
-while ($blocks_stmt->fetch()) {
-    $block_data = ['block_type' => $block_type]; // Initialize with type
+while ($block_row = $blocks_result->fetch_assoc()) {
+    $block_id = (int)$block_row['block_id'];
+    $block_type = $block_row['block_type'];
+    $block_data = ['block_type' => $block_type];
 
-    // Fetch specific block data based on type
     switch ($block_type) {
         case 'text':
             $text_sql = "SELECT section_title, content FROM blog_text_blocks WHERE block_id = ?";
             $text_stmt = $conn->prepare($text_sql);
             $text_stmt->bind_param("i", $block_id);
             $text_stmt->execute();
-            $text_stmt->bind_result($section_title, $content);
-            $text_stmt->fetch();
-            $block_data = array_merge($block_data, ['section_title' => $section_title, 'content' => $content]);
+            $t_res = $text_stmt->get_result();
+            if ($t_row = $t_res->fetch_assoc()) {
+                $block_data['section_title'] = $t_row['section_title'];
+                $block_data['content'] = $t_row['content'];
+            }
             $text_stmt->close();
             break;
+
         case 'image':
-            $image_sql = "SELECT image_path, caption FROM blog_image_blocks WHERE block_id = ?"; // Removed alignment as it's not used in view
+            $image_sql = "SELECT image_path, caption, alignment FROM blog_image_blocks WHERE block_id = ?";
             $image_stmt = $conn->prepare($image_sql);
             $image_stmt->bind_param("i", $block_id);
             $image_stmt->execute();
-            $image_stmt->bind_result($image_path, $caption);
-            $image_stmt->fetch();
-            $block_data = array_merge($block_data, ['image_path' => $image_path, 'caption' => $caption]);
+            $i_res = $image_stmt->get_result();
+            if ($i_row = $i_res->fetch_assoc()) {
+                $block_data['image_path'] = $i_row['image_path'];
+                $block_data['caption'] = $i_row['caption'];
+                $block_data['alignment'] = $i_row['alignment'];
+            }
             $image_stmt->close();
             break;
+
         case 'quote':
-            $quote_sql = "SELECT quote_text, attribution FROM blog_quote_blocks WHERE block_id = ?"; // Removed style as it's not used in view
+            $quote_sql = "SELECT quote_text, attribution, style FROM blog_quote_blocks WHERE block_id = ?";
             $quote_stmt = $conn->prepare($quote_sql);
             $quote_stmt->bind_param("i", $block_id);
             $quote_stmt->execute();
-            $quote_stmt->bind_result($quote_text, $attribution);
-            $quote_stmt->fetch();
-            $block_data = array_merge($block_data, ['quote_text' => $quote_text, 'attribution' => $attribution]);
+            $q_res = $quote_stmt->get_result();
+            if ($q_row = $q_res->fetch_assoc()) {
+                $block_data['quote_text'] = $q_row['quote_text'];
+                $block_data['attribution'] = $q_row['attribution'];
+                $block_data['style'] = $q_row['style'];
+            }
             $quote_stmt->close();
             break;
+
         case 'list':
-            $list_sql = "SELECT list_title FROM blog_list_blocks WHERE block_id = ?"; // Fetch list title
+            $list_sql = "SELECT list_block_id, list_title, list_type FROM blog_list_blocks WHERE block_id = ?";
             $list_stmt = $conn->prepare($list_sql);
             $list_stmt->bind_param("i", $block_id);
             $list_stmt->execute();
-            $list_stmt->bind_result($list_title);
-            $list_stmt->fetch();
-            $list_stmt->close();
+            $l_res = $list_stmt->get_result();
+            if ($l_row = $l_res->fetch_assoc()) {
+                $list_block_id = (int)$l_row['list_block_id'];
+                $block_data['title'] = $l_row['list_title'];
+                $block_data['list_type'] = $l_row['list_type'];
 
-            // Fetch list items
-            $items_sql = "SELECT item_text FROM blog_list_items WHERE list_block_id = ? ORDER BY item_order ASC";
-            $items_stmt = $conn->prepare($items_sql);
-            // Assuming list_block_id in blog_list_items corresponds to block_id in blog_list_blocks
-            // Need to get the list_block_id first if it's different from block_id
-            // For now, assuming block_id from blog_content_blocks is the foreign key used in blog_list_blocks
-            // And blog_list_items uses list_block_id which refers to blog_list_blocks primary key.
-            // Let's get the list_block_id from blog_list_blocks first.
-            $get_list_block_id_sql = "SELECT list_block_id FROM blog_list_blocks WHERE block_id = ?";
-            $get_list_block_id_stmt = $conn->prepare($get_list_block_id_sql);
-            $get_list_block_id_stmt->bind_param("i", $block_id);
-            $get_list_block_id_stmt->execute();
-            $get_list_block_id_stmt->bind_result($list_block_id);
-            if($get_list_block_id_stmt->fetch()) {
+                $items_sql = "SELECT item_text FROM blog_list_items WHERE list_block_id = ? ORDER BY item_order ASC";
+                $items_stmt = $conn->prepare($items_sql);
                 $items_stmt->bind_param("i", $list_block_id);
                 $items_stmt->execute();
-                $items_stmt->bind_result($item_text);
+                $items_res = $items_stmt->get_result();
                 $list_items = [];
-                while ($items_stmt->fetch()) {
-                    $list_items[] = $item_text;
+                while ($item_row = $items_res->fetch_assoc()) {
+                    $list_items[] = $item_row['item_text'];
                 }
-                $block_data['title'] = $list_title ?? null; // Use 'title' key consistent with old structure
-                $block_data['content'] = json_encode($list_items); // Store items as JSON string, similar to old structure
                 $items_stmt->close();
+                $block_data['content'] = json_encode($list_items);
             }
-            $get_list_block_id_stmt->close();
-
+            $list_stmt->close();
             break;
     }
     $content_blocks_data[] = $block_data;
 }
-$blocks_stmt->close(); // Close statement after fetching
+$blocks_stmt->close();
 
-// Fetch gallery images for this post
-$gallery_sql = "SELECT * FROM blog_gallery_images WHERE blog_id = ? ORDER BY image_order ASC"; // Changed table name and post_id to blog_id
+// Fetch gallery images using buffered get_result()
+$gallery_sql = "SELECT gallery_image_id, image_path, image_order FROM blog_gallery_images WHERE blog_id = ? ORDER BY image_order ASC";
 $gallery_stmt = $conn->prepare($gallery_sql);
-$gallery_stmt->bind_param("i", $blog_id); // Use blog_id
+$gallery_stmt->bind_param("i", $blog_id);
 $gallery_stmt->execute();
-$gallery_stmt->bind_result($gallery_image_id, $g_blog_id, $image_path, $image_order, $created_at);
-
+$gallery_result = $gallery_stmt->get_result();
 $gallery_images = [];
-while ($gallery_stmt->fetch()) {
-  $gallery_images[] = [
-    'gallery_image_id' => $gallery_image_id,
-    'blog_id' => $g_blog_id,
-    'image_path' => $image_path,
-    'image_order' => $image_order,
-    'created_at' => $created_at
-  ];
+while ($g_row = $gallery_result->fetch_assoc()) {
+    $gallery_images[] = $g_row;
 }
-$gallery_stmt->close(); // Close statement after fetching
+$gallery_stmt->close();
 
-// $conn->close();
+$currentStatus = strtolower($post['status'] ?? 'draft');
+$coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cover_image'] : '../images/costa-rica.jpg';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo htmlspecialchars(stripslashes($post['title'])); // Added stripslashes ?> - Virunga Ecotours</title>
-    <link
-      rel="shortcut icon"
-      href="../../images/logos/icon.png"
-      type="image/x-icon"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
+    <title><?php echo htmlspecialchars(stripslashes($post['title'])); ?> - Virunga Ecotours</title>
+    <link rel="shortcut icon" href="../../images/logos/icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/common.css" />
     <link rel="stylesheet" href="../css/view-blog.css" />
     <script src="../js/common.js" defer></script>
+    <style>
+      .view-top-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .view-actions-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .status-badge-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 20px;
+        text-transform: capitalize;
+      }
+      .status-badge-indicator.published {
+        background: #e6fcf5;
+        color: #0ca678;
+        border: 1px solid #c3fae8;
+      }
+      .status-badge-indicator.draft {
+        background: #fff9db;
+        color: #f59f00;
+        border: 1px solid #ffe066;
+      }
+      .status-badge-indicator.archived {
+        background: #f1f3f5;
+        color: #868e96;
+        border: 1px solid #dee2e6;
+      }
+      .btn-action-view {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid #d0d7de;
+        background: #fff;
+        color: #24292f;
+        transition: all 0.2s ease;
+      }
+      .btn-action-view:hover {
+        background: #f6f8fa;
+        border-color: #1b1f24;
+      }
+      .btn-action-view.primary {
+        background: #206bc4;
+        border-color: #206bc4;
+        color: #fff;
+      }
+      .btn-action-view.primary:hover {
+        background: #1a569d;
+      }
+      .quote-block cite {
+        display: block;
+        margin-top: 8px;
+        font-style: normal;
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+    </style>
   </head>
   <body>
     <div class="admin-container">
       <!-- Include sidebar template -->
-      <?php include_once './includes/sidebar.php'; ?>
-
+      <?php include_once __DIR__ . '/includes/sidebar.php'; ?>
 
       <main class="main-content">
         <!-- Top Header -->
-        <?php include_once './includes/header.php'; ?>
+        <?php include_once __DIR__ . '/includes/header.php'; ?>
 
+        <div class="container" style="padding-top: 1rem; padding-bottom: 3rem;">
 
-        <div class="container">
           <div class="blog-view-container">
+
+            <!-- Top Action Navigation -->
+            <div class="view-top-actions">
+              <a href="blogs.php" class="btn-action-view">
+                <i class="fas fa-arrow-left"></i> Back to Blog List
+              </a>
+
+              <div class="view-actions-group">
+                <span class="status-badge-indicator <?php echo $currentStatus; ?>">
+                  <i class="fas <?php echo ($currentStatus === 'published') ? 'fa-check-circle' : 'fa-file-lines'; ?>"></i>
+                  <?php echo ucfirst($currentStatus); ?>
+                </span>
+
+                <button type="button" class="btn-action-view" onclick="toggleStatus(<?php echo $post['blog_id']; ?>, '<?php echo $currentStatus; ?>')">
+                  <i class="fas fa-arrows-rotate"></i> Change to <?php echo ($currentStatus === 'published') ? 'Draft' : 'Published'; ?>
+                </button>
+
+                <a href="edit_blog.php?id=<?php echo $post['blog_id']; ?>" class="btn-action-view primary">
+                  <i class="fas fa-edit"></i> Edit Article
+                </a>
+
+                <?php if ($currentStatus === 'published'): ?>
+                  <a href="../../pages/blogopen.php?id=<?php echo $post['blog_id']; ?>" target="_blank" class="btn-action-view" title="View on live website">
+                    <i class="fas fa-arrow-up-right-from-square"></i> Live Page
+                  </a>
+                <?php endif; ?>
+              </div>
+            </div>
+
             <div class="blog-view-header">
-              <h1 class="blog-view-title"><?php echo htmlspecialchars(stripslashes($post['title'])); // Added stripslashes ?></h1>
+              <h1 class="blog-view-title"><?php echo htmlspecialchars(stripslashes($post['title'])); ?></h1>
               <div class="blog-meta">
                 <span class="blog-author">
-                  <i class="fas fa-user"></i> <?php echo htmlspecialchars(stripslashes($post['author'])); // Added stripslashes ?>
+                  <i class="fas fa-user"></i> <?php echo htmlspecialchars(stripslashes($post['author'] ?: 'Virunga Team')); ?>
                 </span>
                 <span class="blog-read-time">
-                  <i class="fas fa-clock"></i> <?php echo htmlspecialchars(stripslashes($post['read_minutes'])); // Added stripslashes ?> min read <!-- Changed read_time to read_minutes -->
+                  <i class="fas fa-clock"></i> <?php echo htmlspecialchars(stripslashes($post['read_minutes'])); ?> min read
                 </span>
                 <span class="blog-category">
-                  <i class="fas fa-tag"></i> <?php echo htmlspecialchars(stripslashes($post['category_name'])); // Added stripslashes ?> <!-- Changed category to category_name -->
+                  <i class="fas fa-tag"></i> <?php echo htmlspecialchars(stripslashes($post['category_name'] ?: 'Editorial')); ?>
+                </span>
+                <span>
+                  <i class="far fa-calendar-alt"></i> <?php echo date('M d, Y', strtotime($post['created_at'])); ?>
                 </span>
               </div>
             </div>
 
             <div class="blog-view-cover">
               <img
-                src="../images/blog/covers/<?php echo htmlspecialchars(stripslashes($post['cover_image'])); // Added stripslashes ?>"
-                alt="<?php echo htmlspecialchars(stripslashes($post['title'])); // Added stripslashes ?>"
+                src="<?php echo htmlspecialchars($coverImg); ?>"
+                alt="<?php echo htmlspecialchars(stripslashes($post['title'])); ?>"
+                onerror="this.src='../images/costa-rica.jpg';"
               />
             </div>
 
             <div class="blog-view-content">
-              <div class="blog-intro">
-                <h2><?php echo htmlspecialchars(stripslashes($post['main_headline'])); // Added stripslashes ?></h2> <!-- Changed headline to main_headline -->
-                <p><?php echo stripslashes($post['introduction']); // Already had stripslashes, no htmlspecialchars needed here unless intro contains HTML tags you want to display as text ?></p>
-              </div>
+              <?php if (!empty($post['main_headline'])): ?>
+                <div class="blog-intro">
+                  <h2><?php echo htmlspecialchars(stripslashes($post['main_headline'])); ?></h2>
+                  <div><?php echo stripslashes($post['introduction']); ?></div>
+                </div>
+              <?php else: ?>
+                <div class="blog-intro">
+                  <div><?php echo stripslashes($post['introduction']); ?></div>
+                </div>
+              <?php endif; ?>
 
               <?php foreach ($content_blocks_data as $block): ?>
                 <?php if ($block['block_type'] === 'text'): ?>
                   <div class="content-block text-block">
                     <?php if (!empty($block['section_title'])): ?>
-                      <h3><?php echo htmlspecialchars(stripslashes($block['section_title'])); ?></h3> <!-- Use section_title -->
+                      <h3><?php echo htmlspecialchars(stripslashes($block['section_title'])); ?></h3>
                     <?php endif; ?>
-                    <p><?php echo stripslashes($block['content']); ?></p>
+                    <div><?php echo stripslashes($block['content']); ?></div>
                   </div>
                 <?php elseif ($block['block_type'] === 'image'): ?>
                   <div class="content-block image-block">
                     <img
-                      src="../images/blog/content/<?php echo htmlspecialchars(stripslashes($block['image_path'])); // Added stripslashes ?>"
-                      alt="<?php echo htmlspecialchars(stripslashes($block['caption'] ?? '')); // Added stripslashes ?>"
+                      src="../images/blog/content/<?php echo htmlspecialchars(stripslashes($block['image_path'])); ?>"
+                      alt="<?php echo htmlspecialchars(stripslashes($block['caption'] ?? '')); ?>"
+                      onerror="this.style.display='none';"
                     />
                     <?php if (!empty($block['caption'])): ?>
-                      <p class="image-caption"><?php echo htmlspecialchars(stripslashes($block['caption'])); // Added stripslashes ?></p> <!-- Use caption -->
+                      <p class="image-caption"><?php echo htmlspecialchars(stripslashes($block['caption'])); ?></p>
                     <?php endif; ?>
                   </div>
                 <?php elseif ($block['block_type'] === 'quote'): ?>
                   <div class="content-block quote-block">
                     <blockquote>
-                      <?php echo htmlspecialchars(stripslashes($block['quote_text'])); // Added stripslashes ?> <!-- Use quote_text -->
+                      <?php echo htmlspecialchars(stripslashes($block['quote_text'])); ?>
                     </blockquote>
                     <?php if (!empty($block['attribution'])): ?>
-                      <cite>— <?php echo htmlspecialchars(stripslashes($block['attribution'])); // Added stripslashes ?></cite> <!-- Use attribution -->
+                      <cite>— <?php echo htmlspecialchars(stripslashes($block['attribution'])); ?></cite>
                     <?php endif; ?>
                   </div>
                 <?php elseif ($block['block_type'] === 'list'): ?>
                   <div class="content-block list-block">
-                    <?php if (!empty($block['title'])): ?> <!-- Use title (fetched from list_title) -->
-                      <h3><?php echo htmlspecialchars(stripslashes($block['title'])); // Already updated ?></h3>
+                    <?php if (!empty($block['title'])): ?>
+                      <h3><?php echo htmlspecialchars(stripslashes($block['title'])); ?></h3>
                     <?php endif; ?>
                     <ul class="content-list">
                       <?php
-                        // Content is now stored as a JSON array string
-                        $list_items = json_decode($block['content'] ?? '[]');
-                        foreach ($list_items as $item):
-                          $clean_item = trim(stripslashes($item)); // Already updated
-                          if ($clean_item !== ''):
+                        $list_items = json_decode($block['content'] ?? '[]', true);
+                        if (is_array($list_items)) {
+                          foreach ($list_items as $item):
+                            $clean_item = trim(stripslashes((string)$item));
+                            if ($clean_item !== ''):
                       ?>
-                        <li><?php echo htmlspecialchars($clean_item); // Already updated ?></li>
+                        <li><?php echo htmlspecialchars($clean_item); ?></li>
                       <?php
-                          endif;
-                        endforeach;
+                            endif;
+                          endforeach;
+                        }
                       ?>
                     </ul>
                   </div>
@@ -265,13 +356,14 @@ $gallery_stmt->close(); // Close statement after fetching
 
               <?php if (!empty($gallery_images)): ?>
                 <div class="blog-gallery">
-                  <h3>Gallery</h3>
+                  <h3><i class="fas fa-images"></i> Story Photo Gallery</h3>
                   <div class="gallery-grid">
                     <?php foreach ($gallery_images as $image): ?>
                       <div class="gallery-item">
                         <img
-                          src="../images/blog/gallery/<?php echo htmlspecialchars(stripslashes($image['image_path'])); // Added stripslashes ?>"
-                          alt="Gallery Image"
+                          src="../images/blog/gallery/<?php echo htmlspecialchars(stripslashes($image['image_path'])); ?>"
+                          alt="Gallery Photo"
+                          onerror="this.src='../images/costa-rica.jpg';"
                         />
                       </div>
                     <?php endforeach; ?>
@@ -282,15 +374,39 @@ $gallery_stmt->close(); // Close statement after fetching
 
             <div class="blog-view-footer">
               <a href="blogs.php" class="back-button">
-                <i class="fas fa-arrow-left"></i> Back to Blogs
+                <i class="fas fa-arrow-left"></i> Back to Blog List
+              </a>
+              <a href="edit_blog.php?id=<?php echo $post['blog_id']; ?>" class="btn-action-view primary">
+                <i class="fas fa-edit"></i> Edit Article
               </a>
             </div>
+
           </div>
         </div>
       </main>
     </div>
+
+    <script>
+      async function toggleStatus(blogId, currentStatus) {
+        const nextStatus = (currentStatus === 'published') ? 'draft' : 'published';
+        if (confirm(`Change article status from '${currentStatus}' to '${nextStatus}'?`)) {
+          try {
+            const res = await fetch('../handlers/blog/update_blog_status.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: `blog_id=${blogId}&new_status=${nextStatus}`
+            });
+            const data = await res.json();
+            if (data.success) {
+              window.location.reload();
+            } else {
+              alert(data.message || 'Error changing status');
+            }
+          } catch (e) {
+            alert('Network or server error updating status');
+          }
+        }
+      }
+    </script>
   </body>
 </html>
-<?php
-$conn->close(); // Close the database connection at the end
-?>

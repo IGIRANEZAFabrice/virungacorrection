@@ -132,8 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Invalid blog ID provided.");
         }
 
-        // Fetch existing post data to manage image deletion later
-        $stmt = $conn->prepare("SELECT cover_image FROM blog_posts WHERE blog_id = ?");
+        // Fetch existing post data to manage image deletion and preserve status/slug
+        $stmt = $conn->prepare("SELECT cover_image, slug, status, published_at FROM blog_posts WHERE blog_id = ?");
         $stmt->bind_param("i", $blog_id);
         $stmt->execute();
         $existing_post_result = $stmt->get_result();
@@ -145,14 +145,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
 
-        $title = $conn->real_escape_string(cleanBlogText($_POST['blogTitle']));
-        $slug = createSlug($title); // Generate slug from title
-        $author = $conn->real_escape_string(cleanBlogText($_POST['author']));
-        $readMin = intval($_POST['readMin']);
-        $category_slug = $conn->real_escape_string($_POST['category']); // Expecting slug from form
-        $main_headline = $conn->real_escape_string(cleanBlogText($_POST['bigTitle']));
-        $introduction = $conn->real_escape_string(cleanBlogText($_POST['bigDescription']));
-        $adminId = $_SESSION['admin_id']; // Assuming admin ID is needed for tracking/logging
+        $title = cleanBlogText($_POST['blogTitle'] ?? '');
+        $slug = !empty($existing_post['slug']) ? $existing_post['slug'] : createSlug($title) . '-' . $blog_id;
+        $author = cleanBlogText($_POST['author'] ?? 'Virunga Team');
+        $readMin = isset($_POST['readMin']) ? max(1, intval($_POST['readMin'])) : 5;
+        $category_slug = trim($_POST['category'] ?? '');
+        $main_headline = cleanBlogText($_POST['bigTitle'] ?? '');
+        $introduction = cleanBlogText($_POST['bigDescription'] ?? '');
+        $adminId = $_SESSION['admin_id'];
+
+        $status = strtolower(trim($_POST['status'] ?? ''));
+        if (!in_array($status, ['published', 'draft', 'archived'], true)) {
+            $status = $existing_post['status'] ?? 'published';
+        }
 
         // Get category ID from the submitted slug
         $stmt = $conn->prepare("SELECT category_id FROM blog_categories WHERE category_slug = ?");
@@ -193,15 +198,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     cover_image = ?,
                     main_headline = ?,
                     introduction = ?,
+                    status = ?,
+                    published_at = CASE 
+                        WHEN ? = 'published' AND (published_at IS NULL OR published_at = '0000-00-00 00:00:00') THEN NOW() 
+                        ELSE published_at 
+                    END,
                     updated_at = NOW()
                 WHERE blog_id = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             throw new Exception("Prepare failed (blog_posts): " . $conn->error);
         }
-        $stmt->bind_param("sssiisssi",
+        $stmt->bind_param("sssiisssssi",
             $title, $slug, $author, $readMin, $categoryId,
-            $coverImagePath, $main_headline, $introduction, $blog_id
+            $coverImagePath, $main_headline, $introduction, $status, $status, $blog_id
         );
         if (!$stmt->execute()) {
              throw new Exception("Execute failed (blog_posts): " . $stmt->error);

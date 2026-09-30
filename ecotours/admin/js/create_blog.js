@@ -809,9 +809,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
   // 5. AJAX FORM SUBMISSION & VALIDATION
   // ==========================================
+  const saveDraftBtn = document.getElementById("saveDraftBtn");
+  if (saveDraftBtn && blogForm) {
+    saveDraftBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const statusSelect = document.getElementById("status");
+      if (statusSelect) {
+        statusSelect.value = "draft";
+      }
+      if (typeof blogForm.requestSubmit === "function") {
+        blogForm.requestSubmit();
+      } else {
+        blogForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+      }
+    });
+  }
+
   if (blogForm) {
     blogForm.addEventListener("submit", function (e) {
       e.preventDefault();
+
+      // Synchronize all rich text editors to underlying textareas before validation
+      document.querySelectorAll(".rich-text-wrapper").forEach((wrapper) => {
+        const editor = wrapper.querySelector(".rich-text-editor");
+        const ta = wrapper.querySelector("textarea");
+        if (editor && ta) {
+          ta.value = normalizeBlogContent(editor.innerHTML);
+        }
+      });
 
       // Basic client-side validation
       const blogTitle = document.getElementById("blogTitle");

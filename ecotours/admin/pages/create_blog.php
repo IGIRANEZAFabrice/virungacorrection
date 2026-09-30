@@ -68,11 +68,11 @@ if (empty($categories)) {
   <body>
     <div class="admin-container">
       <!-- Sidebar Navigation -->
-      <?php include_once './includes/sidebar.php'; ?>
+      <?php include_once __DIR__ . '/includes/sidebar.php'; ?>
 
       <main class="main-content">
         <!-- Top Header -->
-        <?php include_once './includes/header.php'; ?>
+        <?php include_once __DIR__ . '/includes/header.php'; ?>
 
         <div class="container">
           <!-- Page Header Row -->
@@ -93,7 +93,7 @@ if (empty($categories)) {
             </div>
           <?php endif; ?>
 
-          <form id="blogForm" method="post" action="create_blog.php" enctype="multipart/form-data" class="blog-form-container">
+          <form id="blogForm" method="post" action="create_blog.php" enctype="multipart/form-data" class="blog-form-container" novalidate>
             
             <!-- SECTION 1: Post Essentials & Cover Image -->
             <div class="card-section">
@@ -152,6 +152,14 @@ if (empty($categories)) {
                           <?php echo htmlspecialchars($cat['category_name']); ?>
                         </option>
                       <?php endforeach; ?>
+                    </select>
+                  </div>
+
+                  <div class="form-group" style="margin-top: 15px;">
+                    <label for="status">Publication Status <span class="required-badge">*</span></label>
+                    <select id="status" name="status" required>
+                      <option value="published" selected>Published (Make live on website)</option>
+                      <option value="draft">Draft (Save offline / In progress)</option>
                     </select>
                   </div>
                 </div>
@@ -298,6 +306,9 @@ if (empty($categories)) {
               <a href="blogs.php" class="btn-secondary-outline">
                 <i class="fas fa-times"></i> Cancel
               </a>
+              <button type="button" class="btn-secondary-outline" id="saveDraftBtn">
+                <i class="fas fa-file-pen"></i> Save as Draft
+              </button>
               <button type="submit" class="submit-btn" id="submitBlogBtn">
                 <i class="fas fa-paper-plane"></i> Publish Blog Post
               </button>

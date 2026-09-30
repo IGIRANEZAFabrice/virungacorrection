@@ -192,7 +192,7 @@ $gallery_stmt->close();
             </div>
           <?php endif; ?>
 
-          <form id="blogForm" method="post" action="edit_blog.php?id=<?php echo $post_id; ?>" enctype="multipart/form-data" class="blog-form-container">
+          <form id="blogForm" method="post" action="edit_blog.php?id=<?php echo $post_id; ?>" enctype="multipart/form-data" class="blog-form-container" novalidate>
             <!-- Hidden Post ID -->
             <input type="hidden" name="blog_id" value="<?php echo $post_id; ?>">
 
@@ -254,6 +254,15 @@ $gallery_stmt->close();
                           <?php echo htmlspecialchars($category['category_name']); ?>
                         </option>
                       <?php endforeach; ?>
+                    </select>
+                  </div>
+
+                  <div class="form-group" style="margin-top: 15px;">
+                    <label for="status">Publication Status <span class="required-badge">*</span></label>
+                    <select id="status" name="status" required>
+                      <option value="published" <?php echo ($post['status'] === 'published') ? 'selected' : ''; ?>>Published (Live)</option>
+                      <option value="draft" <?php echo ($post['status'] === 'draft') ? 'selected' : ''; ?>>Draft (Offline / In progress)</option>
+                      <option value="archived" <?php echo ($post['status'] === 'archived') ? 'selected' : ''; ?>>Archived</option>
                     </select>
                   </div>
                 </div>

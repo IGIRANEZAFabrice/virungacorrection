@@ -70,11 +70,11 @@ $total_comments = (int)$conn->query("SELECT COUNT(*) as c FROM blog_comments")->
   <body>
     <div class="admin-container">
       <!-- Include sidebar template -->
-      <?php include_once './includes/sidebar.php'; ?>
+      <?php include_once __DIR__ . '/includes/sidebar.php'; ?>
 
       <main class="main-content">
         <!-- Top Header -->
-        <?php include_once './includes/header.php'; ?>
+        <?php include_once __DIR__ . '/includes/header.php'; ?>
 
         <div class="blogs-management-container">
           
@@ -96,7 +96,7 @@ $total_comments = (int)$conn->query("SELECT COUNT(*) as c FROM blog_comments")->
             </div>
 
             <div class="page-actions-wrap">
-              <a href="../../journal.php" target="_blank" class="btn btn-outline btn-sm">
+              <a href="../../pages/blog.php" target="_blank" class="btn btn-outline btn-sm">
                 <i class="fas fa-eye"></i> View Live Journal
               </a>
               <a href="blog_comments.php" class="btn btn-outline btn-sm">
@@ -258,11 +258,16 @@ $total_comments = (int)$conn->query("SELECT COUNT(*) as c FROM blog_comments")->
             const res = await fetch('../handlers/blog/delete_blog.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: `blog_id=${blogId}`
+              body: `blog_id=${encodeURIComponent(blogId)}`
             });
-            window.location.reload();
+            const data = await res.json();
+            if (data.success) {
+              window.location.reload();
+            } else {
+              alert(data.message || 'Error deleting blog post');
+            }
           } catch (e) {
-            window.location.reload();
+            alert('Network or server error deleting blog post');
           }
         }
       }

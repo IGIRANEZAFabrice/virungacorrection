@@ -603,6 +603,15 @@ function initializeEditBlogPage() {
     blogForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      // Synchronize all rich text editors to underlying textareas before validation
+      document.querySelectorAll(".rich-text-wrapper").forEach((wrapper) => {
+        const editor = wrapper.querySelector(".rich-text-editor");
+        const ta = wrapper.querySelector("textarea");
+        if (editor && ta) {
+          ta.value = normalizeBlogContent(editor.innerHTML);
+        }
+      });
+
       const blogTitle = document.getElementById("blogTitle");
       if (!blogTitle || !blogTitle.value.trim()) {
         showToast("Please enter a blog title.", "warning");

@@ -124,6 +124,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $adminId = $_SESSION['admin_id'];
         $slug = createSlug($title) . '-' . uniqid();
         
+        $status = strtolower(trim($_POST['status'] ?? 'published'));
+        if (!in_array($status, ['published', 'draft', 'archived'], true)) {
+            $status = 'published';
+        }
+        $published_at = ($status === 'published') ? date('Y-m-d H:i:s') : null;
+        
         if (empty($title)) {
             throw new Exception("Blog title is required.");
         }
@@ -152,11 +158,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Insert blog post
         $blogQuery = "INSERT INTO blog_posts (title, slug, author, read_minutes, category_id, cover_image, 
-                      main_headline, introduction, status, created_by) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'published', ?)";
+                      main_headline, introduction, status, created_by, published_at) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($blogQuery);
-        $stmt->bind_param("sssiisssi", $title, $slug, $author, $readMin, $categoryId, 
-                         $coverImagePath, $bigTitle, $bigDescription, $adminId);
+        $stmt->bind_param("sssiissssis", $title, $slug, $author, $readMin, $categoryId, 
+                         $coverImagePath, $bigTitle, $bigDescription, $status, $adminId, $published_at);
         $stmt->execute();
         $blogId = $conn->insert_id;
         $stmt->close();
