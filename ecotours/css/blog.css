@@ -70,7 +70,7 @@ body {
 
 .blog-hero .hero-image {
   background-image: url("../images/hero/group-tours.jpg");
-  background-position: center 45%;
+  background-position: center 100%;
 }
 
 @keyframes zoom {
