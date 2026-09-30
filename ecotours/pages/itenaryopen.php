@@ -1,4 +1,8 @@
 <?php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 require_once './itenaryopenhandler.php';
 
 if (!function_exists('virungaImgBase64')) {
@@ -118,7 +122,7 @@ if (!function_exists('virungaImgBase64')) {
           <div class="info-item">
             <i class="fas fa-calendar-alt info-icon"></i>
             <div class="info-label">Duration</div>
-            <div class="info-value"><?php echo $tour['days_count']; ?> days</div>
+            <div class="info-value"><?php echo $tour['days_count']; ?> day<?php echo (int)$tour['days_count'] > 1 ? 's' : ''; ?></div>
           </div>
           <div class="info-item">
             <i class="fas fa-bookmark info-icon"></i>
@@ -798,7 +802,7 @@ if (!function_exists('virungaImgBase64')) {
 
         <!-- BLOCK: ITINERARY TITLE -->
         <div class="pdf-block" style="border-bottom: 2px solid #122a1f; padding-bottom: 4px; margin-bottom: 12px; margin-top: 6px;">
-          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px; color: #122a1f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Detailed Day-by-Day Itinerary</div>
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px; color: #122a1f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"><?php echo ((int)$tour['days_count'] <= 1) ? 'Detailed Experience Schedule' : 'Detailed Day-by-Day Itinerary'; ?></div>
         </div>
 
         <!-- BLOCKS: DAYS -->
@@ -807,7 +811,7 @@ if (!function_exists('virungaImgBase64')) {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="width: 62px; vertical-align: top;">
-                  <span style="background: #1b3a2b; color: #f4ede0; font-weight: 700; font-size: 9.5px; padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">DAY <?php echo sprintf('%02d', $day['day_number']); ?></span>
+                  <span style="background: #1b3a2b; color: #f4ede0; font-weight: 700; font-size: 9.5px; padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;"><?php echo ((int)$tour['days_count'] <= 1) ? 'PART ' . sprintf('%02d', $day['day_number']) : 'DAY ' . sprintf('%02d', $day['day_number']); ?></span>
                 </td>
                 <td style="vertical-align: top; padding-left: 8px;">
                   <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; color: #122a1f; font-weight: 700; margin: 0 0 5px 0;"><?php echo htmlspecialchars($day['day_title']); ?></div>

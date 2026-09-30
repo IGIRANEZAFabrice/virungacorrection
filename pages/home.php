@@ -2107,7 +2107,7 @@
         <div class="destinations-grid">
           <!-- 1: Volcanoes -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.04s;">
-            <img src="<?php echo htmlspecialchars($baseLink('homestay/img/hero/1776268009_Mgahinga.jpg')); ?>" alt="Volcanoes National Park" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/virunga.jpg')); ?>" alt="Volcanoes National Park" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">The Volcanoes</h3>
@@ -2117,7 +2117,7 @@
 
           <!-- 2: Nyungwe -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.11s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/abouthero.jpeg')); ?>" alt="Nyungwe Rainforest" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/nyungwe.jpg')); ?>" alt="Nyungwe Rainforest" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">Nyungwe</h3>
@@ -2127,7 +2127,7 @@
 
           <!-- 3: Akagera -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.18s;">
-            <img src="<?php echo htmlspecialchars($baseLink('homestay/img/activities/1778427637_twinlake.jpeg')); ?>" alt="Akagera Savanna" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/akagera.jpg')); ?>" alt="Akagera Savanna" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">Akagera</h3>
@@ -2137,7 +2137,7 @@
 
           <!-- 4: Gishwati -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.25s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>" alt="Gishwati Forest" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/gishwati.jpg')); ?>" alt="Gishwati Forest" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">Gishwati</h3>
@@ -2147,7 +2147,7 @@
 
           <!-- 5: Nyandungu -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.32s;">
-            <img src="<?php echo htmlspecialchars($baseLink('homestay/img/activities/1778346998_coffee.jpeg')); ?>" alt="Nyandungu Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/nyandungu.jpeg')); ?>" alt="Nyandungu Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">Nyandungu</h3>
@@ -2157,7 +2157,7 @@
 
           <!-- 6: Buhanga -->
           <div class="dest-card reveal-card" style="--reveal-delay: 0.39s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/cta.jpeg')); ?>" alt="Buhanga Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
+            <img src="<?php echo htmlspecialchars($baseLink('img/home/buhanga.jpg')); ?>" alt="Buhanga Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
             <div class="dest-overlay"></div>
             <div class="dest-content">
               <h3 class="dest-title">Buhanga</h3>

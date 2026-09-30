@@ -355,10 +355,10 @@
       </button>
     </div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="<?php echo htmlspecialchars($baseLink('#signatures')); ?>">Signatures</a></li>
+      <li><a href="https://virungajourneys.com/ecotours/index.php">Signatures</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>">Virunga House</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('about')); ?>">Our Story</a></li>
-      <li><a href="<?php echo htmlspecialchars($baseLink('#journal')); ?>">Journal</a></li>
+      <li><a href="https://virungajourneys.com/ecotours/pages/blog.php">Journal</a></li>
       <li><a href="<?php echo htmlspecialchars($baseLink('#planner')); ?>" class="nav-cta-link" style="color: var(--gold-light, #deb862); font-weight: 600; letter-spacing: 0.04em;">PLAN YOUR JOURNEY</a></li>
       <li class="lang-dropdown notranslate" translate="no">
         <button class="lang-btn" id="langBtn" aria-label="Select Language">
