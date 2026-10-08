@@ -92,30 +92,20 @@ body {
 }
 
 /* Article Hero Section */
+/* Full-width cover with a fixed viewport height and no animated zoom. */
 .article-hero {
+  height: 80vh;
   position: relative;
-  height: 60vh;
-  min-height: 400px;
   overflow: hidden;
+  background-color: #193a2d;
 }
 
 .article-hero-image {
+  display: block;
   width: 100%;
   height: 100%;
-  background-image: url("../images/stories/mutima.jpg");
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  animation: subtle-zoom 20s infinite alternate ease-in-out;
-}
-
-@keyframes subtle-zoom {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.1);
-  }
+  object-fit: cover;
+  object-position: center;
 }
 
 .article-hero-overlay {
@@ -1115,9 +1105,6 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-  .article-hero {
-    height: 50vh;
-  }
 
   .article-title {
     font-size: 2rem;
@@ -1164,9 +1151,6 @@ textarea.form-control {
 }
 
 @media (max-width: 576px) {
-  .article-hero {
-    height: 40vh;
-  }
 
   .article-title {
     font-size: 1.8rem;
@@ -1199,3 +1183,4 @@ textarea.form-control {
     font-size: 1rem;
   }
 }
+

@@ -145,7 +145,7 @@ function renderBlogHtml($content) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="../css/earthy-theme.css" />
     <link rel="stylesheet" href="../css/header.css" />
-    <link rel="stylesheet" href="../css/blogopen.css" />
+    <link rel="stylesheet" href="../css/blogopen.css?v=<?php echo filemtime(__DIR__ . '/../css/blogopen.css'); ?>" />
     <link
       rel="shortcut icon"
       href="../images/logos/icon.png"
@@ -208,7 +208,7 @@ function renderBlogHtml($content) {
             // Fallback for hero image if not set or file missing
             $hero_image_path = blogCoverUrl($post['cover_image']);
             ?>
-            <div class="article-hero-image" style="background-image: url('<?= $hero_image_path ?>')"></div>
+            <img class="article-hero-image" src="<?= htmlspecialchars($hero_image_path, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>" fetchpriority="high" decoding="async">
             <div class="article-hero-overlay">
                 <div class="container">
                     <span class="article-category"><?= htmlspecialchars(ucfirst($post['category_name'])) ?></span> 
