@@ -6,9 +6,10 @@ require_once('../admin/config/connection.php');
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/sustainability.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sustainability & Community Impact | Virunga Ecotours</title>
+    <title>Sustainability & Community Impact | Virunga Journeys</title>
     <meta name="description" content="Learn about our sustainability initiatives and community contributions around the Virunga Massif. Discover how tourism revenue supports local communities and conservation efforts.">
     <meta name="keywords" content="Virunga sustainability, community tourism, conservation funding, Rwanda TRSP, Uganda revenue sharing, Batwa cultural tourism">
     

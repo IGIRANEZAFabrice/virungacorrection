@@ -6,6 +6,7 @@ $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hou
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="canonical" href="https://virungajourneys.com/contact-us">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $pageTitle; ?></title>

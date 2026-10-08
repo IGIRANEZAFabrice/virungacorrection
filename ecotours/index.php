@@ -11,21 +11,21 @@ require_once 'indexhandler.php';
     <link rel="canonical" href="https://virungajourneys.com/experiences" />
 
     <!-- Primary Meta Tags -->
-    <title>Luxury Rwanda Safaris & Gorilla Trekking Expeditions | Virunga Ecotours</title>
-    <meta name="description" content="Experience luxury gorilla trekking safaris and bespoke expeditions in Volcanoes National Park with Virunga Ecotours. Private journeys, expert guides, and authentic community impact.">
-    <meta name="keywords" content="luxury Rwanda safari, luxury gorilla trekking Rwanda, private Rwanda safari, Volcanoes National Park tours, Virunga Ecotours, bespoke expeditions">
+    <title>Luxury Rwanda Safaris & Gorilla Trekking Expeditions | Virunga Journeys</title>
+    <meta name="description" content="Experience luxury gorilla trekking safaris and bespoke expeditions in Volcanoes National Park with Virunga Journeys. Private journeys, expert guides, and authentic community impact.">
+    <meta name="keywords" content="luxury Rwanda safari, luxury gorilla trekking Rwanda, private Rwanda safari, Volcanoes National Park tours, Virunga Journeys, bespoke expeditions">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
+    <meta property="og:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Journeys">
     <meta property="og:description" content="Discover bespoke luxury safaris, gorilla trekking expeditions, and volcanic journeys in Rwanda with local experts.">
     <meta property="og:image" content="https://virungajourneys.com/img/about.jpeg">
     <meta property="og:url" content="https://virungajourneys.com/experiences">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Virunga Ecotours">
+    <meta property="og:site_name" content="Virunga Journeys">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Ecotours">
+    <meta name="twitter:title" content="Luxury Rwanda Safaris & Gorilla Trekking | Virunga Journeys">
     <meta name="twitter:description" content="Bespoke luxury safaris, mountain gorilla trekking, and community journeys across the Virunga Massif.">
     <meta name="twitter:image" content="https://virungajourneys.com/img/about.jpeg">
 
@@ -33,8 +33,8 @@ require_once 'indexhandler.php';
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Virunga Ecotours",
-      "alternateName": "Virunga Ecotours Authentic Virunga Journeys",
+      "name": "Virunga Journeys",
+      "alternateName": "Virunga Journeys",
       "url": "https://virungajourneys.com/experiences",
       "logo": "https://virungajourneys.com/ecotours/images/logos/logo.png",
       "contactPoint": {
@@ -49,18 +49,7 @@ require_once 'indexhandler.php';
       ]
     }
     </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": "https://virungajourneys.com",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://virungajourneys.com/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
+
 
     <link
       rel="shortcut icon"
@@ -149,7 +138,7 @@ require_once 'indexhandler.php';
             <p class="section-subtitle">
              We design focused expedition journeys across the Virunga region, shaped by access, rhythm, and depth not the number of activities.
 
-Virunga Ecotours is a Rwanda-based immersive travel brand curating wildlife, culture, and conservation journeys across the Virunga landscape.
+Virunga Journeys is a Rwanda-based immersive travel brand curating wildlife, culture, and conservation journeys across the Virunga landscape.
 
 We are a specialist operator crafting intentional expeditions across Rwanda, Uganda, and DR Congo. No generic packages only defined journeys that connect travelers to people, nature, and meaning.
 

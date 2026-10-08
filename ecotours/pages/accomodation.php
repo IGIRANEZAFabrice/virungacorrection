@@ -16,6 +16,7 @@ $hero_subheading = 'Experience world-class gorilla trekking with accommodations 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/accomodation.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virunga Accommodation - Gorilla Trekking Lodges</title>

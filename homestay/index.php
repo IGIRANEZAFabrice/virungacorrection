@@ -67,6 +67,7 @@ if (isset($pages[$slug]) && file_exists($pages[$slug])) {
     $pageTitle = ucfirst($slug === 'home' ? 'Home' : $slug);
     // Make $link available to page templates
     $baseLink = $link;
+    $publicCanonicalPath = $slug === 'home' ? 'homestays' : $slug;
     include $pages[$slug];
     exit;
 }

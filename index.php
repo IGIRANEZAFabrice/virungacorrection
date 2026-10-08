@@ -64,6 +64,7 @@ $renderPage = function (array $page, string $currentSlug) use ($link): void {
     }
 
     $baseLink = $link;
+    $publicCanonicalPath = $currentSlug === 'home' ? '' : $currentSlug;
     $assetBase = $page['assetBase'] ?? $link('');
     $currentSection = (strpos($currentSlug, 'ecotours') === 0) ? 'ecotours' : (strpos($page['assetBase'] ?? '', 'homestay') !== false ? 'homestay' : 'main');
 

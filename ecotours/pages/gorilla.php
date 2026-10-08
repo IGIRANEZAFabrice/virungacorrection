@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mountain Gorilla Legacies | Virunga Ecotours</title>
+    <title>Mountain Gorilla Legacies | Virunga Journeys</title>
     <meta name="description" content="Explore the legendary gorilla families of the Virunga Massif. From the iconic Susa family to the rising dynasties of Igisha, Isimbi, and more.">
     
     <link rel="canonical" href="https://virungajourneys.com/ecotours/pages/gorilla.php" />

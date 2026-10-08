@@ -1,6 +1,6 @@
 <?php
   require_once __DIR__ . '/../config/localization.php';
-  $loc = get_localization_data();
+  $loc = get_localization_data('en');
 
   // Database queries for dynamic homepage content
   $featured_blogs = [];
@@ -56,7 +56,7 @@
   }
 ?>
 <!doctype html>
-<html lang="<?php echo htmlspecialchars($loc['code']); ?>">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -78,7 +78,7 @@
     <meta property="og:url" content="https://virungajourneys.com/">
     <meta property="og:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
-    <meta property="og:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars('https://virungajourneys.com/img/about.jpeg'); ?>">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Virunga Collective">
@@ -89,15 +89,10 @@
     <meta name="twitter:url" content="https://virungajourneys.com/">
     <meta name="twitter:title" content="<?php echo htmlspecialchars($loc['seo_title']); ?>">
     <meta name="twitter:description" content="<?php echo htmlspecialchars($loc['seo_description']); ?>">
-    <meta name="twitter:image" content="<?php echo htmlspecialchars($baseLink('img/about.jpeg')); ?>">
+    <meta name="twitter:image" content="<?php echo htmlspecialchars('https://virungajourneys.com/img/about.jpeg'); ?>">
     
     <!-- Canonical & Alternates -->
     <link rel="canonical" href="https://virungajourneys.com/" />
-    <link rel="alternate" hreflang="x-default" href="https://virungajourneys.com/" />
-    <link rel="alternate" hreflang="en" href="https://virungajourneys.com/" />
-    <link rel="alternate" hreflang="fr" href="https://virungajourneys.com/" />
-    <link rel="alternate" hreflang="de" href="https://virungajourneys.com/" />
-    <link rel="alternate" hreflang="es" href="https://virungajourneys.com/" />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">

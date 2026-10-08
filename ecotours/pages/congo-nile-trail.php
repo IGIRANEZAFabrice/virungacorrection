@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/congo-nile-trail.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Congo Nile Trail Experience | Virunga Ecotours</title>
-    <meta name="description" content="Walk or cycle the Congo Nile Trail along Lake Kivu with Virunga Ecotours. Community stays, cultural experiences, and stunning shorelines." />
-    <meta name="keywords" content="Congo Nile Trail, Lake Kivu, Rwanda hiking, Rwanda cycling, Virunga Ecotours, community tourism" />
+    <title>Congo Nile Trail Experience | Virunga Journeys</title>
+    <meta name="description" content="Walk or cycle the Congo Nile Trail along Lake Kivu with Virunga Journeys. Community stays, cultural experiences, and stunning shorelines." />
+    <meta name="keywords" content="Congo Nile Trail, Lake Kivu, Rwanda hiking, Rwanda cycling, Virunga Journeys, community tourism" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">

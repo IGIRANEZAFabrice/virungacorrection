@@ -22,6 +22,7 @@ try {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/faq-page.php"); ?>
     <meta charset="UTF-8" />
       <link
       rel="shortcut icon"

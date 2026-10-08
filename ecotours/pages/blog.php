@@ -68,6 +68,7 @@ function cleanBlogExcerpt($content, $length = 150) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/blog.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	    <title>Virunga Blog - Stories from the Virunga</title>

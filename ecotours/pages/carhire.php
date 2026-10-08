@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/carhire.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Hire & Transfer Services | Virunga Ecotours</title>
+    <title>Car Hire & Transfer Services | Virunga Journeys</title>
     <meta name="description" content="Reliable car hire and transfer services across Rwanda, Uganda, and DR Congo. Safari vehicles, adventure 4x4s, urban sedans, luxury transfers, and self-drive options.">
-    <meta name="keywords" content="Virunga Ecotours car hire, transfer services Rwanda Uganda Congo, safari vehicles, self-drive, VIP transfers">
+    <meta name="keywords" content="Virunga Journeys car hire, transfer services Rwanda Uganda Congo, safari vehicles, self-drive, VIP transfers">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">

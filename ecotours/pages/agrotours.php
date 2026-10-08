@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/agrotours.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agro Tours around the Virunga Massif | Virunga Ecotours</title>
-    <meta name="description" content="Experience agro tours with Virunga Ecotours: coffee & tea, banana & sorghum, community farms, dairy & livestock, and farm‑to‑table meals." />
+    <title>Agro Tours around the Virunga Massif | Virunga Journeys</title>
+    <meta name="description" content="Experience agro tours with Virunga Journeys: coffee & tea, banana & sorghum, community farms, dairy & livestock, and farm‑to‑table meals." />
 
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png" />

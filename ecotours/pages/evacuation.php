@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/evacuation.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Medical Evacuation | Virunga Ecotours</title>
+    <title>Emergency Medical Evacuation | Virunga Journeys</title>
     <meta name="description" content="Essential emergency medical evacuation protection across Rwanda, Uganda, and DR Congo. EMES coverage, 24/7 response, and fastest transfer options.">
     <meta name="keywords" content="EMES evacuation Rwanda, medical evacuation Virunga, helicopter evacuation Rwanda, travel safety Rwanda Uganda Congo">
 

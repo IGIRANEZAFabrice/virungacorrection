@@ -139,9 +139,10 @@ function renderBlogHtml($content) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/blogopen.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?= htmlspecialchars($post['title']) ?> | Virunga Ecotours</title>
+    <title><?= htmlspecialchars($post['title']) ?> | Virunga Journeys</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="../css/earthy-theme.css" />
     <link rel="stylesheet" href="../css/header.css" />

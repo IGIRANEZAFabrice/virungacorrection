@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/beekeeping.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Beekeeping Experiences around the Virunga Massif | Virunga Ecotours</title>
+    <title>Beekeeping Experiences around the Virunga Massif | Virunga Journeys</title>
     <meta name="description" content="Discover community-led beekeeping around the Virunga Massif: hive visits, honey harvesting, tastings, and cultural exchange while supporting conservation." />
 
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />

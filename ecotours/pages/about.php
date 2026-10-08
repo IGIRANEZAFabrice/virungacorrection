@@ -139,12 +139,13 @@ $cta_data = $cta_result->fetch_assoc();
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/about.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congo Virunga National Park Tours | Eastern Congo Ecotours | Virunga Ecotours</title>
-<meta name="description" content="Discover the wild beauty of Virunga National Park in Congo. Authentic ecotours combining wildlife encounters with community engagement and conservation support.">
+    <title>About Virunga Journeys | Virunga Collective</title>
+<meta name="description" content="Meet Virunga Journeys, the travel brand of Virunga Collective, connecting travellers with the landscapes, communities and living traditions of the Virunga.">
 <meta name="keywords" content="Virunga National Park Congo, Congo ecotours, eastern Congo wildlife, Congo gorilla tours, DRC tourism">
-    <title>About Us | EcoTours</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/earthy-theme.css">
     <link rel="stylesheet" href="../css/header.css">

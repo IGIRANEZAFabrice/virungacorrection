@@ -7,7 +7,7 @@ $newestTours = getNewestToursWithoutPricing(9);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mid-Range Tours around the Virunga Mountains | Virunga Ecotours</title>
+    <title>Mid-Range Tours around the Virunga Mountains | Virunga Journeys</title>
     <meta name="description" content="Experience the perfect balance of comfort and value with our mid-range tours. Quality lodges, expert guides, and meaningful cultural encounters in the Virunga Mountains.">
     
     <link rel="canonical" href="https://virungajourneys.com/ecotours/pages/midrange.php" />

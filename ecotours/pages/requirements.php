@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/requirements.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virunga Ecotours - Park Requirements</title>
+    <title>Virunga Journeys - Park Requirements</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/requirements.css">
     <link rel="stylesheet" href="../css/earthy-theme.css">
@@ -477,7 +478,7 @@
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>Virunga Ecotours - Park Requirements</title>
+                    <title>Virunga Journeys - Park Requirements</title>
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; color: #333; }
                         .section { margin-bottom: 30px; page-break-inside: avoid; }

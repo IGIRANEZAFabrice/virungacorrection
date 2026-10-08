@@ -6,9 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/photograph.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids for Life: Photography Training for Conservation | Virunga Ecotours</title>
+    <title>Kids for Life: Photography Training for Conservation | Virunga Journeys</title>
     <meta name="description" content="Join our Kids for Life Photography Training program - an immersive educational experience combining photography skills with conservation awareness in the Virunga Massif.">
     <meta name="keywords" content="photography training, conservation education, kids for life, Virunga Massif, youth empowerment, nature photography, community-based tourism">
     

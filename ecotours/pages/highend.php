@@ -5,9 +5,10 @@ $featuredTours = getToursByTitleKeyword('Luxury', 3);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/highend.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-End Luxury Tours in the Virunga Mountains | Virunga Ecotours</title>
+    <title>High-End Luxury Tours in the Virunga Mountains | Virunga Journeys</title>
     <meta name="description" content="Experience the ultimate in luxury travel with our exclusive high-end tours. Private guides, luxury lodges, and meaningful cultural immersion in the Virunga Mountains.">
     
     <!-- Favicon -->

@@ -6,9 +6,10 @@ require_once('../admin/config/connection.php');
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/safari.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safari Tours in Rwanda, Uganda & Congo | Virunga Ecotours</title>
+    <title>Safari Tours in Rwanda, Uganda & Congo | Virunga Journeys</title>
     <meta name="description" content="Experience unforgettable safari adventures across Rwanda, Uganda & Congo. Meet mountain gorillas, explore dramatic landscapes, and discover Africa's wild frontier.">
     <meta name="keywords" content="safari tours Rwanda Uganda Congo, mountain gorillas, wildlife safari, Akagera National Park, Queen Elizabeth Park, Virunga National Park">
     

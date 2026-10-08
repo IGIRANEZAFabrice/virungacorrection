@@ -5,9 +5,10 @@ $budgetTours = getToursByTitleKeyword('Budget', 3);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/budget.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget-Friendly Tours around the Virunga Mountains | Virunga Ecotours</title>
+    <title>Budget-Friendly Tours around the Virunga Mountains | Virunga Journeys</title>
     <meta name="description" content="Explore the Virunga Mountains on a budget. Authentic experiences, affordable stays, and expert local guides for the value-conscious traveler.">
     
     <!-- Favicon -->

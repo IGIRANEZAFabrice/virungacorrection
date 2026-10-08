@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/birdwatching.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birdwatching in Rwanda - From City Wetlands to Albertine Rift | Virunga Ecotours</title>
+    <title>Birdwatching in Rwanda - From City Wetlands to Albertine Rift | Virunga Journeys</title>
     <meta name="description" content="Discover Rwanda's incredible birdlife with over 700 species. From Nyandungu Eco-Park to Nyungwe Forest, experience world-class birdwatching adventures.">
     
     <!-- Favicon -->

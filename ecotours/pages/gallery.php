@@ -14,12 +14,13 @@ try {
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/gallery.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Uganda Gorilla Tracking | Bwindi Forest Adventures | Virunga Ecotours</title>
-<meta name="description" content="Explore Uganda's Bwindi Impenetrable Forest for mountain gorilla tracking. Community tourism experiences connecting you with local cultures and conservation efforts.">
+    <title>Travel Gallery | Virunga Journeys</title>
+<meta name="description" content="Explore photographs of landscapes, wildlife and cultural experiences from Virunga Journeys in Rwanda and the Virunga region.">
 <meta name="keywords" content="Uganda gorilla tracking, Bwindi Impenetrable Forest, Uganda wildlife tours, mountain gorilla Uganda, community tourism Uganda">
-    <title>Modern Animated Gallery</title>
+
     <link
       rel="shortcut icon"
       href="../images/logos/icon.png"

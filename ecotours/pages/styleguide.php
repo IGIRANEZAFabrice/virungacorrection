@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/styleguide.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rwanda Gorilla Trekking | Volcanoes National Park Tours | Virunga Ecotours</title>
-<meta name="description" content="Book authentic mountain gorilla trekking in Rwanda's Volcanoes National Park. Community-based tours with local guides offering cultural immersion and sustainable tourism experiences.">
+    <title>Travel Style Guides | Virunga Journeys</title>
+<meta name="description" content="Explore travel style guides from Virunga Journeys to plan experiences across Rwanda and the Virunga region.">
 <meta name="keywords" content="Rwanda gorilla trekking, Volcanoes National Park, mountain gorilla tours, Rwanda wildlife, sustainable gorilla tourism, Parc National des Volcans">
-    <title>East Africa Travel Style Guides - Virunga Ecotours</title>
+
     <link rel="shortcut icon" href="../images/logos/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="../css/earthy-theme.css">

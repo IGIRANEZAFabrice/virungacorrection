@@ -9,6 +9,7 @@ if (strtolower($countryName) === 'congo' || stripos($countryName, 'congo') !== f
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/itinerary_print.php"); ?>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($tour['title']); ?> - Official Itinerary Dossier</title>

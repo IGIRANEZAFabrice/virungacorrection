@@ -1,3 +1,21 @@
+<?php
+$housePage = $publicCanonicalPath ?? pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_FILENAME);
+$houseDescriptions = [
+ 'rooms' => 'Explore rooms at Virunga House in Musanze, a locally rooted base for gorilla trekking, volcano walks and cultural experiences in Rwanda.',
+ 'about-us' => 'Discover the story of Virunga House, part of Virunga Collective, and our locally rooted approach to hospitality in Musanze, Rwanda.',
+ 'contact' => 'Contact Virunga House in Musanze to ask about rooms, availability and planning your stay near Volcanoes National Park.',
+ 'activity' => 'Discover cultural activities and local experiences during your stay at Virunga House in Musanze, Rwanda.',
+ 'blog' => 'Read stories from Virunga House about Musanze, Rwandan hospitality and exploring the landscapes and communities of the Virunga.',
+ 'carrent' => 'Arrange car rental and transport with Virunga House for your stay in Musanze and travels through Rwanda.',
+ 'impact' => 'Learn how Virunga House connects hospitality with local communities and the wider work of Virunga Collective in Rwanda.',
+ 'shop' => 'Explore the Virunga House shop and discover products connected to your stay in Musanze, Rwanda.',
+ 'houserules' => 'Read the Virunga House rules to prepare for a comfortable and considerate stay in Musanze, Rwanda.',
+ 'safety' => 'Read guest safety information for your stay at Virunga House in Musanze, Rwanda.',
+ 'bookinginfo' => 'Review booking information and prepare for your stay at Virunga House in Musanze, Rwanda.'
+];
+if (empty($pageDescription) && isset($houseDescriptions[$housePage])) $pageDescription = $houseDescriptions[$housePage];
+if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga House', $pageTitle);
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,23 +35,25 @@
     <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House. Authentic Rwandan warmth, volcano views, and bespoke immersion near Volcanoes National Park.'; ?>">
     <meta name="keywords" content="<?php echo isset($pageKeywords) ? htmlspecialchars($pageKeywords) : 'Virunga Homestay, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda'; ?>">
     <?php
-      $canonicalSlug = (isset($slug) && $slug !== 'home') ? $slug : 'homestays';
-      $canonicalUrl = 'https://virungajourneys.com/' . $canonicalSlug;
+      require_once __DIR__ . '/../../../config/seo.php';
+      $canonicalPath = $publicCanonicalPath ?? pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_FILENAME);
+      if (in_array($canonicalPath, ['home', 'index'], true)) $canonicalPath = 'homestays';
+      $canonicalUrl = virunga_canonical_url($canonicalPath);
     ?>
-    <link rel="canonical" href="<?php echo $canonicalUrl; ?>">
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo $canonicalUrl; ?>">
+    <meta property="og:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
     <meta property="og:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Virunga House & Luxury Homestay'; ?>">
     <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House.'; ?>">
     <meta property="og:image" content="https://virungajourneys.com/img/about.jpeg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?php echo $canonicalUrl; ?>">
-    <meta property="twitter:title" content="<?php echo isset($pageTitle) ? $pageTitle : 'Virunga Homestay'; ?>">
-    <meta property="twitter:description" content="<?php echo isset($pageDescription) ? $pageDescription : 'Experience authentic Rwandan hospitality at Virunga Homestay in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
+    <meta property="twitter:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="twitter:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle, ENT_QUOTES) : 'Virunga Homestay'; ?>">
+    <meta property="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription, ENT_QUOTES) : 'Experience authentic Rwandan hospitality at Virunga Homestay in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
     <meta property="twitter:image" content="<?php echo 'https://virungajourneys.com/homestay/img/hero/room.jpg'; ?>">
 
     <!-- Favicon -->

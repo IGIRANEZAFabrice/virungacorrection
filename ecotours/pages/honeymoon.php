@@ -5,9 +5,10 @@ require_once('../admin/config/db_connect.php');
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/honeymoon.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honeymoon & Family Tours - Virunga Ecotours</title>
+    <title>Honeymoon & Family Tours - Virunga Journeys</title>
     <meta name="description" content="Discover the Virunga Massif through romantic honeymoon and family-friendly tours. Experience community-based tourism with cultural immersion, adventure, and meaningful connections.">
     <meta name="keywords" content="honeymoon tours, family tours, Virunga Massif, community tourism, romantic travel, family adventure, Rwanda, Uganda, Congo">
 

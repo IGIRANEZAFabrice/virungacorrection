@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/trek.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trek & Hike the Virunga Massif | Virunga Ecotours</title>
+    <title>Trek & Hike the Virunga Massif | Virunga Journeys</title>
     <meta name="description" content="Explore trekking and hiking in the Virunga Massif across Rwanda, Uganda, and the DRC. Volcano summits, crater lakes, mountain gorillas, and golden monkeys." />
 
     <!-- Favicon (match project conventions) -->

@@ -37,7 +37,7 @@ function get_localization_data($lang = null) {
     $data = [
         'en' => [
             'name' => 'English', 'native' => 'English', 'flag' => '🇬🇧', 'code' => 'en', 'currency_code' => 'USD', 'currency_symbol' => '$',
-            'seo_title' => 'Luxury Rwanda Safaris & Bespoke Virunga Journeys | Virunga Collective',
+            'seo_title' => 'Virunga Collective | Journeys & Stays in Rwanda',
             'seo_description' => 'Virunga Collective is Rwanda’s premier destination ecosystem—connecting luxury homestays, bespoke gorilla trekking safaris, volcanic coffee, and community impact.',
             'seo_keywords' => 'luxury Rwanda safari, luxury gorilla trekking Rwanda, private Rwanda safari, bespoke Virunga journeys, Virunga Collective, Musanze luxury homestay',
             'travel_info' => 'Visa on arrival for most passports. Yellow fever vaccination required if traveling from endemic areas. Gorilla permits booked 3+ months in advance.',

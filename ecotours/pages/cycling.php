@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/cycling.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cycling in Rwanda - Land of a Thousand Hills | Virunga Ecotours</title>
+    <title>Cycling in Rwanda - Land of a Thousand Hills | Virunga Journeys</title>
     <meta name="description" content="Discover Rwanda's breathtaking cycling routes through the Land of a Thousand Hills. From Congo Nile Trail to volcanic foothills, experience unforgettable cycling adventures.">
     
     <!-- Favicon -->

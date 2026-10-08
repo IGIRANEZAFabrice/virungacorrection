@@ -4,10 +4,11 @@ require_once '../admin/config/connection.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/training.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VETI Training Institute - Virunga Ecotours</title>
-    <meta name="description" content="Virunga Ecotours Training Institute (VETI) - Professional training for community guides, porters, and hospitality staff in the Virunga Massif">
+    <title>VETI Training Institute - Virunga Journeys</title>
+    <meta name="description" content="Virunga Journeys Training Institute (VETI) - Professional training for community guides, porters, and hospitality staff in the Virunga Massif">
     
     <!-- Favicon -->
     <link rel="shortcut icon" href="../images/logos/icon.png" type="image/x-icon" />

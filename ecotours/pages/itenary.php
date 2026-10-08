@@ -19,6 +19,7 @@ $debug_info = $data['debug_info'] ?? '';
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/itenary.php"); ?>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -35,7 +36,7 @@ $debug_info = $data['debug_info'] ?? '';
     <link rel="stylesheet" href="../css/new.css" />
     <link rel="stylesheet" href="../css/earthy-theme.css" />
     <script src="../js/script.js" defer></script>
-    <title><?php echo ucfirst($type); ?> Tours in <?php echo ucfirst($country); ?> - Virunga Ecotours</title>
+    <title><?php echo ucfirst($type); ?> Tours in <?php echo ucfirst($country); ?> - Virunga Journeys</title>
     <link rel="stylesheet" href="../css/itenary.css" />
     
     <style>

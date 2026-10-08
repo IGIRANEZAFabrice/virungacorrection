@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/christmas.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Volunteering | Virunga Ecotours</title>
+    <title>Christmas Volunteering | Virunga Journeys</title>
     <meta name="description" content="Share the spirit of Christmas with children and families around the Virunga Massif. Volunteer with festive activities, meals, and gift-giving.">
-    <meta name="keywords" content="Virunga Ecotours Christmas volunteering, festive volunteering Africa, volunteer with kids Virunga Massif">
+    <meta name="keywords" content="Virunga Journeys Christmas volunteering, festive volunteering Africa, volunteer with kids Virunga Massif">
 
     <!-- Favicon (pattern follows other pages like safari.php) -->
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">

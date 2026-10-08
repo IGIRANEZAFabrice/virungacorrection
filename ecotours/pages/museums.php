@@ -5,9 +5,10 @@ require_once '../admin/config/connection.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/museums.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museums of Rwanda - Cultural Heritage Tours | Virunga Ecotours</title>
+    <title>Museums of Rwanda - Cultural Heritage Tours | Virunga Journeys</title>
     <meta name="description" content="Explore Rwanda's rich cultural heritage through its museums. From the Kigali Genocide Memorial to the King's Palace Museum, discover the stories that shaped Rwanda.">
     <meta name="keywords" content="Rwanda museums, Kigali Genocide Memorial, King's Palace Museum, Ethnographic Museum, Rwanda Art Museum, cultural tours Rwanda">
     

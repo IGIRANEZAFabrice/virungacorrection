@@ -4,9 +4,10 @@ require_once '../admin/config/connection.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/animal.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsible Animal Welfare Care - Virunga Ecotours</title>
+    <title>Responsible Animal Welfare Care - Virunga Journeys</title>
     <meta name="description" content="Learn about responsible animal welfare care awareness in community-based tourism around the Virunga Massif">
     
     <!-- Favicon -->

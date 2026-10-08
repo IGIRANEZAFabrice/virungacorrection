@@ -4,9 +4,10 @@ require_once '../admin/config/connection.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require_once __DIR__ . "/../../config/seo.php"; virunga_canonical_tag("ecotours/pages/lgbtq.php"); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LGBTQ+ Inclusive Tourism - Virunga Ecotours</title>
+    <title>LGBTQ+ Inclusive Tourism - Virunga Journeys</title>
     <meta name="description" content="Inclusive Horizons: Empowering LGBTQ+ voices in community-based ecotourism across the Virunga Massif">
     
     <!-- Favicon -->
