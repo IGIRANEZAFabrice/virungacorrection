@@ -1,5 +1,18 @@
 <?php
-require_once '../admin/config/connection.php';
+// Article edits must not leave stale HTML pointing at replaced uploads.
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
+
+require_once __DIR__ . '/../admin/config/connection.php';
+
+function blogCoverUrl($filename) {
+    $filename = basename((string) $filename);
+    $diskPath = __DIR__ . '/../admin/images/blog/covers/' . $filename;
+    return $filename !== '' && is_file($diskPath)
+        ? '../admin/images/blog/covers/' . rawurlencode($filename)
+        : '../images/logos/icon.png';
+}
+
 
 if (!isset($_GET['id'])) {
     header("Location: blog.php");
@@ -193,10 +206,7 @@ function renderBlogHtml($content) {
         <div class="article-hero">
             <?php
             // Fallback for hero image if not set or file missing
-            $hero_image_path = '../admin/images/blog/covers/' . htmlspecialchars($post['cover_image']);
-            if (empty($post['cover_image']) || !file_exists($hero_image_path)) {
-                $hero_image_path = '../images/logos/icon.png'; // fallback image
-            }
+            $hero_image_path = blogCoverUrl($post['cover_image']);
             ?>
             <div class="article-hero-image" style="background-image: url('<?= $hero_image_path ?>')"></div>
             <div class="article-hero-overlay">
@@ -292,10 +302,7 @@ function renderBlogHtml($content) {
                             <?php
                             if (count($related_posts_data) > 0) {
                                 foreach ($related_posts_data as $related) {
-                                    $related_img_path = '../admin/images/blog/covers/' . htmlspecialchars(stripslashes($related['cover_image']));
-                                    if (empty($related['cover_image']) || !file_exists($related_img_path)) {
-                                        $related_img_path = '../images/logos/icon.png'; // fallback image
-                                    }
+                                    $related_img_path = blogCoverUrl($related['cover_image']);
                                     ?>
                                     <li class="related-post-item">
                                         <img src="<?= $related_img_path ?>" 
@@ -539,7 +546,7 @@ function renderBlogHtml($content) {
                     <div class="suggested-post-card" style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.3s ease;">
                         <a href="blogopen.php?id=<?= $suggested_post['blog_id'] ?>" style="text-decoration: none; color: inherit; display: block;">
                             <div class="suggested-post-image" style="height: 180px; overflow: hidden;">
-                                <img src="../admin/images/blog/covers/<?= htmlspecialchars($suggested_post['cover_image']) ?>" 
+                                <img src="<?= htmlspecialchars(blogCoverUrl($suggested_post['cover_image']), ENT_QUOTES, 'UTF-8') ?>" 
                                      alt="<?= htmlspecialchars(stripslashes($suggested_post['title'])) ?>" 
                                      style="width: 100%; height: 100%; object-fit: cover; display: block;">
                             </div>

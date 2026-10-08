@@ -1,5 +1,7 @@
 <?php
-require_once '../../admin/config/connection.php'; // Adjust path as needed
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
+require_once __DIR__ . '/../../admin/config/connection.php'; // Adjust path as needed
 
 header('Content-Type: application/json'); // Set response type to JSON
 

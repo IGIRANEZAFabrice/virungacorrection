@@ -1,4 +1,8 @@
 <?php
+// Article edits must not leave stale HTML pointing at replaced uploads.
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
+
 require_once '../admin/config/connection.php';
 
 $initial_limit = 6; // Number of posts to show initially
@@ -134,7 +138,7 @@ function cleanBlogExcerpt($content, $length = 150) {
 	                        <div class="blog-item" data-category="<?= htmlspecialchars($post['category_slug']) // Use category slug ?>"> 
                             <div class="blog-item-image">
                                 
-                                <img src="../admin/images/blog/covers/<?= htmlspecialchars(stripslashes($post['cover_image'])) ?>"
+                                <img src="../admin/images/blog/covers/<?= rawurlencode(basename($post['cover_image'])) ?>"
                                      alt="<?= htmlspecialchars(stripslashes($post['title'])) ?>"
                                      loading="lazy">
 	                            </div>
@@ -255,7 +259,7 @@ function cleanBlogExcerpt($content, $length = 150) {
                 this.disabled = true;
 
                 // Fetch more posts from the server
-                fetch(`./handlers/load_more_posts.php?offset=${offset}&limit=${limit}`)
+                fetch(`./handlers/load_more_posts.php?offset=${offset}&limit=${limit}`, { cache: "no-store" })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -283,7 +287,7 @@ function cleanBlogExcerpt($content, $length = 150) {
                                 // Construct inner HTML carefully
 	                                newItem.innerHTML = `
 	                                    <div class="blog-item-image">
-	                                        <img src="../admin/images/blog/covers/${sanitizeHTML(post.cover_image)}"
+	                                        <img src="../admin/images/blog/covers/${encodeURIComponent(post.cover_image || "")}"
 	                                             alt="${sanitizeHTML(post.title)}">
 	                                    </div>
 	                                    <div class="blog-item-content"> 
