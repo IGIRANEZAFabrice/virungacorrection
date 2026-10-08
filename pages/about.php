@@ -129,6 +129,8 @@
       }
 
       .vca-section--light { background: var(--cream-warm) !important; }
+      .vcaBrandNote { margin: 24px 0; padding-top: 20px; border-top: 1px solid rgba(27, 58, 43, 0.15); }
+      .vcaBrandNote h3 { font-family: var(--font-body); font-size: 1.15rem; font-weight: 500; line-height: 1.4; color: var(--forest-deep); margin-bottom: 12px; }
       .vca-section--dark  { background: var(--forest-deep) !important; color: var(--cream) !important; }
 
       .vcaSectionLabel {
@@ -517,6 +519,11 @@
           <p class="vcaSectionText">
             Virunga Collective was created to bring these dimensions together through meaningful experiences and ventures that create deeper connections between people and place.
           </p>
+          <section class="vcaBrandNote" aria-labelledby="collective-behind-journey">
+            <h3 id="collective-behind-journey">The Collective Behind the Journey</h3>
+            <p class="vcaSectionText">Virunga Collective is our master brand, bringing together locally rooted journeys, hospitality, distinctive experiences and community impact in Rwanda’s Virunga region.</p>
+            <p class="vcaSectionText">Virunga Journeys is the legal and operating entity through which our travel experiences are delivered.</p>
+          </section>
           <a href="<?php echo htmlspecialchars($baseLink('about/story')); ?>" class="vcaSectionLink">
             Discover Our Story <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
