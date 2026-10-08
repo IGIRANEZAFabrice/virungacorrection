@@ -1922,7 +1922,7 @@
           <ul class="approach-principles" aria-label="Our five principles">
             <li>PRIVATE</li><li>PARTICIPATORY</li><li>PERSONAL</li><li>ROOTED</li><li>CONSCIOUS</li>
           </ul>
-          <p class="sec-subtitle sec-subtitle-light">We design journeys around people, place and genuine connection&mdash;not checklists.</p>
+          <p class="sec-subtitle sec-subtitle-light">We design journeys around people, place and genuine connection not checklists.</p>
           <div class="approach-links"><a href="<?php echo htmlspecialchars($baseLink('about#the-virunga-way')); ?>" class="link-arrow link-arrow-light">OUR APPROACH</a><a href="<?php echo htmlspecialchars($baseLink('about#people')); ?>" class="link-arrow link-arrow-light">MEET OUR PEOPLE</a></div>
         </div>
       </div>
