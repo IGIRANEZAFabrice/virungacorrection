@@ -62,6 +62,48 @@ function initializeEditBlogPage() {
     );
   }
 
+  // Native dialog supplies focus trapping, Escape handling, and an inert backdrop.
+  function blogDialog({ title, message = "", value, confirmText = "Continue", destructive = false, cancel = true }) {
+    return new Promise(resolve => {
+      const previousFocus = document.activeElement;
+      const dialog = document.createElement("dialog");
+      dialog.className = "blog-dialog";
+      dialog.innerHTML = `
+        <form method="dialog">
+          <div class="blog-dialog-icon ${destructive ? "is-danger" : ""}"><i class="fas ${destructive ? "fa-trash-alt" : "fa-pen"}" aria-hidden="true"></i></div>
+          <h2 id="blog-dialog-title"></h2>
+          <p id="blog-dialog-message"></p>
+          ${value !== undefined ? '<input class="blog-dialog-input" aria-label="Text" required>' : ""}
+          <div class="blog-dialog-actions">
+            ${cancel ? '<button type="button" class="blog-dialog-cancel">Cancel</button>' : ""}
+            <button type="submit" class="blog-dialog-confirm ${destructive ? "is-danger" : ""}"></button>
+          </div>
+        </form>`;
+      dialog.setAttribute("aria-labelledby", "blog-dialog-title");
+      dialog.setAttribute("aria-describedby", "blog-dialog-message");
+      dialog.querySelector("h2").textContent = title;
+      dialog.querySelector("p").textContent = message;
+      dialog.querySelector(".blog-dialog-confirm").textContent = confirmText;
+      const input = dialog.querySelector("input");
+      if (input) input.value = value;
+      let result = null;
+      dialog.querySelector("form").addEventListener("submit", event => {
+        event.preventDefault();
+        result = input ? input.value.trim() : true;
+        dialog.close();
+      });
+      dialog.querySelector(".blog-dialog-cancel")?.addEventListener("click", () => dialog.close());
+      dialog.addEventListener("close", () => {
+        dialog.remove();
+        if (previousFocus?.isConnected) previousFocus.focus();
+        resolve(result);
+      }, { once: true });
+      document.body.appendChild(dialog);
+      dialog.showModal();
+      (input || dialog.querySelector(".blog-dialog-cancel") || dialog.querySelector("button")).focus();
+    });
+  }
+
   function normalizeBlogContent(value) {
     return String(value || "")
       .replace(/\\r\\n|\\n|\\r/g, "\n")
@@ -123,8 +165,8 @@ function initializeEditBlogPage() {
     }
 
     if (btnRemoveCover) {
-      btnRemoveCover.addEventListener("click", () => {
-        if (confirm("Remove cover image? (You can upload a new one before saving)")) {
+      btnRemoveCover.addEventListener("click", async () => {
+        if (await blogDialog({ title: "Remove cover image?", message: "Upload a replacement cover before saving your changes.", confirmText: "Remove image", destructive: true })) {
           coverImageInput.value = "";
           coverPreviewImg.src = "";
           if (existingCoverInput) existingCoverInput.value = "";
@@ -179,13 +221,13 @@ function initializeEditBlogPage() {
 
   // Event delegation on contentBlocks container
   if (contentBlocks) {
-    contentBlocks.addEventListener("click", (e) => {
+    contentBlocks.addEventListener("click", async (e) => {
       const block = e.target.closest(".content-block");
       if (!block) return;
 
       // Remove Block
       if (e.target.closest(".remove-block")) {
-        if (confirm("Are you sure you want to remove this content block?")) {
+        if (await blogDialog({ title: "Remove content block?", message: "This block will be removed from the article when you save.", confirmText: "Remove block", destructive: true })) {
           block.remove();
           updateBlockNumbers();
           showToast("Content block removed", "info", 2000);
@@ -486,21 +528,26 @@ function initializeEditBlogPage() {
 
     const btnLink = toolbar.querySelector(".btn-tool-link");
     if (btnLink) {
-      btnLink.addEventListener("click", (e) => {
+      btnLink.addEventListener("click", async (e) => {
         e.preventDefault();
         const selection = window.getSelection();
         const selectedText = selection.toString();
-        let url = prompt("Enter hyperlink URL:", "https://");
+        const savedRange = selection.rangeCount ? selection.getRangeAt(0).cloneRange() : null;
+        let url = await blogDialog({ title: "Insert link", message: "Enter the destination URL.", value: "https://", confirmText: "Continue" });
         if (url) {
           if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:")) {
             url = "https://" + url;
           }
           if (!selectedText) {
-            let linkText = prompt("Enter link text:", "Click here");
+            let linkText = await blogDialog({ title: "Link text", value: "Click here", confirmText: "Insert link" });
             if (linkText) {
+              editor.focus();
+              if (savedRange) { selection.removeAllRanges(); selection.addRange(savedRange); }
               document.execCommand("insertHTML", false, `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(linkText)}</a>`);
             }
           } else {
+            editor.focus();
+            if (savedRange) { selection.removeAllRanges(); selection.addRange(savedRange); }
             document.execCommand("createLink", false, url);
           }
         }
@@ -510,11 +557,14 @@ function initializeEditBlogPage() {
 
     const btnQuote = toolbar.querySelector(".btn-tool-quote");
     if (btnQuote) {
-      btnQuote.addEventListener("click", (e) => {
+      btnQuote.addEventListener("click", async (e) => {
         e.preventDefault();
         const selection = window.getSelection();
-        const text = selection.toString() || prompt("Enter quote text:");
+        const savedRange = selection.rangeCount ? selection.getRangeAt(0).cloneRange() : null;
+        const text = selection.toString() || await blogDialog({ title: "Insert quote", value: "", confirmText: "Insert quote" });
         if (text) {
+          editor.focus();
+          if (savedRange) { selection.removeAllRanges(); selection.addRange(savedRange); }
           document.execCommand("insertHTML", false, `<blockquote>${escapeHTML(text)}</blockquote><p><br></p>`);
         }
         editor.focus();
@@ -571,8 +621,8 @@ function initializeEditBlogPage() {
     }
   });
 
-  window.removeGalleryImage = function (imageId, buttonElement) {
-    if (confirm("Remove this gallery image? This change will be applied upon saving.")) {
+  window.removeGalleryImage = async function (imageId, buttonElement) {
+    if (await blogDialog({ title: "Remove gallery image?", message: "This image will be removed when you save the blog post.", confirmText: "Remove image", destructive: true })) {
       const item = buttonElement.closest(".gallery-item");
       if (item) {
         const previewImg = item.querySelector(".gallery-preview");
@@ -685,23 +735,23 @@ function initializeEditBlogPage() {
         }
         return response.json();
       })
-      .then(data => {
+      .then(async data => {
         if (data.status === "success") {
-          showToast(data.message || "Blog post updated successfully!", "success");
+          await blogDialog({ title: "Changes saved", message: data.message || "Blog post updated successfully!", confirmText: "Back to blogs", cancel: false });
           setTimeout(() => {
             window.location.href = data.redirect || "blogs.php?status=success";
           }, 1000);
         } else {
-          showToast(data.message || "Failed to update blog post.", "error");
+          await blogDialog({ title: "Unable to save changes", message: data.message || "Failed to update blog post.", confirmText: "Try again", cancel: false });
           if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
           }
         }
       })
-      .catch(error => {
+      .catch(async error => {
         console.error("Blog update error:", error);
-        showToast("Error updating blog: " + (error.message || "Please check inputs and try again."), "error");
+        await blogDialog({ title: "Unable to save changes", message: "Please check your connection and try again. Your edits are still here.", confirmText: "Close", cancel: false });
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;

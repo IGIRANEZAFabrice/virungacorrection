@@ -8,6 +8,9 @@ if (!isset($_SESSION['admin_id'])) {
 require_once('../config/connection.php');
 
 $status_filter = trim($_GET['status'] ?? '');
+if (!in_array($status_filter, ['published', 'draft', 'archived'], true)) {
+    $status_filter = '';
+}
 $search = trim($_GET['search'] ?? '');
 
 $sql = "SELECT 
@@ -49,10 +52,11 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// KPI Counts
-$total_posts = (int)$conn->query("SELECT COUNT(*) as c FROM blog_posts")->fetch_assoc()['c'];
-$published_count = (int)$conn->query("SELECT COUNT(*) as c FROM blog_posts WHERE status = 'published'")->fetch_assoc()['c'];
-$draft_count = (int)$conn->query("SELECT COUNT(*) as c FROM blog_posts WHERE status = 'draft'")->fetch_assoc()['c'];
+// Read all article totals in a single query.
+$counts = $conn->query("SELECT COUNT(*) AS total, COALESCE(SUM(status = 'published'), 0) AS published, COALESCE(SUM(status = 'draft'), 0) AS drafts FROM blog_posts")->fetch_assoc();
+$total_posts = (int)$counts['total'];
+$published_count = (int)$counts['published'];
+$draft_count = (int)$counts['drafts'];
 $total_comments = (int)$conn->query("SELECT COUNT(*) as c FROM blog_comments")->fetch_assoc()['c'];
 ?>
 <!DOCTYPE html>
@@ -169,13 +173,13 @@ $total_comments = (int)$conn->query("SELECT COUNT(*) as c FROM blog_comments")->
           <!-- Stories Grid -->
           <?php if (!empty($posts)): ?>
             <div class="blogs-grid">
-              <?php foreach ($posts as $post): 
-                $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cover_image'] : '../images/blog/default.jpg';
+              <?php foreach ($posts as $postIndex => $post): 
+                $coverImg = !empty($post['cover_image']) ? '../handlers/blog/cover_thumbnail.php?file=' . rawurlencode(basename($post['cover_image'])) : '../images/blog/default.jpg';
                 $status = strtolower($post['status'] ?: 'draft');
               ?>
                 <div class="blog-card">
                   <div class="blog-img">
-                    <img src="<?php echo htmlspecialchars($coverImg); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" onerror="this.src='../images/costa-rica.jpg';" />
+                    <img src="<?php echo htmlspecialchars($coverImg); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" loading="<?php echo $postIndex < 2 ? 'eager' : 'lazy'; ?>" decoding="async" width="800" height="400" onerror="this.onerror=null;this.src='../images/costa-rica.jpg';" />
                     <span class="blog-badge-tag"><?php echo htmlspecialchars($post['category_name'] ?: 'Editorial'); ?></span>
                     <span class="blog-status-tag status-pill <?php echo $status; ?>">
                       <?php echo ucfirst($status); ?>

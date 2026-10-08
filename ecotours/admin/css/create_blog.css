@@ -1618,3 +1618,18 @@ textarea {
   }
 }
 
+
+/* Blog editor confirmation and input dialogs */
+.blog-dialog { border: 0; border-radius: 20px; padding: 30px; width: min(460px, calc(100vw - 40px)); box-sizing: border-box; color: #172c2c; background: #fff; box-shadow: 0 24px 80px #071c2c40; }
+.blog-dialog::backdrop { background: #071c2cb3; backdrop-filter: blur(4px); }
+.blog-dialog-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: #eaf3ed; color: #315c42; margin-bottom: 18px; font-size: 21px; }
+.blog-dialog-icon.is-danger { background: #fff0ee; color: #b63c32; }
+.blog-dialog h2 { margin: 0 0 10px; font-size: 23px; }
+.blog-dialog p { color: #627071; line-height: 1.6; margin: 0 0 24px; overflow-wrap: anywhere; }
+.blog-dialog-input { width: 100%; box-sizing: border-box; padding: 13px; border: 1px solid #cdd8d4; border-radius: 10px; margin-bottom: 22px; font: inherit; }
+.blog-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.blog-dialog-actions button { padding: 12px 20px; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer; }
+.blog-dialog-cancel { border: 1px solid #d8e0dc; color: #415451; background: #fff; }
+.blog-dialog-confirm { border: 1px solid transparent; color: #fff; background: #143b36; }
+.blog-dialog-confirm.is-danger { background: #b63c32; }
+.blog-dialog button:focus-visible, .blog-dialog-input:focus-visible { outline: 3px solid #c5a569; outline-offset: 3px; }

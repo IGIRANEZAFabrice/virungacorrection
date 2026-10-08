@@ -19,6 +19,10 @@ if (!isset($_SESSION['admin_id'])) {
 
 require_once __DIR__ . '/../../config/connection.php'; // $conn is available from here
 
+// Use consistent UTF-8 encoding and collation for prepared parameters and literals.
+$conn->set_charset("utf8mb4");
+$conn->query("SET collation_connection = 'utf8mb4_unicode_ci'");
+
 // Function to create a slug (remains the same)
 function createSlug($string) {
     $string = preg_replace('/[^a-zA-Z0-9\s]/', '', $string);
@@ -188,6 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Please upload a replacement cover image before saving.");
         }
 
+        $isPublished = $status === 'published' ? 1 : 0;
+
         // --- Update Blog Post ---
         $sql = "UPDATE blog_posts SET
                     title = ?,
@@ -200,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     introduction = ?,
                     status = ?,
                     published_at = CASE 
-                        WHEN ? = 'published' AND (published_at IS NULL OR published_at = '0000-00-00 00:00:00') THEN NOW() 
+                        WHEN ? = 1 AND (published_at IS NULL OR published_at = '0000-00-00 00:00:00') THEN NOW() 
                         ELSE published_at 
                     END,
                     updated_at = NOW()
@@ -209,9 +215,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$stmt) {
             throw new Exception("Prepare failed (blog_posts): " . $conn->error);
         }
-        $stmt->bind_param("sssiisssssi",
+        $stmt->bind_param("sssiissssii",
             $title, $slug, $author, $readMin, $categoryId,
-            $coverImagePath, $main_headline, $introduction, $status, $status, $blog_id
+            $coverImagePath, $main_headline, $introduction, $status, $isPublished, $blog_id
         );
         if (!$stmt->execute()) {
              throw new Exception("Execute failed (blog_posts): " . $stmt->error);
