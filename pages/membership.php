@@ -14,763 +14,32 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <style>
-    :root {
-      --forest: #1b3a2b;
-      --forest-deep: #0d1f16;
-      --forest-mid: #152e22;
-      --gold: #c9a24b;
-      --gold-light: #e4c97a;
-      --gold-glow: rgba(201, 162, 75, 0.15);
-      --cream: #f6f2e9;
-      --cream-warm: #faf7f0;
-      --charcoal: #1f2620;
-      --white: #ffffff;
-      --danger: #c62828;
-      --font-display: "Cormorant Garamond", serif;
-      --font-sans: "Jost", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--cream-warm);
-      color: var(--charcoal);
-      font-family: var(--font-sans);
-      font-size: 1.05rem;
-      line-height: 1.65;
-      overflow-x: hidden;
-    }
-
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4 {
-      font-family: var(--font-display);
-      font-weight: 500;
-      color: var(--forest-deep);
-    }
-
-    /* Hero Section */
-    .hero {
-      position: relative;
-      background: linear-gradient(rgba(13, 31, 22, 0.75), rgba(13, 31, 22, 0.9)), url('<?php echo $baseLink("img/abouthero.jpeg"); ?>') no-repeat center center / cover;
-      padding: 180px 0 100px;
-      text-align: center;
-      color: var(--cream);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      color: var(--gold);
-      margin-bottom: 12px;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      font-weight: 600;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.8s forwards;
-    }
-
-    .hero p.tagline {
-      font-size: clamp(1.2rem, 3vw, 1.8rem);
-      font-family: var(--font-display);
-      font-style: italic;
-      color: var(--cream);
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.8s 0.2s forwards;
-    }
-
-    .hero p.intro {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 1.15rem;
-      opacity: 0.9;
-      line-height: 1.8;
-      font-weight: 300;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.8s 0.4s forwards;
-    }
-
-    /* Section Styling */
-    section {
-      padding: 100px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-title h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--forest-deep);
-      position: relative;
-      padding-bottom: 16px;
-      margin-bottom: 16px;
-    }
-
-    .section-title h2::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 2px;
-      background-color: var(--gold);
-    }
-
-    .section-title p {
-      color: #666;
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* How It Works (Simple 1-2-3 Grid) */
-    .how-it-works-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 40px;
-      margin-top: 40px;
-    }
-
-    .how-card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 40px 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-      border: 1px solid rgba(27, 58, 43, 0.05);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .how-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(27, 58, 43, 0.08);
-      border-color: var(--gold);
-    }
-
-    .how-num {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      font-size: 4.5rem;
-      font-weight: 700;
-      color: rgba(201, 162, 75, 0.1);
-      line-height: 1;
-      font-family: var(--font-display);
-    }
-
-    .how-icon {
-      font-size: 2.2rem;
-      color: var(--gold);
-      margin-bottom: 24px;
-      display: inline-block;
-    }
-
-    .how-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      color: var(--forest-deep);
-    }
-
-    .how-card p {
-      color: #555;
-      font-size: 0.98rem;
-    }
-
-    .how-card ul {
-      margin-top: 15px;
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .how-card ul li {
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-      color: #444;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .how-card ul li i {
-      color: var(--gold);
-      font-size: 0.8rem;
-    }
-
-    /* Membership Levels (Tier Cards) */
-    .levels-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-      align-items: stretch;
-    }
-
-    .level-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 50px 35px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-      border: 1px solid rgba(27, 58, 43, 0.06);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-
-    .level-card.featured {
-      border: 2px solid var(--gold);
-      box-shadow: 0 20px 50px rgba(27, 58, 43, 0.1);
-      transform: scale(1.03);
-    }
-
-    @media (max-width: 991px) {
-      .level-card.featured {
-        transform: scale(1);
-      }
-    }
-
-    .featured-badge {
-      position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: var(--forest-deep);
-      padding: 6px 20px;
-      border-radius: 50px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .level-card:hover:not(.featured) {
-      border-color: rgba(201, 162, 75, 0.5);
-      transform: translateY(-5px);
-    }
-
-    .level-header {
-      text-align: center;
-      margin-bottom: 30px;
-      padding-bottom: 25px;
-      border-bottom: 1px solid #f0edeb;
-    }
-
-    .level-header h3 {
-      font-size: 2rem;
-      color: var(--forest-deep);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 5px;
-    }
-
-    .level-price {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--gold);
-      font-family: var(--font-sans);
-    }
-
-    .level-desc {
-      font-size: 0.95rem;
-      color: #666;
-      margin-top: 10px;
-      font-style: italic;
-    }
-
-    .level-benefits {
-      list-style: none;
-      margin-bottom: 40px;
-      flex-grow: 1;
-    }
-
-    .level-benefits li {
-      margin-bottom: 14px;
-      font-size: 0.96rem;
-      color: #444;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .level-benefits li i {
-      color: var(--gold);
-      font-size: 1.1rem;
-      margin-top: 3px;
-      flex-shrink: 0;
-    }
-
-    .level-btn {
-      display: block;
-      text-align: center;
-      padding: 15px 30px;
-      background: var(--forest);
-      color: var(--cream);
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      border: 1px solid var(--forest);
-    }
-
-    .level-btn:hover {
-      background: transparent;
-      color: var(--forest);
-    }
-
-    .level-card.featured .level-btn {
-      background: var(--gold);
-      color: var(--forest-deep);
-      border-color: var(--gold);
-    }
-
-    .level-card.featured .level-btn:hover {
-      background: transparent;
-      color: var(--gold);
-    }
-
-    /* Impact Matters */
-    .impact-bg {
-      background: linear-gradient(rgba(13, 31, 22, 0.92), rgba(13, 31, 22, 0.95)), url('<?php echo $baseLink("img/pillar_impact.png"); ?>') no-repeat center center / cover;
-      color: var(--cream);
-    }
-
-    .impact-bg h2 {
-      color: var(--gold);
-    }
-
-    .impact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    .impact-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .impact-card:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: var(--gold);
-      transform: translateY(-5px);
-    }
-
-    .impact-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      display: block;
-      color: var(--gold);
-      transition: color 0.3s ease;
-    }
-
-    .impact-card:hover .icon {
-      color: var(--gold-light);
-    }
-
-    .impact-card h3 {
-      font-size: 1.4rem;
-      color: var(--gold-light);
-      margin-bottom: 12px;
-    }
-
-    .impact-card p {
-      font-size: 0.95rem;
-      opacity: 0.85;
-      line-height: 1.6;
-    }
-
-    .impact-statement {
-      text-align: center;
-      margin-top: 50px;
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-style: italic;
-      color: var(--cream);
-    }
-
-    /* Dashboard Preview Simulation */
-    .dashboard-preview {
-      background: var(--white);
-      border-radius: 16px;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.04);
-      border: 1px solid rgba(27, 58, 43, 0.08);
-      max-width: 850px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-
-    .dash-header {
-      background: var(--forest-deep);
-      padding: 24px 35px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      border-bottom: 2px solid var(--gold);
-    }
-
-    .dash-welcome h4 {
-      color: var(--cream);
-      font-size: 1.4rem;
-    }
-
-    .dash-welcome p {
-      color: rgba(246, 242, 233, 0.7);
-      font-size: 0.88rem;
-    }
-
-    .dash-badge {
-      background: var(--gold-glow);
-      border: 1px solid var(--gold);
-      color: var(--gold-light);
-      padding: 6px 16px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .dash-body {
-      padding: 35px;
-    }
-
-    .dash-section-title {
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #888;
-      margin-bottom: 20px;
-      font-weight: 600;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-    }
-
-    @media (max-width: 767px) {
-      .dash-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .dash-panel {
-      background: var(--cream-warm);
-      border-radius: 10px;
-      padding: 24px;
-      border: 1px solid rgba(27, 58, 43, 0.03);
-    }
-
-    .dash-list {
-      list-style: none;
-    }
-
-    .dash-list li {
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.95rem;
-      color: #333;
-    }
-
-    .dash-list li i.check {
-      color: var(--forest);
-    }
-
-    .dash-list li i.icon-stat {
-      color: var(--gold);
-      width: 20px;
-      text-align: center;
-    }
-
-    /* Signup Form Card */
-    .signup-section {
-      background-color: var(--cream);
-    }
-
-    .signup-container {
-      max-width: 650px;
-      margin: 0 auto;
-      background: var(--white);
-      border-radius: 16px;
-      padding: 50px;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.03);
-      border: 1px solid rgba(27, 58, 43, 0.06);
-    }
-
-    @media (max-width: 575px) {
-      .signup-container {
-        padding: 30px 20px;
-      }
-    }
-
-    .form-row {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    @media (max-width: 575px) {
-      .form-row {
-        flex-direction: column;
-        gap: 0;
-      }
-    }
-
-    .form-group {
-      flex: 1;
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--forest-deep);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid #dcd7d2;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.98rem;
-      background: #fafaf9;
-      transition: all 0.3s;
-      outline: none;
-    }
-
-    .form-control:focus {
-      border-color: var(--gold);
-      background: var(--white);
-      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.12);
-    }
-
-    .form-group-checkbox {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-top: 10px;
-      margin-bottom: 24px;
-    }
-
-    .form-group-checkbox input[type="checkbox"] {
-      margin-top: 5px;
-      accent-color: var(--forest);
-      width: 16px;
-      height: 16px;
-    }
-
-    .form-group-checkbox label {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.4;
-      cursor: pointer;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: var(--forest);
-      color: var(--cream);
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .submit-btn:hover {
-      background: var(--forest-deep);
-    }
-
-    .submit-btn:disabled {
-      background: #c3cbca;
-      cursor: not-allowed;
-    }
-
-    .submit-spinner {
-      display: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 0.8s linear infinite;
-    }
-
-    /* Modal / Success state */
-    .success-panel {
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .success-panel i {
-      font-size: 3.5rem;
-      color: var(--forest);
-      margin-bottom: 24px;
-    }
-
-    .success-panel h3 {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-    }
-
-    .success-panel p {
-      color: #555;
-      margin-bottom: 35px;
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Footer */
-    footer {
-      background: var(--forest-deep);
-      padding: 80px 0 40px;
-      color: var(--cream);
-      font-size: 0.95rem;
-      border-top: 1px solid rgba(246, 242, 233, 0.08);
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 50px;
-      margin-bottom: 60px;
-    }
-
-    @media (max-width: 767px) {
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-    }
-
-    .footer-brand {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      color: var(--cream);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .footer-brand img {
-      height: 40px;
-      width: auto;
-    }
-
-    .footer-note {
-      color: rgba(246, 242, 233, 0.7);
-      max-width: 450px;
-      line-height: 1.7;
-    }
-
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .footer-links a {
-      color: var(--cream);
-      text-decoration: none;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-    }
-
-    .footer-links a:hover {
-      opacity: 1;
-      color: var(--gold);
-    }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(246, 242, 233, 0.08);
-      padding-top: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      color: rgba(246, 242, 233, 0.5);
-      font-size: 0.88rem;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
+  <link rel="stylesheet" href="<?php echo htmlspecialchars($baseLink('pages/membership.css'), ENT_QUOTES); ?>">
 </head>
-<body>
+<body class="membership-page">
 
   <!-- Include Header -->
   <?php include __DIR__ . '/header.php'; ?>
 
+  <main id="main-content">
   <!-- Hero Section -->
   <section class="hero">
-    <div class="wrap">
-      <h1>Virunga Collective Membership</h1>
-      <p class="tagline">Travel. Belong. Make an Impact.</p>
-      <p class="intro">
-        Join a global community of travelers connected by extraordinary experiences, conservation, and positive impact in the Virunga region.
-      </p>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow"><span></span> Virunga Collective Membership</span>
+        <h1>A little closer to<br>the places you love.</h1>
+        <p class="tagline">Travel. Belong. Make an impact.</p>
+        <p class="intro">Stay connected to the people, landscapes and experiences of the Virunga. Join a community of curious travelers, with something meaningful to look forward to.</p>
+        <div class="hero-actions">
+          <a class="hero-join" href="#join-section">Become a member <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          <a class="hero-explore" href="#membership-levels">Explore the benefits <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+        </div>
+        <p class="hero-note"><i class="fas fa-check-circle" aria-hidden="true"></i> Free to join as an Explorer</p>
+      </div>
+      <figure class="hero-visual">
+        <img src="<?php echo htmlspecialchars($baseLink('img/abouthero.jpeg'), ENT_QUOTES); ?>" alt="The green landscapes of the Virunga region" fetchpriority="high">
+        <figcaption><span>Rooted in place. Connected by people.</span><span>Musanze, Rwanda <i class="fas fa-location-dot" aria-hidden="true"></i></span></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -796,8 +65,8 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
           <h3>Experience</h3>
           <p>Travel with Virunga Collective through our custom programs:</p>
           <ul>
-            <li><i class="fas fa-check"></i> Virunga Ecotours</li>
-            <li><i class="fas fa-check"></i> Virunga Homestay</li>
+            <li><i class="fas fa-check"></i> Virunga Journeys</li>
+            <li><i class="fas fa-check"></i> Virunga House</li>
             <li><i class="fas fa-check"></i> Community Experiences</li>
             <li><i class="fas fa-check"></i> Signature Journeys</li>
           </ul>
@@ -814,7 +83,7 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
   </section>
 
   <!-- Membership Levels -->
-  <section style="background-color: #f3eee3;">
+  <section class="levels-section" id="membership-levels">
     <div class="wrap">
       <div class="section-title reveal">
         <h2>Membership Levels</h2>
@@ -958,7 +227,7 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
           
           <div class="dash-panel" style="margin-top: 30px;">
             <h5 class="dash-section-title">Available Privileges</h5>
-            <ul class="dash-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <ul class="dash-list privileges-list">
               <li><i class="fas fa-check check"></i> 10% Member rate for stays</li>
               <li><i class="fas fa-check check"></i> Priority booking line</li>
               <li><i class="fas fa-check check"></i> Custom itinerary builder</li>
@@ -972,38 +241,42 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
 
   <!-- Signup Form Section -->
   <section class="signup-section" id="join-section">
-    <div class="wrap">
+    <div class="wrap signup-layout">
       <div class="section-title reveal">
-        <h2>Become Part of Virunga Collective</h2>
+        <span class="eyebrow">Your next chapter</span>
+        <h2>Belong to something meaningful.</h2>
         <p>Join travelers from around the world who believe tourism can create a positive legacy.</p>
+        <div class="signup-details"><p><i class="fas fa-check" aria-hidden="true"></i> Travel inspiration, thoughtfully shared</p><p><i class="fas fa-check" aria-hidden="true"></i> A closer connection to the Virunga</p><p><i class="fas fa-check" aria-hidden="true"></i> Start with a free Explorer membership</p></div>
       </div>
 
       <div class="signup-container reveal" id="signupFormContainer">
         <form id="membershipForm" method="POST">
+          <h3 class="form-heading">Join the Collective</h3>
+          <p class="form-note">A few details to get started. Required fields are marked *.</p>
           <div class="form-row">
             <div class="form-group">
               <label for="firstName">First Name *</label>
-              <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" required>
+              <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First name" autocomplete="given-name" required>
             </div>
             <div class="form-group">
               <label for="lastName">Last Name *</label>
-              <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name" required>
+              <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last name" autocomplete="family-name" required>
             </div>
           </div>
 
           <div class="form-group">
             <label for="email">Email Address *</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="yourname@domain.com" required>
+            <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" autocomplete="email" required>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="phone">Phone / WhatsApp</label>
-              <input type="tel" id="phone" name="phone" class="form-control" placeholder="+250 780 000 000">
+              <input type="tel" id="phone" name="phone" class="form-control" placeholder="+250 780 000 000" autocomplete="tel">
             </div>
             <div class="form-group">
               <label for="interest">Preferred Level *</label>
-              <select id="interest" name="interest" class="form-control" required style="height: 52px;">
+              <select id="interest" name="interest" class="form-control" required >
                 <option value="Explorer">Explorer (Free)</option>
                 <option value="Ambassador">Ambassador (Returning Guest)</option>
                 <option value="Legacy">Legacy Circle (Invitation/Enquiry)</option>
@@ -1029,26 +302,18 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
     </div>
   </section>
 
+  </main>
+
   <!-- Shared Footer -->
     <?php include __DIR__ . '/footer.php'; ?>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Scroll reveal observer
-      const revealEls = document.querySelectorAll(".reveal");
-      if (revealEls.length) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-              }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        revealEls.forEach((el) => observer.observe(el));
-      }
+      document.querySelectorAll('.level-btn').forEach((link, index) => {
+        link.addEventListener('click', () => {
+          document.getElementById('interest').value = ['Explorer', 'Ambassador', 'Legacy'][index];
+        });
+      });
 
       // Handle Membership Form Submission
       const form = document.getElementById("membershipForm");
@@ -1174,84 +439,6 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
     </div>
   </div>
 
-  <style>
-  .recaptcha-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(13, 31, 22, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .recaptcha-modal-backdrop.show {
-    opacity: 1;
-  }
-  .recaptcha-modal-card {
-    background: #122a1f;
-    border: 1px solid rgba(201, 162, 75, 0.4);
-    border-radius: 16px;
-    padding: 36px 28px;
-    max-width: 440px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 162, 75, 0.2);
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    color: #f6f2e9;
-    font-family: var(--font-body, 'Jost', sans-serif);
-  }
-  .recaptcha-modal-backdrop.show .recaptcha-modal-card {
-    transform: translateY(0) scale(1);
-  }
-  .recaptcha-modal-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 18px;
-    background: rgba(201, 162, 75, 0.18);
-    border: 1px solid rgba(201, 162, 75, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #c9a24b;
-    font-size: 1.8rem;
-  }
-  .recaptcha-modal-title {
-    font-family: var(--font-display, 'Cormorant Garamond', serif);
-    font-size: 1.85rem;
-    color: #f6f2e9;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  .recaptcha-modal-text {
-    font-size: 1rem;
-    color: rgba(246, 242, 233, 0.88);
-    margin-bottom: 24px;
-    line-height: 1.6;
-  }
-  .recaptcha-modal-btn {
-    background: #c9a24b;
-    color: #122a1f;
-    border: none;
-    padding: 13px 28px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 15px rgba(201, 162, 75, 0.3);
-    width: 100%;
-  }
-  .recaptcha-modal-btn:hover {
-    background: #e4c97a;
-    transform: translateY(-2px);
-  }
-  </style>
+
 </body>
 </html>

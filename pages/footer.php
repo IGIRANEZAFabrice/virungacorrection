@@ -55,6 +55,7 @@ $footerUrl = static function (string $target = '') use ($baseLink): string {
         <section class="vc-footer__group vc-footer__connect">
           <h3>Connect</h3>
           <ul>
+            <li><a href="<?php echo $footerUrl('membership'); ?>">Membership</a></li>
             <li><a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a></li>
           </ul>
 
