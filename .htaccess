@@ -58,8 +58,8 @@
     ExpiresActive Off
   </IfModule>
   <IfModule mod_headers.c>
-    Header onsuccess unset Cache-Control
-    Header onsuccess unset Expires
+    Header unset Cache-Control
+    Header unset Expires
     Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
     Header always set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
   </IfModule>
