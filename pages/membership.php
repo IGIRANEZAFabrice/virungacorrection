@@ -188,57 +188,6 @@ $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and 
     </div>
   </section>
 
-  <!-- Member Dashboard Simulator Preview -->
-  <section>
-    <div class="wrap">
-      <div class="section-title reveal">
-        <h2>Member Portal Preview</h2>
-        <p>A look inside your personal member dashboard</p>
-      </div>
-
-      <div class="dashboard-preview reveal">
-        <div class="dash-header">
-          <div class="dash-welcome">
-            <h4>Welcome back, Daniel</h4>
-            <p>Member since 2024 • ID: VC-88402</p>
-          </div>
-          <span class="dash-badge">Ambassador Level</span>
-        </div>
-        <div class="dash-body">
-          <div class="dash-grid">
-            <div class="dash-panel">
-              <h5 class="dash-section-title">Your Journeys</h5>
-              <ul class="dash-list">
-                <li><i class="fas fa-plane-departure icon-stat"></i> 3 completed experiences</li>
-                <li><i class="fas fa-campground icon-stat"></i> Virunga Homestay (2 Stays)</li>
-                <li><i class="fas fa-walking icon-stat"></i> Community Trekking (1 Experience)</li>
-              </ul>
-            </div>
-            
-            <div class="dash-panel">
-              <h5 class="dash-section-title">Your Impact Footprint</h5>
-              <ul class="dash-list">
-                <li><i class="fas fa-seedling icon-stat" style="color: #2eb8a0;"></i> Conservation initiatives supported</li>
-                <li><i class="fas fa-users icon-stat" style="color: #2eb8a0;"></i> Local jobs contributed to</li>
-                <li><i class="fas fa-graduation-cap icon-stat" style="color: #2eb8a0;"></i> Local Academy training funded</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="dash-panel" style="margin-top: 30px;">
-            <h5 class="dash-section-title">Available Privileges</h5>
-            <ul class="dash-list privileges-list">
-              <li><i class="fas fa-check check"></i> 10% Member rate for stays</li>
-              <li><i class="fas fa-check check"></i> Priority booking line</li>
-              <li><i class="fas fa-check check"></i> Custom itinerary builder</li>
-              <li><i class="fas fa-check check"></i> Exclusive update newsletters</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Signup Form Section -->
   <section class="signup-section" id="join-section">
     <div class="wrap signup-layout">
