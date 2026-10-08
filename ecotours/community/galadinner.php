@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 ?>
 <!DOCTYPE html>
@@ -114,7 +115,7 @@ require_once '../admin/config/connection.php';
                 echo '<p class="final-text">' . nl2br(htmlspecialchars($hero['final_text'])) . '</p>';
             }
             ?>
-            <p class="final-text" style="margin-top: var(--spacing-lg); font-style: italic;">This is the true essence of travel with Virunga Ecotours: where every bite tells a story, and every story builds a bridge.</p>
+            <p class="final-text" style="margin-top: var(--spacing-lg); font-style: italic;">This is the true essence of travel with Virunga Journeys: where every bite tells a story, and every story builds a bridge.</p>
         </div>
     </section>
  <?php include 'includes/footer.php'; ?>

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once('../admin/config/connection.php');
 
 // Get month parameter and convert to proper case, default to January if not set

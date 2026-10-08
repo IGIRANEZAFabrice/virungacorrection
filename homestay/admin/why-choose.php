@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle   = 'Why Choose Us — Virunga Homestay CMS';
+$pageTitle   = 'Why Choose Us — Virunga House CMS';
 $currentPage = 'why-choose';
 ?>
 <!doctype html>
@@ -251,7 +251,7 @@ $currentPage = 'why-choose';
             </h1>
             <p class="page-header__sub">
               <?php echo ($action === 'list')
-                ? 'Manage the "Why Choose Virunga Homestay" cards shown on the homepage.'
+                ? 'Manage the "Why Choose Virunga House" cards shown on the homepage.'
                 : 'Fill in the details for this card.'; ?>
             </p>
           </div>
@@ -376,7 +376,7 @@ $currentPage = 'why-choose';
                   <div class="form-group">
                     <label>Description *</label>
                     <textarea name="body" required maxlength="1000"
-                              placeholder="Describe why this makes Virunga Homestay special…"><?= htmlspecialchars($r['body']) ?></textarea>
+                              placeholder="Describe why this makes Virunga House special…"><?= htmlspecialchars($r['body']) ?></textarea>
                   </div>
 
                   <!-- Icon -->

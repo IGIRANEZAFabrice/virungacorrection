@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once('../admin/config/connection.php');
 
 // Compatibility function for get_result() - works with all MySQLi configurations
@@ -146,7 +147,7 @@ if (!empty($attraction['title'])) {
 }
 
 // Page title
-$page_title = $attraction['title'] . ' - Virunga Ecotours';
+$page_title = $attraction['title'] . ' - Virunga Journeys';
 ?>
 
 <!DOCTYPE html>

@@ -1,9 +1,10 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creating Conservationists - Virunga Ecotours</title>
+    <title>Creating Conservationists - Virunga Journeys</title>
     <meta name="description" content="Join our global conservation leadership program. Creating conservationists through education, practical training, and community engagement in the Virunga Massif.">
     <meta name="keywords" content="conservation, conservationists, environmental education, wildlife protection, Virunga, Rwanda, conservation training">
 

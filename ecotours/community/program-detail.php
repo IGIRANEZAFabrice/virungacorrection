@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
 // Get program slug from URL
@@ -47,7 +48,7 @@ $testimonials_query = "SELECT * FROM community_testimonials
 $testimonials_result = mysqli_query($conn, $testimonials_query);
 
 // Set page meta information
-$page_title = !empty($program['meta_title']) ? $program['meta_title'] : $program['title'] . ' - Virunga Ecotours Community';
+$page_title = !empty($program['meta_title']) ? $program['meta_title'] : $program['title'] . ' - Virunga Journeys Community';
 $page_description = !empty($program['meta_description']) ? $program['meta_description'] : $program['short_description'];
 $page_image = 'assets/images/programs/' . $program['image'];
 $page_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -109,7 +110,7 @@ $page_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVE
         <?php endif; ?>
         "organizer": {
             "@type": "Organization",
-            "name": "Virunga Ecotours",
+            "name": "Virunga Journeys",
             "url": "https://virungajourneys.com"
         }
     }

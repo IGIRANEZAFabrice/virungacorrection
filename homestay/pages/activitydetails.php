@@ -37,7 +37,7 @@
   }
   $image = htmlspecialchars($image);
 
-  $pageTitle       = 'Virunga Homestay — ' . $activityData['title'];
+  $pageTitle       = 'Virunga House — ' . $activityData['title'];
   $pageDescription = $activityData['short_description'];
   $pageCss         = ['activitydetails.css'];
   $pageScripts     = [];

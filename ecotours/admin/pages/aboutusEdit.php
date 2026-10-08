@@ -172,7 +172,7 @@ function time_elapsed_string($datetime) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About Us Dashboard - Virunga Ecotours</title>
+    <title>About Us Dashboard - Virunga Journeys</title>
      <link
       rel="shortcut icon"
       href="../../images/logos/icon.png"

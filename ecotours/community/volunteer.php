@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,7 @@
         <!-- Hero Section -->
          <section class="page-header">
             <div class="page-header-background">
-                <img src="uploads/impact/hero.jpg" alt="About Virunga Ecotours Community" loading="lazy" ondragstart="return false;" oncontextmenu="return false;">
+                <img src="uploads/impact/hero.jpg" alt="About Virunga Journeys Community" loading="lazy" ondragstart="return false;" oncontextmenu="return false;">
                 <div class="page-header-overlay"></div>
             </div>
             <div class="container">
@@ -34,7 +35,7 @@
                         <span class="current">Volunteer with us</span>
                     </nav>
                     <h1 style="color: #ffffff;">Our Impact on Community</h1>
-                    <p style="color: #ffffff;">There’s a Virunga Ecotours Community Progarm volunteering opportunity for everyone. All are welcome to work to together, a simple help changes lives of noens in need .</p>
+                    <p style="color: #ffffff;">There’s a Virunga Journeys Community Progarm volunteering opportunity for everyone. All are welcome to work to together, a simple help changes lives of noens in need .</p>
                 </div>
             </div>
         </section>
@@ -117,7 +118,7 @@
                 </div>
                 
                 <div class="shop-action">
-                    <a href="https://virungahomestay.com/pages/shop.php" class="shop-button">
+                    <a href="https://virungajourneys.com/shop" class="shop-button">
                         Support Women Artisans - Shop Handcrafted Products
                     </a>
                     <p class="shop-note">Your purchase directly supports women artisans and their families while preserving cultural heritage.</p>

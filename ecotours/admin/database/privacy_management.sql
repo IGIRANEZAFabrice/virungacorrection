@@ -28,23 +28,23 @@ CREATE TABLE IF NOT EXISTS privacy_requests (
 
 -- Insert comprehensive privacy policy content from privacy.php
 INSERT IGNORE INTO privacy_policy (id, content) VALUES (1, '
-# Privacy Policy - Virunga Ecotours
+# Privacy Policy - Virunga Journeys
 
 **Last Updated: April 12, 2025**
 
-At Virunga Ecotours, we''re committed to protecting your personal information and being transparent about how we use it.
+At Virunga Journeys, we''re committed to protecting your personal information and being transparent about how we use it.
 
 ## 1. Introduction
 
-Welcome to Virunga Ecotours, your trusted partner for authentic wildlife and conservation experiences in the Virunga region. This Privacy Policy is designed to help you understand how we collect, use, and protect your personal information when you visit our website, book our tours, or interact with us in any way.
+Welcome to Virunga Journeys, your trusted partner for authentic wildlife and conservation experiences in the Virunga region. This Privacy Policy is designed to help you understand how we collect, use, and protect your personal information when you visit our website, book our tours, or interact with us in any way.
 
-We are committed to privacy protection and are not interested in storing or using personal data commercially. Therefore, Virunga Ecotours takes the European General Data Protection Regulation (GDPR), the Canadian Personal Information Protection and Electronic Documents Act (PIPEDA), and other privacy laws seriously and with utmost respect.
+We are committed to privacy protection and are not interested in storing or using personal data commercially. Therefore, Virunga Journeys takes the European General Data Protection Regulation (GDPR), the Canadian Personal Information Protection and Electronic Documents Act (PIPEDA), and other privacy laws seriously and with utmost respect.
 
-This policy applies to all services offered by Virunga Ecotours, including our website, mobile applications, customer service interactions, and in-person experiences during our tours.
+This policy applies to all services offered by Virunga Journeys, including our website, mobile applications, customer service interactions, and in-person experiences during our tours.
 
 ### Our Promise to You
 
-At Virunga Ecotours, we promise to protect your information and ensure it remains confidential. We also promise never to sell your information to anyone. The information we request is solely to provide you with customized service and the highest levels of personal experience on every trip.
+At Virunga Journeys, we promise to protect your information and ensure it remains confidential. We also promise never to sell your information to anyone. The information we request is solely to provide you with customized service and the highest levels of personal experience on every trip.
 
 By using our services, you consent to the practices described in this policy. If you do not agree with any part of this policy, please do not use our services.
 
@@ -139,7 +139,7 @@ We may disclose your information when we believe in good faith that disclosure i
 
 ### Business Transfers
 
-If Virunga Ecotours is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction. We will notify you via email and/or a prominent notice on our website of any change in ownership or uses of your personal information.
+If Virunga Journeys is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction. We will notify you via email and/or a prominent notice on our website of any change in ownership or uses of your personal information.
 
 ### Third-Party Websites
 
@@ -215,7 +215,7 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 
 **Email:** privacy@virungaecotours.com
 **Phone:** +250 788 123 456
-**Address:** Virunga Ecotours, P.O. Box 6754, Kigali, Rwanda
+**Address:** Virunga Journeys, P.O. Box 6754, Kigali, Rwanda
 
 **Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungajourneys.com.
 
@@ -234,23 +234,23 @@ DELETE FROM privacy_policy WHERE id = 1;
 
 -- Re-insert the comprehensive privacy policy
 INSERT INTO privacy_policy (id, content) VALUES (1, '
-# Privacy Policy - Virunga Ecotours
+# Privacy Policy - Virunga Journeys
 
 **Last Updated: April 12, 2025**
 
-At Virunga Ecotours, we''re committed to protecting your personal information and being transparent about how we use it.
+At Virunga Journeys, we''re committed to protecting your personal information and being transparent about how we use it.
 
 ## 1. Introduction
 
-Welcome to Virunga Ecotours, your trusted partner for authentic wildlife and conservation experiences in the Virunga region. This Privacy Policy is designed to help you understand how we collect, use, and protect your personal information when you visit our website, book our tours, or interact with us in any way.
+Welcome to Virunga Journeys, your trusted partner for authentic wildlife and conservation experiences in the Virunga region. This Privacy Policy is designed to help you understand how we collect, use, and protect your personal information when you visit our website, book our tours, or interact with us in any way.
 
-We are committed to privacy protection and are not interested in storing or using personal data commercially. Therefore, Virunga Ecotours takes the European General Data Protection Regulation (GDPR), the Canadian Personal Information Protection and Electronic Documents Act (PIPEDA), and other privacy laws seriously and with utmost respect.
+We are committed to privacy protection and are not interested in storing or using personal data commercially. Therefore, Virunga Journeys takes the European General Data Protection Regulation (GDPR), the Canadian Personal Information Protection and Electronic Documents Act (PIPEDA), and other privacy laws seriously and with utmost respect.
 
-This policy applies to all services offered by Virunga Ecotours, including our website, mobile applications, customer service interactions, and in-person experiences during our tours.
+This policy applies to all services offered by Virunga Journeys, including our website, mobile applications, customer service interactions, and in-person experiences during our tours.
 
 ### Our Promise to You
 
-At Virunga Ecotours, we promise to protect your information and ensure it remains confidential. We also promise never to sell your information to anyone. The information we request is solely to provide you with customized service and the highest levels of personal experience on every trip.
+At Virunga Journeys, we promise to protect your information and ensure it remains confidential. We also promise never to sell your information to anyone. The information we request is solely to provide you with customized service and the highest levels of personal experience on every trip.
 
 By using our services, you consent to the practices described in this policy. If you do not agree with any part of this policy, please do not use our services.
 
@@ -345,7 +345,7 @@ We may disclose your information when we believe in good faith that disclosure i
 
 ### Business Transfers
 
-If Virunga Ecotours is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction. We will notify you via email and/or a prominent notice on our website of any change in ownership or uses of your personal information.
+If Virunga Journeys is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction. We will notify you via email and/or a prominent notice on our website of any change in ownership or uses of your personal information.
 
 ### Third-Party Websites
 
@@ -421,7 +421,7 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 
 **Email:** privacy@virungaecotours.com
 **Phone:** +250 788 123 456
-**Address:** Virunga Ecotours, P.O. Box 6754, Kigali, Rwanda
+**Address:** Virunga Journeys, P.O. Box 6754, Kigali, Rwanda
 
 **Data Protection Officer:** For formal inquiries or if you wish to escalate a privacy concern, you can contact our Data Protection Officer at info@virungajourneys.com.
 

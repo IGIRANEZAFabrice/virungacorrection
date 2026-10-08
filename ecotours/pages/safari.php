@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection and data fetching
 require_once('../admin/config/connection.php');
 ?>

@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Activities Management — Virunga Homestay CMS';
+$pageTitle = 'Activities Management — Virunga House CMS';
 $currentPage = 'activities';
 ?>
 <!doctype html>

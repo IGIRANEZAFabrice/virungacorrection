@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 session_start();
 require_once '../admin/config/connection.php';
 
-$page_title = "Voluntourism & Community Engagement - Virunga Ecotours";
+$page_title = "Voluntourism & Community Engagement - Virunga Journeys";
 $page_description = "Join our volunteer travel programs that combine meaningful community service with authentic cultural experiences. Contribute your skills while experiencing transformative community-based tourism in the Virunga Massif.";
 
 // Fetch hero and intro data
@@ -84,8 +85,8 @@ $how_it_works_features_result = mysqli_query($conn, $how_it_works_features_query
         <div class="container">
             <div class="intro-content">
                 <div class="intro-text">
-                    <h2 class="section-title"><?php echo htmlspecialchars($hero['intro_title'] ?? 'Voluntourism at Virunga Ecotours'); ?></h2>
-                    <p class="intro-description"><?php echo htmlspecialchars($hero['intro_description'] ?? 'Voluntourism at Virunga Ecotours is a distinctive form of community-based tourism...'); ?></p>
+                    <h2 class="section-title"><?php echo htmlspecialchars($hero['intro_title'] ?? 'Voluntourism at Virunga Journeys'); ?></h2>
+                    <p class="intro-description"><?php echo htmlspecialchars($hero['intro_description'] ?? 'Voluntourism at Virunga Journeys is a distinctive form of community-based tourism...'); ?></p>
 
                     <div class="intro-image">
                         <img src="<?php echo htmlspecialchars($hero['intro_image'] ?? '../images/voluntourism/HO2A3457.jpg'); ?>" alt="Volunteers working with local community members" loading="lazy">
@@ -150,7 +151,7 @@ $how_it_works_features_result = mysqli_query($conn, $how_it_works_features_query
     <section class="activities-section">
         <div class="container">
             <h2 class="section-title">Examples of Voluntourism Activities</h2>
-            <p class="section-description">To enrich both visitors and communities, Virunga Ecotours integrates a variety of community-based educational, cultural, and environmental initiatives:</p>
+            <p class="section-description">To enrich both visitors and communities, Virunga Journeys integrates a variety of community-based educational, cultural, and environmental initiatives:</p>
 
             <div class="activities-grid">
                 <?php
@@ -222,7 +223,7 @@ $how_it_works_features_result = mysqli_query($conn, $how_it_works_features_query
             <div class="value-conclusion">
                 <div class="conclusion-content">
                     <div class="conclusion-text">
-                        <p>Through this balanced approach, voluntourism at Virunga Ecotours becomes a <em>bridge between leisure and social responsibility</em>, allowing travelers to enjoy the Virunga Massif while contributing directly to the well-being of its people.</p>
+                        <p>Through this balanced approach, voluntourism at Virunga Journeys becomes a <em>bridge between leisure and social responsibility</em>, allowing travelers to enjoy the Virunga Massif while contributing directly to the well-being of its people.</p>
                     </div>
                     <div class="conclusion-image">
                         <img src="../images/voluntourism/HO2A3360.jpg" alt="Community impact through voluntourism" loading="lazy">

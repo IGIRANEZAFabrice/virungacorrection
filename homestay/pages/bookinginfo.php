@@ -1,7 +1,7 @@
 <?php
-  $pageTitle = 'Booking & Payment Information - Virunga Homestay';
-  $pageDescription = 'Learn how to book your stay at Virunga Homestay. Flexible booking options, direct booking discounts, and secure payment methods.';
-  $pageKeywords = 'booking, payment, Virunga Homestay, reservation, Musanze, Rwanda';
+  $pageTitle = 'Booking & Payment Information - Virunga House';
+  $pageDescription = 'Learn how to book your stay at Virunga House. Flexible booking options, direct booking discounts, and secure payment methods.';
+  $pageKeywords = 'booking, payment, Virunga House, reservation, Musanze, Rwanda';
   $pageCss = ['page-hero.css', 'bookinginfo.css'];
   $pageHeroKey = 'booking';
   $pageScripts = ['bookinginfo.js'];
@@ -20,7 +20,7 @@
       <span class="bi-label"><i class="fa-solid fa-calendar-check"></i> How to Book</span>
       <h2 class="bi-title">Your Stay Starts Here</h2>
       <p class="bi-subtitle">
-        Reserving your stay at Virunga Homestay is simple, secure, and rewarding. We provide flexible booking options and ensure you enjoy exclusive savings when you book directly with us.
+        Reserving your stay at Virunga House is simple, secure, and rewarding. We provide flexible booking options and ensure you enjoy exclusive savings when you book directly with us.
       </p>
     </div>
 
@@ -36,9 +36,9 @@
         <div class="bi-step__card">
           <h3 class="bi-step__title">Book via Email</h3>
           <p class="bi-step__text">
-            Send your request to <a href="mailto:virungahomestay@gmail.com">virungahomestay@gmail.com</a>, and our reservations team will quickly assist you with availability, room preferences, and booking details.
+            Send your request to <a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a>, and our reservations team will quickly assist you with availability, room preferences, and booking details.
           </p>
-          <a href="mailto:virungahomestay@gmail.com" class="bi-step__action">
+          <a href="mailto:info@virungajourneys.com" class="bi-step__action">
             <i class="fa-solid fa-paper-plane"></i> Send Email
           </a>
         </div>
@@ -134,7 +134,7 @@
       </div>
 
       <p class="bi-why__footer">
-        Booking directly with Virunga Homestay means enjoying authentic hospitality, unbeatable value, and a smooth reservation process from start to finish.
+        Booking directly with Virunga House means enjoying authentic hospitality, unbeatable value, and a smooth reservation process from start to finish.
       </p>
     </div>
   </div>
@@ -277,7 +277,7 @@
         <a href="https://wa.me/250784513435" target="_blank" rel="noopener" class="bi-cta__btn bi-cta__btn--primary">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp Us
         </a>
-        <a href="mailto:virungahomestay@gmail.com" class="bi-cta__btn bi-cta__btn--outline">
+        <a href="mailto:info@virungajourneys.com" class="bi-cta__btn bi-cta__btn--outline">
           <i class="fa-solid fa-envelope"></i> Send Email
         </a>
       </div>

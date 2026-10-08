@@ -145,7 +145,7 @@ $gallery_stmt->close();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Blog Post - Virunga Ecotours</title>
+    <title>Edit Blog Post - Virunga Journeys</title>
     <link
       rel="shortcut icon"
       href="../../images/logos/icon.png"

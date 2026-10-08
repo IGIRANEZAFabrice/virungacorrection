@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
-$page_title = "Educational Tourism Programs - Virunga Ecotours";
-$page_description = "Discover how Virunga Ecotours integrates education into community-based tourism, creating transformative learning experiences that empower both visitors and local communities.";
+$page_title = "Educational Tourism Programs - Virunga Journeys";
+$page_description = "Discover how Virunga Journeys integrates education into community-based tourism, creating transformative learning experiences that empower both visitors and local communities.";
 
 // Get education programs count
 $count_query = "SELECT COUNT(*) as total FROM community_programs WHERE category = 'Education' AND status IN ('active', 'completed')";
@@ -60,8 +61,8 @@ $programs_result = mysqli_query($conn, $programs_query);
         <div class="container">
             <div class="intro-content">
                 <div class="intro-text">
-                    <h2>How Virunga Ecotours Integrates Education in Community-Based Tourism</h2>
-                    <p>Virunga Ecotours recognizes that tourism should not only entertain but also <em>educate and empower</em>. That is why education is deeply woven into its community-based tourism model. The programs create a bridge between visitors and local residents, ensuring that knowledge flows in both directions. Tourists learn about conservation, cultural heritage, and community life, while locals gain access to skills, resources, and opportunities.</p>
+                    <h2>How Virunga Journeys Integrates Education in Community-Based Tourism</h2>
+                    <p>Virunga Journeys recognizes that tourism should not only entertain but also <em>educate and empower</em>. That is why education is deeply woven into its community-based tourism model. The programs create a bridge between visitors and local residents, ensuring that knowledge flows in both directions. Tourists learn about conservation, cultural heritage, and community life, while locals gain access to skills, resources, and opportunities.</p>
                 </div>
                 
                 <div class="intro-highlights">
@@ -168,7 +169,7 @@ $programs_result = mysqli_query($conn, $programs_query);
                     
                     <div class="focus-area-content">
                         <h3>Holistic Community Impact</h3>
-                        <p>By embedding education into every stage of tourism, Virunga Ecotours ensures that visits uplift communities, strengthen local identity, and create long-term benefits. Education tours, therefore, are not an "add-on" but a <em>core strategy</em> to make tourism more inclusive, impactful, and transformative.</p>
+                        <p>By embedding education into every stage of tourism, Virunga Journeys ensures that visits uplift communities, strengthen local identity, and create long-term benefits. Education tours, therefore, are not an "add-on" but a <em>core strategy</em> to make tourism more inclusive, impactful, and transformative.</p>
                         <ul class="focus-area-benefits">
                             <li>Community upliftment</li>
                             <li>Local identity strengthening</li>
@@ -184,7 +185,7 @@ $programs_result = mysqli_query($conn, $programs_query);
     <!-- Summary Table Section -->
     <section class="summary-table-section">
         <div class="container">
-            <h2 class="section-title">Community-Based Education in Virunga Ecotours</h2>
+            <h2 class="section-title">Community-Based Education in Virunga Journeys</h2>
             <p class="section-description">A comprehensive overview of how educational activities create mutual benefits for visitors and communities across different focus areas.</p>
 
             <div class="table-container">

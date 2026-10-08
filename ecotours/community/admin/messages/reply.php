@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Generate default reply subject
-$default_subject = 'Re: ' . ($message['subject'] ?: 'Your message to Virunga Ecotours');
+$default_subject = 'Re: ' . ($message['subject'] ?: 'Your message to Virunga Journeys');
 
 // Generate default reply message template
 $default_message = "Dear " . $message['name'] . ",\n\n";
-$default_message .= "Thank you for contacting Virunga Ecotours. We have received your message";
+$default_message .= "Thank you for contacting Virunga Journeys. We have received your message";
 if ($message['subject']) {
     $default_message .= " regarding \"" . $message['subject'] . "\"";
 }
@@ -85,7 +85,7 @@ if ($message['donation_interest']) {
     $default_message .= "We appreciate your interest in supporting our conservation efforts through donations. ";
 }
 
-$default_message .= "\n\nBest regards,\nVirunga Ecotours Team\n\n";
+$default_message .= "\n\nBest regards,\nVirunga Journeys Team\n\n";
 $default_message .= "---\nOriginal Message:\n";
 $default_message .= "From: " . $message['name'] . " <" . $message['email'] . ">\n";
 $default_message .= "Date: " . date('F j, Y \a\t g:i A', strtotime($message['sent_at'])) . "\n";
@@ -456,14 +456,14 @@ $default_message .= "\n" . $message['message'];
         // Template data
         const templates = {
             default: {
-                subject: 'Re: <?php echo addslashes($message['subject'] ?: 'Your message to Virunga Ecotours'); ?>',
+                subject: 'Re: <?php echo addslashes($message['subject'] ?: 'Your message to Virunga Journeys'); ?>',
                 message: `<?php echo addslashes($default_message); ?>`
             },
             volunteer: {
-                subject: 'Re: Volunteer Opportunities with Virunga Ecotours',
+                subject: 'Re: Volunteer Opportunities with Virunga Journeys',
                 message: `Dear <?php echo addslashes($message['name']); ?>,
 
-Thank you for your interest in volunteering with Virunga Ecotours! We're excited to hear from someone who shares our passion for conservation and community development.
+Thank you for your interest in volunteering with Virunga Journeys! We're excited to hear from someone who shares our passion for conservation and community development.
 
 Our volunteer programs offer unique opportunities to:
 - Support local conservation efforts
@@ -479,7 +479,7 @@ We would love to discuss how you can get involved. Please let us know:
 We'll be in touch soon with more details about our current volunteer opportunities.
 
 Best regards,
-Virunga Ecotours Team
+Virunga Journeys Team
 
 ---
 Original Message:
@@ -489,7 +489,7 @@ Date: <?php echo addslashes(date('F j, Y \a\t g:i A', strtotime($message['sent_a
 <?php echo addslashes($message['message']); ?>`
             },
             donation: {
-                subject: 'Re: Supporting Virunga Ecotours Conservation Efforts',
+                subject: 'Re: Supporting Virunga Journeys Conservation Efforts',
                 message: `Dear <?php echo addslashes($message['name']); ?>,
 
 Thank you for your interest in supporting our conservation efforts through donations. Your generosity helps us continue our vital work protecting Rwanda's natural heritage and supporting local communities.
@@ -511,7 +511,7 @@ I'll send you detailed information about our donation programs and how your cont
 Thank you for considering supporting our mission.
 
 Best regards,
-Virunga Ecotours Team
+Virunga Journeys Team
 
 ---
 Original Message:

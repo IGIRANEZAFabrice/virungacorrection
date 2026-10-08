@@ -7,33 +7,33 @@ function showModal(sectionId) {
   switch (sectionId) {
     case "hero":
       sectionNameSpan.textContent = "Hero Section";
-      document.getElementById("sectionTitle").value = "About virunga ecotours";
+      document.getElementById("sectionTitle").value = "About Virunga Journeys";
       document.getElementById("sectionContent").value = "";
       break;
     case "intro":
       sectionNameSpan.textContent = "Introduction";
       document.getElementById("sectionTitle").value = "";
       document.getElementById("sectionContent").value =
-        "Welcome to Virunga Ecotours, your gateway to an extraordinary eco-adventure! Immerse yourself in nature as you explore stunning landscapes and vibrant wildlife through sustainable tourism. Trek through lush rainforests and observe animals in their natural habitats, all while we prioritize environmental responsibility. Our tours not only allow you to connect with the beauty of biodiversity but also support local communities and conservation efforts committed to protecting our planet. Embark on a meaningful journey that fosters appreciation for nature with Virunga Ecotours where eco adventure meets ecological harmony!";
+        "Welcome to Virunga Journeys, your gateway to an extraordinary eco-adventure! Immerse yourself in nature as you explore stunning landscapes and vibrant wildlife through sustainable tourism. Trek through lush rainforests and observe animals in their natural habitats, all while we prioritize environmental responsibility. Our tours not only allow you to connect with the beauty of biodiversity but also support local communities and conservation efforts committed to protecting our planet. Embark on a meaningful journey that fosters appreciation for nature with Virunga Journeys where eco adventure meets ecological harmony!";
       break;
     case "why-us":
       sectionNameSpan.textContent = "Why Us";
       document.getElementById("sectionTitle").value = "Why us";
       document.getElementById("sectionContent").value =
-        "Sustainable Ecotourism: Virunga Ecotours champions sustainable ecotourism, focusing on enriching travel experiences that deepen connections with nature, communities, and cultural diversity.\n\nLocal Impact: We prioritize hiring local guides and porters, ensuring our tours benefit the local economy and promote cultural understanding.\n\nSpecialized Experience: Operating across the Virunga Massif (Rwanda, DRCongo, and Uganda), we offer sustainable, tailor-made community activities, adventure, and wellness tours.\n\nPremium Adventures: We provide high-quality, land-based adventures, including luxury gorilla trekking for small groups (2-8 people).";
+        "Sustainable Ecotourism: Virunga Journeys champions sustainable ecotourism, focusing on enriching travel experiences that deepen connections with nature, communities, and cultural diversity.\n\nLocal Impact: We prioritize hiring local guides and porters, ensuring our tours benefit the local economy and promote cultural understanding.\n\nSpecialized Experience: Operating across the Virunga Massif (Rwanda, DRCongo, and Uganda), we offer sustainable, tailor-made community activities, adventure, and wellness tours.\n\nPremium Adventures: We provide high-quality, land-based adventures, including luxury gorilla trekking for small groups (2-8 people).";
       break;
     // Add similar cases for other sections
     case "philosophy":
       sectionNameSpan.textContent = "Our Philosophy";
       document.getElementById("sectionTitle").value = "Our Philosophy";
       document.getElementById("sectionContent").value =
-        "Virunga Ecotours promotes a mindful, slow travel philosophy aimed at fostering deep engagement with local cultures and communities. Our mission centers on enhancing community-based tourism by empowering local economies and facilitating cultural exchanges while maintaining environmental integrity. We focus on creating sustainable, meaningful travel experiences that benefit both travelers and local residents through collaborations with local businesses and an emphasis on fair trade. By prioritizing enriching journeys over mere cost-competitiveness, we ensure exceptional service that encourages personal development and drives positive societal change. Join us to embark on a journey that leaves a lasting impact.";
+        "Virunga Journeys promotes a mindful, slow travel philosophy aimed at fostering deep engagement with local cultures and communities. Our mission centers on enhancing community-based tourism by empowering local economies and facilitating cultural exchanges while maintaining environmental integrity. We focus on creating sustainable, meaningful travel experiences that benefit both travelers and local residents through collaborations with local businesses and an emphasis on fair trade. By prioritizing enriching journeys over mere cost-competitiveness, we ensure exceptional service that encourages personal development and drives positive societal change. Join us to embark on a journey that leaves a lasting impact.";
       break;
     case "history":
       sectionNameSpan.textContent = "How It Started";
       document.getElementById("sectionTitle").value = "How It Started";
       document.getElementById("sectionContent").value =
-        "Virunga Ecotours was founded in 2017 to promote sustainable tourism within the Virunga Massif, which encompasses Rwanda, Uganda, and the Democratic Republic of Congo. This initiative focuses on harmonizing conservation efforts with the economic development of local communities. It attracts visitors through distinctive experiences such as gorilla trekking, a significant draw due to the presence of mountain gorillas. The revenue generated supports crucial conservation initiatives, park management, and community projects. Additionally, Virunga Ecotours aims to raise awareness about park-related threats like poaching and habitat destruction and encourages responsible tourism practices. By engaging local communities, especially women, in tourism operations, the initiative fosters job creation and empowers residents to actively safeguard their natural environment, thus integrating conservation and community empowerment for a sustainable future.";
+        "Virunga Journeys was founded in 2017 to promote sustainable tourism within the Virunga Massif, which encompasses Rwanda, Uganda, and the Democratic Republic of Congo. This initiative focuses on harmonizing conservation efforts with the economic development of local communities. It attracts visitors through distinctive experiences such as gorilla trekking, a significant draw due to the presence of mountain gorillas. The revenue generated supports crucial conservation initiatives, park management, and community projects. Additionally, Virunga Journeys aims to raise awareness about park-related threats like poaching and habitat destruction and encourages responsible tourism practices. By engaging local communities, especially women, in tourism operations, the initiative fosters job creation and empowers residents to actively safeguard their natural environment, thus integrating conservation and community empowerment for a sustainable future.";
       break;
     default:
       sectionNameSpan.textContent = "Section";

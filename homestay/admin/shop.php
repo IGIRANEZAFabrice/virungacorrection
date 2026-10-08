@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'list';
 }
 
-$pageTitle = 'Shop Items Management — Virunga Homestay CMS';
+$pageTitle = 'Shop Items Management — Virunga House CMS';
 $currentPage = 'shop';
 
 ?>

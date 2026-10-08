@@ -143,7 +143,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?> - Virunga Ecotours</title>
+    <title><?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?> - Virunga Journeys</title>
     <link rel="shortcut icon" href="../../images/logos/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/common.css" />

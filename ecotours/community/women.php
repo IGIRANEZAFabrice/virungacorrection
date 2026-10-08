@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
-$page_title = "Women's Empowerment Programs - Virunga Ecotours";
-$page_description = "Discover how Virunga Ecotours integrates women's empowerment into community-based tourism through capacity building, economic inclusion, and cultural visibility programs.";
+$page_title = "Women's Empowerment Programs - Virunga Journeys";
+$page_description = "Discover how Virunga Journeys integrates women's empowerment into community-based tourism through capacity building, economic inclusion, and cultural visibility programs.";
 
 // Get empowerment programs count
 $count_query = "SELECT COUNT(*) as total FROM community_programs WHERE category = 'Empowerment' AND status IN ('active', 'completed')";
@@ -57,7 +58,7 @@ $programs_result = mysqli_query($conn, $programs_query);
             <div class="intro-content">
                 <div class="intro-text">
                     <h2>Women's Empowerment in Community-Based Tourism</h2>
-                    <p>Virunga Ecotours has strategically integrated women's empowerment into its tourism model as both a social and economic development goal. Women in the Virunga Massif historically faced limited access to income, decision-making, and professional opportunities. By embedding empowerment initiatives into community-based tourism, the company not only advances gender equity but also enriches the visitor experience through authentic engagement with local culture.</p>
+                    <p>Virunga Journeys has strategically integrated women's empowerment into its tourism model as both a social and economic development goal. Women in the Virunga Massif historically faced limited access to income, decision-making, and professional opportunities. By embedding empowerment initiatives into community-based tourism, the company not only advances gender equity but also enriches the visitor experience through authentic engagement with local culture.</p>
                 </div>
 
                 <div class="intro-highlights">
@@ -125,7 +126,7 @@ $programs_result = mysqli_query($conn, $programs_query);
                         <h3>Economic Inclusion</h3>
                     </div>
                     <div class="impact-content">
-                        <p>Virunga Ecotours allocates specific roles for women within homestays, cooperatives, and cultural experiences. This ensures that female participants gain direct income from tourism activities. Income diversification reduces household vulnerability and strengthens women's decision-making power.</p>
+                        <p>Virunga Journeys allocates specific roles for women within homestays, cooperatives, and cultural experiences. This ensures that female participants gain direct income from tourism activities. Income diversification reduces household vulnerability and strengthens women's decision-making power.</p>
                         <ul class="impact-benefits">
                             <li>Direct income from tourism</li>
                             <li>Homestay management roles</li>

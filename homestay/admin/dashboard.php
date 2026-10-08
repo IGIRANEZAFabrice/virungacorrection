@@ -40,7 +40,7 @@ $trendSign = $trendPercent >= 0 ? '+' : '';
 $trendClass = $trendPercent >= 0 ? 'kpi-delta--up' : 'kpi-delta--down';
 $trendIcon = $trendPercent >= 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
 
-$pageTitle = 'Dashboard — Virunga Homestay CMS';
+$pageTitle = 'Dashboard — Virunga House CMS';
 $currentPage = 'dashboard';
 ?>
 <!doctype html>
@@ -105,7 +105,7 @@ $currentPage = 'dashboard';
           <div>
             <h1 class="page-header__title">Site Overview</h1>
             <p class="page-header__sub">
-              Virunga Homestay · Musanze, Rwanda &nbsp;·&nbsp;
+              Virunga House · Musanze, Rwanda &nbsp;·&nbsp;
               <span
                 class="live-ticker"
                 style="
@@ -766,7 +766,7 @@ $currentPage = 'dashboard';
             border-top: 1px solid var(--border);
           "
         >
-          Virunga Homestay CMS
+          Virunga House CMS
           &nbsp;·&nbsp;
           <a
             href="../index.php"

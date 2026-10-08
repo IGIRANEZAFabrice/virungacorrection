@@ -154,7 +154,7 @@ function handleCreateTables() {
 # Privacy Policy
 
 ## Introduction
-At Virunga Ecotours, we are committed to protecting your personal information and being transparent about how we use it.
+At Virunga Journeys, we are committed to protecting your personal information and being transparent about how we use it.
 
 ## Information We Collect
 We collect information you provide directly to us, such as when you create an account, make a booking, or contact us.
@@ -275,7 +275,7 @@ function sendPrivacyRequestConfirmation($email, $requestType) {
     // Implement email sending logic here
     // You can use PHPMailer or similar library
     
-    $subject = "Privacy Request Confirmation - Virunga Ecotours";
+    $subject = "Privacy Request Confirmation - Virunga Journeys";
     $message = "
         Dear Customer,
         
@@ -286,7 +286,7 @@ function sendPrivacyRequestConfirmation($email, $requestType) {
         If you have any questions, please contact us at privacy@virungaecotours.com
         
         Best regards,
-        Virunga Ecotours Privacy Team
+        Virunga Journeys Privacy Team
     ";
     
     // mail($email, $subject, $message);

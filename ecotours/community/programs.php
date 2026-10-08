@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
 // Get filter parameters
@@ -49,8 +50,8 @@ $countries = ['rwanda', 'uganda', 'congo'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Programs - Virunga Ecotours Community</title>
-    <meta name="description" content="Explore all community programs by Virunga Ecotours across Rwanda, DRC Congo, and Uganda. Filter by country, category, or search for specific programs.">
+    <title>Our Programs - Virunga Journeys Community</title>
+    <meta name="description" content="Explore all community programs by Virunga Journeys across Rwanda, DRC Congo, and Uganda. Filter by country, category, or search for specific programs.">
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="../css/earthy-theme.css">

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once 'handlers/itenary_handler.php';
 $newestTours = getNewestToursWithoutPricing(9);
 ?>
@@ -239,7 +240,7 @@ $newestTours = getNewestToursWithoutPricing(9);
 
         <!-- Call to Action -->
         <section class="cta-section">
-            <h3><i class="fas fa-compass"></i> Why Choose Mid-Range with Virunga Ecotours</h3>
+            <h3><i class="fas fa-compass"></i> Why Choose Mid-Range with Virunga Journeys</h3>
             <p>You'll sleep well, trek confidently, and spend your days immersed—not rushed. Your payments build real careers, keep small enterprises busy year-round, and strengthen the creative and entrepreneurial fabric of communities surrounding the Virunga volcanoes.</p>
             
             <div class="section-divider"></div>

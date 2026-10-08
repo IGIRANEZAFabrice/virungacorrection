@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'list';
 }
 
-$pageTitle = 'Travel Blog Management — Virunga Homestay CMS';
+$pageTitle = 'Travel Blog Management — Virunga House CMS';
 $currentPage = 'blog'; // Highlights active sidebar tab
 
 ?>

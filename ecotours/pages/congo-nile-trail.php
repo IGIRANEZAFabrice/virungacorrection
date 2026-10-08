@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@
         <div class="container">
             <div class="hero-content">
                 <h1>The Congo Nile Trail Experience</h1>
-                <p class="tagline">Step into adventure. Live the culture. Along Lake Kivu with Virunga Ecotours.</p>
+                <p class="tagline">Step into adventure. Live the culture. Along Lake Kivu with Virunga Journeys.</p>
             </div>
         </div>
     </section>
@@ -38,7 +39,7 @@
         <div class="container">
             <div class="section-head">
                 <h2>A Journey Beyond Adventure</h2>
-                <p>Stretching along the emerald shores of Lake Kivu, the Congo Nile Trail is one of Africa’s most enchanting routes. More than a hike or cycle, it is a passage through living landscapes, vibrant communities, and timeless culture. With Virunga Ecotours, this becomes an immersive experience that celebrates natural beauty and community resilience.</p>
+                <p>Stretching along the emerald shores of Lake Kivu, the Congo Nile Trail is one of Africa’s most enchanting routes. More than a hike or cycle, it is a passage through living landscapes, vibrant communities, and timeless culture. With Virunga Journeys, this becomes an immersive experience that celebrates natural beauty and community resilience.</p>
             </div>
         </div>
     </section>
@@ -72,10 +73,10 @@
         </div>
     </section>
 
-    <!-- Organized by Virunga Ecotours -->
+    <!-- Organized by Virunga Journeys -->
     <section class="organized">
         <div class="container">
-            <h2>Organized by Virunga Ecotours</h2>
+            <h2>Organized by Virunga Journeys</h2>
             <div class="org-grid">
                 <div class="org-item"><i class="fas fa-user-tie"></i><span>Expert guides trained in ecology, culture, and safety</span></div>
                 <div class="org-item"><i class="fas fa-suitcase-rolling"></i><span>Luggage transfer support to travel light</span></div>

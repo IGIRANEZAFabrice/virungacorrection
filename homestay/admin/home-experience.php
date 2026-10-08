@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Home Experiences - Virunga Homestay CMS';
+$pageTitle = 'Home Experiences - Virunga House CMS';
 $currentPage = 'home-experience';
 ?>
 <!doctype html>

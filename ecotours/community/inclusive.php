@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php';
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php';
 // Load main page
 $page = null;
 $pq = mysqli_query($conn, "SELECT id, hero_title, hero_subtitle, hero_image, intro_text FROM inclusive_page ORDER BY id DESC LIMIT 1");

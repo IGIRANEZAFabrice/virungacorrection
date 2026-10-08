@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 
 <?php
 require_once __DIR__ . '/../../config/recaptcha.php';
@@ -69,7 +70,7 @@ function sendCommunityNotificationEmail($recipientEmail, $subject, $bodyHtml) {
         'smtp_username' => SMTP_EMAIL,
         'smtp_password' => SMTP_PASS,
         'from_email' => SMTP_EMAIL,
-        'from_name' => 'Virunga Ecotours System',
+        'from_name' => 'Virunga Journeys System',
     ];
 
     try {
@@ -187,8 +188,8 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Virunga Ecotours Community</title>
-    <meta name="description" content="Get in touch with Virunga Ecotours Community Programs. Contact us for volunteering opportunities, partnerships, donations, or general inquiries.">
+    <title>Contact Us - Virunga Journeys Community</title>
+    <meta name="description" content="Get in touch with Virunga Journeys Community Programs. Contact us for volunteering opportunities, partnerships, donations, or general inquiries.">
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="../css/earthy-theme.css">
@@ -397,7 +398,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
     <!-- Page Header -->
     <section class="page-header">
         <div class="page-header-background">
-            <img src="../images/stories/vol.JPG" alt="Contact Virunga Ecotours Community" loading="lazy">
+            <img src="../images/stories/vol.JPG" alt="Contact Virunga Journeys Community" loading="lazy">
             <div class="page-header-overlay"></div>
         </div>
         <div class="container">
@@ -536,7 +537,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
                             </div>
                             <div class="contact-contact-details">
                                 <h4>Email</h4>
-                                <p><a href="mailto:community@virungaecotours.com">virungacommunityprograms@gmail.com</a></p>
+                                <p><a href="mailto:info@virungajourneys.com">virungacommunityprograms@gmail.com</a></p>
                                 <p><a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a></p>
                             </div>
                         </div>

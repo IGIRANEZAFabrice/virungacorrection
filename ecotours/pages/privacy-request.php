@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
         <div class="hero-background"></div>
         <div class="hero-content">
             <h1>Privacy Request</h1>
-            <p>Exercise your data protection rights with Virunga Ecotours</p>
+            <p>Exercise your data protection rights with Virunga Journeys</p>
         </div>
     </div>
 
@@ -26,7 +27,7 @@
             <div class="request-intro">
                 <h2>Your Privacy Rights</h2>
                 <p>
-                    At Virunga Ecotours, we respect your privacy rights and are committed to protecting your personal data. 
+                    At Virunga Journeys, we respect your privacy rights and are committed to protecting your personal data.
                     You have the right to know what personal information we collect, how we use it, and to request changes 
                     or deletion of your data.
                 </p>
@@ -164,7 +165,7 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span>privacy@virungaecotours.com</span>
+                        <span>info@virungajourneys.com</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>

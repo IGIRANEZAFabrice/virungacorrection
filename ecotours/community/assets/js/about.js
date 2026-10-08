@@ -1,6 +1,6 @@
 /**
  * About Page JavaScript
- * Interactive Map Functionality for Virunga Ecotours Community About Page
+ * Interactive Map Functionality for Virunga Journeys Community About Page
  */
 
 document.addEventListener('DOMContentLoaded', function() {

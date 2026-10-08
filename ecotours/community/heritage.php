@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection
 require_once '../admin/config/connection.php';
 
@@ -53,7 +54,7 @@ if ($iq) {
 }
 
 // Set page meta
-$page_title = 'Heritage & Community Tourism | Virunga Ecotours';
+$page_title = 'Heritage & Community Tourism | Virunga Journeys';
 $page_description = 'Discover farm and cultural tourism that transforms communities while preserving heritage and supporting conservation.';
 $page_keywords = 'heritage tourism, farm tourism, cultural tourism, community development, Virunga';
 ?>
@@ -63,12 +64,12 @@ $page_keywords = 'heritage tourism, farm tourism, cultural tourism, community de
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | Virunga Ecotours</title>
+    <title><?php echo $page_title; ?> | Virunga Journeys</title>
     <meta name="description" content="<?php echo $page_description; ?>">
     <meta name="keywords" content="<?php echo $page_keywords; ?>">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="<?php echo $page_title; ?> | Virunga Ecotours">
+    <meta property="og:title" content="<?php echo $page_title; ?> | Virunga Journeys">
     <meta property="og:description" content="<?php echo $page_description; ?>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo $_SERVER['REQUEST_URI']; ?>">

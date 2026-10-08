@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
 // Fetch static sections (normalize names to handle variants e.g., "Our Aim" → our_aim)

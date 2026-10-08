@@ -69,8 +69,8 @@ function buildContactCustomerEmail($customerName, $subjectLine) {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungaecotours.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
-            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Ecotours</div>
+            <img src="https://virungajourneys.com/ecotours/images/logos/icon.png" alt="Virunga Journeys" width="72" style="display:block;margin:0 auto 12px;">
+            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Journeys</div>
           </td>
         </tr>
         <tr>
@@ -108,7 +108,7 @@ function sendContactNotificationEmail($recipientEmail, $subject, $bodyHtml) {
         'smtp_username' => SMTP_EMAIL,
         'smtp_password' => SMTP_PASS,
         'from_email' => SMTP_EMAIL,
-        'from_name' => 'Virunga Ecotours System',
+        'from_name' => 'Virunga Journeys System',
     ];
 
     try {
@@ -197,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><strong>Subject:</strong> ' . htmlspecialchars($subject) . '</p>
             ' . (!empty($phone) ? '<p><strong>Phone:</strong> ' . htmlspecialchars($phone) . '</p>' : '') . '
             <hr/>
-            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Ecotours contact form.</p>
+            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Journeys contact form.</p>
         ';
 
         $failedRecipients = [];
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             send_multilingual_confirmation_email($email, $fullName, $subject, $details, $userLang);
         } else {
             $customerBody = buildContactCustomerEmail($fullName, $subject);
-            $customerSubject = 'We received your message - Virunga Ecotours';
+            $customerSubject = 'We received your message - Virunga Journeys';
             if (!sendContactNotificationEmail($email, $customerSubject, $customerBody)) {
                 logContactEmailMessage('Customer contact confirmation failed for ' . $email);
             }

@@ -88,7 +88,7 @@ $activities_result = mysqli_query($conn, $activities_query);
             </div>
 
             <div class="beyond-park-description">
-                <p>The "Beyond the Park Experience" was created to extend the meaning of travel in the Virunga Massif, offering guests a deeper connection with the people and landscapes that surround the national parks. Rather than limiting exploration to protected areas, this program opens the doors of nearby communities, showcasing their traditions, skills, and everyday realities. Designed by Virunga Ecotours through community-based tourism, it responds to the need for experiences that are enriching, inclusive, and sustainable in both cultural and social terms. Five central reasons guide the foundation of this initiative.</p>
+                <p>The "Beyond the Park Experience" was created to extend the meaning of travel in the Virunga Massif, offering guests a deeper connection with the people and landscapes that surround the national parks. Rather than limiting exploration to protected areas, this program opens the doors of nearby communities, showcasing their traditions, skills, and everyday realities. Designed by Virunga Journeys through community-based tourism, it responds to the need for experiences that are enriching, inclusive, and sustainable in both cultural and social terms. Five central reasons guide the foundation of this initiative.</p>
             </div>
 
             <div class="beyond-park-reasons">

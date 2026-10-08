@@ -14,7 +14,7 @@ $houseDescriptions = [
  'bookinginfo' => 'Review booking information and prepare for your stay at Virunga House in Musanze, Rwanda.'
 ];
 if (empty($pageDescription) && isset($houseDescriptions[$housePage])) $pageDescription = $houseDescriptions[$housePage];
-if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga House', $pageTitle);
+if (!empty($pageTitle)) $pageTitle = str_replace('Virunga House', 'Virunga House', $pageTitle);
 ?>
 <!doctype html>
 <html lang="en">
@@ -33,7 +33,7 @@ if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga Ho
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Experience boutique luxury hospitality in Musanze at Virunga House. Authentic Rwandan warmth, volcano views, and bespoke immersion near Volcanoes National Park.'; ?>">
-    <meta name="keywords" content="<?php echo isset($pageKeywords) ? htmlspecialchars($pageKeywords) : 'Virunga Homestay, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda'; ?>">
+    <meta name="keywords" content="<?php echo isset($pageKeywords) ? htmlspecialchars($pageKeywords) : 'Virunga House, luxury homestay Musanze, Virunga House, Volcanoes National Park accommodation, boutique stay Rwanda'; ?>">
     <?php
       require_once __DIR__ . '/../../../config/seo.php';
       $canonicalPath = $publicCanonicalPath ?? pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_FILENAME);
@@ -52,8 +52,8 @@ if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga Ho
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
-    <meta property="twitter:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle, ENT_QUOTES) : 'Virunga Homestay'; ?>">
-    <meta property="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription, ENT_QUOTES) : 'Experience authentic Rwandan hospitality at Virunga Homestay in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
+    <meta property="twitter:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle, ENT_QUOTES) : 'Virunga House'; ?>">
+    <meta property="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription, ENT_QUOTES) : 'Experience authentic Rwandan hospitality at Virunga House in Musanze. Perfect for gorilla trekking, volcano hikes, and cultural immersion. Book your stay today!'; ?>">
     <meta property="twitter:image" content="<?php echo 'https://virungajourneys.com/homestay/img/hero/room.jpg'; ?>">
 
     <!-- Favicon -->
@@ -223,10 +223,10 @@ if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga Ho
     {
       "@context": "https://schema.org",
       "@type": "LodgingBusiness",
-      "name": "Virunga Homestay",
-      "image": "https://virungahomestay.com/img/logo/logo.png",
-      "@id": "https://virungahomestay.com",
-      "url": "https://virungahomestay.com",
+      "name": "Virunga House",
+      "image": "https://virungajourneys.com/homestay/img/logo/logo.png",
+      "@id": "https://virungajourneys.com/homestays#lodging",
+      "url": "https://virungajourneys.com/homestays",
       "telephone": "+250784513435",
       "address": {
         "@type": "PostalAddress",
@@ -240,7 +240,6 @@ if (!empty($pageTitle)) $pageTitle = str_replace('Virunga Homestay', 'Virunga Ho
         "latitude": -1.5000,
         "longitude": 29.6333
       },
-      "url": "https://virungahomestay.com",
       "priceRange": "$$",
       "description": "Premium homestay experience at the foot of the Virunga Volcanoes in Musanze, Rwanda.",
       "amenityFeature": [

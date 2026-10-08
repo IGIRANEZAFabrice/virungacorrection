@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
   require_once __DIR__ . '/../config/localization.php';
   $loc = get_localization_data('en');
 

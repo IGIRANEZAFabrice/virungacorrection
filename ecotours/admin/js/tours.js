@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * Virunga Ecotours - Tours Management JavaScript
+ * Virunga Journeys - Tours Management JavaScript
  * Handles Modern Multi-Step Modals, Dynamic Form Builders, Quick View,
  * AJAX CRUD, File Upload Dropzones, and Toast Notifications
  * ============================================================================

@@ -42,7 +42,7 @@ if ($res && $res->num_rows > 0) {
     $adminData = $res->fetch_assoc();
 }
 
-$pageTitle = 'Personal Profile Settings — Virunga Homestay CMS';
+$pageTitle = 'Personal Profile Settings — Virunga House CMS';
 $currentPage = 'site-settings';
 
 ?>

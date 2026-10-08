@@ -1,5 +1,5 @@
 -- =======================================================================
--- VIRUNGA ECOTOURS - 10 EDITORIAL RWANDA JOURNEYS & EXPERIENCES
+-- Virunga Journeys - 10 EDITORIAL RWANDA JOURNEYS & EXPERIENCES
 -- Compatible with MySQL 5.7+, 8.0+, MariaDB 10.4+, and phpMyAdmin
 -- =======================================================================
 

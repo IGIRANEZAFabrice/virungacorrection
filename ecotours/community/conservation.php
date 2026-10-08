@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
-$page_title = "Conservation Tourism Programs - Virunga Ecotours";
-$page_description = "Discover how Virunga Ecotours integrates community-based activities with conservation tourism to protect biodiversity while empowering local communities in the Virunga Massif.";
+$page_title = "Conservation Tourism Programs - Virunga Journeys";
+$page_description = "Discover how Virunga Journeys integrates community-based activities with conservation tourism to protect biodiversity while empowering local communities in the Virunga Massif.";
 
 // Get conservation programs count
 $count_query = "SELECT COUNT(*) as total FROM community_programs WHERE category = 'Conservation' AND status IN ('active', 'completed')";
@@ -57,9 +58,9 @@ $programs_result = mysqli_query($conn, $programs_query);
             <div class="intro-content">
                 <div class="intro-text">
                     <h2>Integration of Community-Based Activities with Conservation Tourism</h2>
-                    <p>Virunga Ecotours employs a holistic approach to tourism that connects biodiversity conservation with community empowerment. The Virunga Massif—shared by Rwanda, Uganda, and the Democratic Republic of Congo—is a critical ecological region known for its endangered mountain gorillas, unique volcanic ecosystems, and rich cultural landscapes. However, the sustainability of conservation efforts depends not only on protecting the parks but also on ensuring that local communities directly benefit from tourism.</p>
+                    <p>Virunga Journeys employs a holistic approach to tourism that connects biodiversity conservation with community empowerment. The Virunga Massif—shared by Rwanda, Uganda, and the Democratic Republic of Congo—is a critical ecological region known for its endangered mountain gorillas, unique volcanic ecosystems, and rich cultural landscapes. However, the sustainability of conservation efforts depends not only on protecting the parks but also on ensuring that local communities directly benefit from tourism.</p>
 
-                    <p>By integrating community-based tourism (CBT) with conservation tourism, Virunga Ecotours bridges the gap between ecological preservation and socio-economic development.</p>
+                    <p>By integrating community-based tourism (CBT) with conservation tourism, Virunga Journeys bridges the gap between ecological preservation and socio-economic development.</p>
                 </div>
 
                 <div class="intro-highlights">

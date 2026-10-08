@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once 'handlers/itenary_handler.php';
 $featuredTours = getToursByTitleKeyword('Luxury', 3);
 ?>
@@ -39,14 +40,14 @@ $featuredTours = getToursByTitleKeyword('Luxury', 3);
     <div class="content">
         
         <!-- Luxury Introduction -->
-        <p>Virunga Ecotours specializes in crafting <strong class="highlight-text">high-end luxury tours</strong> for discerning travelers who wish to explore the breathtaking Virunga Mountains in the most <em>exclusive and comfortable way</em>. These tours are designed for visitors who seek not only to encounter the extraordinary beauty of mountain gorillas, golden monkeys, and volcanic landscapes, but also to do so with the <strong>finest level of service, privacy, and cultural immersion</strong>.</p>
+        <p>Virunga Journeys specializes in crafting <strong class="highlight-text">high-end luxury tours</strong> for discerning travelers who wish to explore the breathtaking Virunga Mountains in the most <em>exclusive and comfortable way</em>. These tours are designed for visitors who seek not only to encounter the extraordinary beauty of mountain gorillas, golden monkeys, and volcanic landscapes, but also to do so with the <strong>finest level of service, privacy, and cultural immersion</strong>.</p>
 
         <div class="section-divider"></div>
 
         <!-- Luxury Experience Section -->
         <div class="luxury-feature">
             <h3>Why Choose a Luxury Tour in the Virunga Mountains?</h3>
-            <p>Luxury tours with Virunga Ecotours go <strong>beyond standard travel</strong>. Guests enjoy private transportation in top-class vehicles, handpicked luxury lodges with panoramic views, and personalized experiences led by expert guides. The tours are tailored to provide seamless comfort, from exclusive gorilla trekking permits to curated culinary experiences and private cultural performances. Every detail is designed to give visitors time and space to absorb the magic of the Virungas without compromise.</p>
+            <p>Luxury tours with Virunga Journeys go <strong>beyond standard travel</strong>. Guests enjoy private transportation in top-class vehicles, handpicked luxury lodges with panoramic views, and personalized experiences led by expert guides. The tours are tailored to provide seamless comfort, from exclusive gorilla trekking permits to curated culinary experiences and private cultural performances. Every detail is designed to give visitors time and space to absorb the magic of the Virungas without compromise.</p>
         </div>
 
         <!-- Premium Services Showcase -->
@@ -95,7 +96,7 @@ $featuredTours = getToursByTitleKeyword('Luxury', 3);
         <section class="community-impact-section">
             <h2>The Importance of Luxury in Community-Based Tourism</h2>
             <div class="impact-content">
-                <p>What sets Virunga Ecotours apart is its <strong class="highlight-text">strong foundation in community-based tourism</strong>. Even while offering luxury, the tours are deeply rooted in supporting local communities around the Virunga Mountains. A portion of the revenue directly benefits local projects ranging from education and cultural preservation to small-scale enterprises. By choosing a luxury package, visitors not only indulge in world-class experiences but also <em>uplift communities</em> through:</p>
+                <p>What sets Virunga Journeys apart is its <strong class="highlight-text">strong foundation in community-based tourism</strong>. Even while offering luxury, the tours are deeply rooted in supporting local communities around the Virunga Mountains. A portion of the revenue directly benefits local projects ranging from education and cultural preservation to small-scale enterprises. By choosing a luxury package, visitors not only indulge in world-class experiences but also <em>uplift communities</em> through:</p>
             </div>
         </section>
 
@@ -178,7 +179,7 @@ $featuredTours = getToursByTitleKeyword('Luxury', 3);
         <!-- Premium Call to Action -->
         <div class="luxury-cta">
             <h3>A Journey with Meaning</h3>
-            <p>Virunga Ecotours believes that <strong>true luxury is more than comfort</strong>—it is about connection and impact. Travelers leave with memories of gorillas, volcanoes, and rare birds, but also with the satisfaction of knowing their journey directly contributes to the well-being of the people who call the Virunga Mountains home.</p>
+            <p>Virunga Journeys believes that <strong>true luxury is more than comfort</strong>—it is about connection and impact. Travelers leave with memories of gorillas, volcanoes, and rare birds, but also with the satisfaction of knowing their journey directly contributes to the well-being of the people who call the Virunga Mountains home.</p>
             
             <div class="luxury-contact">
                 <p><strong>Ready for the ultimate luxury experience?</strong></p>
@@ -189,7 +190,7 @@ $featuredTours = getToursByTitleKeyword('Luxury', 3);
         <!-- Luxury Testimonial Section -->
         <div class="luxury-testimonial">
             <blockquote>
-                <p>"This wasn't just a trip it was a transformative experience. The level of service, attention to detail, and meaningful connections with local communities exceeded every expectation. Virunga Ecotours has redefined what luxury travel means to us."</p>
+                <p>"This wasn't just a trip it was a transformative experience. The level of service, attention to detail, and meaningful connections with local communities exceeded every expectation. Virunga Journeys has redefined what luxury travel means to us."</p>
                 <cite>Distinguished Guest, 2024</cite>
             </blockquote>
         </div>

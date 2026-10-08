@@ -1,6 +1,7 @@
 <?php
-  $pageTitle = 'Safety & Guest Confidence - Virunga Homestay';
-  $pageDescription = 'Experience authentic Rwandan hospitality with confidence. Our commitment to your safety, cleanliness, and personal care at Virunga Homestay.';
+require_once __DIR__ . '/../../config/branding.php';
+  $pageTitle = 'Safety & Guest Confidence - Virunga House';
+  $pageDescription = 'Experience authentic Rwandan hospitality with confidence. Our commitment to your safety, cleanliness, and personal care at Virunga House.';
   $pageKeywords = 'safety, cleanliness, guest confidence, Musanze, Rwanda, homestay, travel safety';
   $pageCss = ['safety.css'];
   $pageHeroKey = null; // This page has its own immersive hero
@@ -14,14 +15,14 @@
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-line-top" aria-hidden="true"></div>
 
-    <p class="hero-eyebrow">Virunga Homestay · Musanze, Rwanda</p>
+    <p class="hero-eyebrow">Virunga House · Musanze, Rwanda</p>
 
     <h1 id="hero-heading">
       Safety &amp;
       <em>Guest Confidence</em>
     </h1>
 
-    <p class="hero-sub">At Virunga Homestay, we believe that true hospitality is built on trust, care, and attention to detail — not policies, but people.</p>
+    <p class="hero-sub">At Virunga House, we believe that true hospitality is built on trust, care, and attention to detail — not policies, but people.</p>
 
     <div class="hero-trust" role="list" aria-label="Key trust indicators">
       <div class="hero-trust-item" role="listitem">
@@ -109,7 +110,7 @@
   <div class="banner reveal" role="complementary" aria-label="Brand statement">
     <div class="banner-bg" aria-hidden="true"></div>
     <blockquote class="banner-quote">"We are not a large hotel chain. We are a home. Our strength is not scale, but human connection."</blockquote>
-    <p class="banner-attr">— Virunga Homestay Philosophy</p>
+    <p class="banner-attr">— Virunga House Philosophy</p>
   </div>
 
   <div class="section-divider" aria-hidden="true"></div>
@@ -231,8 +232,8 @@
   <!-- CLOSING -->
   <div class="closing reveal" role="complementary" aria-labelledby="closing-heading">
     <h2 id="closing-heading">We look forward to<br><em>welcoming you.</em></h2>
-    <p>Your stay at Virunga Homestay is designed to be calm, safe, and meaningful — allowing you to fully experience the Virunga region through nature, culture, and human connection.</p>
-    <a href="<?php echo $baseLink('contact'); ?>" class="cta-btn" aria-label="Book your stay at Virunga Homestay">
+    <p>Your stay at Virunga House is designed to be calm, safe, and meaningful — allowing you to fully experience the Virunga region through nature, culture, and human connection.</p>
+    <a href="<?php echo $baseLink('contact'); ?>" class="cta-btn" aria-label="Book your stay at Virunga House">
       Book your stay
       <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>

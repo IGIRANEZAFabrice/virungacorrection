@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 
 // --- EMAIL CONFIGURATION ---
 define('ADMIN_EMAIL', 'virungahomestay@gmail.com');
-define('BUSINESS_NAME', 'Virunga Homestay');
+define('BUSINESS_NAME', 'Virunga House');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate reCAPTCHA first
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // --- 1. SEND NOTIFICATION TO ADMINS ---
         $mail->setFrom(SMTP_EMAIL, BUSINESS_NAME . ' Website');
-        $mail->addAddress(ADMIN_EMAIL, 'Virunga Homestay Operations');
+        $mail->addAddress(ADMIN_EMAIL, 'Virunga House Operations');
         $mail->addAddress('info@virungajourneys.com', 'Virunga Journeys Concierge');
         $mail->addReplyTo($email, $name);
 
@@ -96,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                    <table style='width: 100%; border-collapse: collapse;'>
                        <tr>
                            <td style='vertical-align: middle; text-align: left;'>
-                               <img src='https://virungahomestay.com/img/logo/logo.png' alt='Virunga Homestay' style='max-width: 120px;'>
+                               <img src='https://virungajourneys.com/homestay/img/logo/logo.png' alt='Virunga House' style='max-width: 120px;'>
                            </td>
                            <td style='vertical-align: middle; text-align: right; color: #000000; font-size: 20px; font-weight: 300; letter-spacing: 0.05em;'>
-                               Virunga Homestay
+                               Virunga House
                            </td>
                        </tr>
                    </table>
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
                 <div style='background: #fdfaf7; padding: 20px; text-align: center; font-size: 12px; color: #999;'>
-                    This inquiry was sent from the Virunga Homestay website contact form.
+                    This inquiry was sent from the Virunga House website contact form.
                 </div>
             </div>
         ";

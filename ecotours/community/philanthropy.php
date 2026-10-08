@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
-$page_title = "Philanthropy & Community Impact - Virunga Ecotours";
-$page_description = "Discover how Virunga Ecotours creates lasting positive impact through strategic philanthropy, community partnerships, and sustainable development initiatives in the Virunga Massif region.";
+$page_title = "Philanthropy & Community Impact - Virunga Journeys";
+$page_description = "Discover how Virunga Journeys creates lasting positive impact through strategic philanthropy, community partnerships, and sustainable development initiatives in the Virunga Massif region.";
 
 // Get hero content
 $hero_query = "SELECT * FROM philanthropy_hero LIMIT 1";

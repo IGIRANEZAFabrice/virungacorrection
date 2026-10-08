@@ -105,8 +105,8 @@ INSERT INTO `voluntourism_hero` (`hero_title`, `hero_subtitle`, `hero_descriptio
  'Transformative Travel Through Meaningful Service',
  'Experience community-based tourism while contributing your skills to meaningful projects. Our voluntourism programs ensure communities lead decisions and receive direct benefits while creating authentic, transformative experiences for travelers.',
  '../images/voluntourism/hero.jpg',
- 'Voluntourism at Virunga Ecotours',
- 'Voluntourism at Virunga Ecotours is a distinctive form of community-based tourism that merges travel with service, offering visitors the opportunity to contribute meaningfully to local development while exploring the natural and cultural treasures of the Virunga Massif. It is not limited to observation; rather, it emphasizes active participation, cultural exchange, and mutual learning, creating deeper connections between travelers and host communities. By doing so, voluntourism transforms tourism into a shared journey of discovery, responsibility, and empowerment.',
+ 'Voluntourism at Virunga Journeys',
+ 'Voluntourism at Virunga Journeys is a distinctive form of community-based tourism that merges travel with service, offering visitors the opportunity to contribute meaningfully to local development while exploring the natural and cultural treasures of the Virunga Massif. It is not limited to observation; rather, it emphasizes active participation, cultural exchange, and mutual learning, creating deeper connections between travelers and host communities. By doing so, voluntourism transforms tourism into a shared journey of discovery, responsibility, and empowerment.',
  '../images/voluntourism/HO2A3457.jpg');
 
 -- Insert Introduction Highlights
@@ -211,7 +211,7 @@ INSERT INTO `voluntourism_table_rows` (`category_name`, `category_icon`, `visito
 -- Insert How It Works Section
 INSERT INTO `voluntourism_how_it_works` (`section_title`, `section_description`, `process_image`, `overlay_title`, `overlay_description`) VALUES
 ('How It Works',
- 'Virunga Ecotours designs voluntourism activities as flexible, short-term opportunities that complement wildlife or cultural excursions. These may take the form of half-day or full-day engagements, tailored to the visitor\'s time, skills, and interests. The model ensures that community participation is well-organized, respectful, and impactful. Guests contribute to tangible outcomes while simultaneously learning about local traditions, challenges, and aspirations.',
+ 'Virunga Journeys designs voluntourism activities as flexible, short-term opportunities that complement wildlife or cultural excursions. These may take the form of half-day or full-day engagements, tailored to the visitor\'s time, skills, and interests. The model ensures that community participation is well-organized, respectful, and impactful. Guests contribute to tangible outcomes while simultaneously learning about local traditions, challenges, and aspirations.',
  '../images/voluntourism/HO2A3360.jpg',
  'Tailored Experiences',
  'Every activity is designed to match your interests and skills');

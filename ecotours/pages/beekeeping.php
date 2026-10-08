@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Overview</h2>
-            <p class="lead">Beekeeping is one of the oldest and most valued traditions practiced by communities living around the Virunga Massif. Through Virunga Ecotours’ community-based tourism program, visitors are invited to discover this fascinating agro-tour activity, where conservation, livelihood, and cultural heritage meet. By joining our beekeeping tours, travelers gain unique insights into how honey production sustains families while protecting the fragile ecosystems surrounding the Volcanoes National Park and beyond.</p>
+            <p class="lead">Beekeeping is one of the oldest and most valued traditions practiced by communities living around the Virunga Massif. Through Virunga Journeys’ community-based tourism program, visitors are invited to discover this fascinating agro-tour activity, where conservation, livelihood, and cultural heritage meet. By joining our beekeeping tours, travelers gain unique insights into how honey production sustains families while protecting the fragile ecosystems surrounding the Volcanoes National Park and beyond.</p>
         </div>
     </section>
 

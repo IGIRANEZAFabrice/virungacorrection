@@ -84,14 +84,14 @@ function sendWelcomeEmail($email) {
     // Implement your email service here (PHPMailer, SendGrid, etc.)
     // Example structure:
     /*
-    $subject = "Welcome to Virunga Ecotours Community Updates";
+    $subject = "Welcome to Virunga Journeys Community Updates";
     $message = "
     <html>
     <head>
         <title>Welcome to Our Community</title>
     </head>
     <body>
-        <h2>Welcome to Virunga Ecotours Community Programs!</h2>
+        <h2>Welcome to Virunga Journeys Community Programs!</h2>
         <p>Thank you for subscribing to our newsletter. You'll receive updates about:</p>
         <ul>
             <li>New community programs and initiatives</li>
@@ -100,7 +100,7 @@ function sendWelcomeEmail($email) {
             <li>Ways to support our mission</li>
         </ul>
         <p>Stay connected with our work in the Virunga Massif region!</p>
-        <p>Best regards,<br>The Virunga Ecotours Community Team</p>
+        <p>Best regards,<br>The Virunga Journeys Community Team</p>
     </body>
     </html>
     ";

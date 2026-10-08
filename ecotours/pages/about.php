@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection and data fetching
 require_once('../admin/config/connection.php');
 
@@ -213,7 +214,7 @@ $cta_data = $cta_result->fetch_assoc();
                 <div class="team-intro-content">
                     <div class="team-intro-text">
                         <h3>Introduction to the Team</h3>
-                        <p>Virunga Ecotours is led by a multidisciplinary team that blends tourism expertise, creative communication, and strong local engagement. The group unites professional planners, hospitality specialists, and storytellers who together present the Virunga Massif not only as a destination, but as a living cultural and ecological landscape. Their strength lies in combining academic knowledge, creative media skills, and practical experience to provide travelers with seamless service and meaningful encounters.</p>
+                        <p>Virunga Journeys is led by a multidisciplinary team that blends tourism expertise, creative communication, and strong local engagement. The group unites professional planners, hospitality specialists, and storytellers who together present the Virunga Massif not only as a destination, but as a living cultural and ecological landscape. Their strength lies in combining academic knowledge, creative media skills, and practical experience to provide travelers with seamless service and meaningful encounters.</p>
                     </div>
 
                     <div class="team-composition">
@@ -245,7 +246,7 @@ $cta_data = $cta_result->fetch_assoc();
                                 </div>
                                 <div class="role-content">
                                     <h5>Social Media and Website Managers</h5>
-                                    <p>Digital specialists responsible for maintaining Virunga Ecotours' online presence, updating platforms with inspiring content, and ensuring travelers worldwide can connect easily with services.</p>
+                                    <p>Digital specialists responsible for maintaining Virunga Journeys' online presence, updating platforms with inspiring content, and ensuring travelers worldwide can connect easily with services.</p>
                                 </div>
                             </div>
 
@@ -275,7 +276,7 @@ $cta_data = $cta_result->fetch_assoc();
                                 </div>
                                 <div class="role-content">
                                     <h5>Training and Mentorship Staff</h5>
-                                    <p>Educators and facilitators who prepare youth and aspiring professionals in hospitality, guiding, and tourism management through the Virunga Ecotours Training Institute.</p>
+                                    <p>Educators and facilitators who prepare youth and aspiring professionals in hospitality, guiding, and tourism management through the Virunga Academy.</p>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +295,7 @@ $cta_data = $cta_result->fetch_assoc();
                                     <i class="fas fa-bed"></i>
                                 </div>
                                 <div class="meeting-content">
-                                    <h6>At Virunga Homestays</h6>
+                                    <h6>At Virunga House</h6>
                                     <p>Upon arrival, community hosts and tour managers personally welcome guests and provide orientation.</p>
                                 </div>
                             </div>

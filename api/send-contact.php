@@ -85,7 +85,7 @@ try {
     // Send to both admin recipients
     $mail->setFrom(SMTP_EMAIL, 'Virunga Collective Journeys');
     $mail->addAddress('info@virungajourneys.com', 'Virunga Journeys Concierge');
-    $mail->addAddress('virungahomestay@gmail.com', 'Virunga Homestay Operations');
+    $mail->addAddress('virungahomestay@gmail.com', 'Virunga House Operations');
     $mail->addReplyTo($email, $name);
     $mail->isHTML(true);
     $mail->Subject = "New Journey Inquiry: " . $subject;

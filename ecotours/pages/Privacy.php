@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,7 +55,7 @@ include './includes/header.php';
       <div class="hero-content">
         <h1>Privacy Policy</h1>
         <p>
-          At Virunga Ecotours, we're committed to protecting your personal
+          At Virunga Journeys, we're committed to protecting your personal
           information and being transparent about how we use it.
         </p>
         <div class="last-updated">Last Updated: <?php echo htmlspecialchars($last_updated); ?></div>
@@ -140,7 +141,7 @@ include './includes/header.php';
             <div class="contact-card" style="background-color: #f2e8dc;">
               <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
               <h4>Address</h4>
-              <p style="color: #000000;">Virunga Ecotours<br/>P.O. Box 6754<br/>Kigali, Rwanda</p>
+              <p style="color: #000000;">Virunga Journeys<br/>P.O. Box 6754<br/>Kigali, Rwanda</p>
             </div>
           </div>
         </div>

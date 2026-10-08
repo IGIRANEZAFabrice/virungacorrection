@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 ?>
 <!DOCTYPE html>
@@ -56,7 +57,7 @@ require_once '../admin/config/connection.php';
             <div class="intro-content">
                 <p>The Virunga Massif is one of the most ecologically significant regions in the world, home to endangered mountain gorillas, golden monkeys, and diverse wildlife. Tourism in this region brings economic opportunities, yet it also carries a responsibility: to ensure the welfare of animals and the integrity of their habitats.</p>
                 
-                <p>Virunga Ecotours integrates Responsible Animal Welfare Care Awareness into its community-based tourism (CBT) activities, promoting ethical interactions, minimizing human-wildlife conflict, and fostering respect for wildlife within and beyond park boundaries.</p>
+                <p>Virunga Journeys integrates Responsible Animal Welfare Care Awareness into its community-based tourism (CBT) activities, promoting ethical interactions, minimizing human-wildlife conflict, and fostering respect for wildlife within and beyond park boundaries.</p>
             </div>
         </div>
     </section>
@@ -321,7 +322,7 @@ require_once '../admin/config/connection.php';
             <div class="conclusion-content">
                 <h2>Conclusion</h2>
                 <div class="conclusion-text">
-                    <p>The Responsible Animal Welfare Care Awareness program under Virunga Ecotours is more than an initiative—it is a commitment to ensuring that every interaction between people, wildlife, and landscapes is respectful, ethical, and sustainable.</p>
+                    <p>The Responsible Animal Welfare Care Awareness program under Virunga Journeys is more than an initiative—it is a commitment to ensuring that every interaction between people, wildlife, and landscapes is respectful, ethical, and sustainable.</p>
 
                     <p>By actively engaging communities in the Virunga Massif, this program safeguards animal welfare, enhances tourism experiences, and secures livelihoods. While challenges remain—such as balancing visitor expectations and community needs—the positive impacts far outweigh the negatives.</p>
 

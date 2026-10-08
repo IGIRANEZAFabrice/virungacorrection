@@ -21,7 +21,7 @@ if ((int)$row['cnt'] === 0) {
         metric_2_num, metric_2_suffix, metric_2_label,
         metric_3_num, metric_3_suffix, metric_3_label)
         VALUES (
-            'Welcome to Virunga Homestay',
+            'Welcome to Virunga House',
             'Your Musanze basecamp for volcano sunrises, slow-evening fires, and effortless guided days.',
             'Live inside a warm local home, wake to mountain air, and lean on accredited bilingual specialists for every trek, transfer, and taste of Rwanda, Uganda, or DRC. We blend heartfelt hosting with pro-level trip support so you can explore boldly and unwind completely.',
             'Family-run', 'Tourist Info Centre', 'Volcano & gorilla ready',
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $res = $conn->query("SELECT * FROM home_about LIMIT 1");
 $r   = $res->fetch_assoc();
 
-$pageTitle   = 'Home About — Virunga Homestay CMS';
+$pageTitle   = 'Home About — Virunga House CMS';
 $currentPage = 'home-about';
 ?>
 <!doctype html>
@@ -316,7 +316,7 @@ $currentPage = 'home-about';
                     <label>Section Label *</label>
                     <input type="text" name="label" id="fLabel" required maxlength="120"
                            value="<?= htmlspecialchars($r['label']) ?>"
-                           placeholder="e.g. Welcome to Virunga Homestay" />
+                           placeholder="e.g. Welcome to Virunga House" />
                   </div>
 
                   <div class="form-group">

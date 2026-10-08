@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection (optional for future dynamic content)
 require_once '../admin/config/connection.php';
 
@@ -16,7 +17,7 @@ $stats = mysqli_fetch_assoc($stats_result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read for the Future - Community Education Initiative | Virunga Ecotours</title>
+    <title>Read for the Future - Community Education Initiative | Virunga Journeys</title>
     <meta name="description" content="Join our Read for the Future initiative - empowering local children with literacy opportunities while connecting travelers to the cultural heartbeat of the Virunga Massif region.">
     <meta name="keywords" content="read for the future, community education, literacy program, Virunga Massif, community-based tourism, educational empowerment">
     
@@ -58,7 +59,7 @@ $stats = mysqli_fetch_assoc($stats_result);
             <div class="intro-content">
                 <div class="intro-text scroll-animate">
                     <h2 class="section-title">Introduction</h2>
-                    <p class="intro-paragraph">"Read for the Future" is a community-centered initiative by Virunga Ecotours that blends education with tourism around the Virunga Massif. It was designed to empower local children with access to books and literacy opportunities while connecting travelers to the cultural heartbeat of the region.</p>
+                    <p class="intro-paragraph">"Read for the Future" is a community-centered initiative by Virunga Journeys that blends education with tourism around the Virunga Massif. It was designed to empower local children with access to books and literacy opportunities while connecting travelers to the cultural heartbeat of the region.</p>
                     <p class="intro-paragraph">This project recognizes that the future of the Virunga Massif lies not only in its wildlife but also in the education of the young generation who will one day be custodians of both community and conservation.</p>
                 </div>
                 <div class="intro-image scroll-animate">

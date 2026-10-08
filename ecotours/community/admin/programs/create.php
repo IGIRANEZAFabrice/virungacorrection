@@ -387,7 +387,7 @@ $categories_result = mysqli_query($conn, $categories_query);
         document.getElementById('title').addEventListener('input', function() {
             const metaTitleField = document.getElementById('meta_title');
             if (!metaTitleField.value) {
-                metaTitleField.value = this.value + ' - Virunga Ecotours Community';
+                metaTitleField.value = this.value + ' - Virunga Journeys Community';
             }
         });
 

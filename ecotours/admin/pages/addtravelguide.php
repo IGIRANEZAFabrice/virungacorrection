@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tours Management - Virunga Ecotours</title>
+    <title>Tours Management - Virunga Journeys</title>
     <link
       rel="shortcut icon"
       href="../../images/logos/icon.png"

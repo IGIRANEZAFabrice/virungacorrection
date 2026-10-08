@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle   = 'Hero Images — Virunga Homestay CMS';
+$pageTitle   = 'Hero Images — Virunga House CMS';
 $currentPage = 'hero-images';
 ?>
 <!doctype html>
@@ -481,7 +481,7 @@ $currentPage = 'hero-images';
                     <label>Slide Title *</label>
                     <input type="text" name="title" required maxlength="255"
                            value="<?= htmlspecialchars($r['title']) ?>"
-                           placeholder="e.g. Welcome to Virunga Homestay" />
+                           placeholder="e.g. Welcome to Virunga House" />
                   </div>
 
                   <!-- Paragraph -->

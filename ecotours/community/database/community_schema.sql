@@ -1,4 +1,4 @@
--- Community Program Database Schema for Virunga Ecotours
+-- Community Program Database Schema for Virunga Journeys
 -- Created: 2025
 -- Description: Database tables for community programs, admin panel, and related functionality
 

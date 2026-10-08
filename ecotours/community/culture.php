@@ -1,10 +1,11 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Living Traditions of Rwanda - Cultural Heritage Activities | Virunga Ecotours</title>
+    <title>Living Traditions of Rwanda - Cultural Heritage Activities | Virunga Journeys</title>
     <meta name="description" content="Immerse yourself in Rwanda's living traditions through authentic cultural activities. Experience traditional crafts, music, dance, and ceremonies that preserve our heritage.">
     <meta name="keywords" content="Rwanda culture, traditional activities, cultural heritage, Rwandan traditions, cultural tours, traditional crafts, Rwandan music, cultural experiences">
     

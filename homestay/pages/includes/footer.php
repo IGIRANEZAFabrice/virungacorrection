@@ -222,8 +222,8 @@
                   ><a href="mailto:info@virungajourneys.com"
                     >info@virungajourneys.com</a
                   ><br/>
-                  <a href="mailto:virungahomestay@gmail.com"
-                    >virungahomestay@gmail.com</a
+                  <a href="mailto:info@virungajourneys.com"
+                    >info@virungajourneys.com</a
                   ></span
                 >
               </div>
@@ -248,7 +248,7 @@
       <!-- Bottom bar -->
       <div class="footer__bottom">
         <p class="footer__copy">
-          © 2025 <span>Virunga Homestay</span>. All rights reserved.</p>
+          © 2025 <span>Virunga House</span>. All rights reserved.</p>
         <ul class="footer__bottom-links">
           <li><a href="<?php echo $baseLink('privacy'); ?>">Privacy Policy</a></li>
           <li><a href="<?php echo $baseLink('privacy'); ?>">Terms of Service</a></li>

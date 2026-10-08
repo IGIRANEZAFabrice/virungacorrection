@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Overview</h2>
-            <p class="lead">Agro tours through Virunga Ecotours open a unique window into the daily rhythms of rural life surrounding the Virunga Massif. Unlike traditional tourism, agro tourism allows travelers to step into fertile farmlands, coffee and tea plantations, and small-scale community gardens where the heartbeat of local culture begins. It is a journey that blends discovery, participation, and storytelling—inviting guests to experience how agriculture sustains livelihoods while offering authentic interaction with farming communities.</p>
+            <p class="lead">Agro tours through Virunga Journeys open a unique window into the daily rhythms of rural life surrounding the Virunga Massif. Unlike traditional tourism, agro tourism allows travelers to step into fertile farmlands, coffee and tea plantations, and small-scale community gardens where the heartbeat of local culture begins. It is a journey that blends discovery, participation, and storytelling—inviting guests to experience how agriculture sustains livelihoods while offering authentic interaction with farming communities.</p>
         </div>
     </section>
 

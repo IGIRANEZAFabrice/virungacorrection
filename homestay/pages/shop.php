@@ -1,5 +1,5 @@
 <?php
-  $pageTitle   = 'Virunga Homestay – Shop';
+  $pageTitle   = 'Virunga House – Shop';
   $pageCss     = ['page-hero.css', 'shop.css'];
   $pageHeroKey = 'shop';
   $pageScripts = ['shop.js'];

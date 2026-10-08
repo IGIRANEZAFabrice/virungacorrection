@@ -50,7 +50,7 @@ if (empty($categories)) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create New Blog Post - Virunga Ecotours</title>
+    <title>Create New Blog Post - Virunga Journeys</title>
     <link
       rel="shortcut icon"
       href="../../images/logos/icon.png"

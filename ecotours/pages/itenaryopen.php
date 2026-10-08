@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 header("Cache-Control: no-cache, no-store, must-revalidate");
 header("Pragma: no-cache");
 header("Expires: 0");
@@ -62,14 +63,14 @@ if (!function_exists('virungaImgBase64')) {
       "@type": "Tour",
       "name": "<?php echo htmlspecialchars($tour['title']); ?>",
       "description": "<?php echo htmlspecialchars($tour['short_description']); ?>",
-      "image": "https://virungaecotours.com/<?php echo htmlspecialchars($tour['cover_image_path']); ?>",
+      "image": "https://virungajourneys.com/ecotours/<?php echo htmlspecialchars(ltrim($tour['cover_image_path'], '/')); ?>",
       "tourDuration": "P<?php echo $tour['days_count']; ?>D",
       "offers": {
         "@type": "Offer",
         "priceCurrency": "USD",
         "price": "<?php echo !empty($pricingTiers) ? $pricingTiers[0]['price_per_person'] : '0'; ?>",
         "availability": "https://schema.org/InStock",
-        "url": "https://virungaecotours.com/pages/itenaryopen.php?id=<?php echo $tour['tour_id']; ?>"
+        "url": "https://virungajourneys.com/ecotours/pages/itenaryopen.php?id=<?php echo $tour['tour_id']; ?>"
       },
       "itinerary": [
         <?php foreach ($days as $index => $day): ?>
@@ -82,8 +83,8 @@ if (!function_exists('virungaImgBase64')) {
       ],
       "provider": {
         "@type": "Organization",
-        "name": "Virunga Ecotours",
-        "url": "https://virungaecotours.com"
+        "name": "Virunga Journeys",
+        "url": "https://virungajourneys.com/experiences"
       }
     }
     </script>
@@ -405,7 +406,7 @@ if (!function_exists('virungaImgBase64')) {
           ></iframe>
 
           <div class="map-overlay">
-            <h4>VIRUNGA ECOTOURS</h4>
+            <h4>Virunga Journeys</h4>
             <p>Visit us for unforgettable adventures in Rwanda</p>
           </div>
         </div>
@@ -465,7 +466,7 @@ if (!function_exists('virungaImgBase64')) {
           </div>
           <div class="note-item">
             <h4>Commitment to Fair Employment</h4>
-            <p>At Virunga Ecotours, we are dedicated to ethical practices. We pay fair wages and make regular contributions to pensions, maternity benefits, and community health schemes for all our employees.</p>
+            <p>At Virunga Journeys, we are dedicated to ethical practices. We pay fair wages and make regular contributions to pensions, maternity benefits, and community health schemes for all our employees.</p>
           </div>
         </div>
       </div>

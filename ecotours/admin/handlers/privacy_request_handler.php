@@ -234,13 +234,13 @@ function sendConfirmationEmail($email, $requestType, $requestId) {
     // This is a placeholder for email functionality
     // You would implement actual email sending here using PHPMailer or similar
     
-    $subject = "Privacy Request Confirmation - Virunga Ecotours";
+    $subject = "Privacy Request Confirmation - Virunga Journeys";
     $requestTypeFormatted = ucfirst(str_replace('_', ' ', $requestType));
     
     $message = "
 Dear Customer,
 
-Thank you for submitting your privacy request to Virunga Ecotours.
+Thank you for submitting your privacy request to Virunga Journeys.
 
 Request Details:
 - Request ID: {$requestId}
@@ -252,7 +252,7 @@ We have received your request and will process it in accordance with applicable 
 If you have any questions about your request, please contact our Data Protection Officer at privacy@virungaecotours.com and reference your Request ID: {$requestId}.
 
 Best regards,
-Virunga Ecotours Privacy Team
+Virunga Journeys Privacy Team
 
 ---
 This is an automated message. Please do not reply to this email.
@@ -290,7 +290,7 @@ Please log into the admin panel to review and process this request.
 Admin Panel: " . (isset($_SERVER['HTTPS']) ? 'https' : 'http') . "://{$_SERVER['HTTP_HOST']}/admin/pages/privacy_management.php
 
 Best regards,
-Virunga Ecotours System
+Virunga Journeys System
     ";
     
     // Uncomment if you have email functionality:

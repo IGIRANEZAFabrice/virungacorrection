@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -519,7 +520,7 @@
                             if ($guide) {
                                 // Update page title and hero section
                                 echo "<script>
-                                    document.title = '" . addslashes($guide['title']) . " - Virunga Ecotours';
+                                    document.title = '" . addslashes($guide['title']) . " - Virunga Journeys';
                                     document.querySelector('.hero-text').textContent = '" . addslashes($guide['title']) . "';
                                     document.getElementById('currentGuideTitle').textContent = '" . addslashes($guide['title']) . "';
                                 </script>";
@@ -591,9 +592,9 @@
                 </div>
                 
                 <div class="about-section">
-                    <h3>ABOUT VIRUNGA ECOTOURS</h3>
+                    <h3>ABOUT Virunga Journeys</h3>
                     <p>
-                        Virunga Ecotours is dedicated to providing sustainable, responsible travel experiences across Rwanda, Uganda, and DR Congo.
+                        Virunga Journeys is dedicated to providing sustainable, responsible travel experiences across Rwanda, Uganda, and DR Congo.
                         We are committed to enriching lives, conserving nature, and supporting local communities while showcasing the incredible beauty of East Africa.
                     </p>
                 </div>

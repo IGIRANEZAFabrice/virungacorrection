@@ -1,5 +1,6 @@
 <?php
-  $pageTitle = 'Virunga Homestay - Community Activities';
+require_once __DIR__ . '/../../config/branding.php';
+  $pageTitle = 'Virunga House - Community Activities';
   $pageCss = ['page-hero.css', 'room-cards.css', 'activity.css'];
   $pageHeroKey = 'activity';
   $pageScripts = ['activity.js'];
@@ -115,7 +116,7 @@
   <section class="signature-collection">
     <div class="section-container">
       <header class="signature-header">
-        <span class="signature-label">Virunga Homestay</span>
+        <span class="signature-label">Virunga House</span>
         <h2 class="signature-title">Tailor-Made Experiences</h2>
         <p class="signature-desc">
           You can choose and contact us for any of the following spiritual, cultural, wildlife, culinary, wellness, and scenic experiences.
@@ -338,7 +339,7 @@
   <section class="activity-gallery" id="gallerySection">
     <div class="section-container">
       <header class="signature-header">
-        <span class="signature-label">Virunga Homestay</span>
+        <span class="signature-label">Virunga House</span>
         <h2 class="signature-title">Our Experiences Recap</h2>
         <p class="signature-desc">
           Take a visual journey through the moments that define our boutique stay. From misty volcano mornings to the warmth of village encounters, these are the memories waiting for you.

@@ -74,7 +74,7 @@ $recent_messages_result = mysqli_query($conn, $recent_messages_query);
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                    <img src="../assets/images/logos/logo.jpg" alt="Virunga Ecotours">
+                    <img src="../assets/images/logos/logo.jpg" alt="Virunga Journeys">
                     <h2>Community Admin</h2>
                 </div>
             </div>

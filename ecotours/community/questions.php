@@ -1,5 +1,6 @@
 <?php
-$page_title = "Community-Based & Regenerative Tourism Guide - Virunga Ecotours";
+require_once __DIR__ . '/../../config/branding.php';
+$page_title = "Community-Based & Regenerative Tourism Guide - Virunga Journeys";
 $page_description = "Professional guide to community-based tourism and regenerative travel in the Virunga Massif. Learn about ethical travel, cultural preservation, and environmental restoration.";
 ?>
 
@@ -27,7 +28,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Community-Based & Regenerative Tourism</h1>
-                <p class="hero-subtitle">A Professional Guide by Virunga Ecotours</p>
+                <p class="hero-subtitle">A Professional Guide by Virunga Journeys</p>
                 <p class="hero-description">Discover how tourism can benefit local communities, preserve culture, and restore natural ecosystems through our comprehensive guide to ethical and regenerative travel.</p>
             </div>
         </div>
@@ -38,7 +39,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
         <div class="container">
             <div class="intro-content">
                 <h2 class="section-title">Introduction</h2>
-                <p class="intro-text">Virunga Ecotours specializes in tourism that benefits local communities, preserves culture, and restores natural ecosystems. Our community-based tourism (CBT) and regenerative travel programs are designed to create meaningful experiences for travelers while delivering tangible benefits to host communities and the environment.</p>
+                <p class="intro-text">Virunga Journeys specializes in tourism that benefits local communities, preserves culture, and restores natural ecosystems. Our community-based tourism (CBT) and regenerative travel programs are designed to create meaningful experiences for travelers while delivering tangible benefits to host communities and the environment.</p>
             </div>
         </div>
     </section>
@@ -128,7 +129,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
 
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q2.</span> How does Virunga Ecotours implement CBT?</h3>
+                        <h3><span class="q-number">Q2.</span> How does Virunga Journeys implement CBT?</h3>
                     </div>
                     <div class="answer">
                         <p>Through partnerships with homestays, Red Rocks Initiatives, indigenous guides, and artisan cooperatives, ensuring communities lead decisions and receive direct benefits.</p>
@@ -194,7 +195,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
 
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q8.</span> How does Virunga Ecotours measure community and environmental impact?</h3>
+                        <h3><span class="q-number">Q8.</span> How does Virunga Journeys measure community and environmental impact?</h3>
                     </div>
                     <div class="answer">
                         <p>Through social assessments, employment metrics, visitor feedback, and ecological monitoring, ensuring transparency and accountability.</p>
@@ -260,7 +261,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
 
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q14.</span> How does Virunga Ecotours support artisans?</h3>
+                        <h3><span class="q-number">Q14.</span> How does Virunga Journeys support artisans?</h3>
                     </div>
                     <div class="answer">
                         <p>By sourcing crafts directly, providing training, and integrating sales into visitor experiences.</p>
@@ -299,7 +300,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
 
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q17.</span> How does Virunga Ecotours integrate local food experiences?</h3>
+                        <h3><span class="q-number">Q17.</span> How does Virunga Journeys integrate local food experiences?</h3>
                     </div>
                     <div class="answer">
                         <p>Visitors participate in farm-to-table activities, learn traditional recipes, and support local agriculture.</p>
@@ -383,7 +384,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
 
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q25.</span> How does Virunga Ecotours ensure transparency?</h3>
+                        <h3><span class="q-number">Q25.</span> How does Virunga Journeys ensure transparency?</h3>
                     </div>
                     <div class="answer">
                         <p>Through annual reports, third-party audits, community consultations, and clear communication of outcomes.</p>
@@ -425,7 +426,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
                         <h3><span class="q-number">Q28.</span> Are there risks of over-tourism?</h3>
                     </div>
                     <div class="answer">
-                        <p>Potentially. Virunga Ecotours manages visitor numbers, promotes off-peak travel, and emphasizes low-impact itineraries.</p>
+                        <p>Potentially. Virunga Journeys manages visitor numbers, promotes off-peak travel, and emphasizes low-impact itineraries.</p>
                     </div>
                 </div>
 
@@ -509,7 +510,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
             <div class="qa-grid">
                 <div class="qa-item">
                     <div class="question">
-                        <h3><span class="q-number">Q35.</span> What is Virunga Ecotours' long-term vision?</h3>
+                        <h3><span class="q-number">Q35.</span> What is Virunga Journeys' long-term vision?</h3>
                     </div>
                     <div class="answer">
                         <p>To create a model where tourism actively regenerates ecosystems, strengthens communities, and transforms both visitors and hosts.</p>
@@ -551,7 +552,7 @@ $page_description = "Professional guide to community-based tourism and regenerat
         <div class="container">
             <div class="cta-content">
                 <h2>Ready to Experience Community-Based Tourism?</h2>
-                <p>Join us in creating meaningful travel experiences that benefit local communities and restore natural ecosystems. Discover the transformative power of regenerative tourism with Virunga Ecotours.</p>
+                <p>Join us in creating meaningful travel experiences that benefit local communities and restore natural ecosystems. Discover the transformative power of regenerative tourism with Virunga Journeys.</p>
                 <div class="cta-buttons">
                     <a href="../pages/tours.php" class="cta-button primary">Explore Our Tours</a>
                     <a href="../pages/contact.php" class="cta-button secondary">Contact Us</a>

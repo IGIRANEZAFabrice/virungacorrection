@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Reuse the exact database fetching mechanism from community/index.php
 require_once '../admin/config/connection.php';
 
@@ -162,7 +163,7 @@ echo date("Y") - 2017;
             <h2 class="section-title">Who We Are</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Virunga Ecotours is committed to creating positive change in the communities surrounding the Virunga Massif region.</p>
+                    <p>Virunga Journeys is committed to creating positive change in the communities surrounding the Virunga Massif region.</p>
                     <p>Our community programs focus on sustainable development, conservation, education, healthcare, empowerment, and economic opportunities. Our goal is to empower local communities and build long-term partnerships that can create lasting positive impact while preserving the natural beauty and wildlife of the Virunga region.</p>
                 </div>
                 <div class="about-image">

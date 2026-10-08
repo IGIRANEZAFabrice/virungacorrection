@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +56,7 @@
                 <div class="summary-text">
                     <h2>Executive Summary</h2>
                     <p class="summary-lead">Homestays around the Virunga Massif offer travelers an immersive, hosted experience rooted in daily life—food, language, craft, and landscape—while creating direct, dignified income for host families and local service providers.</p>
-                    <p>Through Virunga Ecotours, the homestay network is curated, trained, and quality-assured so guests enjoy reliable comfort and hospitality, and communities benefit from steady bookings, skills development, and stronger local value chains.</p>
+                    <p>Through Virunga Journeys, the homestay network is curated, trained, and quality-assured so guests enjoy reliable comfort and hospitality, and communities benefit from steady bookings, skills development, and stronger local value chains.</p>
                 </div>
                 <div class="summary-image">
                     <img src="../images/homestay/IMG-20250807-WA0054.jpg" alt="Host family welcoming guests" class="summary-img">

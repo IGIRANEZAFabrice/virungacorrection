@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -437,12 +438,12 @@
                 </div>
             </div>
 
-            <div class="contact-section" data-searchable="virunga ecotours contact email website info transport permits">
+            <div class="contact-section" data-searchable="Virunga Journeys contact email website info transport permits">
                 <h2 class="contact-title">
                     <i class="fas fa-phone icon-large"></i>
-                    Contact Virunga Ecotours
+                    Contact Virunga Journeys
                 </h2>
-                <p>Virunga Ecotours provides professional assistance for all aspects of your journey across Rwanda, Uganda, and DRC, including permit facilitation, transport coordination, and expert guidance.</p>
+                <p>Virunga Journeys provides professional assistance for all aspects of your journey across Rwanda, Uganda, and DRC, including permit facilitation, transport coordination, and expert guidance.</p>
                 <div class="contact-info">
                     <a href="mailto:info@virungajourneys.com" class="contact-item">
                         <i class="fas fa-envelope"></i>
@@ -499,7 +500,7 @@
                     </style>
                 </head>
                 <body>
-                    <h1 style="color: #2a4858; text-align: center; margin-bottom: 30px;">Virunga Ecotours - Park Requirements & Rules</h1>
+                    <h1 style="color: #2a4858; text-align: center; margin-bottom: 30px;">Virunga Journeys - Park Requirements & Rules</h1>
                     ${printContent.innerHTML}
                 </body>
                 </html>

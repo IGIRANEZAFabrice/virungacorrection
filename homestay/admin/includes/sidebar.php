@@ -52,7 +52,7 @@
     <!-- Site health pill -->
     <div class="sidebar-health">
       <div class="health-dot"></div>
-      <span>virungahomestay.com</span>
+      <span>virungajourneys.com</span>
       <span class="health-badge">Live</span>
     </div>
 

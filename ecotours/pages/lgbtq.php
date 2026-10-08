@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 ?>
 <!DOCTYPE html>
@@ -52,7 +53,7 @@ require_once '../admin/config/connection.php';
         <div class="container">
             <div class="intro-content">
                 <h2 class="section-title">Building Inclusive Communities</h2>
-                <p>LGBTQ+ inclusion in community-based tourism within the Virunga Massif spanning Rwanda, Uganda, and the Democratic Republic of Congo is an emerging yet significant aspect of sustainable travel. Virunga Ecotours, a Rwanda-based operator, plays a pivotal role in integrating LGBTQ+ perspectives into its community-focused tourism initiatives.</p>
+                <p>LGBTQ+ inclusion in community-based tourism within the Virunga Massif spanning Rwanda, Uganda, and the Democratic Republic of Congo is an emerging yet significant aspect of sustainable travel. Virunga Journeys, a Rwanda-based operator, plays a pivotal role in integrating LGBTQ+ perspectives into its community-focused tourism initiatives.</p>
             </div>
         </div>
     </section>
@@ -61,13 +62,13 @@ require_once '../admin/config/connection.php';
     <section id="inclusion" class="inclusion-section">
         <div class="container">
             <div class="section-header">
-                <h2>LGBTQ+ Inclusion in Virunga Ecotours</h2>
+                <h2>LGBTQ+ Inclusion in Virunga Journeys</h2>
                 <p>Fostering equality and empowerment through transformative travel experiences</p>
             </div>
             
             <div class="inclusion-content">
                 <div class="inclusion-text">
-                    <p>Virunga Ecotours is dedicated to fostering gender equality, empowering women, and enhancing youth livelihoods through tourism. The revenue generated from their immersive cultural and eco-tourism experiences directly supports these initiatives, creating a positive impact on local communities.</p>
+                    <p>Virunga Journeys is dedicated to fostering gender equality, empowering women, and enhancing youth livelihoods through tourism. The revenue generated from their immersive cultural and eco-tourism experiences directly supports these initiatives, creating a positive impact on local communities.</p>
                     
                     <p>Their programs, such as "Building Voices. Opening Doors. Empowering the Future," emphasize the transformative power of travel to promote social change and open up opportunities for marginalized groups.</p>
                 </div>
@@ -147,7 +148,7 @@ require_once '../admin/config/connection.php';
             
             <div class="tourism-content">
                 <div class="tourism-text">
-                    <p>Beyond the park's boundaries, Virunga Ecotours offers authentic community experiences that showcase local culture and traditions. These tours provide opportunities to meet families, observe traditional craft-making, and learn about the community's role in regional development.</p>
+                    <p>Beyond the park's boundaries, Virunga Journeys offers authentic community experiences that showcase local culture and traditions. These tours provide opportunities to meet families, observe traditional craft-making, and learn about the community's role in regional development.</p>
                     
                     <p>By participating in these community-based initiatives, travelers contribute to the empowerment of local populations, including women and youth, thereby promoting social equity and sustainable development.</p>
                 </div>
@@ -194,7 +195,7 @@ require_once '../admin/config/connection.php';
         <div class="container">
             <div class="conclusion-content">
                 <h2>A Vehicle for Social Change</h2>
-                <p>Virunga Ecotours exemplifies how community-based tourism can be a vehicle for social change, integrating LGBTQ+ inclusivity into its operations. Through responsible travel, travelers can support initiatives that promote equality and empowerment in the Virunga region.</p>
+                <p>Virunga Journeys exemplifies how community-based tourism can be a vehicle for social change, integrating LGBTQ+ inclusivity into its operations. Through responsible travel, travelers can support initiatives that promote equality and empowerment in the Virunga region.</p>
                 
                 <div class="conclusion-cta">
                     <a href="../pages/contactus.php" class="cta-btn primary">

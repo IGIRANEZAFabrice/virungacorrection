@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Shared page hero component. Set $pageHeroKey before including.
 $pageHeroConfig = [
   'contact' => [
-    'tag' => 'Virunga Homestay',
+    'tag' => 'Virunga House',
     'title' => 'Get in <em>touch</em> with us',
     'bg' => './img/hero/1.jpg',
     'crumb' => 'Contact Us'
@@ -44,7 +45,7 @@ $pageHeroConfig = [
     'crumb' => 'Blog'
   ],
   'house-rules' => [
-    'tag' => 'Virunga Homestay',
+    'tag' => 'Virunga House',
     'title' => 'House <em>Rules</em>',
     'bg' => './img/hero/3.jpg',
     'crumb' => 'House Rules'
@@ -56,7 +57,7 @@ $pageHeroConfig = [
     'crumb' => 'Booking Information'
   ],
   'privacy' => [
-    'tag' => 'Virunga Homestay',
+    'tag' => 'Virunga House',
     'title' => 'Privacy & <em>Policies</em>',
     'bg' => './img/hero/1.jpg',
     'crumb' => 'Privacy'

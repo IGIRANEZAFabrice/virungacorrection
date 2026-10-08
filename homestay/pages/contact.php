@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../../config/recaptcha.php';
-$pageTitle = 'Virunga Homestay - Contact Us';
+$pageTitle = 'Virunga House - Contact Us';
 $pageCss = ['page-hero.css','contact.css'];
 $pageHeroKey = 'contact';
 $pageScripts = ['contact.js'];
@@ -25,7 +25,7 @@ include 'includes/header.php';
         <div class="contact-reach" style="margin-top: 60px;">
           <p class="curated-eyebrow">REACH US DIRECTLY</p>
           <p class="contact-reach__info">
-            <a href="mailto:virungahomestay@gmail.com">virungahomestay@gmail.com</a><br />
+            <a href="mailto:info@virungajourneys.com">info@virungajourneys.com</a><br />
             <a href="tel:+250784513435">+250 784 513 435</a>
           </p>
         </div>

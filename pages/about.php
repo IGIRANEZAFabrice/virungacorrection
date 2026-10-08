@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../config/branding.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>

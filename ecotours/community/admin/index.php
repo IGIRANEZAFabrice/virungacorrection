@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Virunga Ecotours Community</title>
-    <meta name="description" content="Admin login for Virunga Ecotours Community Programs management system.">
+    <title>Admin Login - Virunga Journeys Community</title>
+    <meta name="description" content="Admin login for Virunga Journeys Community Programs management system.">
     <meta name="robots" content="noindex, nofollow">
     
     <!-- CSS Files -->
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="login-box">
                 <div class="login-header">
                     <div class="logo">
-                        <img src="../assets/images/logos/logo.jpg" alt="Virunga Ecotours" class="logo-img">
+                        <img src="../assets/images/logos/logo.jpg" alt="Virunga Journeys" class="logo-img">
                     </div>
                     <h1>Community Admin</h1>
                     <p>Sign in to manage community programs</p>
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
 
                 <div class="login-footer">
-                    <p>&copy; 2025 Virunga Ecotours. All rights reserved.</p>
+                    <p>&copy; 2025 Virunga Journeys. All rights reserved.</p>
                     <div class="footer-links">
                         <a href="../index.php">Back to Community Site</a>
                         <span>|</span>

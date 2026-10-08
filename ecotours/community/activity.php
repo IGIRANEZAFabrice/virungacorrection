@@ -150,7 +150,7 @@ $activities_result = mysqli_query($conn, $activities_query);
             </div>
 
             <div class="booking-description">
-                <p>Virunga Ecotours, as a pioneer in community-based tourism around the Virunga Massif, provides travelers with authentic, culturally immersive experiences that extend beyond conventional park visits. These activities are designed to support local communities while offering visitors meaningful engagement with Rwandan culture, traditions, and daily life.</p>
+                <p>Virunga Journeys, as a pioneer in community-based tourism around the Virunga Massif, provides travelers with authentic, culturally immersive experiences that extend beyond conventional park visits. These activities are designed to support local communities while offering visitors meaningful engagement with Rwandan culture, traditions, and daily life.</p>
             </div>
 
             <div class="booking-process">
@@ -176,7 +176,7 @@ $activities_result = mysqli_query($conn, $activities_query);
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h4>Direct Booking Process</h4>
-                            <p>To secure a reservation, travelers can initiate direct communication through professional channels. For Virunga Ecotours, WhatsApp provides an efficient and immediate booking interface. Travelers should provide their full name, desired activity, preferred date, and number of participants. This method allows for rapid confirmation and personalized assistance.</p>
+                            <p>To secure a reservation, travelers can initiate direct communication through professional channels. For Virunga Journeys, WhatsApp provides an efficient and immediate booking interface. Travelers should provide their full name, desired activity, preferred date, and number of participants. This method allows for rapid confirmation and personalized assistance.</p>
                         </div>
                     </div>
 
@@ -184,7 +184,7 @@ $activities_result = mysqli_query($conn, $activities_query);
                         <div class="step-number">4</div>
                         <div class="step-content">
                             <h4>Confirmation and Payment</h4>
-                            <p>Once the request is received, Virunga Ecotours provides an official confirmation detailing the itinerary, cost, and any preparation requirements. Payment terms are transparently communicated, often with options for mobile money or bank transfer.</p>
+                            <p>Once the request is received, Virunga Journeys provides an official confirmation detailing the itinerary, cost, and any preparation requirements. Payment terms are transparently communicated, often with options for mobile money or bank transfer.</p>
                         </div>
                     </div>
 
@@ -213,7 +213,7 @@ $activities_result = mysqli_query($conn, $activities_query);
                     </div>
                     <div class="contact-content">
                         <h4>Booking Contact</h4>
-                        <p>For direct bookings and inquiries, travelers can reach Virunga Ecotours via WhatsApp:</p>
+                        <p>For direct bookings and inquiries, travelers can reach Virunga Journeys via WhatsApp:</p>
                         <a href="https://wa.me/250784513435" class="whatsapp-link" target="_blank">
                             <i class="fab fa-whatsapp"></i>
                             +250 784 513 435

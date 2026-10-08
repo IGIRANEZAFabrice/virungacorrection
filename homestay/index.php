@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
 session_start();
 
 // Detect the app base path (e.g. /homestayv2 when not at web root)

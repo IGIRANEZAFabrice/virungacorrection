@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'list';
 }
 
-$pageTitle = 'Rooms Management — Virunga Homestay CMS';
+$pageTitle = 'Rooms Management — Virunga House CMS';
 $currentPage = 'rooms'; // Highlights active sidebar tab
 
 ?>

@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'list';
 }
 
-$pageTitle = 'Admin Users Management — Virunga Homestay CMS';
+$pageTitle = 'Admin Users Management — Virunga House CMS';
 $currentPage = 'users';
 
 ?>
@@ -228,7 +228,7 @@ $currentPage = 'users';
                       </div>
                       <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" name="email" placeholder="e.g. user@virungahomestay.com" value="<?= htmlspecialchars((string)$r['email']) ?>" />
+                        <input type="email" name="email" placeholder="e.g. user@example.com" value="<?= htmlspecialchars((string)$r['email']) ?>" />
                       </div>
                   </div>
                   

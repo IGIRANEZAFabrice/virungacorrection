@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
   if (!isset($baseLink) || !is_callable($baseLink)) {
     $basePath = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'])), '/\\');
     $basePath = $basePath === '/' ? '' : $basePath;

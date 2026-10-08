@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 ?>
 <!DOCTYPE html>
@@ -52,7 +53,7 @@ require_once '../admin/config/connection.php';
         <div class="container">
             <div class="intro-content">
                 <h2 class="section-title">Bridging the Gap for Young Explorers</h2>
-                <p>Virunga Ecotours bridges the gap created by age restrictions in Volcanoes National Park by offering safe, engaging, and educational opportunities for children under 13 and 15 years old. While parents explore the gorillas and golden monkeys, kids embark on tailored programs that spark creativity, build cultural awareness, and inspire curiosity about nature.</p>
+                <p>Virunga Journeys bridges the gap created by age restrictions in Volcanoes National Park by offering safe, engaging, and educational opportunities for children under 13 and 15 years old. While parents explore the gorillas and golden monkeys, kids embark on tailored programs that spark creativity, build cultural awareness, and inspire curiosity about nature.</p>
                 
                 <p>These experiences ensure that family travel is inclusive, meaningful, and enriching for every member. Children are not only entertained but also guided through structured activities that combine fun with learning—ranging from games and arts to conservation-inspired discovery. Parents enjoy their park adventures with peace of mind, knowing their children are equally immersed in purposeful exploration.</p>
             </div>

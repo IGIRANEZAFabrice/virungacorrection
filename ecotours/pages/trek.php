@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

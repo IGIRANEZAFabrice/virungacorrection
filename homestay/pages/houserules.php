@@ -1,6 +1,6 @@
 <?php
   require_once __DIR__ . '/../config/db.php';
-  $pageTitle   = 'Virunga Homestay – House Rules';
+  $pageTitle   = 'Virunga House – House Rules';
   $pageCss     = ['page-hero.css', 'house-rules.css'];
   $pageHeroKey = 'house-rules';
   $pageScripts = ['house-rules.js'];
@@ -15,7 +15,7 @@
   <div class="hr-welcome__inner">
     <i class="fa-solid fa-leaf hr-welcome__icon"></i>
     <p>
-      Welcome to <strong>Virunga Homestay</strong> — enjoy a unique and immersive experience
+      Welcome to <strong>Virunga House</strong> — enjoy a unique and immersive experience
       blending nature, culture, adventure, and conservation. Please review our house rules to
       ensure a comfortable stay for everyone.
     </p>

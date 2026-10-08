@@ -173,7 +173,7 @@ foreach ($required_tables as $table) {
 <body>
     <div class="install-container">
         <div class="install-header">
-            <img src="../../images/logos/logo.png" alt="Virunga Ecotours" style="height: 60px; margin-bottom: 1rem;">
+            <img src="../../images/logos/logo.png" alt="Virunga Journeys" style="height: 60px; margin-bottom: 1rem;">
             <h1>Community Programs Installation</h1>
             <p>Set up the database and initial configuration for the Community Programs system.</p>
         </div>
@@ -279,7 +279,7 @@ foreach ($required_tables as $table) {
 
         <!-- Footer -->
         <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--neutral-beige); color: var(--text-medium);">
-            <p>&copy; 2025 Virunga Ecotours Community Programs. All rights reserved.</p>
+            <p>&copy; 2025 Virunga Journeys Community Programs. All rights reserved.</p>
         </div>
     </div>
 </body>

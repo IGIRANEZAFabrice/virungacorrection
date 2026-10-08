@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/branding.php';
 session_start();
 
 $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');

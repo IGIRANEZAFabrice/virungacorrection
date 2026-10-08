@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
-$page_title = "Health Tourism Programs - Virunga Ecotours";
-$page_description = "Discover how Virunga Ecotours integrates health tourism into community-based activities, connecting wellness experiences with local health initiatives and community development.";
+$page_title = "Health Tourism Programs - Virunga Journeys";
+$page_description = "Discover how Virunga Journeys integrates health tourism into community-based activities, connecting wellness experiences with local health initiatives and community development.";
 
 // Get healthcare programs count
 $count_query = "SELECT COUNT(*) as total FROM community_programs WHERE category = 'Healthcare' AND status IN ('active', 'completed')";
@@ -57,7 +58,7 @@ $programs_result = mysqli_query($conn, $programs_query);
             <div class="intro-content">
                 <div class="intro-text">
                     <h2>Integration of Health Tourism into Community-Based Activities</h2>
-                    <p>Health tourism, in the context of Virunga Ecotours, is not limited to medical treatment but extends to well-being, preventive health practices, and community health engagement. The approach is designed to link visitors' travel experiences with opportunities to contribute to and learn from local health initiatives. This integration strengthens both the visitor experience and the host communities' health outcomes.</p>
+                    <p>Health tourism, in the context of Virunga Journeys, is not limited to medical treatment but extends to well-being, preventive health practices, and community health engagement. The approach is designed to link visitors' travel experiences with opportunities to contribute to and learn from local health initiatives. This integration strengthens both the visitor experience and the host communities' health outcomes.</p>
                 </div>
 
                 <div class="intro-highlights">
@@ -122,7 +123,7 @@ $programs_result = mysqli_query($conn, $programs_query);
                     <div class="dimension-number">2</div>
                     <div class="dimension-content">
                         <h3>Preventive and Wellness Tourism</h3>
-                        <p>Virunga Ecotours connects travelers to wellness-based activities, such as traditional herbal medicine, stress-relief practices, and nature-based therapies (forest walks, hot springs where available). These are framed as both cultural encounters and health-enhancing experiences.</p>
+                        <p>Virunga Journeys connects travelers to wellness-based activities, such as traditional herbal medicine, stress-relief practices, and nature-based therapies (forest walks, hot springs where available). These are framed as both cultural encounters and health-enhancing experiences.</p>
                         <ul class="dimension-benefits">
                             <li>Traditional herbal medicine learning</li>
                             <li>Nature-based therapy sessions</li>

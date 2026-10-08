@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php';
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php';
 // Load main page (first row or create empty defaults)
 $page = null;
 $page_q = mysqli_query($conn, "SELECT id, section_description FROM impact_page ORDER BY id ASC LIMIT 1");
@@ -51,7 +52,7 @@ if ($page_id) {
     <?php include 'includes/header.php'; ?>
         <section class="page-header">
             <div class="page-header-background">
-                <img src="uploads/impact/hero.jpg" alt="About Virunga Ecotours Community" loading="lazy">
+                <img src="uploads/impact/hero.jpg" alt="About Virunga Journeys Community" loading="lazy">
                 <div class="page-header-overlay"></div>
             </div>
             <div class="container">

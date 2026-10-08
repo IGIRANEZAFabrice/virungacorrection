@@ -85,7 +85,7 @@ try {
         'smtp_username' => SMTP_EMAIL,
         'smtp_password' => SMTP_PASS, 
         'from_email' => SMTP_EMAIL,
-        'from_name' => 'Virunga Ecotours System',
+        'from_name' => 'Virunga Journeys System',
         'to_email' => 'virungahomestay@gmail.com',
         'subject' => 'Daily Summary Report - ' . date('Y-m-d H:i:s')
     ];
@@ -312,7 +312,7 @@ function generateEmailHeader() {
     $header .= "<title>Daily Summary Report</title>\n</head>\n<body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>\n";
     $header .= "<div style='max-width: 800px; margin: 0 auto; padding: 20px;'>\n";
     $header .= "<h1 style='color: #2a4858; text-align: center; border-bottom: 3px solid #2a4858; padding-bottom: 15px;'>";
-    $header .= "Virunga Ecotours - Daily Summary Report</h1>\n";
+    $header .= "Virunga Journeys - Daily Summary Report</h1>\n";
     $header .= "<p style='text-align: center; color: #666; font-size: 14px;'>Generated on " . date('F j, Y \a\t g:i A') . "</p>\n";
     return $header;
 }
@@ -326,7 +326,7 @@ function generateEmailFooter($total_items) {
     $footer .= "<h3 style='color: #2a4858; margin: 0 0 10px 0;'>Summary</h3>\n";
     $footer .= "<p style='margin: 0; font-size: 16px;'><strong>Total New Items: $total_items</strong></p>\n";
     $footer .= "<p style='margin: 10px 0 0 0; font-size: 12px; color: #666;'>";
-    $footer .= "This is an automated email from your Virunga Ecotours system.</p>\n";
+    $footer .= "This is an automated email from your Virunga Journeys system.</p>\n";
     $footer .= "</div>\n</div>\n</body>\n</html>";
     return $footer;
 }

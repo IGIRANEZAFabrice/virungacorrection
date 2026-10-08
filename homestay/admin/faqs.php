@@ -52,7 +52,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 // Fetch FAQs
 $faqs = $conn->query("SELECT * FROM faqs ORDER BY display_order ASC, id DESC");
 
-$pageTitle = 'Manage FAQs — Virunga Homestay CMS';
+$pageTitle = 'Manage FAQs — Virunga House CMS';
 $currentPage = 'faqs';
 
 // Get current FAQ for editing

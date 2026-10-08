@@ -14,7 +14,7 @@ if ($res && $res->num_rows > 0) {
     exit;
 }
 
-  $pageTitle = 'Virunga Homestay - ' . htmlspecialchars($blog['title']);
+  $pageTitle = 'Virunga House - ' . htmlspecialchars($blog['title']);
   $pageCss = ['blogdetails.css'];
   $pageScripts = [];
   include 'includes/header.php';

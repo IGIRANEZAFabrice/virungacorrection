@@ -1,5 +1,5 @@
 <?php
-  $pageTitle = 'Virunga Homestay - Rooms';
+  $pageTitle = 'Virunga House - Rooms';
   $pageCss = ['page-hero.css','rooms-list.css','room.css'];
   $pageHeroKey = 'rooms';
   $pageScripts = ['home.js'];
@@ -13,7 +13,7 @@
         <h2 class="section-heading" id="roomsHeading">Our Stay Experience</h2>
         <div class="rooms-intro-section">
           <p class="rooms-intro-text">
-            Experience Comfort and Culture at Virunga Homestay. Virunga Homestay offers a range of thoughtfully designed accommodations that combine comfort, local charm, and modern amenities, creating an authentic Rwandan experience for every guest.
+            Experience Comfort and Culture at Virunga House. Virunga House offers a range of thoughtfully designed accommodations that combine comfort, local charm, and modern amenities, creating an authentic Rwandan experience for every guest.
           </p>
           
           <div class="rooms-features-grid">
@@ -40,7 +40,7 @@
           </div>
           
           <div class="rooms-footer-info">
-            <p>Where the Virunga mountains rises in the distance, Virunga Homestay opens its doors to comfort, connection, and an authentic glimpse of life in this breathtaking region.</p>
+            <p>Where the Virunga mountains rises in the distance, Virunga House opens its doors to comfort, connection, and an authentic glimpse of life in this breathtaking region.</p>
             <a href="<?php echo isset($baseLink) ? $baseLink('bookinginfo') : 'bookinginfo.php'; ?>" class="booking-link">
                View Booking Information
             </a>
@@ -92,7 +92,7 @@
                     
                     echo '
                     <a class="room-card" href="' . $whatsappUrl . '" target="_blank" rel="noopener">
-                      <img class="room-card__img" src="' . $image . '" alt="' . $title . ' - Virunga Homestay Room" loading="lazy" />
+                      <img class="room-card__img" src="' . $image . '" alt="' . $title . ' - Virunga House Room" loading="lazy" />
                       <div class="room-card__overlay"></div>
                       <span class="room-card__tag">' . $tag . '</span>
                       <div class="room-card__content">

@@ -1,4 +1,5 @@
-<?php require_once __DIR__ . '/../../config/recaptcha.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once __DIR__ . '/../../config/recaptcha.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -804,7 +805,7 @@ html {
       <div class="two-column">
         <div class="column">
           <p>
-            Virunga Ecotours specializes in crafting personalized travel itineraries that provide an authentic 
+            Virunga Journeys specializes in crafting personalized travel itineraries that provide an authentic
             and eco-conscious experience in the Virunga Massif. By focusing on the natural landscapes, diverse wildlife, 
             and local communities, we tailor each journey to match the unique interests and values of our travelers. 
             Our itineraries include a mix of activities such as wildlife tracking, hiking, and cultural exchanges, 

@@ -48,7 +48,7 @@ if ($conn) {
     if (empty($hero_slides)) {
         $hero_slides[] = [
             'id' => 1,
-            'title' => 'Welcome to Virunga Ecotours',
+            'title' => 'Welcome to Virunga Journeys',
             'description' => 'Experience the beauty of nature with sustainable tourism',
             'image_url' => 'images/default-hero.jpg'
         ];
@@ -223,7 +223,7 @@ if ($conn) {
         if (!$about_data) {
             $about_data = [
                 'title' => 'Transforming Ideas Into Reality',
-                'slide_description' => 'Virunga Ecotours is a leader in sustainable travel...',
+                'slide_description' => 'Virunga Journeys is a leader in sustainable travel...',
                 'youtube_url' => ''
             ];
         }
@@ -231,7 +231,7 @@ if ($conn) {
         // Default values if query fails
         $about_data = [
             'title' => 'Transforming Ideas Into Reality',
-            'slide_description' => 'Virunga Ecotours is a leader in sustainable travel...',
+            'slide_description' => 'Virunga Journeys is a leader in sustainable travel...',
             'youtube_url' => ''
         ];
     }

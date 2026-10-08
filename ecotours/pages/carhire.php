@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,7 @@
     <section class="intro">
         <div class="container">
             <p>
-                Traveling through the Virunga Massif is more than just reaching a destination, it’s about experiencing every mile with comfort, safety, and freedom. Virunga Ecotours offers reliable car hire and transfer services designed for adventurers, leisure travelers, and luxury seekers who want to explore Rwanda, Uganda, and the Democratic Republic of Congo at their own pace.
+                Traveling through the Virunga Massif is more than just reaching a destination, it’s about experiencing every mile with comfort, safety, and freedom. Virunga Journeys offers reliable car hire and transfer services designed for adventurers, leisure travelers, and luxury seekers who want to explore Rwanda, Uganda, and the Democratic Republic of Congo at their own pace.
             </p>
         </div>
     </section>
@@ -74,7 +75,7 @@
                 <div class="fleet-card">
                     <div class="icon"><i class="fas fa-key"></i></div>
                     <h3>Self-Drive Options</h3>
-                    <p class="desc">For independent travelers who prefer the freedom of exploring at their own pace, Virunga Ecotours provides safe, reliable vehicles upon request.</p>
+                    <p class="desc">For independent travelers who prefer the freedom of exploring at their own pace, Virunga Journeys provides safe, reliable vehicles upon request.</p>
                 </div>
             </div>
         </div>

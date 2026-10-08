@@ -1,4 +1,5 @@
-<?php require_once '../admin/config/connection.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/branding.php'; require_once '../admin/config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,7 +95,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Overview</h2>
-            <p class="lead">Coffee is more than just a drink—it is a story of land, people, and tradition. Around the Virunga Massif, local farming communities nurture some of the richest volcanic soils on earth, producing beans that are aromatic, bold, and full of character. With Virunga Ecotours, visitors can trace the entire journey from farm to cup, experiencing firsthand the art and culture of coffee.</p>
+            <p class="lead">Coffee is more than just a drink—it is a story of land, people, and tradition. Around the Virunga Massif, local farming communities nurture some of the richest volcanic soils on earth, producing beans that are aromatic, bold, and full of character. With Virunga Journeys, visitors can trace the entire journey from farm to cup, experiencing firsthand the art and culture of coffee.</p>
             <p class="lead">Our coffee tours are community-based experiences, where guests walk through smallholder farms, learn traditional cultivation methods, join in harvesting and roasting, and finally share a freshly brewed cup with local farmers. It is an immersive way to connect with the land and its people, while supporting livelihoods and celebrating one of the region’s finest agricultural treasures.</p>
         </div>
     </section>
@@ -113,7 +114,7 @@
 
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Virunga Ecotours Engagement</h2>
+            <h2 class="section-title">Virunga Journeys Engagement</h2>
             <ul class="cf-list">
                 <li>Organize guided farm visits and workshops led by local farmers</li>
                 <li>Connect visitors with authentic community stories and cultural practices</li>
@@ -172,7 +173,7 @@
                         </tr>
                         <tr>
                             <td>Conferences &amp; Exhibitions</td>
-                            <td>Attend local coffee events with Virunga Ecotours</td>
+                            <td>Attend local coffee events with Virunga Journeys</td>
                             <td>Connect to the global coffee movement</td>
                         </tr>
                     </tbody>

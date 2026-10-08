@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection and data fetching
 require_once('../admin/config/db_connect.php');
 ?>
@@ -80,9 +81,9 @@ require_once('../admin/config/db_connect.php');
             <div class="intro-content">
                 <div class="intro-text">
                     <h2>Honeymoon & Family Tours in the Virunga Massif</h2>
-                    <p class="intro-lead">A Community-Based Tourism Experience with Virunga Ecotours</p>
+                    <p class="intro-lead">A Community-Based Tourism Experience with Virunga Journeys</p>
 
-                    <p>The Virunga Massif is more than just a destination—it is a living mosaic of towering volcanoes, rich cultures, and communities whose warmth turns every journey into a shared story. Virunga Ecotours invites honeymooners and families to discover this breathtaking region through carefully designed community-based tourism experiences that blend romance, adventure, and cultural immersion.</p>
+                    <p>The Virunga Massif is more than just a destination—it is a living mosaic of towering volcanoes, rich cultures, and communities whose warmth turns every journey into a shared story. Virunga Journeys invites honeymooners and families to discover this breathtaking region through carefully designed community-based tourism experiences that blend romance, adventure, and cultural immersion.</p>
 
                     <div class="intro-highlights">
                         <div class="highlight-item">

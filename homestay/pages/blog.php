@@ -1,5 +1,5 @@
 <?php
-  $pageTitle = 'Virunga Homestay - Blog';
+  $pageTitle = 'Virunga House - Blog';
   $pageCss = ['page-hero.css', 'blog.css'];
   $pageHeroKey = 'blog';
   $pageScripts = ['blog.js'];
@@ -14,7 +14,7 @@
         <div class="section-label">Latest Stories</div>
         <h2 class="blog-title">Fresh stories from Musanze, crafted for travelers</h2>
         <p class="blog-lead">
-          Explore local insights, travel tips, and behind-the-scenes stories from Virunga Homestay.
+          Explore local insights, travel tips, and behind-the-scenes stories from Virunga House.
           Use filters to discover what matches your trip style.
         </p>
       </div>

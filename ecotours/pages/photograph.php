@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection (optional for future dynamic content)
 // require_once('../admin/config/connection.php');
 ?>
@@ -50,7 +51,7 @@
         <div class="container">
             <div class="overview-content" data-animation="fadeInUp">
                 <h2>Program Overview</h2>
-                <p class="overview-intro">The Kids for Life Photography Training is an immersive educational program designed to inspire young people to connect deeply with nature and conservation through the art of photography. Organized by Virunga Ecotours, this training combines classroom learning with hands-on field tours around the breathtaking Virunga Massif.</p>
+                <p class="overview-intro">The Kids for Life Photography Training is an immersive educational program designed to inspire young people to connect deeply with nature and conservation through the art of photography. Organized by Virunga Journeys, this training combines classroom learning with hands-on field tours around the breathtaking Virunga Massif.</p>
                 <p>Children will not only learn photography skills but also discover the importance of protecting wildlife, landscapes, and local cultural heritage.</p>
             </div>
         </div>

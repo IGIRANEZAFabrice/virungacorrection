@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
 require_once __DIR__ . '/../config/recaptcha.php';
 $pageTitle = 'Contact Us — Virunga Collective';
 $pageDescription = 'Get in touch with Virunga Collective. We reply within 24 hours.';

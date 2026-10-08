@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
 require_once __DIR__ . '/../config/recaptcha.php';
 $pageTitle = 'Membership — Virunga Collective';
 $pageDescription = 'Join the Virunga Collective Membership. Travel, belong, and make a positive impact in the Virunga region.';

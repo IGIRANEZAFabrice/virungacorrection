@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Article edits must not leave stale HTML pointing at replaced uploads.
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');

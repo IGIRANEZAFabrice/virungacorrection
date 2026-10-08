@@ -6,11 +6,11 @@
     <?php $resolvedAssetBase = !empty($assetBase) ? $assetBase : './'; ?>
     <base href="<?php echo htmlspecialchars($resolvedAssetBase, ENT_QUOTES); ?>">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Virunga Ecotours">
+    <meta name="author" content="Virunga Journeys">
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Virunga Ecotours Community Programs">
+    <meta property="og:site_name" content="Virunga Journeys Community Programs">
     <meta property="og:locale" content="en_US">
     <meta property="og:image" content="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']; ?>/clone/ecotours/images/logos/logo.png">
     
@@ -215,7 +215,7 @@
         <div class="mobile-nav-menu" id="mobileNavMenu">
             <div class="mobile-nav-header">
                 <div class="mobile-logo">
-                    <img src="../images/logos/logo.png" alt="Virunga Ecotours">
+                    <img src="../images/logos/logo.png" alt="Virunga Journeys">
                     <span>Community Programs</span>
                 </div>
                 <button class="mobile-nav-close" id="mobileNavClose">

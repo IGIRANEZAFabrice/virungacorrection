@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   shop.js  —  Virunga Homestay Shop
+   shop.js  —  Virunga House Shop
    • Scroll reveal
    • Animated stat counters
    • Category filter + live search

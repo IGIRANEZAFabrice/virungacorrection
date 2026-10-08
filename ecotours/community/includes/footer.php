@@ -8,10 +8,10 @@
                     <!-- About Section -->
                     <div class="footer-column about-column">
                         <div class="footer-logo">
-                            <img src="../images/logos/logo.png" alt="Virunga Ecotours Community Programs">
+                            <img src="../images/logos/logo.png" alt="Virunga Journeys Community Programs">
                             <div class="logo-text">
                                 <h4>Community Programs</h4>
-                                <span>Virunga Ecotours</span>
+                                <span>Virunga Journeys</span>
                             </div>
                         </div>
                         <p class="footer-description">
@@ -118,7 +118,7 @@
             <div class="container">
                 <div class="footer-bottom-content">
                     <div class="copyright">
-                        <p>&copy; <?php echo date('Y'); ?> Virunga Ecotours Community Programs. All rights reserved.</p>
+                        <p>&copy; <?php echo date('Y'); ?> Virunga Journeys Community Programs. All rights reserved.</p>
                         <p class="tagline">Building stronger communities, preserving nature's heritage.</p>
                     </div>
                     

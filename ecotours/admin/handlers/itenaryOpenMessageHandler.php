@@ -49,7 +49,7 @@ try {
     $message = "Dear $name,\n\nThank you for booking the tour: " . $tour['title'] . ".\n";
     $message .= "Your travel date: $date\n";
     $message .= "We'll contact you shortly to confirm your booking.\n\n";
-    $message .= "Best regards,\nVirunga Ecotours Team";
+    $message .= "Best regards,\nVirunga Journeys Team";
     
     // mail($to, $subject, $message); // Uncomment and configure your mail server
 

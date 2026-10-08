@@ -80,8 +80,8 @@ function buildCustomerBookingEmail($customerName, $tourName, $tourDate, $guestCo
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungaecotours.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
-            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Ecotours</div>
+            <img src="https://virungajourneys.com/ecotours/images/logos/icon.png" alt="Virunga Journeys" width="72" style="display:block;margin:0 auto 12px;">
+            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Journeys</div>
           </td>
         </tr>
         <tr>
@@ -125,7 +125,7 @@ function buildCustomerBookingEmail($customerName, $tourName, $tourDate, $guestCo
         </tr>
         <tr>
           <td style="padding:0 28px 24px;">
-            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7a8a;">Thank you for choosing Virunga Ecotours. We look forward to welcoming you.</p>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7a8a;">Thank you for choosing Virunga Journeys. We look forward to welcoming you.</p>
           </td>
         </tr>
       </table>
@@ -142,7 +142,7 @@ function sendBookingNotificationEmail($recipientEmail, $subject, $bodyHtml) {
         'smtp_username' => SMTP_EMAIL,
         'smtp_password' => SMTP_PASS,
         'from_email' => SMTP_EMAIL,
-        'from_name' => 'Virunga Ecotours System',
+        'from_name' => 'Virunga Journeys System',
     ];
 
     try {
@@ -254,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p><strong>Guests (as entered):</strong> ' . htmlspecialchars((string)$guest_count) . '</p>
             <p><strong>IP Address:</strong> ' . htmlspecialchars((string)$ip_address) . '</p>
             <hr/>
-            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Ecotours itinerary booking form.</p>
+            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Journeys itinerary booking form.</p>
         ';
 
         $failedRecipients = [];

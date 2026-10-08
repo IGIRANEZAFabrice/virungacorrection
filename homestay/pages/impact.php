@@ -1,6 +1,6 @@
 <?php
   $pageTitle = 'Our Impact - Travel That Makes a Difference';
-  $pageDescription = 'Discover how Virunga Homestay Experience empowers communities, protects nature, and preserves culture in Musanze, Rwanda.';
+  $pageDescription = 'Discover how Virunga House Experience empowers communities, protects nature, and preserves culture in Musanze, Rwanda.';
   $pageKeywords = 'impact, responsible tourism, community tourism, Rwanda, conservation, sustainability';
   $pageCss = ['page-hero.css', 'impact.css'];
   $pageHeroKey = 'impact';
@@ -18,7 +18,7 @@
         <p class="section-label">A Collection of Meaningful Moments</p>
         <h2 class="section-heading">The Art of Purposeful Travel</h2>
         <p class="intro-body">
-          At Virunga Homestay Experience, we believe travel is a curated art form. Nestled at the foot of the Volcanoes National Park, our boutique homestay offers more than a room—it offers a rare entry into the soul of Rwanda. Every stay is a bespoke partnership with local families, a dedicated investment in youth, and a direct contribution to the conservation of our mountain home.
+          At Virunga House Experience, we believe travel is a curated art form. Nestled at the foot of the Volcanoes National Park, our boutique homestay offers more than a room—it offers a rare entry into the soul of Rwanda. Every stay is a bespoke partnership with local families, a dedicated investment in youth, and a direct contribution to the conservation of our mountain home.
         </p>
       </div>
     </div>
@@ -80,7 +80,7 @@
       <div class="statement-box reveal">
         <h2 class="section-heading">Curation with Conscience</h2>
         <p class="statement-text">
-          We believe the most exquisite experiences are those that respect the earth and its people. Our ethical principles are the foundation of our collection, ensuring that your journey is as sustainable as it is soul-stirring. At Virunga Homestay, every interaction is a conscious choice for the better.
+          We believe the most exquisite experiences are those that respect the earth and its people. Our ethical principles are the foundation of our collection, ensuring that your journey is as sustainable as it is soul-stirring. At Virunga House, every interaction is a conscious choice for the better.
         </p>
       </div>
     </div>
@@ -189,7 +189,7 @@
       <div class="final-cta-content">
         <h2 class="cta-title">Begin Your Story with Us</h2>
         <p class="cta-text">
-          Your journey to Rwanda is more than a destination; it is a collection of stories waiting to be told. Choose Virunga Homestay for a curated experience where every moment is crafted with purpose, beauty, and a deep respect for the heart of Musanze.
+          Your journey to Rwanda is more than a destination; it is a collection of stories waiting to be told. Choose Virunga House for a curated experience where every moment is crafted with purpose, beauty, and a deep respect for the heart of Musanze.
         </p>
         <div class="cta-actions">
           <a href="<?php echo $baseLink('contact'); ?>" class="btn-primary">Book Your Stay</a>

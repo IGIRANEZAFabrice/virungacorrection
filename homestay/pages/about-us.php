@@ -1,7 +1,7 @@
 <?php
   $pageTitle = 'Our Story | Virunga House - Locally Rooted Stay in Musanze';
   $pageDescription = 'Discover the story of Virunga House — from a family home in 2020 to an intimate boutique stay beneath the Virunga volcanoes in Musanze, Rwanda.';
-  $pageKeywords = 'Virunga House story, Virunga Homestay history, Francisco and Aline, Musanze homestay, Virunga Collective, Rwanda boutique stay';
+  $pageKeywords = 'Virunga House story, Virunga House history, Francisco and Aline, Musanze homestay, Virunga Collective, Rwanda boutique stay';
   $pageCss = ['page-hero.css', 'about.css'];
   $pageHeroKey = 'about-us';
   $pageScripts = ['about.js'];
@@ -442,7 +442,7 @@
         <span class="vh-eyebrow">THE BEGINNING</span>
         <h2 class="vh-title">From Home to Homestay</h2>
         <p class="vh-lead" style="max-width: 820px; margin: 0 auto;">
-          On 1 March 2020, Francisco, Aline and other members of the family welcomed their first guests and began the story of Virunga Homestay.
+          On 1 March 2020, Francisco, Aline and other members of the family welcomed their first guests and began the story of Virunga House.
         </p>
       </div>
 
@@ -490,10 +490,10 @@
           <span class="vh-eyebrow">THE EVOLUTION</span>
           <h2 class="vh-title" style="text-align: left;">Growing with the Place</h2>
           <p class="about-body" style="font-size: 1.02rem; line-height: 1.75; color: var(--vh-text-dark);">
-            Over time, Virunga Homestay evolved. The House became more established, the hospitality grew, and the relationship between staying, discovering and connecting with the Virunga became increasingly important.
+            Over time, Virunga House evolved. The House became more established, the hospitality grew, and the relationship between staying, discovering and connecting with the Virunga became increasingly important.
           </p>
           <div class="story-callout-box">
-            <strong>28 August 2026:</strong> The name evolved from <em>Virunga Homestay</em> to <strong>Virunga House</strong>.
+            <strong>28 August 2026:</strong> The name evolved from <em>Virunga House</em> to <strong>Virunga House</strong>.
           </div>
           <p class="about-body" style="font-size: 0.98rem; line-height: 1.7; color: var(--vh-text-muted);">
             The new name reflects that journey. Virunga House is still rooted in the same spirit that shaped it from the beginning: warmth, personal hospitality and a genuine connection to place. But it now represents a more established and distinct place to stay in the Virunga.

@@ -70,7 +70,7 @@ function sendBuildNotificationEmail($recipientEmail, $subject, $bodyHtml) {
         'smtp_username' => SMTP_EMAIL,
         'smtp_password' => SMTP_PASS,
         'from_email' => SMTP_EMAIL,
-        'from_name' => 'Virunga Ecotours System',
+        'from_name' => 'Virunga Journeys System',
     ];
 
     try {
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><strong>Budget notes:</strong> ' . nl2br(htmlspecialchars((string)$budget_notes)) . '</p>
             <p><strong>Traveler info:</strong> ' . nl2br(htmlspecialchars((string)$travelers_info)) . '</p>
             <hr/>
-            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Ecotours trip planner form.</p>
+            <p style="color:#666; font-size:12px;">Sent automatically from Virunga Journeys trip planner form.</p>
         ';
 
         $failedRecipients = [];

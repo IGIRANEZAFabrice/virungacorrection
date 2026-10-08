@@ -1,5 +1,5 @@
 <?php
-  $pageTitle = 'Virunga Homestay - Privacy Policy';
+  $pageTitle = 'Virunga House - Privacy Policy';
   $pageCss = ['page-hero.css','privacy.css'];
   $pageHeroKey = 'privacy';
   include 'includes/header.php';

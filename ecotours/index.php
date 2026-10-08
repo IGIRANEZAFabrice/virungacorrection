@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/branding.php';
 require_once 'indexhandler.php';
 ?>
 <!DOCTYPE html>

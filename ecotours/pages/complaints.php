@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +85,7 @@
                             <i class="fas fa-lightbulb"></i>
                             Solution:
                         </div>
-                        <p class="solution-text">Virunga Ecotours secures permits in advance and informs clients of peak booking periods.</p>
+                        <p class="solution-text">Virunga Journeys secures permits in advance and informs clients of peak booking periods.</p>
                     </div>
                 </div>
                 <div class="problem-card" data-problem="golden monkey permit confusion">
@@ -129,7 +130,7 @@
                             <i class="fas fa-lightbulb"></i>
                             Solution:
                         </div>
-                        <p class="solution-text">Virunga Ecotours provides safe, comfortable vehicles with experienced drivers familiar with regional roads.</p>
+                        <p class="solution-text">Virunga Journeys provides safe, comfortable vehicles with experienced drivers familiar with regional roads.</p>
                     </div>
                 </div>
                 <div class="problem-card" data-problem="language barriers">
@@ -640,7 +641,7 @@
                             <i class="fas fa-lightbulb"></i>
                             Solution:
                         </div>
-                        <p class="solution-text">Virunga Ecotours integrates regional cultural events into itineraries, aligning visits with festivals, traditional dances, and community gatherings for a richer experience.</p>
+                        <p class="solution-text">Virunga Journeys integrates regional cultural events into itineraries, aligning visits with festivals, traditional dances, and community gatherings for a richer experience.</p>
                     </div>
                 </div>
                 <div class="problem-card" data-problem="overbooking in peak seasons">
@@ -655,7 +656,7 @@
                             <i class="fas fa-lightbulb"></i>
                             Solution:
                         </div>
-                        <p class="solution-text">Virunga Ecotours provides up-to-date guidance on border health requirements, prepares travelers with necessary documentation, and coordinates with local authorities for smooth passage.   </p>
+                        <p class="solution-text">Virunga Journeys provides up-to-date guidance on border health requirements, prepares travelers with necessary documentation, and coordinates with local authorities for smooth passage.   </p>
                     </div>
                 </div>
             </div>
@@ -666,7 +667,7 @@
                     Your Journey, Our Expertise
                 </h2>
                 <p class="conclusion-text">
-                    Virunga Ecotours combines local expertise, strategic planning, and professional coordination to address these challenges proactively. 
+                    Virunga Journeys combines local expertise, strategic planning, and professional coordination to address these challenges proactively.
                     Clients are guided from initial planning to post-trip follow-up, ensuring every journey across the Virunga Massif is safe, seamless, and unforgettable.
                 </p>
             </div>

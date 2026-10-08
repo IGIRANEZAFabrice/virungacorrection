@@ -21,7 +21,7 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Build Submissions | Virunga Ecotours</title>
+    <title>Build Submissions | Virunga Journeys</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/buildmessage.css">

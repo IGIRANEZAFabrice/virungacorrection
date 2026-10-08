@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once '../admin/config/connection.php';
 
 // Fetch team members
@@ -21,8 +22,8 @@ $stats = mysqli_fetch_assoc($stats_result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Virunga Ecotours Community</title>
-    <meta name="description" content="Learn about Virunga Ecotours' community programs, our mission, vision, and the dedicated team working to empower communities across Rwanda, DRC Congo, and Uganda.">
+    <title>About Us - Virunga Journeys Community</title>
+    <meta name="description" content="Learn about Virunga Journeys' community programs, our mission, vision, and the dedicated team working to empower communities across Rwanda, DRC Congo, and Uganda.">
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="../css/earthy-theme.css">
@@ -73,7 +74,7 @@ $stats = mysqli_fetch_assoc($stats_result);
     <!-- Page Header -->
     <section class="page-header">
         <div class="page-header-background">
-            <img src="../images/hero/women4.jpg" alt="About Virunga Ecotours Community" loading="lazy">
+            <img src="../images/hero/women4.jpg" alt="About Virunga Journeys Community" loading="lazy">
             <div class="page-header-overlay"></div>
         </div>
         <div class="container">
@@ -92,9 +93,9 @@ $stats = mysqli_fetch_assoc($stats_result);
     <!-- Intro Text Section -->
     <section class="intro-text-section">
         <div class="container">
-            <p>The Virunga Community Programs was born from a simple idea: tourism should not only showcase the beauty of the Virunga Massif but also improve the lives of the people who call it home. Supported by Virunga Ecotours, the initiative ensures that every journey contributes to meaningful change, transforming challenges into opportunities and turning travel into lasting impact.</p>
+            <p>The Virunga Community Programs was born from a simple idea: tourism should not only showcase the beauty of the Virunga Massif but also improve the lives of the people who call it home. Supported by Virunga Journeys, the initiative ensures that every journey contributes to meaningful change, transforming challenges into opportunities and turning travel into lasting impact.</p>
             <p>Across the region, families face real struggles: poverty that limits livelihoods, youth without opportunities, schools lacking resources, and communities without adequate healthcare or clean water. At the same time, women continue to confront barriers, cultural traditions risk being forgotten, and living alongside wildlife often leads to daily conflict. These challenges are significant, but they are not without solutions. Through skills training, education support, health and water projects, women’s empowerment, cultural preservation, and conservation awareness, the initiative delivers programs that are practical, people-centered, and designed for lasting results.</p>
-            <p>What makes this work different is its foundation: it is fueled by the spirit of tourism and strengthened by those who believe in meaningful impact. Each visit with Virunga Ecotours creates a ripple effect that reaches classrooms, households, and villages. Every partnership, every shared skill, every contribution helps build a future where communities thrive alongside nature.</p>
+            <p>What makes this work different is its foundation: it is fueled by the spirit of tourism and strengthened by those who believe in meaningful impact. Each visit with Virunga Journeys creates a ripple effect that reaches classrooms, households, and villages. Every partnership, every shared skill, every contribution helps build a future where communities thrive alongside nature.</p>
             <p>This is more than a program, it is an open door for anyone who wants to see their time, resources, or knowledge create visible change. By walking alongside this vision, you become part of a collective effort to lift families out of poverty, give children a chance at education, empower women, protect culture, and safeguard the Virunga landscape for generations to come. Together, we can turn today’s struggles into tomorrow’s hope and build a stronger, more vibrant Virunga.</p>
         </div>
     </section>
@@ -147,7 +148,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                             <div class="timeline-year">2017</div>
                             <div class="timeline-content">
                             <h4>Vision Born</h4>
-                            <p>In 2017, the seeds of Virunga Ecotours were planted with a bold vision to create a bridge between tourism, conservation, and community empowerment in the Virunga Massif.</p>
+                            <p>In 2017, the seeds of Virunga Journeys were planted with a bold vision to create a bridge between tourism, conservation, and community empowerment in the Virunga Massif.</p>
                             </div>
                         </div>
 

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 require_once('../admin/config/connection.php');
 
 // Fetch hero image URL only
@@ -87,7 +88,7 @@ $hero_subheading = 'Experience world-class gorilla trekking with accommodations 
             <div class="accommodation-grid">
                 <div class="accommodation-card">
                     <div class="card-content">
-                        <h3>Virunga Homestay</h3>
+                        <h3>Virunga House</h3>
                         <div class="price">$20–90 / night</div>
                         <div class="location">Musanze / Kinigi</div>
                         <p class="description">Family-run homestay offering cultural stays with local meals. Basic rooms start at $20–40, with private rooms available. Perfect for independent travelers and volunteers seeking authentic community connection.</p>

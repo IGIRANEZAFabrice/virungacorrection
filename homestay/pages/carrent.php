@@ -1,5 +1,5 @@
 <?php
-  $pageTitle = 'Virunga Homestay - Car Rent';
+  $pageTitle = 'Virunga House - Car Rent';
   $pageCss = ['page-hero.css','carrent.css'];
   $pageHeroKey = 'carrent';
   $pageScripts = [];
@@ -111,7 +111,7 @@
   <div class="carrent-contact__inner">
     <h3 class="carrent-contact__heading">Ready to Hit the Road?</h3>
     <p class="carrent-contact__sub">Tell us your dates and destination — we'll take care of everything else.</p>
-    <a href="mailto:virungahomestay@gmail.com" class="carrent-contact__btn">Get in Touch</a>
+    <a href="mailto:info@virungajourneys.com" class="carrent-contact__btn">Get in Touch</a>
     <a href="https://wa.me/250784513435" class="carrent-contact__btn carrent-contact__btn--wa" target="_blank" rel="noopener">
       WhatsApp Us
     </a>

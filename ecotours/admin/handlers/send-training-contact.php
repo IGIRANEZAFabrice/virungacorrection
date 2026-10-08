@@ -91,7 +91,7 @@ $email_config = [
     'smtp_username' => SMTP_EMAIL,
     'smtp_password' => SMTP_PASS,
     'from_email'    => SMTP_EMAIL,
-    'from_name'     => 'Virunga Ecotours Training',
+    'from_name'     => 'Virunga Journeys Training',
 ];
 
 try {
@@ -117,7 +117,7 @@ try {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
+            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Journeys" width="72" style="display:block;margin:0 auto 12px;">
             <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">VETI Training Inquiry</div>
           </td>
         </tr>
@@ -180,7 +180,7 @@ try {
     $mail->clearAddresses();
     $mail->clearReplyTos();
     $mail->addAddress($email, $name);
-    $mail->setFrom($email_config['from_email'], 'Virunga Ecotours Training');
+    $mail->setFrom($email_config['from_email'], 'Virunga Journeys Training');
     $mail->Subject = 'Thank you for your VETI Training inquiry';
 
     $mail->Body = '
@@ -188,8 +188,8 @@ try {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width:620px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
         <tr>
           <td style="padding:28px 28px 12px;text-align:center;">
-            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Ecotours" width="72" style="display:block;margin:0 auto 12px;">
-            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Ecotours Training Institute</div>
+            <img src="https://www.virungajourneys.com/images/logos/icon.png" alt="Virunga Journeys" width="72" style="display:block;margin:0 auto 12px;">
+            <div style="font-size:14px;letter-spacing:0.4px;color:#61707f;">Virunga Academy</div>
           </td>
         </tr>
         <tr>
@@ -197,7 +197,7 @@ try {
             <div style="font-size:20px;font-weight:700;color:#183b2b;margin-bottom:10px;">We Received Your Training Inquiry!</div>
             <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#2c3e50;">
               Hello <strong>' . htmlspecialchars($name) . '</strong>,<br/><br/>
-              Thank you for reaching out to the <strong>Virunga Ecotours Training Institute (VETI)</strong>. We have received your inquiry and our training coordinator will get back to you within 24–48 hours with course details and next steps.
+              Thank you for reaching out to the <strong>Virunga Academy (VETI)</strong>. We have received your inquiry and our training coordinator will get back to you within 24–48 hours with course details and next steps.
             </p>
           </td>
         </tr>
@@ -222,7 +222,7 @@ try {
       </table>
     </div>';
 
-    $mail->AltBody = "Hi $fname,\n\nThank you for your interest in the $program program at VETI.\n\nWe have received your inquiry and will get back to you shortly.\n\nBest regards,\nThe VETI Training Team\nVirunga Ecotours";
+    $mail->AltBody = "Hi $fname,\n\nThank you for your interest in the $program program at VETI.\n\nWe have received your inquiry and will get back to you shortly.\n\nBest regards,\nThe VETI Training Team\nVirunga Journeys";
 
     $mail->send();
 

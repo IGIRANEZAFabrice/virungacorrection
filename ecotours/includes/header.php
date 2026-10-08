@@ -70,7 +70,7 @@
 <div class="header">
   <div class="logo">
     <a href="<?php echo isset($baseLink) ? htmlspecialchars($baseLink('home')) : './index.php'; ?>">
-      <img src="./images/logos/logo.png" alt="Virunga Ecotours Logo" />
+      <img src="./images/logos/logo.png" alt="Virunga Journeys Logo" />
     </a>
   </div>
 

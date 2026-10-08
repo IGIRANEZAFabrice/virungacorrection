@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/branding.php';
 // Database connection (if needed for future dynamic content)
 require_once('../admin/config/connection.php');
 ?>
@@ -40,7 +41,7 @@ require_once('../admin/config/connection.php');
             <div class="story-container">
                 <div class="story-text">
                     <h2>Our Commitment to Sustainable Tourism</h2>
-                    <p>At Virunga Ecotours, we believe that tourism should benefit not only travelers but also the communities and ecosystems we visit. Our operations around the Virunga Massif are designed to create meaningful economic opportunities for local communities while supporting critical conservation efforts.</p>
+                    <p>At Virunga Journeys, we believe that tourism should benefit not only travelers but also the communities and ecosystems we visit. Our operations around the Virunga Massif are designed to create meaningful economic opportunities for local communities while supporting critical conservation efforts.</p>
                     <p>Through established revenue-sharing mechanisms and community partnerships, every journey with us contributes directly to local development, conservation initiatives, and the preservation of cultural heritage in Rwanda, Uganda, and the Democratic Republic of Congo.</p>
                 </div>
                 <div class="story-image">

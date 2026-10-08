@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'list';
 }
 
-$pageTitle = 'Car Rentals Management — Virunga Homestay CMS';
+$pageTitle = 'Car Rentals Management — Virunga House CMS';
 $currentPage = 'cars';
 
 ?>

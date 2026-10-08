@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/branding.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,7 @@
             <div class="content-box">
                 <div class="text-content">
                     <h2>Christmas Volunteering</h2>
-                    <p>The holiday season is a time of joy, love, and giving—and with Virunga Ecotours, you can share that spirit with children and families around the Virunga Massif. Our Christmas Volunteering program turns your visit into a season of kindness, where every smile you inspire becomes a gift in itself.</p>
+                    <p>The holiday season is a time of joy, love, and giving—and with Virunga Journeys, you can share that spirit with children and families around the Virunga Massif. Our Christmas Volunteering program turns your visit into a season of kindness, where every smile you inspire becomes a gift in itself.</p>
                     <p>Imagine joining children in decorating classrooms with colorful crafts, singing carols that fill the air with laughter, or helping prepare a warm Christmas meal for families who may not otherwise celebrate. You’ll also take part in distributing small but meaningful gifts—simple tokens that create unforgettable happiness for kids.</p>
                     <p>Beyond celebration, these activities bring communities together. They encourage children, support families, and strengthen the bonds between visitors and local hosts. As a volunteer, you become part of a tradition of sharing and caring that lights up not only the villages but also your own heart.</p>
                 </div>
@@ -109,7 +110,7 @@
         <div class="container">
             <div class="cta-box">
                 <h2>Give the Gift of Time, Love, and Laughter</h2>
-                <p>With Virunga Ecotours, your holiday becomes a story of shared happiness that lasts long after the season ends.</p>
+                <p>With Virunga Journeys, your holiday becomes a story of shared happiness that lasts long after the season ends.</p>
                 <a class="button" href="contactus.php">Join Our Christmas Volunteering</a>
             </div>
         </div>
