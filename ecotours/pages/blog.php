@@ -138,7 +138,7 @@ function cleanBlogExcerpt($content, $length = 150) {
 	                        <div class="blog-item" data-category="<?= htmlspecialchars($post['category_slug']) // Use category slug ?>"> 
                             <div class="blog-item-image">
                                 
-                                <img src="../admin/images/blog/covers/<?= rawurlencode(basename($post['cover_image'])) ?>"
+                                <img loading="lazy" decoding="async" src="../admin/images/blog/covers/<?= rawurlencode(basename($post['cover_image'])) ?>"
                                      alt="<?= htmlspecialchars(stripslashes($post['title'])) ?>"
                                      loading="lazy">
 	                            </div>
@@ -287,7 +287,7 @@ function cleanBlogExcerpt($content, $length = 150) {
                                 // Construct inner HTML carefully
 	                                newItem.innerHTML = `
 	                                    <div class="blog-item-image">
-	                                        <img src="../admin/images/blog/covers/${encodeURIComponent(post.cover_image || "")}"
+	                                        <img loading="lazy" decoding="async" src="../admin/images/blog/covers/${encodeURIComponent(post.cover_image || "")}"
 	                                             alt="${sanitizeHTML(post.title)}">
 	                                    </div>
 	                                    <div class="blog-item-content"> 

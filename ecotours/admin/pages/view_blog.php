@@ -286,7 +286,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
               <img
                 src="<?php echo htmlspecialchars($coverImg); ?>"
                 alt="<?php echo htmlspecialchars(stripslashes($post['title'])); ?>"
-                onerror="this.src='../images/costa-rica.jpg';"
+                onerror="this.onerror=null;this.src='../images/costa-rica.jpg';"
               />
             </div>
 
@@ -312,7 +312,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
                   </div>
                 <?php elseif ($block['block_type'] === 'image'): ?>
                   <div class="content-block image-block">
-                    <img
+                    <img loading="lazy" decoding="async"
                       src="../images/blog/content/<?php echo htmlspecialchars(stripslashes($block['image_path'])); ?>"
                       alt="<?php echo htmlspecialchars(stripslashes($block['caption'] ?? '')); ?>"
                       onerror="this.style.display='none';"
@@ -360,10 +360,10 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
                   <div class="gallery-grid">
                     <?php foreach ($gallery_images as $image): ?>
                       <div class="gallery-item">
-                        <img
+                        <img loading="lazy" decoding="async"
                           src="../images/blog/gallery/<?php echo htmlspecialchars(stripslashes($image['image_path'])); ?>"
                           alt="Gallery Photo"
-                          onerror="this.src='../images/costa-rica.jpg';"
+                          onerror="this.onerror=null;this.src='../images/costa-rica.jpg';"
                         />
                       </div>
                     <?php endforeach; ?>

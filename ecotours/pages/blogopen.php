@@ -151,7 +151,7 @@ function renderBlogHtml($content) {
       href="../images/logos/icon.png"
       type="image/x-icon"
     />
-    <script src="../js/header.js"></script>
+    <script src="../js/header.js" defer></script>
     <style>
         .content-paragraph {
             font-family: 'Arial', sans-serif;
@@ -283,7 +283,7 @@ function renderBlogHtml($content) {
                         </div>
                         <?php elseif ($block_type == 'image'): ?>
                             <div class="content-image-container">
-                                <img src="../admin/images/blog/content/<?= htmlspecialchars(stripslashes($content_data['image_path'])) ?>" 
+                                <img loading="lazy" decoding="async" src="../admin/images/blog/content/<?= htmlspecialchars(stripslashes($content_data['image_path'])) ?>" 
                                      alt="<?= htmlspecialchars(stripslashes($content_data['caption'] ?? $post['title'])) ?>"
                                      class="content-image">
                                 <?php if (!empty($content_data['caption'])): ?>
@@ -305,7 +305,7 @@ function renderBlogHtml($content) {
                                     $related_img_path = blogCoverUrl($related['cover_image']);
                                     ?>
                                     <li class="related-post-item">
-                                        <img src="<?= $related_img_path ?>" 
+                                        <img loading="lazy" decoding="async" src="<?= $related_img_path ?>" 
                                              alt="<?= htmlspecialchars(stripslashes($related['title'])) ?>" 
                                              class="related-post-img">
                                         <div class="related-post-content">
@@ -343,7 +343,7 @@ function renderBlogHtml($content) {
         <div class="gallery-grid">
             <?php while ($gallery_stmt->fetch()): ?>
             <div class="gallery-item">
-                <img src="../admin/images/blog/gallery/<?= htmlspecialchars($gallery_image_path) ?>"
+                <img loading="lazy" decoding="async" src="../admin/images/blog/gallery/<?= htmlspecialchars($gallery_image_path) ?>"
                      alt="Gallery image for <?= htmlspecialchars(stripslashes($post['title'])) ?>"
                      class="gallery-image">
                 <div class="gallery-overlay">
@@ -546,7 +546,7 @@ function renderBlogHtml($content) {
                     <div class="suggested-post-card" style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.3s ease;">
                         <a href="blogopen.php?id=<?= $suggested_post['blog_id'] ?>" style="text-decoration: none; color: inherit; display: block;">
                             <div class="suggested-post-image" style="height: 180px; overflow: hidden;">
-                                <img src="<?= htmlspecialchars(blogCoverUrl($suggested_post['cover_image']), ENT_QUOTES, 'UTF-8') ?>" 
+                                <img loading="lazy" decoding="async" src="<?= htmlspecialchars(blogCoverUrl($suggested_post['cover_image']), ENT_QUOTES, 'UTF-8') ?>" 
                                      alt="<?= htmlspecialchars(stripslashes($suggested_post['title'])) ?>" 
                                      style="width: 100%; height: 100%; object-fit: cover; display: block;">
                             </div>
