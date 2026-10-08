@@ -104,7 +104,6 @@ function safeDecodeInput($val) {
 function cleanBlogText($val) {
     $text = (string) $val;
     $text = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $text);
-    $text = stripslashes($text);
     $lineBreak = '(?:<br\s*/?>|\R)';
     $text = preg_replace('~(' . $lineBreak . '\s*)n{1,3}(\s*' . $lineBreak . ')~i', '$1$2', $text);
     $text = preg_replace('~^\s*n{1,3}\s*' . $lineBreak . '~i', '', $text);
@@ -268,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $listItems = $_POST['listItems'] ?? []; // This will be a nested array
 
         for ($i = 0; $i < count($block_types); $i++) {
-            $block_type = $conn->real_escape_string($block_types[$i]);
+            $block_type = $block_types[$i];
             $current_block_id = isset($block_ids_from_form[$i]) ? intval($block_ids_from_form[$i]) : 0; // 0 for new blocks
             $block_order = $i + 1; // Use loop index for order
 
@@ -311,8 +310,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert data into the specific block type table
             switch ($block_type) {
                 case 'text':
-                    $title_val = $conn->real_escape_string(cleanBlogText($blockTitles[$i] ?? ''));
-                    $content_val = $conn->real_escape_string(cleanBlogText($blockContents[$i] ?? ''));
+                    $title_val = cleanBlogText($blockTitles[$i] ?? '');
+                    $content_val = cleanBlogText($blockContents[$i] ?? '');
                     $sql = "INSERT INTO blog_text_blocks (block_id, section_title, content) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("iss", $content_block_id, $title_val, $content_val);
@@ -321,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'image':
-                    $caption_val = $conn->real_escape_string(cleanBlogText($blockImageCaptions[$i] ?? ''));
+                    $caption_val = cleanBlogText($blockImageCaptions[$i] ?? '');
                     $alignment_val = 'center'; // Default or get from form if added
                     $image_path_val = $existingBlockImages[$i] ?? null; // Existing path from hidden field
                     $old_block_image_path = $existing_blocks_data[$current_block_id]['image_path'] ?? null; // Get old path for deletion check
@@ -364,8 +363,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'quote':
-                    $quote_val = $conn->real_escape_string(cleanBlogText($blockQuotes[$i] ?? ''));
-                    $author_val = $conn->real_escape_string(cleanBlogText($blockQuoteAuthors[$i] ?? ''));
+                    $quote_val = cleanBlogText($blockQuotes[$i] ?? '');
+                    $author_val = cleanBlogText($blockQuoteAuthors[$i] ?? '');
                     $style_val = 'standard'; // Default or get from form if added
                     $sql = "INSERT INTO blog_quote_blocks (block_id, quote_text, attribution, style) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($sql);
@@ -375,7 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'list':
-                    $list_title_val = $conn->real_escape_string(cleanBlogText($blockListTitles[$i] ?? ''));
+                    $list_title_val = cleanBlogText($blockListTitles[$i] ?? '');
                     $list_type_val = 'bullet'; // Default or get from form if added
                     $sql = "INSERT INTO blog_list_blocks (block_id, list_title, list_type) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($sql);
@@ -390,7 +389,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $item_order = 1;
                         foreach ($current_list_items as $item_text) {
                             if (!empty(trim($item_text))) { // Avoid inserting empty items
-                                $item_text_val = $conn->real_escape_string(cleanBlogText($item_text));
+                                $item_text_val = cleanBlogText($item_text);
                                 $item_sql = "INSERT INTO blog_list_items (list_block_id, item_text, item_order) VALUES (?, ?, ?)";
                                 $item_stmt = $conn->prepare($item_sql);
                                 $item_stmt->bind_param("isi", $list_block_id, $item_text_val, $item_order);

@@ -4,6 +4,7 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
 
 require_once __DIR__ . '/../admin/config/connection.php';
+require_once __DIR__ . '/../admin/helpers/blog_text.php';
 
 function blogCoverUrl($filename) {
     $filename = basename((string) $filename);
@@ -130,8 +131,7 @@ while ($suggestion_stmt->fetch()) {
 $suggestion_stmt->close();
 
 function renderBlogHtml($content) {
-    $content = stripslashes((string) $content);
-    $content = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $content);
+    $content = normalizeStoredBlogText($content);
     return nl2br($content);
 }
 

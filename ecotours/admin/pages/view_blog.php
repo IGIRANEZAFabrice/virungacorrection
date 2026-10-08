@@ -9,6 +9,7 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 require_once __DIR__ . '/../config/connection.php';
+require_once __DIR__ . '/../helpers/blog_text.php';
 
 // Get blog post ID from URL
 $blog_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -142,7 +143,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo htmlspecialchars(stripslashes($post['title'])); ?> - Virunga Ecotours</title>
+    <title><?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?> - Virunga Ecotours</title>
     <link rel="shortcut icon" href="../../images/logos/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/common.css" />
@@ -265,16 +266,16 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
             </div>
 
             <div class="blog-view-header">
-              <h1 class="blog-view-title"><?php echo htmlspecialchars(stripslashes($post['title'])); ?></h1>
+              <h1 class="blog-view-title"><?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?></h1>
               <div class="blog-meta">
                 <span class="blog-author">
-                  <i class="fas fa-user"></i> <?php echo htmlspecialchars(stripslashes($post['author'] ?: 'Virunga Team')); ?>
+                  <i class="fas fa-user"></i> <?php echo htmlspecialchars(normalizeStoredBlogText($post['author'] ?: 'Virunga Team')); ?>
                 </span>
                 <span class="blog-read-time">
-                  <i class="fas fa-clock"></i> <?php echo htmlspecialchars(stripslashes($post['read_minutes'])); ?> min read
+                  <i class="fas fa-clock"></i> <?php echo htmlspecialchars(normalizeStoredBlogText($post['read_minutes'])); ?> min read
                 </span>
                 <span class="blog-category">
-                  <i class="fas fa-tag"></i> <?php echo htmlspecialchars(stripslashes($post['category_name'] ?: 'Editorial')); ?>
+                  <i class="fas fa-tag"></i> <?php echo htmlspecialchars(normalizeStoredBlogText($post['category_name'] ?: 'Editorial')); ?>
                 </span>
                 <span>
                   <i class="far fa-calendar-alt"></i> <?php echo date('M d, Y', strtotime($post['created_at'])); ?>
@@ -285,7 +286,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
             <div class="blog-view-cover">
               <img
                 src="<?php echo htmlspecialchars($coverImg); ?>"
-                alt="<?php echo htmlspecialchars(stripslashes($post['title'])); ?>"
+                alt="<?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?>"
                 onerror="this.onerror=null;this.src='../images/costa-rica.jpg';"
               />
             </div>
@@ -293,12 +294,12 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
             <div class="blog-view-content">
               <?php if (!empty($post['main_headline'])): ?>
                 <div class="blog-intro">
-                  <h2><?php echo htmlspecialchars(stripslashes($post['main_headline'])); ?></h2>
-                  <div><?php echo stripslashes($post['introduction']); ?></div>
+                  <h2><?php echo htmlspecialchars(normalizeStoredBlogText($post['main_headline'])); ?></h2>
+                  <div><?php echo normalizeStoredBlogText($post['introduction']); ?></div>
                 </div>
               <?php else: ?>
                 <div class="blog-intro">
-                  <div><?php echo stripslashes($post['introduction']); ?></div>
+                  <div><?php echo normalizeStoredBlogText($post['introduction']); ?></div>
                 </div>
               <?php endif; ?>
 
@@ -306,41 +307,41 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
                 <?php if ($block['block_type'] === 'text'): ?>
                   <div class="content-block text-block">
                     <?php if (!empty($block['section_title'])): ?>
-                      <h3><?php echo htmlspecialchars(stripslashes($block['section_title'])); ?></h3>
+                      <h3><?php echo htmlspecialchars(normalizeStoredBlogText($block['section_title'])); ?></h3>
                     <?php endif; ?>
-                    <div><?php echo stripslashes($block['content']); ?></div>
+                    <div><?php echo normalizeStoredBlogText($block['content']); ?></div>
                   </div>
                 <?php elseif ($block['block_type'] === 'image'): ?>
                   <div class="content-block image-block">
                     <img loading="lazy" decoding="async"
-                      src="../images/blog/content/<?php echo htmlspecialchars(stripslashes($block['image_path'])); ?>"
-                      alt="<?php echo htmlspecialchars(stripslashes($block['caption'] ?? '')); ?>"
+                      src="../images/blog/content/<?php echo htmlspecialchars(normalizeStoredBlogText($block['image_path'])); ?>"
+                      alt="<?php echo htmlspecialchars(normalizeStoredBlogText($block['caption'] ?? '')); ?>"
                       onerror="this.style.display='none';"
                     />
                     <?php if (!empty($block['caption'])): ?>
-                      <p class="image-caption"><?php echo htmlspecialchars(stripslashes($block['caption'])); ?></p>
+                      <p class="image-caption"><?php echo htmlspecialchars(normalizeStoredBlogText($block['caption'])); ?></p>
                     <?php endif; ?>
                   </div>
                 <?php elseif ($block['block_type'] === 'quote'): ?>
                   <div class="content-block quote-block">
                     <blockquote>
-                      <?php echo htmlspecialchars(stripslashes($block['quote_text'])); ?>
+                      <?php echo htmlspecialchars(normalizeStoredBlogText($block['quote_text'])); ?>
                     </blockquote>
                     <?php if (!empty($block['attribution'])): ?>
-                      <cite>— <?php echo htmlspecialchars(stripslashes($block['attribution'])); ?></cite>
+                      <cite>— <?php echo htmlspecialchars(normalizeStoredBlogText($block['attribution'])); ?></cite>
                     <?php endif; ?>
                   </div>
                 <?php elseif ($block['block_type'] === 'list'): ?>
                   <div class="content-block list-block">
                     <?php if (!empty($block['title'])): ?>
-                      <h3><?php echo htmlspecialchars(stripslashes($block['title'])); ?></h3>
+                      <h3><?php echo htmlspecialchars(normalizeStoredBlogText($block['title'])); ?></h3>
                     <?php endif; ?>
                     <ul class="content-list">
                       <?php
                         $list_items = json_decode($block['content'] ?? '[]', true);
                         if (is_array($list_items)) {
                           foreach ($list_items as $item):
-                            $clean_item = trim(stripslashes((string)$item));
+                            $clean_item = trim(normalizeStoredBlogText((string)$item));
                             if ($clean_item !== ''):
                       ?>
                         <li><?php echo htmlspecialchars($clean_item); ?></li>
@@ -361,7 +362,7 @@ $coverImg = !empty($post['cover_image']) ? '../images/blog/covers/' . $post['cov
                     <?php foreach ($gallery_images as $image): ?>
                       <div class="gallery-item">
                         <img loading="lazy" decoding="async"
-                          src="../images/blog/gallery/<?php echo htmlspecialchars(stripslashes($image['image_path'])); ?>"
+                          src="../images/blog/gallery/<?php echo htmlspecialchars(normalizeStoredBlogText($image['image_path'])); ?>"
                           alt="Gallery Photo"
                           onerror="this.onerror=null;this.src='../images/costa-rica.jpg';"
                         />

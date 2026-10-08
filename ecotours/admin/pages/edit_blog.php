@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 require_once __DIR__ . '/../config/connection.php';
+require_once __DIR__ . '/../helpers/blog_text.php';
 
 // Get blog post ID from URL
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['blog_id']) ? intval($_POST['blog_id']) : 0);
@@ -155,9 +156,9 @@ $gallery_stmt->close();
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/create_blog.css" />
+    <link rel="stylesheet" href="../css/create_blog.css?v=<?php echo filemtime(__DIR__ . '/../css/create_blog.css'); ?>" />
     <script src="../js/common.js" defer></script>
-    <script src="../js/edit_blog.js" defer></script>
+    <script src="../js/edit_blog.js?v=<?php echo filemtime(__DIR__ . '/../js/edit_blog.js'); ?>" defer></script>
   </head>
   <body class="edit-blog-page">
     <div class="admin-container">
@@ -173,7 +174,7 @@ $gallery_stmt->close();
           <div class="page-header-row edit-page-header">
             <div class="page-header-info">
               <h1><i class="fas fa-edit"></i> Edit Blog Post</h1>
-              <p>Editing: <strong><?php echo htmlspecialchars(stripslashes($post['title'])); ?></strong></p>
+              <p>Editing: <strong><?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?></strong></p>
             </div>
             <div class="page-header-actions">
               <a href="view_blog.php?id=<?php echo $post_id; ?>" class="btn-secondary-outline" target="_blank">
@@ -213,7 +214,7 @@ $gallery_stmt->close();
                       id="blogTitle"
                       name="blogTitle"
                       placeholder="Enter blog title"
-                      value="<?php echo htmlspecialchars(stripslashes($post['title'])); ?>"
+                      value="<?php echo htmlspecialchars(normalizeStoredBlogText($post['title'])); ?>"
                       required
                     />
                   </div>
@@ -226,7 +227,7 @@ $gallery_stmt->close();
                         id="author"
                         name="author"
                         placeholder="Enter author name"
-                        value="<?php echo htmlspecialchars(stripslashes($post['author'])); ?>"
+                        value="<?php echo htmlspecialchars(normalizeStoredBlogText($post['author'])); ?>"
                         required
                       />
                     </div>
@@ -328,7 +329,7 @@ $gallery_stmt->close();
                   id="bigTitle"
                   name="bigTitle"
                   placeholder="Enter main headline"
-                  value="<?php echo htmlspecialchars(stripslashes($post['main_headline'])); ?>"
+                  value="<?php echo htmlspecialchars(normalizeStoredBlogText($post['main_headline'])); ?>"
                   required
                 />
               </div>
@@ -340,7 +341,7 @@ $gallery_stmt->close();
                   name="bigDescription"
                   placeholder="Write an introduction for your blog post"
                   required
-                ><?php echo htmlspecialchars(stripslashes($post['introduction'])); ?></textarea>
+                ><?php echo htmlspecialchars(normalizeStoredBlogText($post['introduction'])); ?></textarea>
               </div>
             </div>
 
@@ -394,7 +395,7 @@ $gallery_stmt->close();
                         id="blockTitle<?php echo $blockCounter; ?>"
                         name="blockTitle[]"
                         placeholder="Enter section subheading"
-                        value="<?php echo htmlspecialchars(stripslashes($blockDetails['section_title'] ?? '')); ?>"
+                        value="<?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['section_title'] ?? '')); ?>"
                       />
                     </div>
                     <div class="form-group">
@@ -403,7 +404,7 @@ $gallery_stmt->close();
                         id="blockContent<?php echo $blockCounter; ?>"
                         name="blockContent[]"
                         placeholder="Write your content here"
-                      ><?php echo htmlspecialchars(stripslashes($blockDetails['content'] ?? '')); ?></textarea>
+                      ><?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['content'] ?? '')); ?></textarea>
                     </div>
 
                   <?php elseif ($blockType === 'image'): ?>
@@ -415,7 +416,7 @@ $gallery_stmt->close();
                           id="blockImageCaption<?php echo $blockCounter; ?>"
                           name="blockImageCaption[]"
                           placeholder="Enter image caption"
-                          value="<?php echo htmlspecialchars(stripslashes($blockDetails['caption'] ?? '')); ?>"
+                          value="<?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['caption'] ?? '')); ?>"
                         />
                       </div>
                     </div>
@@ -460,7 +461,7 @@ $gallery_stmt->close();
                         name="blockQuote[]"
                         placeholder="Enter the quote"
                         style="min-height: 80px;"
-                      ><?php echo htmlspecialchars(stripslashes($blockDetails['quote_text'] ?? '')); ?></textarea>
+                      ><?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['quote_text'] ?? '')); ?></textarea>
                     </div>
                     <div class="form-row" style="margin-bottom: 0;">
                       <div class="form-group" style="flex: 2;">
@@ -470,7 +471,7 @@ $gallery_stmt->close();
                           id="blockQuoteAuthor<?php echo $blockCounter; ?>"
                           name="blockQuoteAuthor[]"
                           placeholder="Enter the author of the quote"
-                          value="<?php echo htmlspecialchars(stripslashes($blockDetails['attribution'] ?? '')); ?>"
+                          value="<?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['attribution'] ?? '')); ?>"
                         />
                       </div>
                     </div>
@@ -483,7 +484,7 @@ $gallery_stmt->close();
                         id="blockListTitle<?php echo $blockCounter; ?>"
                         name="blockListTitle[]"
                         placeholder="Enter list title"
-                      value="<?php echo htmlspecialchars(stripslashes($blockDetails['list_title'] ?? '')); ?>"
+                      value="<?php echo htmlspecialchars(normalizeStoredBlogText($blockDetails['list_title'] ?? '')); ?>"
                       />
                     </div>
                     <div class="form-group">
@@ -501,7 +502,7 @@ $gallery_stmt->close();
                               type="text"
                               name="listItems[<?php echo $blockCounter - 1; ?>][]"
                               placeholder="Enter list item"
-                              value="<?php echo htmlspecialchars(stripslashes($item['item_text'] ?? '')); ?>"
+                              value="<?php echo htmlspecialchars(normalizeStoredBlogText($item['item_text'] ?? '')); ?>"
                             />
                             <button type="button" class="btn-remove-list-item" title="Remove Item">
                               <i class="fas fa-trash-alt"></i>
