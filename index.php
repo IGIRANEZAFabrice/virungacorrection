@@ -24,6 +24,8 @@ $pages = [
     'homestays' => ['file' => __DIR__ . '/homestay/pages/home.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'stays' => ['file' => __DIR__ . '/homestay/pages/home.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
     'about-us' => ['file' => __DIR__ . '/homestay/pages/about-us.php', 'cwd' => __DIR__ . '/homestay/pages', 'assetBase' => $link('homestay/')],
+    'short-encounters' => ['file' => __DIR__ . '/pages/short-encounters.php', 'cwd' => null, 'assetBase' => $link('')],
+    'destinations' => ['file' => __DIR__ . '/pages/destinations.php', 'cwd' => null, 'assetBase' => $link('')],
     'about' => ['file' => __DIR__ . '/pages/about.php', 'cwd' => null, 'assetBase' => $link('')],
     'faq' => ['file' => __DIR__ . '/pages/faq.php', 'cwd' => null, 'assetBase' => $link('')],
     'faqs' => ['file' => __DIR__ . '/pages/faq.php', 'cwd' => null, 'assetBase' => $link('')],

@@ -4,9 +4,7 @@
 
   // Database queries for dynamic homepage content
   $featured_blogs = [];
-  $featured_tours = [];
   $signature_tours = [];
-  $discovery_tours = [];
 
   if (!function_exists('get_tour_image_url')) {
     function get_tour_image_url($cover_path, $default_rel_path, $baseLink) {
@@ -36,210 +34,25 @@
     }
   }
 
+  // Select the three defining journeys explicitly; retain their database IDs.
   try {
-    if (file_exists(__DIR__ . '/../ecotours/admin/config/connection.php')) {
-      require_once __DIR__ . '/../ecotours/admin/config/connection.php';
-      if (isset($conn) && $conn instanceof mysqli && !$conn->connect_error) {
-        // Fetch published blog stories from DB for the Journal section
-        $b_query = "SELECT bp.blog_id, bp.title, bp.introduction, bp.cover_image, bp.author, bp.read_minutes, bp.published_at, bp.created_at, bc.category_name 
-                    FROM blog_posts bp
-                    JOIN blog_categories bc ON bp.category_id = bc.category_id
-                    WHERE bp.status = 'published' 
-                    ORDER BY bp.published_at DESC, bp.created_at DESC
-                    LIMIT 3";
-        $b_res = $conn->query($b_query);
-        if ($b_res) {
-          while ($b_row = $b_res->fetch_assoc()) {
-            $featured_blogs[] = $b_row;
-          }
-        }
-
-        // Fetch latest multi-day Rwanda tours from DB
-        $t_query = "SELECT tour_id, title, country, days_count, category, cover_image_path, short_description, created_at 
-                    FROM tours 
-                    WHERE LOWER(country) = 'rwanda' AND days_count > 1 
-                    ORDER BY created_at DESC 
-                    LIMIT 3";
-        $t_res = $conn->query($t_query);
-        if ($t_res) {
-          while ($t_row = $t_res->fetch_assoc()) {
-            $featured_tours[] = $t_row;
-          }
-        }
-
-        // Fetch homepage tour cards by category instead of matching exact tour names.
-        $sig_meta = [
-          ['key' => 'salon', 'badge' => '01', 'pillar' => 'UNDERSTAND'],
-          ['key' => 'canvas', 'badge' => '02', 'pillar' => 'CREATE'],
-          ['key' => 'table', 'badge' => '03', 'pillar' => 'TASTE']
-        ];
-        $sig_stmt = $conn->prepare("SELECT tour_id, title, country, days_count, category, cover_image_path, short_description, created_at
-                                    FROM tours
-                                    WHERE TRIM(LOWER(category)) = 'signature journeys'
-                                    ORDER BY created_at DESC
-                                    LIMIT 3");
-        if ($sig_stmt && $sig_stmt->execute()) {
-          $sig_res = $sig_stmt->get_result();
-          $sig_idx = 0;
-          while ($sig_row = $sig_res->fetch_assoc()) {
-            $meta = $sig_meta[$sig_idx] ?? [
-              'key' => 'signature_' . ($sig_idx + 1),
-              'badge' => sprintf('%02d', $sig_idx + 1),
-              'pillar' => ''
-            ];
-            $signature_tours[$meta['key']] = array_merge($sig_row, [
-              'badge' => $meta['badge'],
-              'pillar' => $meta['pillar']
-            ]);
-            $sig_idx++;
-          }
-          $sig_stmt->close();
-        }
-
-        $disc_meta = [
-          ['key' => 'brewing', 'badge' => '04 - Experience', 'tags' => 'MAKE - SHARE'],
-          ['key' => 'maker', 'badge' => '05 - Experience', 'tags' => 'MAKE - TAKE HOME'],
-          ['key' => 'family', 'badge' => '06 - Experience', 'tags' => 'MEET - SHARE']
-        ];
-        $disc_stmt = $conn->prepare("SELECT tour_id, title, country, days_count, category, cover_image_path, short_description, created_at
-                                     FROM tours
-                                     WHERE TRIM(LOWER(category)) = 'private experiences'
-                                     ORDER BY created_at DESC
-                                     LIMIT 3");
-        if ($disc_stmt && $disc_stmt->execute()) {
-          $disc_res = $disc_stmt->get_result();
-          $disc_idx = 0;
-          while ($disc_row = $disc_res->fetch_assoc()) {
-            $meta = $disc_meta[$disc_idx] ?? [
-              'key' => 'discovery_' . ($disc_idx + 1),
-              'badge' => sprintf('%02d - Experience', $disc_idx + 4),
-              'tags' => ''
-            ];
-            $discovery_tours[$meta['key']] = array_merge($disc_row, [
-              'badge' => $meta['badge'],
-              'tags' => $meta['tags']
-            ]);
-            $disc_idx++;
-          }
-          $disc_stmt->close();
-        }
-
-        // Target titles definition with badges and pillars
-        $sig_defs = [
-          'salon' => [
-            'exact_title' => 'The Virunga Conservation Salon',
-            'badge' => '01',
-            'pillar' => 'UNDERSTAND',
-            'keywords' => ['conservation salon']
-          ],
-          'canvas' => [
-            'exact_title' => 'The Virunga Living Canvas',
-            'badge' => '02',
-            'pillar' => 'CREATE',
-            'keywords' => ['living canvas']
-          ],
-          'table' => [
-            'exact_title' => 'The Virunga Table',
-            'badge' => '03',
-            'pillar' => 'TASTE',
-            'keywords' => ['the virunga table', 'virunga table']
-          ]
-        ];
-
-        $disc_defs = [
-          'brewing' => [
-            'exact_title' => 'The Virunga Brewing Table',
-            'badge' => '04 — Experience',
-            'tags' => 'MAKE • SHARE',
-            'keywords' => ['brewing table']
-          ],
-          'maker' => [
-            'exact_title' => 'The Virunga Maker’s Table',
-            'badge' => '05 — Experience',
-            'tags' => 'MAKE • TAKE HOME',
-            'keywords' => ['maker’s table', "maker's table", 'maker table']
-          ],
-          'family' => [
-            'exact_title' => 'The Virunga Family Table',
-            'badge' => '06 — Experience',
-            'tags' => 'MEET • SHARE',
-            'keywords' => ['family table']
-          ]
-        ];
-
-        // Fetch tours from DB matching target titles
-        $all_tours_res = false;
-        if ($all_tours_res) {
-          $db_tours = [];
-          while ($row = $all_tours_res->fetch_assoc()) {
-            $db_tours[] = $row;
-          }
-
-          // Match Signature tours
-          foreach ($sig_defs as $key => $def) {
-            foreach ($db_tours as $t) {
-              $t_title_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $t['title'])));
-              $def_title_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $def['exact_title'])));
-              
-              $matched = false;
-              if ($t_title_clean === $def_title_clean) {
-                $matched = true;
-              } else {
-                foreach ($def['keywords'] as $kw) {
-                  $kw_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $kw)));
-                  if (strpos($t_title_clean, $kw_clean) !== false) {
-                    if ($key === 'table' && (strpos($t_title_clean, 'brewing') !== false || strpos($t_title_clean, 'family') !== false || strpos($t_title_clean, 'maker') !== false)) {
-                      continue;
-                    }
-                    $matched = true;
-                    break;
-                  }
-                }
-              }
-
-              if ($matched) {
-                $signature_tours[$key] = array_merge($t, [
-                  'badge' => $def['badge'],
-                  'pillar' => $def['pillar']
-                ]);
-                break;
-              }
-            }
-          }
-
-          // Match Discovery tours
-          foreach ($disc_defs as $key => $def) {
-            foreach ($db_tours as $t) {
-              $t_title_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $t['title'])));
-              $def_title_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $def['exact_title'])));
-              
-              $matched = false;
-              if ($t_title_clean === $def_title_clean) {
-                $matched = true;
-              } else {
-                foreach ($def['keywords'] as $kw) {
-                  $kw_clean = mb_strtolower(trim(str_replace(['’', '‘', '`'], "'", $kw)));
-                  if (strpos($t_title_clean, $kw_clean) !== false) {
-                    $matched = true;
-                    break;
-                  }
-                }
-              }
-
-              if ($matched) {
-                $discovery_tours[$key] = array_merge($t, [
-                  'badge' => $def['badge'],
-                  'tags' => $def['tags']
-                ]);
-                break;
-              }
-            }
-          }
+    require_once __DIR__ . '/../ecotours/admin/config/connection.php';
+    $blogs = $conn->query("SELECT bp.blog_id, bp.title, bp.introduction, bp.cover_image, bp.author, bp.read_minutes, bp.published_at, bp.created_at, bc.category_name FROM blog_posts bp JOIN blog_categories bc ON bp.category_id = bc.category_id WHERE bp.status = 'published' ORDER BY bp.published_at DESC, bp.created_at DESC LIMIT 3");
+    if ($blogs) $featured_blogs = $blogs->fetch_all(MYSQLI_ASSOC);
+    $signature_names = ['THE LIVING VIRUNGA JOURNEY', 'THE VIRUNGA WAY', 'THE FOREST & THE PEOPLE'];
+    $signature_rows = $conn->query("SELECT tour_id, title, cover_image_path, short_description FROM tours WHERE TRIM(LOWER(category)) = 'signature journeys' ORDER BY created_at DESC");
+    $available_signatures = $signature_rows ? $signature_rows->fetch_all(MYSQLI_ASSOC) : [];
+    foreach ($signature_names as $index => $name) {
+      foreach ($available_signatures as $tour) {
+        $normalized_title = strtoupper(trim(preg_replace('/^\d+\s*[^a-zA-Z]+\s*/u', '', $tour['title'])));
+        if ($normalized_title === $name) {
+          $signature_tours[] = array_merge($tour, ['badge' => sprintf('%02d', $index + 1), 'pillar' => '']);
+          break;
         }
       }
     }
   } catch (Throwable $e) {
-    // Graceful fallback if database connection encounters an error
+    error_log('Homepage content unavailable: ' . $e->getMessage());
   }
 ?>
 <!doctype html>
@@ -299,7 +112,7 @@
           "url": "https://virungajourneys.com",
           "logo": "https://virungajourneys.com/img/icon.png",
           "image": "https://virungajourneys.com/img/about.jpeg",
-          "description": "Private encounters with the people, stories, landscapes and living traditions of the Virunga.",
+          "description": "The Virunga is more than a destination to visit. Experience it through the people, stories, landscapes and living traditions that make this place extraordinary.",
           "telephone": "+250784513435",
           "email": "info@virungajourneys.com",
           "address": {
@@ -1031,12 +844,11 @@
         max-height: 6.4em;
       }
 
-      /* ---------- 04: AFTER THE GORILLAS (Distinct Background Image & Glass Cards) ---------- */
+      /* ---------- 04: AFTER THE GORILLAS (Modern editorial cards) ---------- */
       .sec-after-gorillas {
         position: relative;
         padding: 120px 0;
-        background: #0d2218 url('<?php echo htmlspecialchars($baseLink('homestay/img/activities/1778348756_silvereat.jpeg')); ?>') no-repeat center 35%;
-        background-size: cover;
+        background: linear-gradient(135deg, #173b2b, #0d2218);
         color: var(--cream);
         overflow: hidden;
       }
@@ -1775,6 +1587,51 @@
           max-width: 100%;
         }
       }
+
+      /* Consolidated editorial homepage */
+      .sec-after-gorillas { padding:64px 0; }
+      .pathways-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:24px; }
+      .pathway-modern { position:relative; min-height:140px; padding:20px; gap:12px; text-align:left; justify-content:space-between; border-radius:16px; background:#ffffff06; border-color:#ffffff20; box-shadow:none; backdrop-filter:none; }
+      .pathway-modern::after { content:'\2197'; align-self:flex-end; display:grid; place-items:center; width:28px; height:28px; border-radius:50%; background:#ffffff0d; color:var(--gold-light); font-size:1.05rem; }
+      .pathway-modern:hover { background:#ffffff0d; border-color:var(--gold); box-shadow:0 12px 28px #00000015; }
+      .pathway-modern .pathway-name { font-size:1.25rem; margin:0; }
+      .pathway-modern .pathway-pillar { font-size:.65rem; margin-bottom:8px; }
+      .pathway-modern:focus-visible { outline:3px solid var(--gold-light); outline-offset:4px; }
+      .section-action { text-align:center; margin-top:28px; }
+      .short-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .sec-short,.sec-approach { padding:64px 0; }
+      .short-card { padding:26px; }
+      .stay-brand { font:500 1.5rem var(--font-display); color:var(--gold); margin:16px 0 12px; }
+      .stay-intro { max-width:440px; margin-bottom:24px; }
+      .approach-principles { display:flex; justify-content:center; flex-wrap:wrap; list-style:none; gap:12px 28px; margin:24px 0; color:var(--gold-light); letter-spacing:.08em; font-size:.86rem; }
+      .approach-links { display:flex; justify-content:center; flex-wrap:wrap; gap:24px; margin-top:26px; }
+      @media(max-width:900px) { .pathways-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+      @media(max-width:600px) { .short-grid { grid-template-columns:1fr; } .pathway-modern { min-height:130px; padding:16px; } .pathway-name { font-size:1.1rem; } }
+      @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } .reveal,.reveal-left,.reveal-right,.reveal-card,.reveal-scale,[data-hero-word],.word-mask-inline { opacity:1!important; transform:none!important; } }
+
+      /* Short encounters: compact editorial cards */
+      .sec-short { padding:clamp(48px,6vw,80px) 0; background:var(--cream); }
+      .short-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:36px; margin-bottom:32px; }
+      .short-heading h2 { font:500 clamp(2.2rem,3.8vw,3.3rem)/1.08 var(--font-display); color:var(--forest); }
+      .short-heading h2 em { font-weight:400; color:var(--sage); }
+      .short-heading p { max-width:320px; font-size:.98rem; line-height:1.7; color:var(--sage); margin-bottom:4px; }
+      .sec-short .short-grid { gap:24px; }
+      .sec-short .short-modern-card { padding:0; border-radius:16px; overflow:hidden; border:1px solid #1b3a2b14; background:#fffdf8; box-shadow:0 4px 18px #122a1f05; transition:box-shadow .2s ease,border-color .2s ease; }
+      .sec-short .short-modern-card:hover { transform:none; border-color:#c9a24b80; box-shadow:0 12px 28px #122a1f12; }
+      .short-modern-card:focus-visible { outline:3px solid var(--gold); outline-offset:5px; }
+      .short-card-top { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 24px 0; }
+      .short-duration { padding:7px 12px; border-radius:30px; background:#e9ede5; color:var(--forest); font-size:.75rem; font-weight:600; }
+      .short-number { color:var(--gold); font:500 2rem var(--font-display); }
+      .short-body { min-height:220px; padding:24px; display:flex; flex-direction:column; flex:1; }
+      .short-kind { font-size:.68rem; text-transform:uppercase; letter-spacing:.12em; color:var(--sage); margin-bottom:10px; }
+      .sec-short .short-title { font-size:1.65rem; font-weight:500; margin-bottom:22px; }
+      .short-card-link { display:flex; justify-content:space-between; align-items:center; gap:12px; border-top:1px solid #1b3a2b18; padding-top:16px; margin-top:auto; font-size:.85rem; color:var(--forest); }
+      .short-arrow { display:grid; place-items:center; width:34px; height:34px; border-radius:50%; background:#e9ede5; font-size:1.2rem; }
+      .short-modern-card:hover .short-arrow { background:var(--forest); color:var(--cream); }
+      .short-footer { display:flex; align-items:center; justify-content:space-between; gap:24px; border-top:1px solid #1b3a2b20; padding-top:24px; margin-top:32px; }
+      .short-footer > span { font:italic 1.2rem var(--font-display); color:var(--sage); }
+      @media(max-width:800px) { .short-heading { align-items:flex-start; flex-direction:column; gap:18px; } .short-heading p { max-width:520px; } .sec-short .short-grid { gap:16px; } .short-body { padding:18px; } .sec-short .short-title { font-size:1.35rem; } }
+      @media(max-width:600px) { .short-footer { align-items:flex-start; flex-direction:column; gap:16px; } .short-footer .link-arrow { font-size:.72rem; } .short-card-top { padding:18px 18px 0; } }
     </style>
   </head>
   <body class="loading">
@@ -1831,14 +1688,12 @@
             <span>VIRUNGA COLLECTIVE</span>
           </div>
           <h1 id="heroHeading">
-            <span class="word-mask-inline"><span data-hero-word>Experience</span></span>
-            <span class="word-mask-inline"><span data-hero-word>the</span></span>
-            <span class="word-mask-inline"><span data-hero-word>Virunga</span></span>
-            <br />
-            <span class="word-mask-inline"><span data-hero-word>Differently</span></span>
+            <span class="word-mask-inline"><span data-hero-word>Beyond</span></span>
+            <span class="word-mask-inline"><span data-hero-word>the</span></span><br />
+            <span class="word-mask-inline"><span data-hero-word>Expected</span></span>
           </h1>
           <p class="hero-subheadline reveal" style="font-size: clamp(0.95rem, 1.6vw, 1.12rem); color: var(--cream); opacity: 0.95; max-width: 680px; margin-top: 12px; line-height: 1.6; --reveal-delay: 0.35s;">
-            Private encounters with the people, stories, landscapes and living traditions of the Virunga.
+            The Virunga is more than a destination to visit. Experience it through the people, stories, landscapes and living traditions that make this place extraordinary.
           </p>
           <div class="hero-cta-group reveal" style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; --reveal-delay: 0.48s;">
             <a href="#signatures" class="btn btn-solid">
@@ -1869,10 +1724,10 @@
             <span class="eyebrow">Beyond the expected</span>
             <h2>The Virunga is more than a destination to visit.</h2>
             <div class="idea-quote">
-              “It is a landscape of people, stories, creativity, conservation and living traditions.”
+              It is a living landscape of people, stories, creativity, conservation and traditions.
             </div>
             <p class="idea-desc">
-              Virunga Collective creates intimate experiences that invite travellers to do more than observe to participate, connect and leave with something of the place.
+              Virunga Collective creates meaningful ways to experience this place inviting travellers to go beyond observing, to participate, connect and leave with something of the Virunga.
             </p>
             <a href="<?php echo htmlspecialchars($baseLink('about')); ?>" class="link-arrow">
               Discover Our Story <i class="fas fa-arrow-right"></i>
@@ -1891,7 +1746,7 @@
         <div class="sec-header center reveal">
           <h2 class="sec-title">THE VIRUNGA SIGNATURES</h2>
           <p class="sec-subtitle">
-            Three experiences that define the way we invite you into the Virunga.
+            Three defining ways to experience the Virunga.
           </p>
         </div>
 
@@ -1926,15 +1781,15 @@
                   <?php echo htmlspecialchars($sig_desc); ?>
                 </p>
               </div>
-              <a href="<?php echo htmlspecialchars($sig_open_url); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
+              <a href="<?php echo htmlspecialchars($sig_open_url); ?>" class="link-arrow">VIEW EXPERIENCE <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
           <?php endforeach; ?>
         </div>
 
         <div style="text-align: center; margin-top: 40px;" class="reveal">
-          <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/itenary.php?country=rwanda')); ?>" class="btn btn-forest">
-            View All Signature Experiences <i class="fas fa-arrow-right"></i>
+          <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="btn btn-forest">
+            VIEW ALL EXPERIENCES <i class="fas fa-arrow-right"></i>
           </a>
         </div>
       </div>
@@ -1942,297 +1797,92 @@
     <?php endif; ?>
 
     <!-- ====================================================
-         04 — AFTER THE GORILLAS (With Visible Background Image & Glass Cards)
+         04 — AFTER THE GORILLAS (Modern editorial cards)
     ==================================================== -->
     <section class="sec-after-gorillas" id="after-gorillas">
       <div class="wrap">
-        <div class="sec-header center reveal">
+        <div class="sec-header center">
           <h2 class="sec-title sec-title-light">THE GORILLAS ARE ONLY THE BEGINNING</h2>
-          <p class="sec-subtitle sec-subtitle-light">
-            After the forest, there is another side of the Virunga waiting to be discovered. Choose your way to continue:
-          </p>
+          <p class="sec-subtitle sec-subtitle-light">Come for the gorillas. Stay to discover the people, landscapes, creativity and living traditions of the Virunga.</p>
         </div>
-
         <div class="pathways-grid">
-          <!-- Understand -->
-          <?php 
-            $p1_url = isset($signature_tours['salon']) 
-              ? $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$signature_tours['salon']['tour_id']) 
-              : $baseLink('ecotours/pages/itenary.php?country=rwanda'); 
-          ?>
-          <div class="pathway-card reveal-card" style="--reveal-delay: 0.05s;">
-            <div>
-              <div class="pathway-pillar">UNDERSTAND</div>
-              <h3 class="pathway-name"><?php echo htmlspecialchars($signature_tours['salon']['title'] ?? 'The Virunga Conservation Salon'); ?></h3>
-            </div>
-            <a href="<?php echo htmlspecialchars($p1_url); ?>" class="link-arrow link-arrow-light">Discover <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Create -->
-          <?php 
-            $p2_url = isset($signature_tours['canvas']) 
-              ? $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$signature_tours['canvas']['tour_id']) 
-              : $baseLink('ecotours/pages/itenary.php?country=rwanda'); 
-          ?>
-          <div class="pathway-card reveal-card" style="--reveal-delay: 0.12s;">
-            <div>
-              <div class="pathway-pillar">CREATE</div>
-              <h3 class="pathway-name"><?php echo htmlspecialchars($signature_tours['canvas']['title'] ?? 'The Virunga Living Canvas'); ?></h3>
-            </div>
-            <a href="<?php echo htmlspecialchars($p2_url); ?>" class="link-arrow link-arrow-light">Discover <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Make -->
-          <?php 
-            $p3_url = isset($discovery_tours['maker']) 
-              ? $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$discovery_tours['maker']['tour_id']) 
-              : $baseLink('ecotours/pages/itenary.php?country=rwanda'); 
-          ?>
-          <div class="pathway-card reveal-card" style="--reveal-delay: 0.19s;">
-            <div>
-              <div class="pathway-pillar">MAKE</div>
-              <h3 class="pathway-name"><?php echo htmlspecialchars($discovery_tours['maker']['title'] ?? 'The Virunga Maker’s Table'); ?></h3>
-            </div>
-            <a href="<?php echo htmlspecialchars($p3_url); ?>" class="link-arrow link-arrow-light">Discover <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Share -->
-          <?php 
-            $p4_url = isset($discovery_tours['family']) 
-              ? $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$discovery_tours['family']['tour_id']) 
-              : $baseLink('ecotours/pages/itenary.php?country=rwanda'); 
-          ?>
-          <div class="pathway-card reveal-card" style="--reveal-delay: 0.26s;">
-            <div>
-              <div class="pathway-pillar">SHARE</div>
-              <h3 class="pathway-name"><?php echo htmlspecialchars($discovery_tours['family']['title'] ?? 'The Virunga Family Table'); ?></h3>
-            </div>
-            <a href="<?php echo htmlspecialchars($p4_url); ?>" class="link-arrow link-arrow-light">Discover <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Taste -->
-          <?php 
-            $p5_url = isset($signature_tours['table']) 
-              ? $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$signature_tours['table']['tour_id']) 
-              : $baseLink('ecotours/pages/coffee.php'); 
-          ?>
-          <div class="pathway-card reveal-card" style="--reveal-delay: 0.33s;">
-            <div>
-              <div class="pathway-pillar">TASTE</div>
-              <h3 class="pathway-name"><?php echo htmlspecialchars($signature_tours['table']['title'] ?? 'The Virunga Table'); ?></h3>
-            </div>
-            <a href="<?php echo htmlspecialchars($p5_url); ?>" class="link-arrow link-arrow-light">Discover <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 40px;" class="reveal">
-          <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/itenary.php?country=rwanda')); ?>" class="btn btn-solid">
-            Discover What Comes After the Trek <i class="fas fa-arrow-right"></i>
+          <a class="pathway-card pathway-modern" href="<?php echo htmlspecialchars($baseLink('ecotours/community')); ?>">
+            <div><div class="pathway-pillar">MEET</div><h3 class="pathway-name">People &amp; Communities</h3></div>
+          </a>
+          <a class="pathway-card pathway-modern" href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">
+            <div><div class="pathway-pillar">CREATE</div><h3 class="pathway-name">Hands-on Experiences</h3></div>
+          </a>
+          <a class="pathway-card pathway-modern" href="<?php echo htmlspecialchars($baseLink('coffee')); ?>">
+            <div><div class="pathway-pillar">TASTE</div><h3 class="pathway-name">Food &amp; Coffee</h3></div>
+          </a>
+          <a class="pathway-card pathway-modern" href="<?php echo htmlspecialchars($baseLink('journeys')); ?>">
+            <div><div class="pathway-pillar">EXPLORE</div><h3 class="pathway-name">Mountains &amp; Nature</h3></div>
           </a>
         </div>
+        <div class="section-action"><a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="btn btn-solid">DISCOVER MORE</a></div>
       </div>
     </section>
 
     <!-- ====================================================
          05 — PRIVATE DISCOVERIES (Slide-In Grid)
     ==================================================== -->
-    <?php if (!empty($discovery_tours)): ?>
-    <section class="sec-discoveries" id="discoveries">
-      <div class="wrap">
-        <div class="sec-header center reveal">
-          <h2 class="sec-title">PRIVATE DISCOVERIES</h2>
-          <p class="sec-subtitle">
-            Participate, rather than simply observe. Intimate hands-on encounters with living highland traditions.
-          </p>
-        </div>
-
-        <div class="discoveries-grid">
-          <?php 
-            $disc_idx = 0;
-            foreach ($discovery_tours as $disc): 
-              $disc_delay = number_format(0.05 + ($disc_idx * 0.11), 2);
-              $disc_idx++;
-              $disc_img = get_tour_image_url($disc['cover_image_path'] ?? '', 'homestay/img/activities/1778346998_coffee.jpeg', $baseLink);
-              $disc_open_url = $baseLink('ecotours/pages/itenaryopen.php?id=' . (int)$disc['tour_id']);
-              $disc_desc = !empty($disc['short_description']) ? limit_words($disc['short_description'], 25) : '';
-          ?>
-          <div class="discovery-card reveal-card" style="--reveal-delay: <?php echo $disc_delay; ?>s;">
-            <div class="discovery-media">
-              <a href="<?php echo htmlspecialchars($disc_open_url); ?>" tabindex="-1" aria-hidden="true">
-                <img src="<?php echo htmlspecialchars($disc_img); ?>" alt="<?php echo htmlspecialchars($disc['title']); ?>" loading="lazy" decoding="async" />
-              </a>
-            </div>
-            <div class="discovery-body">
-              <div>
-                <div class="discovery-num"><?php echo htmlspecialchars($disc['badge'] ?? sprintf('%02d — Experience', $disc_idx + 3)); ?></div>
-                <h3 class="discovery-title">
-                  <a href="<?php echo htmlspecialchars($disc_open_url); ?>" style="color: inherit; text-decoration: none;">
-                    <?php echo htmlspecialchars($disc['title']); ?>
-                  </a>
-                </h3>
-                <?php if (!empty($disc['tags'])): ?>
-                  <div class="discovery-tags"><?php echo htmlspecialchars($disc['tags']); ?></div>
-                <?php endif; ?>
-                <p class="discovery-desc">
-                  <?php echo htmlspecialchars($disc_desc); ?>
-                </p>
-              </div>
-              <a href="<?php echo htmlspecialchars($disc_open_url); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
-            </div>
-          </div>
-          <?php endforeach; ?>
-        </div>
-
-        <div style="text-align: center; margin-top: 36px;" class="reveal">
-          <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/itenary.php?country=rwanda')); ?>" class="btn btn-outline-forest">
-            View Private Discoveries <i class="fas fa-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </section>
-    <?php endif; ?>
+    
 
     <!-- ====================================================
          06 — EXPERIENCE RWANDA (Slide-In Grid)
     ==================================================== -->
-    <section class="sec-rwanda" id="rwanda">
-      <div class="wrap">
-        <div class="sec-header center reveal">
-          <h2 class="sec-title">EXPERIENCE RWANDA</h2>
-          <p class="sec-subtitle">
-            Beyond the Virunga, discover another side of Rwanda.
-          </p>
-        </div>
-
-        <div class="destinations-grid">
-          <!-- 1: Volcanoes -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.04s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/virunga.jpg')); ?>" alt="Volcanoes National Park" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">The Volcanoes</h3>
-              <div class="dest-meta">Gorillas • Golden Monkeys • Volcanoes</div>
-            </div>
-          </div>
-
-          <!-- 2: Nyungwe -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.11s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/nyungwe.jpg')); ?>" alt="Nyungwe Rainforest" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">Nyungwe</h3>
-              <div class="dest-meta">Chimpanzees • Forest • Canopy</div>
-            </div>
-          </div>
-
-          <!-- 3: Akagera -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.18s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/akagera.jpg')); ?>" alt="Akagera Savanna" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">Akagera</h3>
-              <div class="dest-meta">Wildlife • Big Five • Lake</div>
-            </div>
-          </div>
-
-          <!-- 4: Gishwati -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.25s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/gishwati.jpg')); ?>" alt="Gishwati Forest" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">Gishwati</h3>
-              <div class="dest-meta">Forest • Nature • Birdlife</div>
-            </div>
-          </div>
-
-          <!-- 5: Nyandungu -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.32s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/nyandungu.jpeg')); ?>" alt="Nyandungu Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">Nyandungu</h3>
-              <div class="dest-meta">Wetland • Nature • Birdlife</div>
-            </div>
-          </div>
-
-          <!-- 6: Buhanga -->
-          <div class="dest-card reveal-card" style="--reveal-delay: 0.39s;">
-            <img src="<?php echo htmlspecialchars($baseLink('img/home/buhanga.jpg')); ?>" alt="Buhanga Eco-Park" class="dest-bg" loading="lazy" decoding="async" />
-            <div class="dest-overlay"></div>
-            <div class="dest-content">
-              <h3 class="dest-title">Buhanga</h3>
-              <div class="dest-meta">Forest • Ecology • Heritage</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 40px;" class="reveal">
-          <a href="<?php echo htmlspecialchars($baseLink('ecotours/pages/itenary.php?country=rwanda')); ?>" class="btn btn-forest">
-            Explore Rwanda <i class="fas fa-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </section>
+    
 
     <!-- ====================================================
          07 — SHORT EXPERIENCES
     ==================================================== -->
-    <section class="sec-short" id="short-encounters">
+    <section class="sec-short" id="short-encounters" aria-labelledby="short-heading">
       <div class="wrap">
-        <div class="sec-header center reveal">
-          <span class="eyebrow">Short Encounters</span>
-          <h2 class="sec-title">SHORT ON TIME. NOT SHORT ON MEANING.</h2>
-          <p class="sec-subtitle">
-            Passing through Musanze? You do not need another full day to encounter the Virunga differently.
-          </p>
+        <div class="short-heading">
+          <div>
+            <span class="eyebrow">Short Encounters</span>
+            <h2 id="short-heading">Short on time.<br><em>Not short on meaning.</em></h2>
+          </div>
+          <p>Passing through Musanze? Discover the Virunga in 90 minutes to half a day.</p>
         </div>
-
         <div class="short-grid">
-          <!-- Short 1 -->
-          <div class="short-card reveal-card" style="--reveal-delay: 0.05s;">
-            <div>
-              <div class="short-icon"><i class="fas fa-hammer"></i></div>
+          <a class="short-card short-modern-card" href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">
+            <div class="short-card-top">
+              <span class="short-duration">2–3 hours</span>
+              <span class="short-number" aria-hidden="true">01</span>
+            </div>
+            <div class="short-body">
+              <span class="short-kind">Hands-on craft</span>
               <h3 class="short-title">Short Maker’s Table</h3>
-              <div class="short-time">2–3 Hours · Hands-on Craft</div>
+              <span class="short-card-link">View experience <span class="short-arrow" aria-hidden="true">&#8599;</span></span>
             </div>
-            <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Short 2 -->
-          <div class="short-card reveal-card" style="--reveal-delay: 0.12s;">
-            <div>
-              <div class="short-icon"><i class="fas fa-palette"></i></div>
-              <h3 class="short-title">Short Living Canvas</h3>
-              <div class="short-time">2 Hours · Artist Studio</div>
-            </div>
-            <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Short 3 -->
-          <div class="short-card reveal-card" style="--reveal-delay: 0.19s;">
-            <div>
-              <div class="short-icon"><i class="fas fa-mug-hot"></i></div>
-              <h3 class="short-title">Virunga Coffee & Conversation</h3>
-              <div class="short-time">90 Min · Roasting & Cupping</div>
-            </div>
-            <a href="<?php echo htmlspecialchars($baseLink('coffee')); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
-          </div>
-
-          <!-- Short 4 -->
-          <div class="short-card reveal-card" style="--reveal-delay: 0.26s;">
-            <div>
-              <div class="short-icon"><i class="fas fa-wine-glass"></i></div>
-              <h3 class="short-title">Short Brewing Table</h3>
-              <div class="short-time">2 Hours · Traditional Brewing</div>
-            </div>
-            <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="link-arrow">BEGIN YOUR JOURNEY <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 36px;" class="reveal">
-          <a href="<?php echo htmlspecialchars($baseLink('experiences')); ?>" class="btn btn-outline-forest">
-            Discover Short Encounters <i class="fas fa-arrow-right"></i>
           </a>
+          <a class="short-card short-modern-card" href="<?php echo htmlspecialchars($baseLink('experiences')); ?>">
+            <div class="short-card-top">
+              <span class="short-duration">2 hours</span>
+              <span class="short-number" aria-hidden="true">02</span>
+            </div>
+            <div class="short-body">
+              <span class="short-kind">Artist studio</span>
+              <h3 class="short-title">Short Living Canvas</h3>
+              <span class="short-card-link">View experience <span class="short-arrow" aria-hidden="true">&#8599;</span></span>
+            </div>
+          </a>
+          <a class="short-card short-modern-card" href="<?php echo htmlspecialchars($baseLink('coffee')); ?>">
+            <div class="short-card-top">
+              <span class="short-duration">90 minutes</span>
+              <span class="short-number" aria-hidden="true">03</span>
+            </div>
+            <div class="short-body">
+              <span class="short-kind">Roasting & cupping</span>
+              <h3 class="short-title">Virunga Coffee &amp; Conversation</h3>
+              <span class="short-card-link">View experience <span class="short-arrow" aria-hidden="true">&#8599;</span></span>
+            </div>
+          </a>
+        </div>
+        <div class="short-footer">
+          <span>A little time. A lasting connection.</span>
+          <a href="<?php echo htmlspecialchars($baseLink('short-encounters')); ?>" class="link-arrow">DISCOVER SHORT ENCOUNTERS <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </div>
       </div>
     </section>
@@ -2252,31 +1902,11 @@
           </div>
 
           <div class="reveal-right" style="--reveal-delay: 0.15s;">
-            <span class="eyebrow">Sanctuary & Base</span>
-            <h2 class="sec-title" style="margin-bottom: 10px;">STAY CLOSE TO THE STORY</h2>
-            <div style="font-family: var(--font-display); font-size: 1.22rem; font-style: italic; color: var(--gold); margin-bottom: 14px;">
-              Virunga House — Your base for discovering the Virunga through people, place and experience.
-            </div>
-            <p style="font-size: 0.94rem; color: var(--charcoal); line-height: 1.65; opacity: 0.9;">
-              A place to slow down between journeys, share a meal, watch the volcanoes change with the light, and return from the day’s discoveries in complete tranquility.
-            </p>
-
-            <div class="stay-feature-list">
-              <span class="stay-pill">Accommodation</span>
-              <span class="stay-pill">Dining</span>
-              <span class="stay-pill">Fire-side evenings</span>
-              <span class="stay-pill">Private experiences</span>
-              <span class="stay-pill">Retreats / gatherings</span>
-            </div>
-
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-              <a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>" class="btn btn-forest">
-                Discover Virunga House <i class="fas fa-arrow-right"></i>
-              </a>
-              <a href="<?php echo htmlspecialchars($baseLink('rooms')); ?>" class="btn btn-outline-forest">
-                Book Your Stay
-              </a>
-            </div>
+            <span class="eyebrow">The Virunga Experience Stay</span>
+            <h2 class="sec-title">STAY CLOSE TO THE STORY</h2>
+            <h3 class="stay-brand">VIRUNGA HOUSE</h3>
+            <p class="stay-intro">A locally rooted boutique stay where staying becomes part of discovering the Virunga.</p>
+            <a href="<?php echo htmlspecialchars($baseLink('homestays')); ?>" class="btn btn-forest">DISCOVER VIRUNGA HOUSE</a>
           </div>
         </div>
       </div>
@@ -2287,41 +1917,13 @@
     ==================================================== -->
     <section class="sec-approach" id="approach">
       <div class="wrap">
-        <div class="sec-header center reveal">
-          <span class="eyebrow" style="color: var(--gold-light); justify-content: center;">Our Approach</span>
-          <h2 class="sec-title sec-title-light">NOT JUST SOMETHING TO SEE. SOMETHING TO SHARE.</h2>
-        </div>
-
-        <div class="approach-grid">
-          <!-- 1: Private -->
-          <div class="approach-card reveal-card" style="--reveal-delay: 0.05s;">
-            <div class="approach-title">PRIVATE</div>
-            <div class="approach-desc">Designed around you.</div>
-          </div>
-
-          <!-- 2: Participatory -->
-          <div class="approach-card reveal-card" style="--reveal-delay: 0.12s;">
-            <div class="approach-title">PARTICIPATORY</div>
-            <div class="approach-desc">You become part of the moment.</div>
-          </div>
-
-          <!-- 3: Personal -->
-          <div class="approach-card reveal-card" style="--reveal-delay: 0.19s;">
-            <div class="approach-title">PERSONAL</div>
-            <div class="approach-desc">Every encounter has a human story.</div>
-          </div>
-
-          <!-- 4: Rooted -->
-          <div class="approach-card reveal-card" style="--reveal-delay: 0.26s;">
-            <div class="approach-title">ROOTED</div>
-            <div class="approach-desc">Connected to the living Virunga.</div>
-          </div>
-
-          <!-- 5: Conscious -->
-          <div class="approach-card reveal-card" style="--reveal-delay: 0.33s;">
-            <div class="approach-title">CONSCIOUS</div>
-            <div class="approach-desc">Tourism that values people and place.</div>
-          </div>
+        <div class="sec-header center">
+          <h2 class="sec-title sec-title-light">OUR APPROACH</h2>
+          <ul class="approach-principles" aria-label="Our five principles">
+            <li>PRIVATE</li><li>PARTICIPATORY</li><li>PERSONAL</li><li>ROOTED</li><li>CONSCIOUS</li>
+          </ul>
+          <p class="sec-subtitle sec-subtitle-light">We design journeys around people, place and genuine connection&mdash;not checklists.</p>
+          <div class="approach-links"><a href="<?php echo htmlspecialchars($baseLink('about#the-virunga-way')); ?>" class="link-arrow link-arrow-light">OUR APPROACH</a><a href="<?php echo htmlspecialchars($baseLink('about#people')); ?>" class="link-arrow link-arrow-light">MEET OUR PEOPLE</a></div>
         </div>
       </div>
     </section>
@@ -2329,135 +1931,7 @@
     <!-- ====================================================
          10 — THE PEOPLE BEHIND THE JOURNEY (Restored Team Carousel)
     ==================================================== -->
-    <section class="sec-people" id="team">
-      <div class="wrap">
-        <div class="sec-header center reveal">
-          <span class="eyebrow" style="justify-content: center;">Our People</span>
-          <h2 class="sec-title">THE PEOPLE BEHIND THE JOURNEY</h2>
-          <p class="sec-subtitle">
-            The passionate storytellers, guides, coffee growers, hearth keepers, and cultural artists who bring your journey to life.
-          </p>
-        </div>
-
-        <div class="people-carousel-wrap">
-          <div class="people-track" id="peopleTrack">
-            <!-- 1: Fabrice -->
-            <div class="people-card active" data-person="0">
-              <div class="people-card-top">
-                <div class="people-avatar-icon">
-                  <i class="fas fa-compass"></i>
-                </div>
-                <span class="people-role-pill">Founder & Concierge</span>
-              </div>
-              <div>
-                <h4 class="people-name">Fabrice</h4>
-                <div class="people-origin"><i class="fas fa-location-dot"></i> Musanze Base</div>
-                <p class="people-story">“10+ years designing private cultural and wilderness journeys across Rwanda, Uganda, and DRC.”</p>
-              </div>
-              <div class="people-badge-tag">
-                <span>Journey Architect</span>
-                <i class="fas fa-arrow-right"></i>
-              </div>
-            </div>
-
-            <!-- 2: Gervais -->
-            <div class="people-card" data-person="1">
-              <div class="people-card-top">
-                <div class="people-avatar-icon">
-                  <i class="fas fa-mountain-sun"></i>
-                </div>
-                <span class="people-role-pill">Master Tracker</span>
-              </div>
-              <div>
-                <h4 class="people-name">Gervais</h4>
-                <div class="people-origin"><i class="fas fa-location-dot"></i> Kinigi Headquarters</div>
-                <p class="people-story">“Deep generational instinct tracing mountain gorilla families through the bamboo mist.”</p>
-              </div>
-              <div class="people-badge-tag">
-                <span>Wildlife Naturalist</span>
-                <i class="fas fa-arrow-right"></i>
-              </div>
-            </div>
-
-            <!-- 3: Jean-Pierre -->
-            <div class="people-card" data-person="2">
-              <div class="people-card-top">
-                <div class="people-avatar-icon">
-                  <i class="fas fa-seedling"></i>
-                </div>
-                <span class="people-role-pill">The Grower</span>
-              </div>
-              <div>
-                <h4 class="people-name">Jean-Pierre</h4>
-                <div class="people-origin"><i class="fas fa-location-dot"></i> Mount Bisoke Slopes</div>
-                <p class="people-story">“Cultivates award-winning Bourbon coffee cherries on mineral-rich volcanic high slopes.”</p>
-              </div>
-              <div class="people-badge-tag">
-                <span>Highland Coffee Master</span>
-                <i class="fas fa-arrow-right"></i>
-              </div>
-            </div>
-
-            <!-- 4: Claudine -->
-            <div class="people-card" data-person="3">
-              <div class="people-card-top">
-                <div class="people-avatar-icon">
-                  <i class="fas fa-fire-burner"></i>
-                </div>
-                <span class="people-role-pill">The Hearth</span>
-              </div>
-              <div>
-                <h4 class="people-name">Claudine</h4>
-                <div class="people-origin"><i class="fas fa-location-dot"></i> Virunga House Hearth</div>
-                <p class="people-story">“Brings the highland harvest alive over open wood fires with fragrant traditional recipes.”</p>
-              </div>
-              <div class="people-badge-tag">
-                <span>Hearth Keeper</span>
-                <i class="fas fa-arrow-right"></i>
-              </div>
-            </div>
-
-            <!-- 5: Innocent -->
-            <div class="people-card" data-person="4">
-              <div class="people-card-top">
-                <div class="people-avatar-icon">
-                  <i class="fas fa-palette"></i>
-                </div>
-                <span class="people-role-pill">The Artist</span>
-              </div>
-              <div>
-                <h4 class="people-name">Innocent</h4>
-                <div class="people-origin"><i class="fas fa-location-dot"></i> Musanze Arts Quarter</div>
-                <p class="people-story">“Shapes volcanic earth and banana leaf fibers into timeless cultural expressions.”</p>
-              </div>
-              <div class="people-badge-tag">
-                <span>Cultural Sculptor</span>
-                <i class="fas fa-arrow-right"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Carousel Controls -->
-          <div class="people-nav-bar">
-            <div class="people-dots">
-              <div class="people-dot active" data-dot="0"></div>
-              <div class="people-dot" data-dot="1"></div>
-              <div class="people-dot" data-dot="2"></div>
-              <div class="people-dot" data-dot="3"></div>
-              <div class="people-dot" data-dot="4"></div>
-            </div>
-            <div class="people-arrows">
-              <button class="people-arrow-btn" id="peoplePrev" aria-label="Previous Person">
-                <i class="fas fa-arrow-left"></i>
-              </button>
-              <button class="people-arrow-btn" id="peopleNext" aria-label="Next Person">
-                <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    
 
     <!-- ====================================================
          11 — THE VIRUNGA JOURNAL
@@ -2469,7 +1943,7 @@
           <span class="eyebrow">Editorial & Field Notes</span>
           <h2 class="sec-title">THE VIRUNGA JOURNAL</h2>
           <p class="sec-subtitle">
-            Stories, field notes, and cultural perspectives from the volcanic highlands.
+            Stories, field notes and perspectives from the volcanic highlands.
           </p>
         </div>
 
@@ -2520,8 +1994,8 @@
     <?php
       $cta_id = 'planner';
       $cta_eyebrow = 'VIRUNGA COLLECTIVE';
-      $cta_title = 'PLAN YOUR JOURNEY';
-      $cta_lead = 'Tell us what you are curious about. We will help you discover the right way to experience the Virunga.';
+      $cta_title = 'READY TO EXPERIENCE THE VIRUNGA?';
+      $cta_lead = 'Tell us what you\'re curious about, how much time you have, and what you want to discover. We\'ll help you find the right way into the Virunga.';
       $cta_primary_text = 'PLAN YOUR JOURNEY';
       $cta_primary_url = 'https://wa.me/250784513435?text=' . urlencode('Hello Virunga Collective, I would like to plan my journey.');
       $cta_secondary_text = 'DISCOVER VIRUNGA HOUSE';
@@ -2584,82 +2058,6 @@
       setupStaggerGroup(".journal-grid", ".journal-card");
 
       // Auto-Scrolling Spotlight Carousel for People of Virunga
-      function initPeopleCarousel() {
-        const track = document.getElementById('peopleTrack');
-        const cards = document.querySelectorAll('.people-card');
-        const dots = document.querySelectorAll('.people-dot');
-        const prevBtn = document.getElementById('peoplePrev');
-        const nextBtn = document.getElementById('peopleNext');
-        if (!track || !cards.length) return;
-
-        let currentIndex = 0;
-        let isPaused = false;
-
-        function setPerson(index, shouldScroll = true) {
-          currentIndex = (index + cards.length) % cards.length;
-          
-          cards.forEach((card, i) => {
-            card.classList.toggle('active', i === currentIndex);
-          });
-          
-          dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentIndex);
-          });
-
-          if (shouldScroll) {
-            const activeCard = cards[currentIndex];
-            if (activeCard) {
-              const scrollLeft = activeCard.offsetLeft - (track.clientWidth / 2) + (activeCard.clientWidth / 2);
-              track.scrollTo({
-                left: Math.max(0, scrollLeft),
-                behavior: 'smooth'
-              });
-            }
-          }
-        }
-
-        cards.forEach((card, index) => {
-          card.addEventListener('click', () => {
-            setPerson(index, true);
-          });
-          card.addEventListener('mouseenter', () => {
-            isPaused = true;
-            setPerson(index, false);
-          });
-        });
-
-        dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => {
-            setPerson(index, true);
-          });
-        });
-
-        if (prevBtn) {
-          prevBtn.addEventListener('click', () => {
-            setPerson(currentIndex - 1, true);
-          });
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener('click', () => {
-            setPerson(currentIndex + 1, true);
-          });
-        }
-
-        const section = document.querySelector('.sec-people');
-        if (section) {
-          section.addEventListener('mouseenter', () => { isPaused = true; });
-          section.addEventListener('mouseleave', () => { isPaused = false; });
-        }
-
-        setInterval(() => {
-          if (!isPaused) {
-            setPerson(currentIndex + 1, true);
-          }
-        }, 3800);
-
-        setPerson(0, false);
-      }
-
       // Intersection Observer for scroll-triggered slide-in animations
       function initScrollReveal() {
         const revealElements = document.querySelectorAll(
@@ -2684,11 +2082,9 @@
 
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-          initPeopleCarousel();
           initScrollReveal();
         });
       } else {
-        initPeopleCarousel();
         initScrollReveal();
       }
     </script>

@@ -32,6 +32,8 @@ $footerUrl = static function (string $target = '') use ($baseLink): string {
           <h3>Discover</h3>
           <ul>
             <li><a href="<?php echo $footerUrl('experiences'); ?>">Experiences</a></li>
+            <li><a href="<?php echo $footerUrl('destinations'); ?>">Destinations</a></li>
+            <li><a href="<?php echo $footerUrl('about#people'); ?>">Our people</a></li>
             <li><a href="<?php echo $footerUrl('homestays'); ?>">Stay</a></li>
             <li><a href="<?php echo $footerUrl('about'); ?>">Our story</a></li>
             <li><a href="<?php echo $footerUrl('ecotours/pages/blog.php'); ?>">The Virunga Journal</a></li>

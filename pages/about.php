@@ -472,7 +472,17 @@
         .vcaCollectionGrid { grid-template-columns: 1fr; }
         .vcaClosing { padding: 72px 24px; }
       }
-    </style>
+    
+.vcaPrinciples { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:24px; margin:32px 0; } .vcaPrinciples dt { color:#dfba6b; font-size:.8rem; letter-spacing:.06em; } .vcaPrinciples dd { margin:12px 0 0; line-height:1.6; }
+.vcaPeopleGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:32px; }
+.vcaPerson { padding:28px; border:1px solid #d9d1bc; background:#fffdf7; }
+.vcaPerson > span { color:#6e8270; text-transform:uppercase; font-size:.75rem; letter-spacing:.08em; }
+.vcaPerson h3 { font-family:"Cormorant Garamond",Georgia,serif; font-size:2rem; margin:12px 0; color:#1b3a2b; }
+.vcaPersonOrigin { font-size:.85rem; color:#6e8270; margin-bottom:16px; }
+.vcaPerson p { line-height:1.7; }
+@media(max-width:800px) { .vcaPeopleGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:520px) { .vcaPeopleGrid { grid-template-columns:1fr; } }
+</style>
   </head>
   <body>
     <?php include __DIR__ . '/header.php'; ?>
@@ -530,6 +540,13 @@
           <p class="vcaSectionText">
             It is our shared approach across everything we do.
           </p>
+          <dl class="vcaPrinciples">
+            <div><dt>PRIVATE</dt><dd>Designed around you.</dd></div>
+            <div><dt>PARTICIPATORY</dt><dd>You become part of the moment.</dd></div>
+            <div><dt>PERSONAL</dt><dd>Every encounter has a human story.</dd></div>
+            <div><dt>ROOTED</dt><dd>Connected to the living Virunga.</dd></div>
+            <div><dt>CONSCIOUS</dt><dd>Tourism that values people and place.</dd></div>
+          </dl>
           <a href="<?php echo htmlspecialchars($baseLink('about/the-virunga-way')); ?>" class="vcaSectionLink">
             Discover The Virunga Way <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
@@ -538,6 +555,8 @@
     </section>
 
     <div class="vcaSectionDivider"></div>
+
+    <?php include __DIR__ . '/people-section.php'; ?>
 
     <!-- ========== OUR COLLECTION ========== -->
     <section class="vca-section vca-section--light" id="collection">
