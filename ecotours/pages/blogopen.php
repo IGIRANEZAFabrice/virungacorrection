@@ -331,6 +331,9 @@ function renderBlogHtml($content) {
 
     <!-- Photo Gallery -->
     <?php 
+    // Temporarily disabled; set to true to restore the gallery.
+    $show_photo_gallery = false;
+    if ($show_photo_gallery):
     // Use blog_gallery_images table and blog_id
     $gallery_query = "SELECT image_path FROM blog_gallery_images WHERE blog_id = ? ORDER BY image_order"; 
     $gallery_stmt = $conn->prepare($gallery_query);
@@ -358,6 +361,7 @@ function renderBlogHtml($content) {
     <?php 
     endif; 
     $gallery_stmt->close(); // Close gallery statement
+    endif;
     ?>
 
     <!-- Share and Comments -->
