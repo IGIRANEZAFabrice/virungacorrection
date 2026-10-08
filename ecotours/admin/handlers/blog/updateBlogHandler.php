@@ -124,6 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        require_once __DIR__ . '/submission_validation.php';
+        validateBlogSubmission();
         if (!isset($conn) || !$conn) {
             throw new Exception("Database connection is not available.");
         }
@@ -327,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Check for new file upload for this block
                     $file_key = 'blockImage'; // Assuming name="blockImage[]"
-                    if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'][$i] !== UPLOAD_ERR_NO_FILE && $_FILES[$file_key]['size'][$i] > 0) {
+                    if (isset($_FILES[$file_key]['error'][$i]) && $_FILES[$file_key]['error'][$i] !== UPLOAD_ERR_NO_FILE && $_FILES[$file_key]['size'][$i] > 0) {
                          // Reconstruct the file array for the specific index
                         $block_file = [
                             'name' => $_FILES[$file_key]['name'][$i],

@@ -18,6 +18,8 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 require_once __DIR__ . '/../../config/connection.php';
+$conn->set_charset('utf8mb4');
+$conn->query("SET collation_connection = 'utf8mb4_unicode_ci'");
 
 // Function to create a slug from a title
 function createSlug($string) {
@@ -37,7 +39,7 @@ function uploadImage($file, $targetDir) {
     $baseName = pathinfo($file['name'], PATHINFO_FILENAME);
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $safeBaseName = preg_replace("/[^a-zA-Z0-9_-]/", "_", $baseName);
-    $fileName = time() . '_' . $safeBaseName . '.' . $extension;
+    $fileName = bin2hex(random_bytes(12)) . '_' . $safeBaseName . '.' . $extension;
     $targetFilePath = $targetDir . $fileName;
     
     // Allow certain file formats
@@ -107,6 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        require_once __DIR__ . '/submission_validation.php';
+        validateBlogSubmission();
         if (!isset($conn) || !$conn) {
             throw new Exception("Database connection is not available.");
         }

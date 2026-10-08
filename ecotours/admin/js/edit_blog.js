@@ -691,9 +691,18 @@ function initializeEditBlogPage() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Changes...';
       }
 
+      // Every field uses its position in the article, including mixed block types.
+      contentBlocks.querySelectorAll(".content-block").forEach((block, index) => {
+        block.querySelectorAll("[name]").forEach(field => {
+          if (field.name.startsWith("listItems[")) field.name = `listItems[${index}][]`;
+          else field.name = field.name.replace(/\[(?:\d*)\]$/, `[${index}]`);
+        });
+      });
+
       // Base64 encode text strings to bypass ModSecurity WAF rules (403 Forbidden)
       const formData = new FormData();
       formData.append('_b64', '1');
+      formData.append('_submission_version', '1');
 
       for (let i = 0; i < blogForm.elements.length; i++) {
         const el = blogForm.elements[i];
@@ -719,6 +728,13 @@ function initializeEditBlogPage() {
           formData.append(el.name, val);
         }
       }
+
+      // Append last so PHP input truncation cannot silently drop article sections.
+      const submittedEntries = [...formData.entries()];
+      formData.append('_submission_manifest', JSON.stringify({
+        fields: submittedEntries.filter(([, value]) => typeof value === 'string').length,
+        files: submittedEntries.filter(([, value]) => value instanceof File).length
+      }));
 
       fetch(blogForm.action, {
         method: "POST",

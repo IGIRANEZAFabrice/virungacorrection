@@ -568,7 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
       block.setAttribute("data-block-id", newId);
 
       const renameByPrefix = (prefix, suffix = "") => {
-        block.querySelectorAll(`[name^="${prefix}${oldId}"]`).forEach((field) => {
+        block.querySelectorAll(`[name="${prefix}${oldId}"]`).forEach((field) => {
           field.name = `${prefix}${newId}${suffix}`;
         });
       };
@@ -879,6 +879,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Build form data with base64 encoded text strings to avoid WAF ModSecurity 403 blocks
       const formData = new FormData();
       formData.append('_b64', '1');
+      formData.append('_submission_version', '1');
 
       for (let i = 0; i < blogForm.elements.length; i++) {
         const el = blogForm.elements[i];
@@ -904,6 +905,13 @@ document.addEventListener("DOMContentLoaded", () => {
           formData.append(el.name, val);
         }
       }
+
+      // Append last so PHP input truncation cannot silently drop article sections.
+      const submittedEntries = [...formData.entries()];
+      formData.append('_submission_manifest', JSON.stringify({
+        fields: submittedEntries.filter(([, value]) => typeof value === 'string').length,
+        files: submittedEntries.filter(([, value]) => value instanceof File).length
+      }));
 
       fetch(blogForm.action, {
         method: "POST",
