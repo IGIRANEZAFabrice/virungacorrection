@@ -24,7 +24,7 @@ $footerUrl = static function (string $target = '') use ($baseLink): string {
     <div class="vc-footer__top">
       <section class="vc-footer__brand" aria-label="Virunga Collective">
         <h2>Virunga Collective</h2>
-        <p>Meaningful journeys shaped by wildlife, landscapes, people, culture and place.</p>
+        <p>Virunga Journeys is the travel and experience company of Virunga Collective, and the legal entity behind our travel operations in Rwanda.</p>
       </section>
 
       <nav class="vc-footer__groups" aria-label="Footer navigation">
